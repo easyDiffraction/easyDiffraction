@@ -30,17 +30,8 @@ install:
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
 
 before_script:
-  - if [ "${TRAVIS_OS_NAME}" = "windows" ]; then
-         echo "Windows - Should copy shiboken2.abi3.dll"
-      ;
-    else
-         echo "UNIX"
-         if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-              echo "OSX - Should copy libshiboken2.abi3.5.13.dylib"
-           ;
-         fi
-      ;
-    fi
+  - '[ "$TRAVIS_OS_NAME" != windows ] || echo "Windows - Should copy shiboken2.abi3.dll"'
+  - '[ "$TRAVIS_OS_NAME" != osx ] || echo "OSX - Should copy libshiboken2.abi3.5.13.dylib"'
   - pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App"$SEP"." --icon App/imports/easyDiffraction/Resources/Icons/App.icns
 
 script:
