@@ -5,14 +5,10 @@ matrix:
     - name: "Python 3.7.1 on Xenial Linux"
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       dist: xenial
-      env: 
-        - SEP=":"
     - name: "Python 3.7.4 on macOS"
       os: osx
       osx_image: xcode11    # Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
-      env: 
-        - SEP=":"
     - name: "Python 3.7.4 on Windows"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
@@ -21,7 +17,6 @@ matrix:
         - pip3 install pypiwin32
       env: 
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
-        - SEP=";"
 
 install:
   - python -m pip install --upgrade pip
@@ -31,12 +26,29 @@ install:
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
 
 before_script:
-  - '[ "$TRAVIS_OS_NAME" != windows ] || echo "Windows - Should copy shiboken2.abi3.dll"'
-  - '[ "$TRAVIS_OS_NAME" != osx ] || sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.5.12.dylib /usr/local/lib/python3.7/site-packages/PySide2/'
-  - pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App"$SEP"." --icon App/imports/easyDiffraction/Resources/Icons/App.icns
+  - '[ "$TRAVIS_OS_NAME" == "windows" ] || cp C:/python37/lib/site-packages/shiboken2/libshiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/'
+  - '[ "$TRAVIS_OS_NAME" == "osx" ] || sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.5.12.dylib /usr/local/lib/python3.7/site-packages/PySide2/'
+  - '[ "$TRAVIS_OS_NAME" == "windows" ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App;." --icon App/imports/easyDiffraction/Resources/Icons/App.icns'
+  - '[ "$TRAVIS_OS_NAME" != "windows" ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/imports/easyDiffraction/Resources/Icons/App.icns'
+
 
 script:
   -  echo "This is whre I run tests"
 
 after_success:
-  - echo "This is where I do code coverage and deploy"
+  - echo "This is where I do code coverage and zip/dmg"
+
+before_deploy:
+  # Set up git user name and tag this commit
+  - git config --local user.name "Travis"
+  - git config --local user.email "travis@travis.com"
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  - git tag $TRAVIS_TAG
+
+#deploy:
+#  provider: releases
+#  api_key:
+#    secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
+#  file: "FILE TO UPLOAD"
+#  skip_cleanup: true
+#  draft: true
