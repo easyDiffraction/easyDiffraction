@@ -36,8 +36,9 @@ before_script:
     else
          echo "UNIX"
          if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-             echo "OSX - Should copy libshiboken2.abi3.5.13.dylib"
-         ;
+              echo "OSX - Should copy libshiboken2.abi3.5.13.dylib"
+           ;
+         fi
       ;
     fi
   - pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App"$SEP"." --icon App/imports/easyDiffraction/Resources/Icons/App.icns
