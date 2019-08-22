@@ -1,0 +1,5 @@
+module easyAnalysis.Logic
+Math 1.0 Math.js
+Copy 1.0 Copy.js
+Parse 1.0 Parse.js
+Misc 1.0 Misc.js

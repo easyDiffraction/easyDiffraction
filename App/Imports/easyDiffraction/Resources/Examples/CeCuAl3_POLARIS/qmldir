@@ -1,0 +1,9 @@
+module easyDiffraction.Resources.Examples.CeCuAl3_POLARIS
+ObsMinusEsdLineSeries 1.0 ObsMinusEsdLineSeries.qml
+ObsPlusEsdLineSeries 1.0 ObsPlusEsdLineSeries.qml
+ObsLineSeries 1.0 ObsLineSeries.qml
+CalcLineSeries 1.0 CalcLineSeries.qml
+DiffLineSeries 1.0 DiffLineSeries.qml
+DiffMinusEsdLineSeries 1.0 DiffMinusEsdLineSeries.qml
+DiffPlusEsdLineSeries 1.0 DiffPlusEsdLineSeries.qml
+BraggScatterSeries 1.0 BraggScatterSeries.qml

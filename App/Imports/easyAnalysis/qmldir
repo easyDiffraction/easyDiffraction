@@ -1,0 +1,3 @@
+module easyAnalysis
+singleton Style 1.0 Style.qml
+singleton Variables 1.0 Variables.qml

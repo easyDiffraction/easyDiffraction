@@ -1,0 +1,40 @@
+import QmlProject 1.1
+
+Project {
+    mainFile: "App/Gui.qml"
+
+    /* Include .qml, .js, and image files from current directory and subdirectories */
+    QmlFiles {
+        directory: "."
+    }
+    JavaScriptFiles {
+        directory: "."
+    }
+    ImageFiles {
+        directory: "."
+    }
+
+    /* Include Qt Quick Controls Configuration File & Module Definition qmldir Files*/
+    Files {
+        filter: "qtquickcontrols2.conf;qmldir"
+        //directory: "."
+        //files: ["qtquickcontrols2.conf"]
+    }
+
+    /* Include other files from current directory and subdirectories */
+    Files {
+        directory: "."
+        recursive: true
+        filter: "*.txt;*.ttf"
+    }
+
+    /* List of module and plugin directories passed to QML runtime */
+    importPaths: [
+        "./Qml/Imports"
+    ]
+
+    Environment {
+        QT_QUICK_CONTROLS_CONF: "Qml/qtquickcontrols2.conf" /* Qt Quick Controls Configuration */
+        QT_AUTO_SCREEN_SCALE_FACTOR: "1"                    /* High DPI Support in Qt */
+    }
+}

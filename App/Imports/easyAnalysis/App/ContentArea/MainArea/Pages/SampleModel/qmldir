@@ -1,0 +1,3 @@
+module easyAnalysis.App.ContentArea.MainArea.Pages.SampleModel
+StructureView 1.0 StructureView.qml
+TextView 1.0 TextView.qml

@@ -1,0 +1,5 @@
+module easyAnalysis.App.ContentArea.Sidebar.Pages.Analysis
+Simulation 1.0 Simulation.qml
+Fitting 1.0 Fitting.qml
+Constraints 1.0 Constraints.qml
+Editor 1.0 Editor.qml

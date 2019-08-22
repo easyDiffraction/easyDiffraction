@@ -1,0 +1,4 @@
+module easyAnalysis.App.Toolbar
+Button 1.0 Button.qml
+Spacer 1.0 Spacer.qml
+Toolbar 1.0 Toolbar.qml
