@@ -65,9 +65,3 @@ __pycache__
 # PyInstaller
 build
 dist
-
-# Misc
-Build
-Tmp*
-*.command
-*.bat
