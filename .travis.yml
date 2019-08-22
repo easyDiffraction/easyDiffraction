@@ -20,13 +20,13 @@ matrix:
 
 install:
   - python -m pip install --upgrade pip
-  - pip3 install PySide2==5.12.3
+  - pip3 install PySide2
   - pip3 install scipy
   - pip3 install numpy==1.16.4
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
 
 before_script:
-  - '[ "$TRAVIS_OS_NAME" != windows ] || cp /c/python37/lib/site-packages/shiboken2/libshiboken2.abi3.dll /c/python37/lib/site-packages/PySide2/'
+  - '[ "$TRAVIS_OS_NAME" != windows ] || cp C:/python37/lib/site-packages/shiboken2/libshiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/'
   - '[ "$TRAVIS_OS_NAME" != osx ] || sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.5.12.dylib /usr/local/lib/python3.7/site-packages/PySide2/'
   - '[ "$TRAVIS_OS_NAME" != windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App;." --icon App/imports/easyDiffraction/Resources/Icons/App.icns'
   - '[ "$TRAVIS_OS_NAME" == windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/imports/easyDiffraction/Resources/Icons/App.icns'
