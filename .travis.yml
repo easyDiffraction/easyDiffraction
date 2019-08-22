@@ -24,12 +24,22 @@ matrix:
 
 install:
   - python -m pip install --upgrade pip
-  - pip3 install PySide2
+  - pip3 install PySide2==5.12.0
   - pip3 install scipy
   - pip3 install numpy==1.16.4
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
 
 before_script:
+  - if [ "${TRAVIS_OS_NAME}" = "windows" ]; then
+         echo "Windows - Should copy shiboken2.abi3.dll"
+      ;
+    else
+         echo "UNIX"
+         if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+             echo "OSX - Should copy libshiboken2.abi3.5.13.dylib"
+         ;
+      ;
+    fi
   - pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App"$SEP"." --icon App/imports/easyDiffraction/Resources/Icons/App.icns
 
 script:
