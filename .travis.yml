@@ -26,12 +26,11 @@ install:
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
 
 before_script:
+# Fix python packaging, becaues it sucks
   - '[ "$TRAVIS_OS_NAME" != windows ] || cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/'
-#  - '[ "$TRAVIS_OS_NAME" != windows ] || ls C:/python37/lib/site-packages/' # For Debug
-#  - '[ "$TRAVIS_OS_NAME" != windows ] || ls C:/python37/lib/site-packages/shiboken2' # For Debug
-#  - '[ "$TRAVIS_OS_NAME" != windows ] || ls C:/python37/lib/site-packages/PySide2' # For Debug
   - '[ "$TRAVIS_OS_NAME" != osx ] || sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/'
-  - '[ "$TRAVIS_OS_NAME" != windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App;." --icon App/imports/easyDiffraction/Resources/Icons/App.icns'
+# Make the app
+  - '[ "$TRAVIS_OS_NAME" != windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App;." --icon $(pwd)/App/imports/easyDiffraction/Resources/Icons/App.icns'
   - '[ "$TRAVIS_OS_NAME" == windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/imports/easyDiffraction/Resources/Icons/App.icns'
 
 
@@ -49,6 +48,7 @@ before_deploy:
   - git tag $TRAVIS_TAG
 
 #deploy:
+##This is where I deploy the results to github
 #  provider: releases
 #  api_key:
 #    secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
