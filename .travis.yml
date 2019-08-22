@@ -1,0 +1,40 @@
+language: python            # this works for Linux but is an error on macOS or Windows
+matrix:
+  include:
+    - name: "Python 3.7.1 on Xenial Linux"
+      python: 3.7           # this works for Linux but is ignored on macOS or Windows
+      dist: xenial
+    - name: "Python 3.7.4 on macOS"
+      os: osx
+      osx_image: xcode11    # Python 3.7.4 running on macOS 10.14.4
+      language: shell       # 'language: python' is an error on Travis CI macOS
+    - name: "Python 3.7.4 on Windows"
+      os: windows           # Windows 10.0.17134 N/A Build 17134
+      language: shell       # 'language: python' is an error on Travis CI Windows
+      before_install:
+        - choco install python
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+
+env:
+  - CURRENT_DIR="$(dirname "$0")"
+  - VENV_DIR=$CURRENT_DIR/.python-venv 
+
+befor_install:
+  - python3.7 -m venv $VENV_DIR
+  - source $VENV_DIR/bin/activate
+
+install:
+  - python -m pip install --upgrade pip
+  - pip3 install PySide2
+  - pip3 install scipy
+  - pip3 install numpy==1.16.4
+  - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+
+before_script:
+  - pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/imports/easyDiffraction/Resources/Icons/App.icns
+
+script:
+  -  echo "This is whre I run tests"
+
+after_success:
+  - echo "This is where I do code coverage and deploy"
