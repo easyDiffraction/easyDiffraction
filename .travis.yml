@@ -44,7 +44,7 @@ after_success:
   - zip $TRAVIS_TAG ./*
   - echo $TRAVIS_TAG
   - ls ./
-  - curl --upload-file easyDiffraction*.zip https://transfer.sh/$TRAVIS_TAG
+  - curl --upload-file ./$TRAVIS_TAG https://transfer.sh/$TRAVIS_TAG
 
 before_deploy:
   # Set up git user name and tag this commit
