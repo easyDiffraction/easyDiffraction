@@ -49,6 +49,8 @@ after_success:
   - export tmpfile=$( mktemp -t transferXXX )
   - curl --upload-file ./$TRAVIS_TAG https://transfer.sh/$TRAVIS_TAG > $tmpfile
   - cat $tmpfile
+  - export URL=$(cat $tmpfile)
+
 
 before_deploy:
   # Set up git user name and tag this commit
@@ -59,7 +61,6 @@ before_deploy:
 
 notifications:
   slack:
-    - export URL=$(cat $tmpfile)
     rooms:
       - secure: poKaAbLUdK5QmtnAnU0qFGxBQgPjtSRfoKdj4YVpgzWEt7cLU0k0Ou7oyFy5bdhu9k7Diu3+zDPHZJjBlVu4AED3XwAjeJgaG7w0dd9IHCTCrQx5GmYu47pX7nACbVAWdX1Uj7RhouCQwhdqZ1BD/BJP0vsvSVVvDFia6yqPnQek1Oi4x6gDbacRB1uaNldw41b2m2BhYrimFOU9I/zzTVVIZrPKttiHK8hypjIgZGPZ3q9JCBum7JCBN6oFIm5eM5x0F/$
     template:
