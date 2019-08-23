@@ -39,6 +39,10 @@ script:
 
 after_success:
   - echo "This is where I do code coverage and zip/dmg"
+  - cd build/easyDiffraction
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  - zip $TRAVIS_TAG.zip ./*
+  - curl -H "Max-Downloads: 1" -H "Max-Days: 5" --upload-file ./TRAVIS_TAG.zip https://transfer.sh/TRAVIS_TAG.zip
 
 before_deploy:
   # Set up git user name and tag this commit
