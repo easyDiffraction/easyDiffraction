@@ -14,6 +14,8 @@ matrix:
       language: shell       # 'language: python' is an error on Travis CI Windows
       before_install:
         - choco install python
+        - choco install zip
+        - choco install curl
         - pip3 install pypiwin32
       env: 
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
