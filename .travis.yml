@@ -41,12 +41,14 @@ script:
 
 after_success:
   - echo "This is where I do code coverage and zip/dmg"
-  - cd build/easyDiffraction
+  - cd dist
   - export TRAVIS_TAG=easyDifraction-git.$(git rev-parse --short HEAD)-$TRAVIS_OS_NAME.zip 
-  - zip $TRAVIS_TAG ./*
+  - '[ "$TRAVIS_OS_NAME" != osx ] || zip $TRAVIS_TAG easyDifraction.app'
+  - '[ "$TRAVIS_OS_NAME" != windows ] || zip $TRAVIS_TAG easyDifraction.exe'
+  - '[ "$TRAVIS_OS_NAME" != linux ] || zip -r $TRAVIS_TAG ./easyDifraction'
   - export tmpfile=$( mktemp -t transferXXX )
   - curl --upload-file ./$TRAVIS_TAG https://transfer.sh/$TRAVIS_TAG > $tmpfile
-  - cat $tmpfile
+  - cat $tmpfile 
   - rm -f $tmpfile
 
 before_deploy:
