@@ -44,9 +44,10 @@ after_success:
   - cd build/easyDiffraction
   - export TRAVIS_TAG=easyDifraction-git.$(git rev-parse --short HEAD)-$TRAVIS_OS_NAME.zip 
   - zip $TRAVIS_TAG ./*
-  - echo $TRAVIS_TAG
-  - ls ./
-  - curl --upload-file ./$TRAVIS_TAG https://transfer.sh/$TRAVIS_TAG
+  - export tmpfile=$( mktemp -t transferXXX )
+  - curl --upload-file ./$TRAVIS_TAG https://transfer.sh/$TRAVIS_TAG > $tmpfile
+  - cat $tmpfile
+  - rm -f $tmpfile
 
 before_deploy:
   # Set up git user name and tag this commit
