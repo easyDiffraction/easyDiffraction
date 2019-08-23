@@ -60,7 +60,8 @@ before_deploy:
 notifications:
   slack:
     - export URL=$(cat $tmpfile)
-    secure: poKaAbLUdK5QmtnAnU0qFGxBQgPjtSRfoKdj4YVpgzWEt7cLU0k0Ou7oyFy5bdhu9k7Diu3+zDPHZJjBlVu4AED3XwAjeJgaG7w0dd9IHCTCrQx5GmYu47pX7nACbVAWdX1Uj7RhouCQwhdqZ1BD/BJP0vsvSVVvDFia6yqPnQek1Oi4x6gDbacRB1uaNldw41b2m2BhYrimFOU9I/zzTVVIZrPKttiHK8hypjIgZGPZ3q9JCBum7JCBN6oFIm5eM5x0F/$
+    rooms:
+      - secure: poKaAbLUdK5QmtnAnU0qFGxBQgPjtSRfoKdj4YVpgzWEt7cLU0k0Ou7oyFy5bdhu9k7Diu3+zDPHZJjBlVu4AED3XwAjeJgaG7w0dd9IHCTCrQx5GmYu47pX7nACbVAWdX1Uj7RhouCQwhdqZ1BD/BJP0vsvSVVvDFia6yqPnQek1Oi4x6gDbacRB1uaNldw41b2m2BhYrimFOU9I/zzTVVIZrPKttiHK8hypjIgZGPZ3q9JCBum7JCBN6oFIm5eM5x0F/$
     template:
       - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} by %{author} %{result} in %{duration}. Binary can be downloaded at: $URL"
     on_success: always
