@@ -100,6 +100,7 @@ ColumnLayout {
     ///////////
     // Groupbox
     ///////////
+    /*
     GenericAppElements.GroupBox {
         title: "Metadata"
         collapsed: true
@@ -108,6 +109,7 @@ ColumnLayout {
             Text { text: "To be added" }
         }
     }
+    */
 
     ///////////
     // Groupbox
@@ -155,7 +157,8 @@ ColumnLayout {
             ColumnLayout {
                 spacing: 2
                 Text { text: "Instrument resolution function"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                GenericAppElements.ComboBox { currentIndex: 3; model: ["Gaussian", "Lorentz", "Pseudo-Voigt", "Thompson-Cox-Hastings pseudo-Voigt"] }
+                ///GenericAppElements.ComboBox { currentIndex: 3; model: ["Gaussian", "Lorentz", "Pseudo-Voigt", "Thompson-Cox-Hastings pseudo-Voigt"] }
+                GenericAppElements.ComboBox { currentIndex: 2; model: ["Gaussian", "Lorentz", "Pseudo-Voigt"] }
             }
             GridLayout {
                 columns: 8
@@ -177,9 +180,9 @@ ColumnLayout {
                 Text {}
                 Text { text: qsTr("Y") }
                 GenericAppElements.TextField { id: y }
-                Text {}
-                Text { text: qsTr("Z") }
-                GenericAppElements.TextField { id: z }
+                //Text {}
+                //Text { text: qsTr("Z") }
+                //GenericAppElements.TextField { id: z }
             }
         }
     }
