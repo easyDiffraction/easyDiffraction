@@ -9,7 +9,7 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 Column {
     property string title: ""
     property bool collapsible: true
-    property bool collapsed: false
+    property bool collapsed: collapsible ? true : false
     property bool showBorder: true
     property alias content: layout.children
 

@@ -14,7 +14,7 @@ ColumnLayout {
         content: GenericAppElements.GridLayout {
             columns: 2
             GenericAppElements.CheckBox { checked:false; text:qsTr("Display labels for atoms") }
-            GenericAppElements.CheckBox { checked:true;  text:qsTr("Display coordinate system") }
+            GenericAppElements.CheckBox { checked:false; text:qsTr("Display coordinate system") }
             //GenericAppElements.CheckBox { Layout.fillWidth:true; checked:true;  text:qsTr("Display coordinate system") }
         }
     }
