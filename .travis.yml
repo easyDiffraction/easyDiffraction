@@ -12,6 +12,7 @@ matrix:
     - name: "Python 3.7.4 on Windows"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
+      filter_secrets: false
       before_install:
         - choco install python
         - choco install zip
@@ -19,6 +20,10 @@ matrix:
         - pip3 install pypiwin32
       env: 
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
+
+env:
+  global:
+    - secure: F7dAQoLJ1pTgO0WjqhyWYeJSWZo44z/cWjtoT+tOB2WDdcuKmtoCA0izzvSQt0HcTMzQypCHLNtI9tyC5owAqloACEmYijYHVUvP1qZftB7v8keTE6eWuCPJRfl4e5jghFcRX2QrV/RJuQf56WC6+v1xaasPqkNIOg5T0VgP4BFzioMVWKQJQqsvK4zcjLa4d7DUNNenBrKkxSNYx2wNWqCbQ5h/XrrzDsYBs6BA2nUlASZaQcR1ICrl8lz3TXyZSdfr11UNz+qF6b2ZOrsSuXIAhTOg7AslZm13VZZqYh57H1oLGvBtFjGFqxZ4hrUye4brewDSMYwU6L8tLOxTH/u48Py9Wjd3vfklnfNeYDm4zxnWCOmn4HX5KFGf6x9+dEcHPOwcOnKjWRvLXm6zekBt4GjRZRw9l+txVuM2lwBfyDupKDwCwn8QjEJDJEXw9QP1di0O7z0JWijUR7ELgreZDcYJo2kNEB6n75YRn23OSxkgRpGLfY9WRWNa9/Bng6hYUnJEenK8+UiNqKGnP7VeiVq60pmLJb6E+jf19AivhXdex2NT4tKfTd3XkAE1o2XY2FHCOpMwv54R7SJrmMDpBu5L4eeB2h+PyOA6LALaRYcVAcvYdz/J6tYPh+nPj8DHAnkgClyfXX+WnsWwB6Gw+Pm1kuKDdZ+NxdQ8WAA= 
 
 install:
   - python -m pip install --upgrade pip
@@ -28,6 +33,7 @@ install:
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
 
 before_script:
+  - echo $SOMEVAR
 # Fix python packaging, becaues it sucks
   - '[ "$TRAVIS_OS_NAME" != windows ] || cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/'
   - '[ "$TRAVIS_OS_NAME" != osx ] || sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/'
