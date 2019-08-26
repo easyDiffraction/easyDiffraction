@@ -10,6 +10,30 @@ Rectangle {
 
     color: "white"
 
+    ////////////////////////
+    // Check if data changed
+    ////////////////////////
+
+    Text {
+        id: dataChanged
+        visible: false
+        text: proxy.time_stamp
+        onTextChanged: {
+            print("Time stamp: ", proxy.time_stamp)
+
+            // remove old data points
+            listModel.clear()
+
+            for (let i = 0, len = proxy.tmp_tth_list().length; i < len; i++ ) {
+                const x = proxy.tmp_tth_list()[i]
+                const yobs = proxy.tmp_int_u_list()[i]
+                const syobs = proxy.tmp_sint_u_list()[i]
+
+                listModel.append( { x: x, y: yobs, sy: syobs } )
+            }
+        }
+    }
+
     ListModel {
         id: listModel
     }
@@ -23,14 +47,4 @@ Rectangle {
         Controls1.TableViewColumn { role:"sy"; title:"sYobs"; resizable: false; width: Generic.Variables.mainAreaWidth / 4 - 1 }
         Controls1.TableViewColumn { }
     }
-
-    Component.onCompleted: {
-        for (let i = 0; i < Generic.Variables.xObs.length; i++) {
-            const x = parseFloat(Generic.Variables.xObs[i]).toFixed(3)
-            const y = parseFloat(Generic.Variables.yObs[i]).toFixed(3)
-            const sy = parseFloat(Generic.Variables.syObs[i]).toFixed(3)
-            listModel.append( { x: x, y: y, sy: sy } )
-        }
-    }
-
 }
