@@ -18,6 +18,8 @@ matrix:
         - choco install python
         - choco install zip
         - choco install curl
+        - choco install grep
+        - choco install sed 
         - pip3 install pypiwin32
       env: 
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
@@ -55,7 +57,7 @@ after_success:
   - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
   - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_N easyDiffraction/'
   - export tmpfile=$( mktemp -t transferXXX )
-  - '[ $TRAVIS_BRANCH != "master" ] || curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile'
+  - '[ "$TRAVIS_BRANCH" != "master" ] || curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile'
   - export URL=$(cat $tmpfile)
   - echo $URL
   - cp $TRAVIS_N ../
@@ -68,8 +70,8 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "Travis Builder"
   - git config --local user.email "travis@travis-ci.org"
-  - export TRAVIS_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
-  - export RELEASE_TITLE=EasyDiffraction-$TRAVIS_TAG
+  - export TRAVIS_TAG=$(cat App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
+  - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
 
 notifications:
   slack:
