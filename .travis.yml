@@ -57,7 +57,7 @@ after_success:
   - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
   - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_N easyDiffraction/'
   - export tmpfile=$( mktemp -t transferXXX )
-  - '[ "$TRAVIS_BRANCH" != "master" ] || curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile'
+  - '[ "$TRAVIS_BRANCH" == "master" ] || curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile'
   - export URL=$(cat $tmpfile)
   - echo $URL
   - cp $TRAVIS_N ../
@@ -90,6 +90,6 @@ deploy:
   draft: true
   overwrite: true
   file_glob: true
-  file: easyDifraction*.zip
+  file: easyDiffraction-*.zip
   on:
     branch: master
