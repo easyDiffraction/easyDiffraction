@@ -55,7 +55,7 @@ after_success:
   - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
   - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_N easyDiffraction/'
   - export tmpfile=$( mktemp -t transferXXX )
-  - curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile
+  - '[ $TRAVIS_BRANCH != "master" ] || curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile'
   - export URL=$(cat $tmpfile)
   - echo $URL
   - cp $TRAVIS_N ../
@@ -63,7 +63,6 @@ after_success:
 cache:
   directories:
     - ~/easyDifraction
-
 
 before_deploy:
   # Set up git user name and tag this commit
