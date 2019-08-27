@@ -32,6 +32,7 @@ install:
   - pip3 install scipy
   - pip3 install numpy==1.16.4
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+  - pip3 install -U pytest
 
 before_script:
   - echo $SOMEVAR
@@ -45,18 +46,19 @@ before_script:
 
 script:
   -  echo "This is whre I run tests"
+  - pytest --version
 
 after_success:
   - echo "This is where I do code coverage and zip/dmg"
   - cd dist
-  - export TRAVIS_TAG=easyDifraction-git.$(git rev-parse --short HEAD)-$TRAVIS_OS_NAME.zip 
-  - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_TAG easyDiffraction.app'
-#  - '[ "$TRAVIS_OS_NAME" != windows ] || zip $TRAVIS_TAG easyDiffraction.exe'
-  - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_TAG easyDiffraction/'
+  - export TRAVIS_N=easyDifraction-git.$(git rev-parse --short HEAD)-$TRAVIS_OS_NAME.zip 
+  - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
+  - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_N easyDiffraction/'
   - export tmpfile=$( mktemp -t transferXXX )
-  - curl --upload-file ./$TRAVIS_TAG https://transfer.sh/$TRAVIS_TAG > $tmpfile
+  - curl --upload-file ./$TRAVIS_TAG https://transfer.sh/$TRAVIS_N > $tmpfile
   - export URL=$(cat $tmpfile)
   - echo $URL
+  - cp $TRAVIS_N ../
 
 
 before_deploy:
@@ -82,7 +84,7 @@ deploy:
   provider: releases
   api_key:
     secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
-  file: $HOME/dist/easyDifraction-git.$(git rev-parse --short HEAD)-$TRAVIS_OS_NAME.zip
+  file: easyDifraction-git.$(git rev-parse --short HEAD)-$TRAVIS_OS_NAME.zip
   skip_cleanup: true
   draft: true
   on:
