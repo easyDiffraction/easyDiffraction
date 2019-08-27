@@ -171,9 +171,14 @@ ColumnLayout {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
                 }
             }
-            GenericAppContentAreaButtons.SaveState {}
-            GenericAppContentAreaButtons.Help {}
-            GenericAppContentAreaButtons.Bug {}
+            GenericAppContentAreaButtons.SaveState {
+            }
+            GenericAppContentAreaButtons.Help {
+                onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/documentation_use.html#3.2.1.-project")
+            }
+            GenericAppContentAreaButtons.Bug {
+                onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/contact.html")
+            }
         }
     }
 
