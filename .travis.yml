@@ -1,0 +1,90 @@
+language: python            # this works for Linux but is an error on macOS or Windows
+sudo: required
+matrix:
+  include:
+    - name: "Python 3.7.1 on Xenial Linux"
+      python: 3.7           # this works for Linux but is ignored on macOS or Windows
+      dist: xenial
+    - name: "Python 3.7.4 on macOS"
+      os: osx
+      osx_image: xcode11    # Python 3.7.4 running on macOS 10.14.4
+      language: shell       # 'language: python' is an error on Travis CI macOS
+    - name: "Python 3.7.4 on Windows"
+      os: windows           # Windows 10.0.17134 N/A Build 17134
+      language: shell       # 'language: python' is an error on Travis CI Windows
+      filter_secrets: false
+      before_install:
+        - choco install python
+        - choco install zip
+        - choco install curl
+        - pip3 install pypiwin32
+      env: 
+        - PATH=/c/Python37:/c/Python37/Scripts:$PATH
+
+env:
+  global:
+# This could be a key or similar. Note that on Windows it might be leaked, so be careful!
+    - secure: F7dAQoLJ1pTgO0WjqhyWYeJSWZo44z/cWjtoT+tOB2WDdcuKmtoCA0izzvSQt0HcTMzQypCHLNtI9tyC5owAqloACEmYijYHVUvP1qZftB7v8keTE6eWuCPJRfl4e5jghFcRX2QrV/RJuQf56WC6+v1xaasPqkNIOg5T0VgP4BFzioMVWKQJQqsvK4zcjLa4d7DUNNenBrKkxSNYx2wNWqCbQ5h/XrrzDsYBs6BA2nUlASZaQcR1ICrl8lz3TXyZSdfr11UNz+qF6b2ZOrsSuXIAhTOg7AslZm13VZZqYh57H1oLGvBtFjGFqxZ4hrUye4brewDSMYwU6L8tLOxTH/u48Py9Wjd3vfklnfNeYDm4zxnWCOmn4HX5KFGf6x9+dEcHPOwcOnKjWRvLXm6zekBt4GjRZRw9l+txVuM2lwBfyDupKDwCwn8QjEJDJEXw9QP1di0O7z0JWijUR7ELgreZDcYJo2kNEB6n75YRn23OSxkgRpGLfY9WRWNa9/Bng6hYUnJEenK8+UiNqKGnP7VeiVq60pmLJb6E+jf19AivhXdex2NT4tKfTd3XkAE1o2XY2FHCOpMwv54R7SJrmMDpBu5L4eeB2h+PyOA6LALaRYcVAcvYdz/J6tYPh+nPj8DHAnkgClyfXX+WnsWwB6Gw+Pm1kuKDdZ+NxdQ8WAA= 
+
+install:
+  - python -m pip install --upgrade pip
+  - pip3 install PySide2
+  - pip3 install scipy
+  - pip3 install numpy==1.16.4
+  - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+  - pip3 install -U pytest
+
+before_script:
+  - echo $SOMEVAR
+# Fix python packaging, becaues it sucks
+  - '[ "$TRAVIS_OS_NAME" != windows ] || cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/'
+  - '[ "$TRAVIS_OS_NAME" != osx ] || sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/'
+# Make the app
+  - '[ "$TRAVIS_OS_NAME" != windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App;." --icon App/imports/easyDiffraction/Resources/Icons/App.ico'
+  - '[ "$TRAVIS_OS_NAME" == windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/imports/easyDiffraction/Resources/Icons/App.icns'
+
+
+script:
+  -  echo "This is whre I run tests"
+  - pytest --version
+
+after_success:
+  - echo "This is where I do code coverage and zip/dmg"
+  - cd dist
+  - export TRAVIS_N=easyDifraction-git.$(git rev-parse --short HEAD)-$TRAVIS_OS_NAME.zip 
+  - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
+  - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_N easyDiffraction/'
+  - export tmpfile=$( mktemp -t transferXXX )
+  - curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile
+  - export URL=$(cat $tmpfile)
+  - echo $URL
+  - cp $TRAVIS_N ../
+
+before_deploy:
+  # Set up git user name and tag this commit
+  - git config --local user.name "Travis Builder"
+  - git config --local user.email "travis@travis.com"
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  - git tag $TRAVIS_TAG
+
+notifications:
+  slack:
+    rooms:
+      - secure: "t0nR618a2fr2EDpyfKWBBkcf5MJ549P732EGvN9gwXVYvl4z977KSSH6uPEw7/KmMec9BhMg882hJidoeh1XgvUQOiVan4jrlvn16z2INPWh/dloXOZN5YWz87tSLR1jn1tDaKSK7gaOF5HAosPbQ2/UriUaAG9d9GHJKJzCogNDAFwFge3K/b4KJr1kYpwS5Vd5K99peWnsrNYBz1M4+Xjc49cd5t5FKULtFduX0Zb25t3dQ25u9LfGQ5lyH65UNSqcu9DP4RZmX00KLYNnIOYtzuyWvehPhisoBozA+Fpuly2IaFPVswtHqO/h9kziyYBBcnEAvG0U+KHmkJy21vDHN5+yPoHlcuAr0Q95C7GEpUT/JVAeNggxWWF4WLYrcTbZXWGt69pBhuFUAZRnbzSV+wBF5ZAOK/5W9TvxYMM1uS9AqdLEmUQdtIGrj2VIDS1na0dielNMnOhBc0Xgap2as/Kb1aEkPuSA6kENDOGXrw1Vs0VjFK3iWOlyzHbfHdHWM1/WZOO2sZRNjdTgWS5x5UXJbozTcM5mzcAkZ21vVpVG5h7LQI3cMPpD45Hmtmnko6S+7FlaknesIeXXhZPwILxN12LtbBo7AkUqtdi/w4Do7CAA++hNJRQx2txa9Mfi6R9XhNccc9+3Mto6lw5hW9mDmb2b1TlrLksW5Ew="
+    on_success: always
+    on_failure: always
+#    template:
+#      - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} by %{author} %{result} in %{duration}"
+#      - "Message: %{message}"
+#      - "Binary can be downloaded from $URL"
+
+deploy:
+#This is where I deploy the results to github
+  provider: releases
+  api_key:
+    secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
+  skip_cleanup: true
+  draft: true
+  overwrite: true
+  file_glob: true
+  file: easyDifraction*.zip
