@@ -53,7 +53,7 @@ script:
 after_success:
   - echo "This is where I do code coverage and zip/dmg"
   - cd dist
-  - export TRAVIS_N=easyDiffraction-$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
+  - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
   - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
   - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_N easyDiffraction/'
   - export tmpfile=$( mktemp -t transferXXX )
@@ -70,7 +70,7 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "Travis Builder"
   - git config --local user.email "travis@travis-ci.org"
-  - export TRAVIS_TAG=$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
+  - export TRAVIS_TAG=v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
 
 notifications:
