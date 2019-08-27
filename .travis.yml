@@ -55,7 +55,7 @@ after_success:
   - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
   - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_N easyDiffraction/'
   - export tmpfile=$( mktemp -t transferXXX )
-  - curl --upload-file ./$TRAVIS_TAG https://transfer.sh/$TRAVIS_N > $tmpfile
+  - curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile
   - export URL=$(cat $tmpfile)
   - echo $URL
   - cp $TRAVIS_N ../
@@ -65,8 +65,8 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "Travis"
   - git config --local user.email "travis@travis.com"
-#  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-#  - git tag $TRAVIS_TAG
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  - git tag $TRAVIS_TAG
 
 notifications:
   slack:
