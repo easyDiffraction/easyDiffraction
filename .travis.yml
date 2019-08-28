@@ -24,10 +24,11 @@ matrix:
       env: 
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
 
-env:
-  global:
-# This could be a key or similar. Note that on Windows it might be leaked, so be careful!
-    - secure: F7dAQoLJ1pTgO0WjqhyWYeJSWZo44z/cWjtoT+tOB2WDdcuKmtoCA0izzvSQt0HcTMzQypCHLNtI9tyC5owAqloACEmYijYHVUvP1qZftB7v8keTE6eWuCPJRfl4e5jghFcRX2QrV/RJuQf56WC6+v1xaasPqkNIOg5T0VgP4BFzioMVWKQJQqsvK4zcjLa4d7DUNNenBrKkxSNYx2wNWqCbQ5h/XrrzDsYBs6BA2nUlASZaQcR1ICrl8lz3TXyZSdfr11UNz+qF6b2ZOrsSuXIAhTOg7AslZm13VZZqYh57H1oLGvBtFjGFqxZ4hrUye4brewDSMYwU6L8tLOxTH/u48Py9Wjd3vfklnfNeYDm4zxnWCOmn4HX5KFGf6x9+dEcHPOwcOnKjWRvLXm6zekBt4GjRZRw9l+txVuM2lwBfyDupKDwCwn8QjEJDJEXw9QP1di0O7z0JWijUR7ELgreZDcYJo2kNEB6n75YRn23OSxkgRpGLfY9WRWNa9/Bng6hYUnJEenK8+UiNqKGnP7VeiVq60pmLJb6E+jf19AivhXdex2NT4tKfTd3XkAE1o2XY2FHCOpMwv54R7SJrmMDpBu5L4eeB2h+PyOA6LALaRYcVAcvYdz/J6tYPh+nPj8DHAnkgClyfXX+WnsWwB6Gw+Pm1kuKDdZ+NxdQ8WAA= 
+## We can secure environmental vars
+#env:
+#  global:
+## This could be a key or similar. Note that on Windows it might be leaked, so be careful!
+#    - secure: F7dAQoLJ1pTgO0WjqhyWYeJSWZo44z/cWjtoT+tOB2WDdcuKmtoCA0izzvSQt0HcTMzQypCHLNtI9tyC5owAqloACEmYijYHVUvP1qZftB7v8keTE6eWuCPJRfl4e5jghFcRX2QrV/RJuQf56WC6+v1xaasPqkNIOg5T0VgP4BFzioMVWKQJQqsvK4zcjLa4d7DUNNenBrKkxSNYx2wNWqCbQ5h/XrrzDsYBs6BA2nUlASZaQcR1ICrl8lz3TXyZSdfr11UNz+qF6b2ZOrsSuXIAhTOg7AslZm13VZZqYh57H1oLGvBtFjGFqxZ4hrUye4brewDSMYwU6L8tLOxTH/u48Py9Wjd3vfklnfNeYDm4zxnWCOmn4HX5KFGf6x9+dEcHPOwcOnKjWRvLXm6zekBt4GjRZRw9l+txVuM2lwBfyDupKDwCwn8QjEJDJEXw9QP1di0O7z0JWijUR7ELgreZDcYJo2kNEB6n75YRn23OSxkgRpGLfY9WRWNa9/Bng6hYUnJEenK8+UiNqKGnP7VeiVq60pmLJb6E+jf19AivhXdex2NT4tKfTd3XkAE1o2XY2FHCOpMwv54R7SJrmMDpBu5L4eeB2h+PyOA6LALaRYcVAcvYdz/J6tYPh+nPj8DHAnkgClyfXX+WnsWwB6Gw+Pm1kuKDdZ+NxdQ8WAA= 
 
 install:
   - python -m pip install --upgrade pip
@@ -36,9 +37,9 @@ install:
   - pip3 install numpy==1.16.4
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
   - pip3 install -U pytest
+  - pip3 install pytest_mock
 
 before_script:
-  - echo $SOMEVAR
 # Fix python packaging, becaues it sucks
   - '[ "$TRAVIS_OS_NAME" != windows ] || cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/'
   - '[ "$TRAVIS_OS_NAME" != osx ] || sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/'
@@ -56,10 +57,10 @@ after_success:
   - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
   - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
   - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_N easyDiffraction/'
-  - export tmpfile=$( mktemp -t transferXXX )
-  - '[ "$TRAVIS_BRANCH" == "master" ] || curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile'
-  - export URL=$(cat $tmpfile)
-  - echo $URL
+#  - export tmpfile=$( mktemp -t transferXXX )
+#  - '[ "$TRAVIS_BRANCH" == master ] || curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile'
+#  - export URL=$(cat $tmpfile)
+#  - echo $URL
   - cp $TRAVIS_N ../
 
 cache:
@@ -71,8 +72,10 @@ before_deploy:
   - git config --local user.name "Travis Builder"
   - git config --local user.email "travis@travis-ci.org"
   - export TRAVIS_TAG=v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
+  - '[ "$TRAVIS_BRANCH" == master ] || export TRAVIS_TAG=$TRAVIS_BRANCH-$TRAVIS_TAG'                
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
-  - export CHANGELOG=$(git log --oneline $(git describe --tags --abbrev=0 @^)..@)
+  - '[ "$TRAVIS_BRANCH" != master ] || export CHANGELOG=$(git log --oneline $(git describe --tags --abbrev=0 @^)..@)'
+  - '[ "$TRAVIS_BRANCH" == master ] || export CHANGELOG="This is the current artifact of commit $(TRAVIS_COMMIT) on branch: $(TRAVIS_BRANCH)"'
 
 notifications:
   slack:
@@ -94,4 +97,4 @@ deploy:
   file_glob: true
   file: easyDiffraction-*.zip
   on:
-    branch: master
+    all_branches: true
