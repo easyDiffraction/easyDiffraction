@@ -74,8 +74,9 @@ before_deploy:
   - export TRAVIS_TAG=v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - '[ "$TRAVIS_BRANCH" == master ] || export TRAVIS_TAG=$TRAVIS_BRANCH-$TRAVIS_TAG'                
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
-  - '[ "$TRAVIS_BRANCH" != master ] || export CHANGELOG=$(git log --oneline $(git describe --tags --abbrev=0 @^)..@)'
-  - '[ "$TRAVIS_BRANCH" == master ] || export CHANGELOG="This is the current artifact of commit $(TRAVIS_COMMIT) on branch: $(TRAVIS_BRANCH)"'
+#  - '[ "$TRAVIS_BRANCH" != master ] || export CHANGELOG=$(git log --oneline $(git describe --tags --abbrev=0 @^)..@)'
+#  - '[ "$TRAVIS_BRANCH" != master ] || cd ../ && pip3 install gitchangelog pystache && echo "output_engine = mustache(\"markdown\")" > .gitchangelog.rc && gitchangelog ^$(git describe --abbrev=0 --tags) HEAD > CHANGELOG' # Have to wait unil travis moves to dpl v2
+  - export CHANGELOG="This is the current artifact of commit $(TRAVIS_COMMIT) on branch: $(TRAVIS_BRANCH)"
 
 notifications:
   slack:
