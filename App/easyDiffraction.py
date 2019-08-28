@@ -16,12 +16,18 @@ class MainWindow():
         self.setupEngine(proxy=proxy)
 
     def setupApp(self):
+        """
+        Inital setup of the main application window
+        """
         self.app = QApplication(sys.argv)
         self.app.setOrganizationName("ESS")
         self.app.setOrganizationDomain("esss.se")
         self.app.setApplicationName("easyDiffraction")
 
     def setupEngine(self, proxy=None):
+        """
+        Initial setup of the QmlApplication Engine
+        """
         self.engine = QQmlApplicationEngine()
         self.engine.rootContext().setContextProperty("proxy", proxy)
 

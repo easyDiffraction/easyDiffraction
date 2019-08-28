@@ -2,6 +2,11 @@
 #
 #  pytest runner for the easyDiffraction program
 #
+#  tests can be run by either typing
+#  > pytest Tests
+#  or running the wrapper script
+#  > python runTests.py
+#
 ###########################################################
 import sys
 import os
@@ -16,9 +21,13 @@ from App.easyDiffraction import MainWindow
 
 def test_mainWindow(monkeypatch):
 
-    current_location = os.path.abspath(os.path.dirname(sys.argv[1])) # pytest
-    script_location = [os.path.join(current_location, '..', '..', 'App', 'easyDiffraction'), os.path.join(current_location, '..', '..', 'App')]
-    #assert script_location == 'test'
+    if len(sys.argv) > 1: # when run directly with pytest
+        current_location = os.path.abspath(os.path.dirname(sys.argv[1]))
+    else: # when run through the runTests.py wrapper
+        current_location = os.path.abspath(os.path.dirname(sys.argv[0])) # pytest
+    
+    script_location = [os.path.join(current_location, 'App', 'easyDiffraction'), os.path.join(current_location, 'App')]
+    # Make the main script think it's been run from the command line by overwriting its sys.argv[]
     monkeypatch.setattr(sys, 'argv', script_location)
 
     widget = MainWindow()
