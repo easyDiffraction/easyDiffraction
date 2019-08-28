@@ -73,7 +73,6 @@ def test_from_dict_to_obj_spg_bad3():
     with pytest.raises(AttributeError):
         from_dict_to_obj(dict_i, api_rcif_crystal.data_space_groupe_relation(), space_groupe)
     
-@pytest.mark.skipif(True, reason="bugged impl. can't multiply sequence by non-int of type 'float'")
 def test_from_dict_to_obj_cell():
     """
     Test from_dict_to_obj for cell object
@@ -87,12 +86,12 @@ def test_from_dict_to_obj_cell():
     from_dict_to_obj(dict_i, api_rcif_crystal.data_cell_relation(), cell)
 
     # check the assignment on space_group
-    assert cell.get_val("a") == "P1"
-    assert cell.get_val("b") == "P1"
-    assert cell.get_val("c") == "P1"
+    assert cell.get_val("a") == 8.7
+    assert cell.get_val("b") == 8.5621
+    assert cell.get_val("c") == 8.5621
     assert cell.get_val("singony") == "Triclinic"
-    assert cell.get_val("alpha") == "P1"
-    assert cell.get_val("gamma") == 1
+    assert cell.get_val("alpha") == 90.0
+    assert cell.get_val("gamma") == 90.0
 
 def test_from_dict_to_obj_atom_type():
     """
