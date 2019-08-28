@@ -76,7 +76,7 @@ before_deploy:
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
 #  - '[ "$TRAVIS_BRANCH" != master ] || export CHANGELOG=$(git log --oneline $(git describe --tags --abbrev=0 @^)..@)'
 #  - '[ "$TRAVIS_BRANCH" != master ] || cd ../ && pip3 install gitchangelog pystache && echo "output_engine = mustache(\"markdown\")" > .gitchangelog.rc && gitchangelog ^$(git describe --abbrev=0 --tags) HEAD > CHANGELOG' # Have to wait unil travis moves to dpl v2
-  - export CHANGELOG="This is the current artifact of commit $TRAVIS_COMMIT on branch: $TRAVIS_BRANCH"
+#  - export CHANGELOG="This is the current artifact of commit $TRAVIS_COMMIT on branch $TRAVIS_BRANCH"
 
 notifications:
   slack:
@@ -89,7 +89,7 @@ deploy:
 #This is where I deploy the results to github
   provider: releases
   name: $RELEASE_TITLE
-  body: "${CHANGELOG}"
+#  body: "${CHANGELOG}"
   api_key:
     secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
   skip_cleanup: true
