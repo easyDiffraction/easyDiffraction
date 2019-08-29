@@ -16,25 +16,14 @@ import f_common.cl_variable
 from f_crystal.cl_crystal import SpaceGroupe, Cell, AtomType
 from App.f_api_rcif import api_rcif_crystal
 
+# utilities
+from Tests.pytest.Utilities import TEST_DATA0
+
 # tested module
 from App.f_api_rcif.api_rcif_common import *
 
 #space_groupe = SpaceGroupe()
 cell = Cell()
-
-f_name = r"full.rcif"
-rcif = f_rcif.cl_rcif.RCif()
-if len(sys.argv) > 1: # when run directly with pytest
-        current_location = os.path.abspath(os.path.dirname(sys.argv[1]))
-else: # when run through the runTests.py wrapper
-        current_location = os.path.abspath(os.path.dirname(sys.argv[0]))
-
-current_location = os.path.join(current_location, "Tests", "Data", f_name)
-rcif.load_from_file(current_location)
-
-p_glob = rcif.glob
-l_data = p_glob["data"]
-dict_i = l_data[0]
 
 def test_from_dict_to_obj_spg():
     """
@@ -45,7 +34,7 @@ def test_from_dict_to_obj_spg():
     assert space_groupe.get_val("singony") == "Triclinic"
     assert space_groupe.get_val("spgr_name") == "P1"
     assert space_groupe.get_val("spgr_number") == 1
-    from_dict_to_obj(dict_i, api_rcif_crystal.data_space_groupe_relation(), space_groupe)
+    from_dict_to_obj(TEST_DATA0, api_rcif_crystal.data_space_groupe_relation(), space_groupe)
     # check the assignment on space_group
     assert space_groupe.get_val("spgr_given_name") == "Fd-3m"
     assert space_groupe.get_val("singony") == "Cubic"
@@ -68,14 +57,14 @@ def test_from_dict_to_obj_spg_bad2():
     space_groupe = SpaceGroupe()
     # call fails with TypeError
     with pytest.raises(TypeError):
-        from_dict_to_obj(dict_i, api_rcif_crystal.data_cell_relation(), space_groupe)
+        from_dict_to_obj(TEST_DATA0, api_rcif_crystal.data_cell_relation(), space_groupe)
 
 def test_from_dict_to_obj_spg_bad3():
     # bad target object
     space_groupe = None
     # call fails with AttributeError due to not being able to call a method on None
     with pytest.raises(AttributeError):
-        from_dict_to_obj(dict_i, api_rcif_crystal.data_space_groupe_relation(), space_groupe)
+        from_dict_to_obj(TEST_DATA0, api_rcif_crystal.data_space_groupe_relation(), space_groupe)
     
 def test_from_dict_to_obj_cell():
     """
@@ -87,7 +76,7 @@ def test_from_dict_to_obj_cell():
     assert cell.get_val("singony") == "Triclinic"
     assert cell.get_val("alpha") == 90.0
     assert cell.get_val("gamma") == 90.0
-    from_dict_to_obj(dict_i, api_rcif_crystal.data_cell_relation(), cell)
+    from_dict_to_obj(TEST_DATA0, api_rcif_crystal.data_cell_relation(), cell)
 
     # check the assignment on space_group
     assert cell.get_val("a") == 8.7
@@ -102,8 +91,8 @@ def test_from_dict_to_obj_atom_type():
     Test from_dict_to_obj for atom_type object
     """
     # hardcoded "_atom_site_fract" element [0]
-    l_key = list(dict_i["loops"][0].keys())
-    n_atom = len(dict_i["loops"][0][l_key[0]])
+    l_key = list(TEST_DATA0["loops"][0].keys())
+    n_atom = len(TEST_DATA0["loops"][0][l_key[0]])
     
     atom_type = AtomType()
     assert atom_type.get_val("x") == 0.0
@@ -114,7 +103,7 @@ def test_from_dict_to_obj_atom_type():
 
     dd = {}
     for key in l_key:
-        dd.update({key:dict_i["loops"][0][key][0]})
+        dd.update({key:TEST_DATA0["loops"][0][key][0]})
     # test atom 0 only
     from_dict_to_obj(dd, api_rcif_crystal.data_atom_relation(), atom_type)
 

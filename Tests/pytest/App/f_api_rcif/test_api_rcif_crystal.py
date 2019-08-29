@@ -1,6 +1,6 @@
 ##########################################################
 #
-#  pytest runner for api_rcif_common methods
+#  pytest runner for api_rcif_crystal methods
 #
 ###########################################################
 import sys
@@ -16,23 +16,14 @@ import f_common.cl_variable
 from App.f_crystal.cl_crystal import Crystal
 from f_crystal.cl_crystal import SpaceGroupe, Cell, AtomType
 
+# utilities
+from Tests.pytest.Utilities import TEST_DATA0
+
 # tested module
 from App.f_api_rcif.api_rcif_crystal import *
 
 #space_groupe = SpaceGroupe()
 cell = Cell()
-
-f_name = r"full.rcif"
-rcif = f_rcif.cl_rcif.RCif()
-if len(sys.argv) > 1: # when run directly with pytest
-        current_location = os.path.abspath(os.path.dirname(sys.argv[1]))
-else: # when run through the runTests.py wrapper
-        current_location = os.path.abspath(os.path.dirname(sys.argv[0]))
-current_location = os.path.join(current_location, "Tests", "Data", f_name)
-rcif.load_from_file(current_location)
-p_glob = rcif.glob
-l_data = p_glob["data"]
-f_dir = rcif._p_file_dir
 
 def relation_tester(relation, size):
     """
@@ -47,7 +38,7 @@ def test_conv_data_to_crystal():
     """
     Test conversion from rcif to crystal
     """
-    result = conv_data_to_crystal([l_data[0]])
+    result = conv_data_to_crystal([TEST_DATA0])
 
     assert len(result) == 1
     assert isinstance(result, list)
@@ -83,7 +74,7 @@ def test_conv_crystal_to_data():
     Test conversion from crystal to rcif
     """
     # first, convert rcif to crystal, then reconvert back
-    data = l_data[0]
+    data = TEST_DATA0
     crystal = conv_data_to_crystal([data])
 
     new_data = conv_crystal_to_data(crystal)[0]
