@@ -56,7 +56,8 @@ after_success:
   - cd dist
   - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
   - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
-  - '[ "$TRAVIS_OS_NAME" == osx ] || zip -r $TRAVIS_N easyDiffraction/'
+  - '[ "$TRAVIS_OS_NAME" != linux ] || zip -r $TRAVIS_N easyDiffraction/'
+  - '[ "$TRAVIS_OS_NAME" != windows ] || zip -r $TRAVIS_N easyDiffraction.exe'
 #  - export tmpfile=$( mktemp -t transferXXX )
 #  - '[ "$TRAVIS_BRANCH" == master ] || curl --upload-file ./$TRAVIS_N https://transfer.sh/$TRAVIS_N > $tmpfile'
 #  - export URL=$(cat $tmpfile)
