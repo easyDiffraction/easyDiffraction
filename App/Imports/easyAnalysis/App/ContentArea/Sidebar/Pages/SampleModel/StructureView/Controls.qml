@@ -224,7 +224,7 @@ ColumnLayout {
                 Controls1.TableViewColumn { role:"x";       title:"x" }
                 Controls1.TableViewColumn { role:"y";       title:"y" }
                 Controls1.TableViewColumn { role:"z";       title:"z" }
-                Controls1.TableViewColumn { role:"occ";     title:"Occ" }
+                Controls1.TableViewColumn { role:"occ";     title:"Occupancy" }
                 Controls1.TableViewColumn { role:"remove";  title:"Remove"; resizable: false }
             }
 
