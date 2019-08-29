@@ -15,26 +15,12 @@ ColumnLayout {
     // Groupbox
     ///////////
     GenericAppElements.GroupBox {
-        title: "Export elements"
-        content: GenericAppElements.GridLayout {
-            enabled: false
-            columns: 2
-            GenericAppElements.CheckBox { checked:true;  text:qsTr("Parameters table") }
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Reliability factors") }
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Constraints table") }
-            GenericAppElements.CheckBox { checked:true;  text:qsTr("Fitting figure") }
-        }
-    }
-
-    ///////////
-    // Groupbox
-    ///////////
-    GenericAppElements.GroupBox {
         title: "Export as..."
+        collapsible: false
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.RowLayout {
                 GenericAppContentAreaButtons.Export { id: exportButton; implicitWidth: 60; text: "Export" }
-                TextField { Layout.fillWidth: true; implicitHeight: 32; placeholderText: "Logbook File Name"; horizontalAlignment: Text.AlignRight}
+                TextField { Layout.fillWidth: true; implicitHeight: 32; placeholderText: "Report File Name"; horizontalAlignment: Text.AlignRight}
                 GenericAppElements.ComboBox { implicitWidth: 60; model: [".PDF", ".HTML"] }
 
                 GenericAppElements.GuideWindow {
@@ -50,6 +36,23 @@ ColumnLayout {
                     }
                 }
             }
+        }
+    }
+
+    ///////////
+    // Groupbox
+    ///////////
+    GenericAppElements.GroupBox {
+        title: "Export elements"
+        content: GenericAppElements.GridLayout {
+            enabled: false
+            columns: 3
+            GenericAppElements.CheckBox { checked:true;  text:qsTr("Project info") }
+            GenericAppElements.CheckBox { checked:true;  text:qsTr("Parameters table") }
+            GenericAppElements.CheckBox { checked:true;  text:qsTr("Fitting figure") }
+            GenericAppElements.CheckBox { checked:true;  text:qsTr("Structure plot") }
+            GenericAppElements.CheckBox { checked:false; text:qsTr("Reliability factors") }
+            GenericAppElements.CheckBox { checked:false; text:qsTr("Constraints table") }
         }
     }
 

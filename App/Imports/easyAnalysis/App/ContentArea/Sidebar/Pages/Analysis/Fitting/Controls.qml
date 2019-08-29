@@ -75,6 +75,7 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         title: "Parameters"
         id: dataExplorerTable
+        collapsible: false
         content: GenericAppElements.ColumnLayout {
             // Table
             GenericAppElements.ParametersTable {
