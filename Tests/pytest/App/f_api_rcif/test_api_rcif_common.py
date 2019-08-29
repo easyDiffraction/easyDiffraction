@@ -24,7 +24,11 @@ cell = Cell()
 
 f_name = r"full.rcif"
 rcif = f_rcif.cl_rcif.RCif()
-current_location = os.path.abspath(os.path.dirname(sys.argv[1]))
+if len(sys.argv) > 1: # when run directly with pytest
+        current_location = os.path.abspath(os.path.dirname(sys.argv[1]))
+else: # when run through the runTests.py wrapper
+        current_location = os.path.abspath(os.path.dirname(sys.argv[0]))
+
 current_location = os.path.join(current_location, "Tests", "Data", f_name)
 rcif.load_from_file(current_location)
 

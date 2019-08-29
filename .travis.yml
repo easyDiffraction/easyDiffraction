@@ -50,6 +50,7 @@ before_script:
 script:
   -  echo "This is whre I run tests"
   - pytest --version
+  - python runTests.py
 
 after_success:
   - echo "This is where I do code coverage and zip/dmg"

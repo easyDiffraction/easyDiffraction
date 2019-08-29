@@ -24,7 +24,10 @@ cell = Cell()
 
 f_name = r"full.rcif"
 rcif = f_rcif.cl_rcif.RCif()
-current_location = os.path.abspath(os.path.dirname(sys.argv[1]))
+if len(sys.argv) > 1: # when run directly with pytest
+        current_location = os.path.abspath(os.path.dirname(sys.argv[1]))
+else: # when run through the runTests.py wrapper
+        current_location = os.path.abspath(os.path.dirname(sys.argv[0]))
 current_location = os.path.join(current_location, "Tests", "Data", f_name)
 rcif.load_from_file(current_location)
 p_glob = rcif.glob
@@ -86,9 +89,8 @@ def test_conv_crystal_to_data():
     new_data = conv_crystal_to_data(crystal)[0]
 
     # this is no longer the same object so the following won't work
-    #assert new_data == data
+    #     assert new_data == data
     # instead, we need to compare appropriate fields
-    #assert new_data == {}
 
     # Need to cast to float, since the string repr is different ('8.7' vs. '8.7000')
     assert float(new_data["_cell_length_a"]) == float(data['_cell_length_a'])
