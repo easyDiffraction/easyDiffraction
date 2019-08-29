@@ -49,7 +49,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Symmetry and unit cell parameters"
-        collapsed: true
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 3
@@ -85,7 +84,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Atoms, atomic coordinates and occupations"
-        collapsed: true
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.ParametersTable {
                 model: ListModel {
@@ -114,7 +112,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Atomic displacement parameters (\u200A\u00D7\u200A10\u2075\u200A)"
-        collapsed: true
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.ParametersTable {
                 model: ListModel {
@@ -144,7 +141,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Magnetic structure"
-        collapsed: true
         content: GenericAppElements.ColumnLayout {
             Text { text: "To be added" }
         }

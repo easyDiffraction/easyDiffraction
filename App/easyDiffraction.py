@@ -11,8 +11,8 @@ if __name__ == '__main__':
     QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
     app = QApplication(sys.argv)
-    app.setOrganizationName("ESS")
-    app.setOrganizationDomain("esss.se")
+    app.setOrganizationName("easyDiffraction")
+    app.setOrganizationDomain("easyDiffraction.org")
     app.setApplicationName("easyDiffraction")
 
     proxy = RhoChiQml.Proxy()

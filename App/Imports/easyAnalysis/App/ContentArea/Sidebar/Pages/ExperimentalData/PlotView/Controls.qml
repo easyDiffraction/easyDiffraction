@@ -116,7 +116,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Instrument"//"Diffractometer"
-        collapsed: false
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 //enabled: false
@@ -150,7 +149,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Peak profile"
-        collapsed: true
         content: GenericAppElements.ColumnLayout {
             spacing: 12
             //enabled: false
@@ -192,7 +190,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Misc"//"Instrument parameters"
-        collapsed: true
         content: GridLayout {
             columns: 5
             columnSpacing: 15

@@ -127,7 +127,7 @@ Column {
     Settings { id: settings }
     Component.onCompleted: {
         if (collapsible && title) {
-            collapsed = settings.value(title, false)
+            collapsed = settings.value(title, true)
         }
     }
     Component.onDestruction: {

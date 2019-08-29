@@ -75,7 +75,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Recent Projects"
-        collapsed: true
         enabled: false
         content: GenericAppElements.ColumnLayout {
             spacing: 0
@@ -105,7 +104,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Examples"
-        collapsed: true
         enabled: false
         content: GenericAppElements.ColumnLayout {
             spacing: 0
@@ -131,7 +129,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Program Preferences"
-        collapsed: false
         content: GenericAppElements.ColumnLayout {
 
             GenericAppElements.CheckBox {

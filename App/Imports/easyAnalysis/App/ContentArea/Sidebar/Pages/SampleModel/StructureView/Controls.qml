@@ -164,7 +164,6 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         id: group1
         title: "Symmetry and cell parameters"
-        collapsed: true
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 3
@@ -209,7 +208,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Atoms, atomic coordinates and occupations"
-        collapsed: false
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.ParametersTable {
                 enabled: false
@@ -244,7 +242,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Atomic displacement parameters (\u200A\u00D7\u200A10\u2075\u200A)"
-        collapsed: true
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.ParametersTable {
                 enabled: false
@@ -273,7 +270,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Magnetic susceptibility parameters"
-        collapsed: true
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.ParametersTable {
                 enabled: false

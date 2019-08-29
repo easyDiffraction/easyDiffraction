@@ -54,7 +54,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Metadata"
-        collapsed: true
         content: GenericAppElements.ColumnLayout {
             Text { text: "To be added" }
         }

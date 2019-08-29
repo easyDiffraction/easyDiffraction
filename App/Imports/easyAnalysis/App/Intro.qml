@@ -48,6 +48,11 @@ Dialog {
                 width: 0
                 height: 0
             }
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
+            }
         }
 
         // Initial sentence to be transformed to application name
@@ -60,6 +65,11 @@ Dialog {
             Text { id: diffraction; text: "diffraction";                    opacity: 0; x: making.width; font.family: Generic.Style.introCondencedRegularFontFamily; font.pointSize: appNameFontSize; color: "#666" }
             Text { id: dam;         text: " data analysis and modelling ";  opacity: 0; x: making.width + diffraction.width; font.family: Generic.Style.introCondencedThinFontFamily; font.pointSize: appNameFontSize; color: "#444" }
             Text { id: easy;        text: "easy";                           opacity: 0; x: making.width + diffraction.width + dam.width; font.family: Generic.Style.introCondencedRegularFontFamily; font.pointSize: appNameFontSize; color: "#666" }
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
+            }
         }
 
         // Application version
@@ -70,7 +80,11 @@ Dialog {
             font.family: Generic.Style.introExpandedThinFontFamily
             font.pointSize: appVersionFontSize
             text: "Version %1 (%2)".arg(Specific.Settings.appVersion).arg(Specific.Settings.appDate)
-
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
+            }
         }
 
         // Spacer

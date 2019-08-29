@@ -21,8 +21,8 @@ ApplicationWindow {
 
     minimumWidth: Generic.Variables.appMinWindowWidth
     minimumHeight: Generic.Variables.appMinWindowHeight
-    x: Generic.Variables.appWindowX
-    y: Generic.Variables.appWindowY
+    ///x: Generic.Variables.appWindowX
+    ///y: Generic.Variables.appWindowY
 
     font.family: Generic.Style.fontFamily
     font.pointSize: Generic.Style.fontPointSize
@@ -73,6 +73,10 @@ ApplicationWindow {
         Generic.Variables.appWindowHeight = settings.value("appWindowHeight", Generic.Variables.appWindowHeight)
         Generic.Variables.appWindowX = settings.value("appWindowX", (Screen.width - Generic.Variables.appWindowWidth) / 2)
         Generic.Variables.appWindowY = settings.value("appWindowY", (Screen.height - Generic.Variables.appWindowHeight) / 2)
+        window.width = Generic.Variables.appWindowWidth
+        window.height = Generic.Variables.appWindowHeight
+        window.x = Generic.Variables.appWindowX
+        window.y = Generic.Variables.appWindowY
     }
 
     Component.onDestruction: {

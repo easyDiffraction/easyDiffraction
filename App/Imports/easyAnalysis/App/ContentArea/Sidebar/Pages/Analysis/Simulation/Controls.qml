@@ -40,7 +40,6 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Parameters"
-        collapsed: false
         content: GenericAppElements.ColumnLayout {
             // Table
             GenericAppElements.ParametersTable {
