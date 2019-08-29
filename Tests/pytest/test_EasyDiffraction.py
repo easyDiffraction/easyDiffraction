@@ -11,7 +11,7 @@
 import sys
 import os
 import pytest
-from pytest_mock import mock
+from pytest_mock import mocker
 from _pytest import monkeypatch
 
 from PySide2.QtWidgets import QApplication
@@ -19,7 +19,7 @@ from PySide2.QtQml import QQmlApplicationEngine
 
 from App.easyDiffraction import MainWindow
 
-def test_mainWindow(monkeypatch):
+def test_mainWindow(monkeypatch, mocker):
 
     if len(sys.argv) > 1: # when run directly with pytest
         current_location = os.path.abspath(os.path.dirname(sys.argv[1]))
@@ -29,6 +29,8 @@ def test_mainWindow(monkeypatch):
     script_location = [os.path.join(current_location, 'App', 'easyDiffraction'), os.path.join(current_location, 'App')]
     # Make the main script think it's been run from the command line by overwriting its sys.argv[]
     monkeypatch.setattr(sys, 'argv', script_location)
+
+    mocker.patch.object(QQmlApplicationEngine, 'load')
 
     widget = MainWindow()
 
@@ -41,7 +43,7 @@ def test_mainWindow(monkeypatch):
     assert any('Imports' in s for s in widget.engine.importPathList())
 
     # test engine
-    assert len(widget.engine.rootObjects()) == 1
+    QQmlApplicationEngine.load.assert_called_once()
 
     proxy = [1,2]
     widget.setupEngine(proxy=proxy)
