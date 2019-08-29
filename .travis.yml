@@ -50,7 +50,9 @@ before_script:
 script:
   -  echo "This is whre I run tests"
   - pytest --version
-  - python runTests.py
+  #- python runTests.py
+  - '[ "$TRAVIS_OS_NAME" == osx ] || python runTests.py'
+  - '[ "$TRAVIS_OS_NAME" != osx ] || export PYTHONPATH=.:App:$PYTHONPATH; pytest Tests'
 
 after_success:
   - echo "This is where I do code coverage and zip/dmg"
