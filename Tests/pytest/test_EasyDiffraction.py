@@ -19,6 +19,7 @@ from PySide2.QtQml import QQmlApplicationEngine
 
 from App.easyDiffraction import MainWindow
 
+@pytest.mark.win32
 def test_mainWindow(monkeypatch, mocker):
 
     if len(sys.argv) > 1: # when run directly with pytest
