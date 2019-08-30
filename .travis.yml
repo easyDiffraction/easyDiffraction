@@ -60,7 +60,7 @@ script:
   - |
     if [ "$TRAVIS_OS_NAME" == osx ]; then
       export PYTHONPATH=.:App:$PYTHONPATH;
-      pytest Tests;
+      pytest --cov=App Tests;
     fi
 
   - |
