@@ -4,7 +4,7 @@ transform inforamtion from cif file to class phase
 import sys
 import os
 
-import cl_rcif 
+import App.f_rcif.cl_rcif
 
 import f_api_rcif.api_rcif_common
 
