@@ -49,7 +49,7 @@ before_script:
 # Compile qrc (qt resource file) into python file
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then cd App/ && pyside2-rcc QmlResource.qrc -o QmlResource.py -no-compress; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then ls; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then cd App/ && pyside2-rcc QmlResource.qrc -o QmlResource.py -no-compress; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then cd App/ && pyside2-rcc QmlResource.qrc -o QmlResource.py -no-compress; cd ..; fi
 # Make the app
   - '[ "$TRAVIS_OS_NAME" != windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onefile --log-level WARN --add-data "App;." --icon App/imports/easyDiffraction/Resources/Icons/App.ico'
   - '[ "$TRAVIS_OS_NAME" == windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/imports/easyDiffraction/Resources/Icons/App.icns'
