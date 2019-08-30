@@ -44,15 +44,16 @@ install:
 
 before_script:
 # Fix python packaging, becaues it sucks
-  - '[ "$TRAVIS_OS_NAME" != windows ] || cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/'
-  - '[ "$TRAVIS_OS_NAME" != osx ] || sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/'
+  - if [ "$TRAVIS_OS_NAME" == windows ]; then cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/; fi
+  - if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/; fi
 # Compile qrc (qt resource file) into python file
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then cd App/ && pyside2-rcc QmlResource.qrc -o QmlResource.py -no-compress; cd ..; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then ls; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then cd App/ && pyside2-rcc QmlResource.qrc -o QmlResource.py -no-compress; cd ..; fi
+  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
 # Make the app
-  - '[ "$TRAVIS_OS_NAME" != windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onefile --log-level WARN --add-data "App;." --icon App/imports/easyDiffraction/Resources/Icons/App.ico'
-  - '[ "$TRAVIS_OS_NAME" == windows ] || pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/imports/easyDiffraction/Resources/Icons/App.icns'
+  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onefile --log-level WARN --add-data "App;." --icon App/imports/easyDiffraction/Resources/Icons/App.ico; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/imports/easyDiffraction/Resources/Icons/App.icns; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onefile --log-level WARN --add-data "App:."; fi
 
 script:
   - pytest --version
@@ -72,9 +73,9 @@ after_success:
   - coveralls
   - cd dist
   - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
-  - '[ "$TRAVIS_OS_NAME" != osx ] || zip -r $TRAVIS_N easyDiffraction.app'
-  - '[ "$TRAVIS_OS_NAME" != linux ] || zip -r $TRAVIS_N easyDiffraction/'
-  - '[ "$TRAVIS_OS_NAME" != windows ] || zip -r $TRAVIS_N easyDiffraction.exe'
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffraction.app; fi
+  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffraction.exe; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
   - cp $TRAVIS_N ../
 
 #cache:
