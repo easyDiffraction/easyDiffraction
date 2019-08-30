@@ -37,7 +37,7 @@ install:
   - pip3 install scipy
   - pip3 install numpy==1.16.4
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
-  - pip3 install -U pytest
+  - pip3 install pytest
   - pip3 install pytest_mock
   - pip3 install pytest-cov
   - pip3 install coveralls
@@ -57,7 +57,16 @@ before_script:
 script:
   - pytest --version
   # Use coveralls with....
-  #-  pytest --cov=App Tests
+  - |
+    if [ "$TRAVIS_OS_NAME" == osx ]; then
+      export PYTHONPATH=.:App:$PYTHONPATH;
+      pytest Tests;
+    fi
+
+  - |
+    if [ "$TRAVIS_OS_NAME" != osx ]; then
+      python runTests.py;
+    fi
 
 after_success:
   - echo "This is where I do code coverage and zip/dmg"

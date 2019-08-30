@@ -4,8 +4,7 @@ transform inforamtion from cif file to class phase
 import sys
 import os
 
-
-
+import f_common.cl_variable
 
 
 def from_dict_to_obj(dict_i, l_relation, obj):
