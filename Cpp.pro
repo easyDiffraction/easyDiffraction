@@ -1,0 +1,1 @@
+RESOURCES += App/QmlResource.qrc
