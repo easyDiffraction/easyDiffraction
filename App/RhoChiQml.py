@@ -2,7 +2,7 @@ import os
 import sys
 import numpy
 
-from PySide2.QtCore import QObject, Signal, Slot, Property
+from PySide2.QtCore import QObject, Signal, Slot, Property, QUrl
 
 import f_rcif.cl_rcif as rhochi_rcif
 import f_api_rcif.api_rcif_model as rhochi_model
@@ -495,7 +495,7 @@ class Proxy(QObject):
     @Slot(result=str)
     def get_project_dir_absolute_path(self):
         #print("111", str(self.rcif_file_absolute_path), str(os.path.dirname(self.rcif_file_absolute_path)))
-        return os.path.dirname(self.rcif_file_absolute_path)
+        return str(QUrl.fromLocalFile(os.path.dirname(self.rcif_file_absolute_path)).toString())
 
     @Slot(result=str)
     def rcif_as_string(self):
@@ -504,6 +504,7 @@ class Proxy(QObject):
     @Slot(str)
     def load_rhochi_model_and_update_proxy(self, path):
         print("load_rhochi_model_and_update_proxy")
+        path = QUrl(path).toLocalFile()
         self.rcif_file_absolute_path = path
         self.rcif = rhochi_rcif.RCif()
         self.rcif.load_from_file(self.rcif_file_absolute_path)

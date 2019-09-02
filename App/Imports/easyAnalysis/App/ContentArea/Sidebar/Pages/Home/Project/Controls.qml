@@ -40,8 +40,7 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation))
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    //print("-----------fileUrl------------", fileUrl.toString().replace("file://",""))
-                    proxy.load_rhochi_model_and_update_proxy(fileUrl.toString().replace("file://",""))
+                    proxy.load_rhochi_model_and_update_proxy(fileUrl.toString())
                     Generic.Variables.modelLoaded = true
                     Generic.Variables.homePageFinished = false
                     Generic.Variables.dataPageFinished = false
