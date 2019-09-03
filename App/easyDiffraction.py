@@ -23,7 +23,7 @@ if __name__ == '__main__':
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("proxy", proxy)
 
-    self.engine.addImportPath(":/Imports")
-    self.engine.load(":/Gui.qml")
+    engine.addImportPath(":/Imports")
+    engine.load(":/Gui.qml")
     if engine.rootObjects():
         sys.exit(app.exec_())
