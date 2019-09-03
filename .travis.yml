@@ -57,20 +57,11 @@ before_script:
 
 script:
   - pytest --version
-  # Use coveralls with....
-  - |
-    if [ "$TRAVIS_OS_NAME" == osx ]; then
-      export PYTHONPATH=.:App:$PYTHONPATH;
-      pytest --cov=App Tests;
-    fi
-
-  - |
-    if [ "$TRAVIS_OS_NAME" != osx ]; then
-      python runTests.py;
-    fi
+  - if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:$PYTHONPATH; pytest --cov=App Tests; fi
+  - if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
 
 after_success:
-  - coveralls
+  #- coveralls
   - cd dist
   - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffraction.app; fi
