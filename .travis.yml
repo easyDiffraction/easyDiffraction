@@ -51,7 +51,7 @@ before_script:
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
 # Make the app
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onefile --log-level WARN --add-data "App;." --icon App/imports/easyDiffraction/Resources/Icons/App.ico; fi
+  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --log-level WARN --add-data "App;." --icon App/imports/easyDiffraction/Resources/Icons/App.ico; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/imports/easyDiffraction/Resources/Icons/App.icns; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onefile --log-level WARN --add-data "App:."; fi
 
