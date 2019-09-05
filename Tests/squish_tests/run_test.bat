@@ -1,9 +1,9 @@
 set SQUISHPATH=c:\util\Squish651_Qt513_vs2017
 set SQUISH_SERVER_HOST=127.0.0.1
 set SQUISH_SERVER_PORT=4322
-set TESTSUITE=C:\temp\suite_easyDiff
-set REPORTPATH=c:\temp\report
-set PYTHONPATH=C:\Anaconda\env\p27
+set TESTSUITE=%~dp0\suite_easyDiff
+set REPORTPATH=%~dp0\report
+set PYTHONPATH=C:\Anaconda\envs\p27
 
 cd %SQUISHPATH%\bin
 
