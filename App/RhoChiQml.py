@@ -181,16 +181,17 @@ class Proxy(QObject):
         self._tmp_phase_comment = 'Comment goes here'
 
         # 0
-        self._tmp_tth_list = self.model._list_experiment[0].get_val('observed_data').get_val('tth')
-        self._tmp_int_u_list = self.model._list_experiment[0].get_val('observed_data').get_val('int_u')
-        self._tmp_sint_u_list = self.model._list_experiment[0].get_val('observed_data').get_val('sint_u')
-        self._tmp_int_d_list = self.model._list_experiment[0].get_val('observed_data').get_val('int_d')
-        self._tmp_sint_d_list = self.model._list_experiment[0].get_val('observed_data').get_val('sint_d')
-        self._tmp_int_u_mod_list, self._tmp_int_d_mod_list, d_info = self.model._list_experiment[0].calc_profile(self._tmp_tth_list, self.model._list_crystal)
-        self._tmp_pos_hkl_list = d_info['crystal'][0]['tth_hkl']
-        self._tmp_h_list = d_info['crystal'][0]['h']
-        self._tmp_k_list = d_info['crystal'][0]['k']
-        self._tmp_l_list = d_info['crystal'][0]['l']
+        if self.model._list_experiment:
+            self._tmp_tth_list = self.model._list_experiment[0].get_val('observed_data').get_val('tth')
+            self._tmp_int_u_list = self.model._list_experiment[0].get_val('observed_data').get_val('int_u')
+            self._tmp_sint_u_list = self.model._list_experiment[0].get_val('observed_data').get_val('sint_u')
+            self._tmp_int_d_list = self.model._list_experiment[0].get_val('observed_data').get_val('int_d')
+            self._tmp_sint_d_list = self.model._list_experiment[0].get_val('observed_data').get_val('sint_d')
+            self._tmp_int_u_mod_list, self._tmp_int_d_mod_list, d_info = self.model._list_experiment[0].calc_profile(self._tmp_tth_list, self.model._list_crystal)
+            self._tmp_pos_hkl_list = d_info['crystal'][0]['tth_hkl']
+            self._tmp_h_list = d_info['crystal'][0]['h']
+            self._tmp_k_list = d_info['crystal'][0]['k']
+            self._tmp_l_list = d_info['crystal'][0]['l']
 
         # 1
         self._tmp_singony = self.model._list_crystal[0].get_val('space_groupe').get_val('singony')
@@ -269,13 +270,14 @@ class Proxy(QObject):
             self._atom_site_cani_chi_33_list.append(self.set_parameter('sample', label, '\u03C733', a.get_val('chi_33'), flag_m))
 
         # 5
-        self._tmp_setup_wavelength = self.set_parameter('instrument', 'general', 'Wavelength', self.model._list_experiment[0].get_val('setup').get_val('wave_length'))
-        self._tmp_setup_zero_shift = self.set_parameter('instrument', 'general', 'Zero shift', self.model._list_experiment[0].get_val('setup').get_val('zero_shift'))
-        self._tmp_setup_resolution_u = self.set_parameter('instrument', 'resolution', 'U', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('u'))
-        self._tmp_setup_resolution_v = self.set_parameter('instrument', 'resolution', 'V', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('v'))
-        self._tmp_setup_resolution_w = self.set_parameter('instrument', 'resolution', 'W', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('w'))
-        self._tmp_setup_resolution_x = self.set_parameter('instrument', 'resolution', 'X', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('x'))
-        self._tmp_setup_resolution_y = self.set_parameter('instrument', 'resolution', 'Y', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('y'))
+        if self.model._list_experiment:
+            self._tmp_setup_wavelength = self.set_parameter('instrument', 'general', 'Wavelength', self.model._list_experiment[0].get_val('setup').get_val('wave_length'))
+            self._tmp_setup_zero_shift = self.set_parameter('instrument', 'general', 'Zero shift', self.model._list_experiment[0].get_val('setup').get_val('zero_shift'))
+            self._tmp_setup_resolution_u = self.set_parameter('instrument', 'resolution', 'U', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('u'))
+            self._tmp_setup_resolution_v = self.set_parameter('instrument', 'resolution', 'V', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('v'))
+            self._tmp_setup_resolution_w = self.set_parameter('instrument', 'resolution', 'W', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('w'))
+            self._tmp_setup_resolution_x = self.set_parameter('instrument', 'resolution', 'X', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('x'))
+            self._tmp_setup_resolution_y = self.set_parameter('instrument', 'resolution', 'Y', self.model._list_experiment[0].get_val('setup').get_val('resolution').get_val('y'))
 
         # emit signal
         #self.proxy_data_changed.emit()
@@ -304,40 +306,43 @@ class Proxy(QObject):
     # 0
     @Slot(result='QVariant')
     def tmp_tth_list(self):
-        return self._tmp_tth_list.tolist()
+        if self._tmp_tth_list != "":
+            return self._tmp_tth_list.tolist()
+        else:
+            return []
     @Slot(result='QVariant')
     def tmp_int_u_list(self):
-        return self._tmp_int_u_list.tolist()
+        return self._tmp_int_u_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_sint_u_list(self):
-        return self._tmp_sint_u_list.tolist()
+        return self._tmp_sint_u_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_int_d_list(self):
-        return self._tmp_int_d_list.tolist()
+        return self._tmp_int_d_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_sint_u_list(self):
-        return self._tmp_sint_u_list.tolist()
+        return self._tmp_sint_u_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_int_d_list(self):
-        return self._tmp_int_d_list.tolist()
+        return self._tmp_int_d_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_int_u_mod_list(self):
-        return self._tmp_int_u_mod_list.tolist()
+        return self._tmp_int_u_mod_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_int_d_mod_list(self):
-        return self._tmp_int_d_mod_list.tolist()
+        return self._tmp_int_d_mod_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_pos_hkl_list(self):
-        return self._tmp_pos_hkl_list.tolist()
+        return self._tmp_pos_hkl_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_h_list(self):
-        return self._tmp_h_list.tolist()
+        return self._tmp_h_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_k_list(self):
-        return self._tmp_k_list.tolist()
+        return self._tmp_k_list.tolist() if self._tmp_int_u_list != "" else []
     @Slot(result='QVariant')
     def tmp_l_list(self):
-        return self._tmp_l_list.tolist()
+        return self._tmp_l_list.tolist() if self._tmp_int_u_list != "" else []
 
     # 1
     @Slot(result=str)
