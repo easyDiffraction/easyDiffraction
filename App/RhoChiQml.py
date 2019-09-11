@@ -2,7 +2,7 @@ import os
 import sys
 import numpy
 
-from PySide2.QtCore import QObject, Signal, Slot, Property, QUrl
+from PySide2.QtCore import QObject, Signal, Slot, Property, QUrl, QThread
 
 import f_rcif.cl_rcif as rhochi_rcif
 import f_api_rcif.api_rcif_model as rhochi_model
@@ -303,6 +303,9 @@ class Proxy(QObject):
     def tmp_phase_comment(self):
         return str(self._tmp_phase_comment)
 
+    import warnings
+    warnings.simplefilter(action='ignore', category=FutureWarning)
+
     # 0
     @Slot(result='QVariant')
     def tmp_tth_list(self):
@@ -509,6 +512,8 @@ class Proxy(QObject):
     @Slot(str)
     def load_rhochi_model_and_update_proxy(self, path):
         print("load_rhochi_model_and_update_proxy")
+        import time
+        t0 = time.time()
         path = QUrl(path).toLocalFile()
         self.rcif_file_absolute_path = path
         self.rcif = rhochi_rcif.RCif()
@@ -519,16 +524,31 @@ class Proxy(QObject):
         self.change_data_from_rhochi_model()
         self.set_time_stamp()
         self._project_opened = True
+        t1 = time.time()
+        t1 = (t1-t0)*100.0
+        print("RhoChiQml: model update took {:4.0f} ms".format(t1))
         self.proxy_data_changed.emit()
 
     @Slot(result=bool)
     def refine(self):
-        print("refine")
-        res = self.model.refine_model()
+        # Spawn a separate thread for computations.
+        # TODO: disable gui items which should not be active during refinement
+        self.refine_thread = Refiner(self, 'refine_model')
+        self.refine_thread.finished.connect(self.thread_finished)
+        self.refine_thread.start()
+
+    def thread_finished(self, res):
+        # update the model from the refinement results
         self.change_data_from_rhochi_model()
+        # TODO: re-enable disabled gui items
         self.set_time_stamp()
         self.proxy_data_changed.emit()
         return res.success
+
+    def refine_model(self):
+        # run refinement in separate thread.
+        res = self.model.refine_model()
+        return res
 
     # -------------------------------------------------
     # QML accessible properties
@@ -541,3 +561,20 @@ class Proxy(QObject):
     project_dir_absolute_path = Property(str, get_project_dir_absolute_path, notify=proxy_data_changed)
     project_opened = Property(bool, is_project_opened, notify=proxy_data_changed)
 
+
+class Refiner(QThread):
+    #error = Signal() # TODO add proper error pathway
+    finished = Signal(dict)
+
+    def __init__(self, obj, method_name, parent=None):
+        QThread.__init__(self, parent)
+        self._obj = obj
+        self.method_name = method_name
+
+    def run(self):
+        res = {}
+        if hasattr(self._obj, self.method_name):
+            func = getattr(self._obj, self.method_name)
+            res = func()
+        self.finished.emit(res)
+        return res
