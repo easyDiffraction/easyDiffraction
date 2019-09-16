@@ -122,12 +122,11 @@ ColumnLayout {
 
                 GenericAppContentAreaButtons.PausePlay {
                     id: pausePlayButton;
-                    text: "Start/Stop fitting";
+                    text: proxy.fitButtonState;
                     onClicked: {
-                        //print("Time stamp: ", proxy.refinement)
                         const res = proxy.refine()
                         print(res)
-                        //print("Time stamp: ", proxy.refinement)
+                        pausePlayButton.text = proxy.fitButtonState
                     }
                 }
                 CheckBox { enabled: false; checked: false; text: "Auto-update"; }

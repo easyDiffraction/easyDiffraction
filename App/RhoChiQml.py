@@ -18,6 +18,8 @@ class Proxy(QObject):
         self._model_refined = False
         self._time_stamp = self.set_time_stamp()
         self.parameters = {}
+        self.is_being_refined = False
+        self.refine_thread = Refiner(self, 'refine_model')
 
     # -------------------------------------------------
     # ...
@@ -59,6 +61,7 @@ class Proxy(QObject):
     # -------------------------------------------------
 
     proxy_data_changed = Signal()
+    disable_for_refinement = Signal(bool)
 
     # -------------------------------------------------
     # ...
@@ -533,17 +536,38 @@ class Proxy(QObject):
     def refine(self):
         # Spawn a separate thread for computations.
         # TODO: disable gui items which should not be active during refinement
-        self.refine_thread = Refiner(self, 'refine_model')
+        # Check if we're cancelling or starting
+        self.disable_for_refinement.emit(True)
+        if self.is_being_refined:
+            # stop the fitting.
+            print("Fitting stopped")
+            return
         self.refine_thread.finished.connect(self.thread_finished)
+        self.refine_thread.failed.connect(self.thread_failed)
         self.refine_thread.start()
 
+    @Slot(result=str)
+    def fit_button_state(self):
+
+        ret_string = "Start fitting" if self.is_being_refined else "Stop fitting"
+        self.is_being_refined = not self.is_being_refined
+        return ret_string
+
     def thread_finished(self, res):
+        self.is_being_refined = False
         # update the model from the refinement results
         self.change_data_from_rhochi_model()
         # TODO: re-enable disabled gui items
+        self.disable_for_refinement.emit(False)
         self.set_time_stamp()
         self.proxy_data_changed.emit()
         return res.success
+
+    def thread_failed(self, reason):
+        # Notify the GUI about failure so a message can be shown
+        # print(reason)
+        self.is_being_refined = False
+        self.disable_for_refinement.emit(False)
 
     def refine_model(self):
         # run refinement in separate thread.
@@ -560,10 +584,11 @@ class Proxy(QObject):
     project_info = Property(str, get_project_info, notify=proxy_data_changed)
     project_dir_absolute_path = Property(str, get_project_dir_absolute_path, notify=proxy_data_changed)
     project_opened = Property(bool, is_project_opened, notify=proxy_data_changed)
+    fitButtonState = Property(str, fit_button_state, notify=proxy_data_changed)
 
 
 class Refiner(QThread):
-    #error = Signal() # TODO add proper error pathway
+    failed = Signal(str) # TODO add proper error pathway
     finished = Signal(dict)
 
     def __init__(self, obj, method_name, parent=None):
@@ -575,6 +600,10 @@ class Refiner(QThread):
         res = {}
         if hasattr(self._obj, self.method_name):
             func = getattr(self._obj, self.method_name)
-            res = func()
+            try:
+                res = func()
+            except Exception as ex:
+                self.failed.emit(str(ex))
+                return str(ex)
         self.finished.emit(res)
         return res
