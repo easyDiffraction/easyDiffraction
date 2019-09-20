@@ -8,11 +8,13 @@ import easyDiffraction 1.0 as Specific
 Rectangle {
     color: "white"
 
-    ScrollView {
-        anchors.fill: parent
-        clip: true
+	Flickable {
+		id: flickable
+		anchors.fill: parent
 
-        TextArea {
+		flickableDirection: Flickable.VerticalFlick
+
+        TextArea.flickable: TextArea {
             id: textArea
             anchors.fill: parent
             padding: 10
@@ -23,6 +25,8 @@ Rectangle {
             //wrapMode: Text.WordWrap
             text: fileContent()
         }
+		ScrollBar.vertical: ScrollBar {}
+
     }
 
     function fileContent () {
