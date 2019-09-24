@@ -29,7 +29,7 @@ matrix:
 env:
   global:
     secure: "TR+45BRrtrPITXhnpJ0SIwps50jLjLbHwZ3D4MGztLJ5L85SzSAs7XfOA0kmUJfb3/vDcnoAwAbhURZnXRxbHwk0Z3elB6UKoET3XlQs1JnbLHEZ7zjdtzuDjTW4RP+xB/bP4Xfssn/BJGLwemCZXlI6X1UnrvulzIBsNMixJdxPGGLtx/2YFwxgHHPSYIViEASIVXAgiYWjAVqb2m9a4LVzE6OOttS/TlIax1lp/6IqwRieOv3xwX2/dVtkwDacBzwUn8Rh+SWnTT64P5nzGIJqmQeafj6D1xykyp1BBroNk/+tOIrM8/nQUHKpwPEEV+prXmx66cpgVCf0L4cY5MOvcOR0IglTm13FqurDbC705zXsW2UNVw7K/6zYqDAYJCyM6VN1DT15t4hmtl1y397UjP3vBN7L/bIeKR0/FS79SG49zIFwT5was6AbPEfi6bBB72W2O01e5d5Kzr8aizrX9Oa7ECzVN3Fgepa1M/4L7zNgbX/6qntQbDRUvASd9lfsFxMloz1rbvcve7UmqNexgjTq/jFI02eWRvRx6HyqVRUH3MSwsyXEs97xFfM9XHIDRkY/vfb7gOcdKWeeRLWq0JrWdvoT/CCZ2YqqloazTXPfqK4R0IQW5FWy4gMj5SmrdMsgOoWAIojyKartr7nv5FQM02zbAmyC/r99Ses="
-    
+
 install:
   - python -m pip install --upgrade pip
   - pip3 install PySide2
@@ -113,7 +113,7 @@ deploy:
     file: easyDiffraction-*.zip
     on:
       all_branches: true
-      condition: $TRAVIS_BRANCH =~ ^master\/.*$
+      condition: ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} =~ ^master\/.*$
 
 after_deploy:
   -  |
