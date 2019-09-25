@@ -113,7 +113,7 @@ deploy:
     file: easyDiffraction-*.zip
     on:
       all_branches: true
-      condition: "$TRAVIS_BRANCH =~ ^master$"
+      condition: "$TRAVIS_BRANCH != 'master'"
 
 after_deploy:
   -  |
