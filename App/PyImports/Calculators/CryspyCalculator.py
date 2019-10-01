@@ -314,9 +314,14 @@ class CryspyCalculator(QObject):
                     'refine': u_23.refinement }
 
             # Anisotropic MSP
-            for label, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label,
+            for label, chi_type, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label, phase.atom_site_magnetism_aniso.chi_type,
                 phase.atom_site_magnetism_aniso.chi_11, phase.atom_site_magnetism_aniso.chi_22, phase.atom_site_magnetism_aniso.chi_33,
                 phase.atom_site_magnetism_aniso.chi_12, phase.atom_site_magnetism_aniso.chi_13, phase.atom_site_magnetism_aniso.chi_23):
+                self._phases_dict[phase.label]['atom_site'][label]['chi_type'] = {
+                   'header': 'Type',
+                   'tooltip': '',
+                   'url': '',
+                   'value': chi_type }
                 self._phases_dict[phase.label]['atom_site'][label]['chi_11'] = {
                     'header': 'Chi11',
                     'tooltip': '',
