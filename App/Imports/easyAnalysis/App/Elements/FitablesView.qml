@@ -5,8 +5,8 @@ Column {
     property alias model: contentListView.model
 
     property int borderWidth: 1
-    property int cellHeight: 38
-    property int rowCountToDisplayWithoutHeader: 8
+    property int cellHeight: 34
+    property int rowCountToDisplayWithoutHeader: 10
 
     property string rowBackgroundColor: 'white'
     property string alternateRowBackgroundColor: '#f7f7f7'
@@ -16,7 +16,6 @@ Column {
     property string headerBackgroundColor: '#eee'
     property string headerBorderColor: '#dedede'
 
-    //width: 500//parent.width
     height: childrenRect.height
     spacing: 12
 
@@ -205,7 +204,6 @@ Column {
                         acceptedButtons: Qt.LeftButton
                         onPressed: {
                             contentListView.currentIndex = index
-                            //currentIndexX = index
                             mouse.accepted = false
                         }
                     }
@@ -284,13 +282,10 @@ Column {
                         mouse.accepted = false
                     }
                     onWheel: {
-                        print("WHEEL")
                         mouse.accepted = true
                     }
-
             }
             */
-
 
         }
 
@@ -305,6 +300,5 @@ Column {
             background: Rectangle { border.width: borderWidth; border.color: headerBorderColor }
         }
     }
-    // Slider
 
 }
