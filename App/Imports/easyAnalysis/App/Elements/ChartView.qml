@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.12
 import QtCharts 2.3
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
-import easyDiffraction.Resources.Examples.CeCuAl3_POLARIS 1.0 as SpecificExample
+import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
     property bool showObs: false
@@ -24,81 +24,9 @@ ColumnLayout {
 
     spacing: 0
 
-
-    ////////////////////////
-    // Check if data changed
-    ////////////////////////
-
-    Text {
-        id: dataChanged
-        visible: false
-        text: proxy.time_stamp
-        onTextChanged: {
-            print("Time stamp: ", proxy.time_stamp)
-
-            // set axes min, max
-            axisX.min = Math.min(...proxy.tmp_tth_list())
-            axisX.max = Math.max(...proxy.tmp_tth_list())
-            axisY.min = Math.min(...proxy.tmp_int_u_list(), ...proxy.tmp_int_u_mod_list()) - Math.max(...proxy.tmp_sint_u_list())
-            axisY.max = Math.max(...proxy.tmp_int_u_list(), ...proxy.tmp_int_u_mod_list()) + Math.max(...proxy.tmp_sint_u_list())
-
-            // remove old data points
-            lowerObsSeries.removePoints(0, lowerObsSeries.count)
-            upperObsSeries.removePoints(0, upperObsSeries.count)
-            calcSeries.removePoints(0, calcSeries.count)
-            braggSeries.removePoints(0, braggSeries.count)
-            lowerDiffSeries.removePoints(0, lowerDiffSeries.count)
-            upperDiffSeries.removePoints(0, upperDiffSeries.count)
-
-            // append updated data and ...
-            let min = Infinity
-            let max = -Infinity
-
-            for (let i = 0, len = proxy.tmp_tth_list().length; i < len; i++ ) {
-                const x = proxy.tmp_tth_list()[i]
-                const yobs = proxy.tmp_int_u_list()[i]
-                const syobs = proxy.tmp_sint_u_list()[i]
-                const ycalc = proxy.tmp_int_u_mod_list()[i]
-
-                min = Math.min(min, yobs - syobs - ycalc)
-                max = Math.max(max, yobs + syobs - ycalc)
-
-                lowerObsSeries.append(x, yobs - syobs)
-                upperObsSeries.append(x, yobs + syobs)
-                calcSeries.append(x, ycalc)
-                lowerDiffSeries.append(x, yobs - syobs - ycalc)
-                upperDiffSeries.append(x, yobs + syobs - ycalc)
-            }
-
-            //
-            for (let i = 0, n = 20, len = proxy.tmp_pos_hkl_list().length; i < len; i++) {
-                const x = proxy.tmp_pos_hkl_list()[i]
-                for (let k = 0; k < n; k++) {
-                    const zero_shift = parseFloat(proxy.tmp_setup_zero_shift())
-                    braggSeries.append(x + zero_shift, (axisYbragg.max - axisYbragg.min) / n * k)
-                }
-            }
-
-            //
-            for (let i = 0; i < proxy.tmp_pos_hkl_list().length; i++ ) {
-                const newHkl = [{ "h":proxy.tmp_h_list()[i], "k":proxy.tmp_k_list()[i], "l":proxy.tmp_l_list()[i] }]
-                const oldHklList = tthHklDict[proxy.tmp_pos_hkl_list()[i]] === undefined ? [] : tthHklDict[proxy.tmp_pos_hkl_list()[i]]
-                const updatedHklList = oldHklList.concat(newHkl)
-                tthHklDict[proxy.tmp_pos_hkl_list()[i]] = updatedHklList
-            }
-
-            axisYdiff.min = Math.sign(min) * Math.max(Math.abs(min), Math.abs(max))
-            axisYdiff.max = Math.sign(max) * Math.max(Math.abs(min), Math.abs(max))
-
-            adjustLeftAxesAnchor()
-        }
-    }
-
-
-
-    //////////////////////////
-    // Top chart (Iobs, Icalc)
-    //////////////////////////
+    //////////////////////
+    // Top chart container
+    //////////////////////
 
     Rectangle {
         id: topChartContainer
@@ -107,17 +35,22 @@ ColumnLayout {
         color: "transparent"
         clip: true
 
+        //////////////////////////
+        // Top chart (Iobs, Icalc)
+        //////////////////////////
+
         ChartView {
             id: topChart
             anchors.fill: parent
             anchors.margins: -extraPadding
             anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
             antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
-            ///smooth: true // conflicts with useOpenGL?
             legend.visible: false
             backgroundRoundness: 0
             backgroundColor: "transparent"
             titleFont: commonFont
+
+            // X-axis for measured and calculated data
 
             ValueAxis {
                 id: axisX
@@ -131,7 +64,11 @@ ColumnLayout {
                 labelsVisible: !showDiff
                 labelsFont: commonFont
                 titleFont: commonFont
+                min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.main.x_min : 0
+                max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.main.x_max : 1
             }
+
+            // Y-axis for measured and calculated data
 
             ValueAxis {
                 id: axisY
@@ -143,7 +80,11 @@ ColumnLayout {
                 titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                 labelsFont: commonFont
                 titleFont: commonFont
+                min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.main.y_min : 0
+                max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.main.y_max : 0
             }
+
+            // Measured curve
 
             AreaSeries {
                 id: obsArea
@@ -154,8 +95,9 @@ ColumnLayout {
                 opacity: 0.4
                 borderColor: Qt.darker(Generic.Style.blueColor, 1.1)
                 borderWidth: 1.5
-                lowerSeries: LineSeries { id: lowerObsSeries }
-                upperSeries: LineSeries { id: upperObsSeries }
+                useOpenGL: true
+                lowerSeries: LineSeries { VXYModelMapper{ model: proxy.measuredData; xColumn: 0; yColumn: 5 } }
+                upperSeries: LineSeries { VXYModelMapper{ model: proxy.measuredData; xColumn: 0; yColumn: 6 } }
                 onHovered: {
                     const p = topChart.mapToPosition(point)
                     const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
@@ -167,41 +109,19 @@ ColumnLayout {
                     infoToolTip.contentItem.color = Generic.Style.blueColor
                     infoToolTip.background.border.color = Qt.lighter(Generic.Style.blueColor, 1.9)
                 }
-                /*
-                Component.onCompleted: {
-                    const len = proxy.tmp_tth_list().length
-                    for (let i = 0; i < len; i++ ) {
-                        const x = proxy.tmp_tth_list()[i]
-                        const y = proxy.tmp_int_u_list()[i]
-                        const sy = proxy.tmp_sint_u_list()[i]
-                        lowerSeries.append(x, y + sy)
-                        upperSeries.append(x, y - sy)
-                    }
-                }
-                */
             }
 
-            SpecificExample.CalcLineSeries {
-                id: calcSeriesBorder
-                visible: showCalc
-                axisX: axisX
-                axisY: axisY
-                color: "white"
-                opacity: 0.4
-                width: 6.5
-            }
+            // Calculated curve
 
-            LineSeries {//tmp_int_u_mod_list
+            LineSeries {
                 id: calcSeries
                 visible: showCalc
                 axisX: axisX
                 axisY: axisY
                 color: Generic.Style.redColor
                 width: 2.5
-                //useOpenGL: true
-                //onClicked: console.log("onClicked: calcSeries")
-                //pointsVisible: true
-                //pointLabelsVisible: false
+                useOpenGL: true
+                VXYModelMapper{ model: proxy.calculatedData; xColumn: 0; yColumn: 1 }
                 onHovered: {
                     const p = topChart.mapToPosition(point)
                     const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
@@ -213,24 +133,15 @@ ColumnLayout {
                     infoToolTip.contentItem.color = Generic.Style.redColor
                     infoToolTip.background.border.color = Qt.lighter(Generic.Style.redColor, 1.5)
                 }
-                /*
-                Component.onCompleted: {
-                    const len = proxy.tmp_tth_list().length
-                    for (let i = 0; i < len; i++ ) {
-                        const x = proxy.tmp_tth_list()[i]
-                        const y = proxy.tmp_int_u_mod_list()[i]
-                        append(x, y)
-                    }
-                }
-                */
             }
         }
 
-        ////////////
-        // Zoom area
-        ////////////
+        //////////////////////////
+        // Zoom area for top chart
+        //////////////////////////
 
         // Zoom rectangle
+
         Rectangle{
             id: recZoom
             visible: false
@@ -240,7 +151,9 @@ ColumnLayout {
             opacity: 0.2
             transform: Scale { origin.x: 0; origin.y: 0; xScale: xScaleZoom; yScale: yScaleZoom}
         }
+
         // Left mouse button events
+
         MouseArea {
             anchors.fill: topChartContainer
             acceptedButtons: Qt.LeftButton
@@ -278,7 +191,9 @@ ColumnLayout {
                 adjustLeftAxesAnchor()
             }
         }
+
         // Right mouse button events
+
         MouseArea {
             anchors.fill: topChartContainer
             acceptedButtons: Qt.RightButton
@@ -294,8 +209,6 @@ ColumnLayout {
     /////////////////////////////
     // Middle chart (Bragg peaks)
     /////////////////////////////
-    // https://doc.qt.io/qt-5/qtcharts-callout-example.html
-    // https://stackoverflow.com/questions/51923764/custom-tooltip-tooltip-in-qml-chartview
 
     Rectangle {
         id: middleChartContainer
@@ -312,7 +225,6 @@ ColumnLayout {
             anchors.topMargin: -3.6*extraPadding
             anchors.bottomMargin: -4*extraPadding
             antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
-            ///smooth: true // conflicts with useOpenGL?
             legend.visible: false
             backgroundRoundness: 0
             backgroundColor: "transparent"
@@ -334,8 +246,8 @@ ColumnLayout {
                 lineVisible: false
                 labelsVisible: false
                 gridVisible:false
-                min: 0
-                max: 10
+                min: -7
+                max: 15
                 labelFormat: "%.0f"
                 labelsFont: commonFont
             }
@@ -364,10 +276,15 @@ ColumnLayout {
                 markerSize: 1
                 borderWidth: 0.0001
                 borderColor: "transparent"
-                color: "grey"
-                //onClicked: console.log("onClicked: BraggScatterSeries")
-                //onHovered: console.log("onHovered: BraggScatterSeries")
+                color: "#333"
+                VXYModelMapper{ model: proxy.braggPeaksTicks; xColumn: 0; yColumn: 1 }
+
+                /*
                 onHovered: {
+                    const phase1 = proxy.project.phasesIds()[0]
+                    const braggPeaks = proxy.project[phase1].bragg_peaks
+
+
                     const position = middleChart.mapToPosition(point)
                     const tth = point.x - parseFloat(proxy.tmp_setup_zero_shift())
                     const hklList = tthHklDict[tth]
@@ -388,33 +305,8 @@ ColumnLayout {
                     infoToolTip.contentItem.color = "grey"
                     infoToolTip.background.border.color = Qt.lighter("grey", 1.75)
                 }
-
+                */
             }
-
-            /*
-            SpecificExample.BraggScatterSeries {
-                axisX: axisXbragg
-                axisY: axisYbragg
-                markerShape: ScatterSeries.MarkerShapeRectangle
-                markerSize: 2
-                borderWidth: 0.0001
-                borderColor: "transparent"
-                color: "grey"
-                //onClicked: console.log("onClicked: BraggScatterSeries")
-                //onHovered: console.log("onHovered: BraggScatterSeries")
-                onHovered: {
-                    const p = middleChart.mapToPosition(point)
-                    const text = qsTr("x: %1\nhkl: 0 4 0").arg(point.x)
-                    infoToolTip.parent = middleChart
-                    infoToolTip.x = p.x
-                    infoToolTip.y = p.y - infoToolTip.height
-                    infoToolTip.visible = state
-                    infoToolTip.contentItem.text = text
-                    infoToolTip.contentItem.color = "grey"
-                    infoToolTip.background.border.color = Qt.lighter("grey", 1.75)
-                }
-            }
-            */
         }
     }
 
@@ -438,7 +330,6 @@ ColumnLayout {
             anchors.topMargin: -3*extraPadding
             //anchors.topMargin: -extraPadding// - 20
             antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
-            ///smooth: true // conflicts with useOpenGL?
             legend.visible: false
             backgroundRoundness: 0
             backgroundColor: "transparent"
@@ -467,6 +358,8 @@ ColumnLayout {
                 titleText: "Iobs - Icalc"
                 labelsFont: commonFont
                 titleFont: commonFont
+                min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.difference.y_min : 0
+                max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.difference.y_max : 0
             }
 
             AreaSeries {
@@ -477,8 +370,24 @@ ColumnLayout {
                 opacity: 0.4
                 borderColor: Generic.Style.darkGreenColor
                 borderWidth: 1.5
-                lowerSeries: LineSeries { id: lowerDiffSeries }
-                upperSeries: LineSeries { id: upperDiffSeries }
+                upperSeries: LineSeries {
+                    id: upperDiffSeries
+                    useOpenGL: true
+                    VXYModelMapper{
+                        model: proxy.calculatedData
+                        xColumn: 0
+                        yColumn: 2
+                    }
+                }
+                lowerSeries: LineSeries {
+                    id: lowerDiffSeries
+                    useOpenGL: true
+                    VXYModelMapper{
+                        model: proxy.calculatedData
+                        xColumn: 0
+                        yColumn: 3
+                    }
+                }
                 onHovered: {
                     const p = bottomChart.mapToPosition(point)
                     const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
@@ -490,28 +399,6 @@ ColumnLayout {
                     infoToolTip.contentItem.color = Generic.Style.darkGreenColor
                     infoToolTip.background.border.color = Generic.Style.ultraLightGreenColor
                 }
-                /*
-                Component.onCompleted: {
-                    const len = proxy.tmp_tth_list().length
-                    let min = Infinity
-                    let max = -Infinity
-                    for (let i = 0; i < len; i++ ) {
-                        const x = proxy.tmp_tth_list()[i]
-                        const yobs = proxy.tmp_int_u_list()[i]
-                        const syobs = proxy.tmp_sint_u_list()[i]
-                        const ycalc = proxy.tmp_int_u_mod_list()[i]
-                        const low = yobs - syobs - ycalc
-                        const high = yobs + syobs - ycalc
-                        lowerSeries.append(x, low)
-                        upperSeries.append(x, high)
-                        min = Math.min(min, low)
-                        max = Math.max(max, high)
-                    }
-                    axisYdiff.min = Math.sign(min) * Math.max(Math.abs(min), Math.abs(max))
-                    axisYdiff.max = Math.sign(max) * Math.max(Math.abs(min), Math.abs(max))
-                    adjustLeftAxesAnchor()
-                }
-                */
             }
         }
     }
@@ -565,7 +452,7 @@ ColumnLayout {
 
     //Component.onCompleted: {
         //setAxesNiceNumbers()
-        ///adjustLeftAxesAnchor()
+        //adjustLeftAxesAnchor()
     //}
 
     ////////
