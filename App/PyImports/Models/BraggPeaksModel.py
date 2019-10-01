@@ -15,7 +15,7 @@ class BraggPeaksModel(QObject):
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI chart: Bragg peaks."""
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData start") # profiling
+        logging.info("+++++++++++++++++++++++++ setData start") # profiling
         for experiment_id, experiment_dict in self._project_dict['calculations'].items():
             for phase_id in self._project_dict['phases'].keys():
                 # data model
@@ -47,7 +47,7 @@ class BraggPeaksModel(QObject):
                         self._tick_model.setData(tick_y_index, tick_y_value, Qt.DisplayRole)
                 self._tick_model.blockSignals(False)
                 self._tick_model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData end") # profiling
+        logging.info("+++++++++++++++++++++++++ setData end") # profiling
 
     modelChanged = Signal()
 

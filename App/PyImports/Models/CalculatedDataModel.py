@@ -15,7 +15,7 @@ class CalculatedDataModel(QObject):
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI calculated data table and chart."""
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData start") # profiling
+        logging.info("+++++++++++++++++++++++++ setData start") # profiling
         for experiment_id, experiment_dict in self._project_dict['calculations'].items():
             self._data_model.blockSignals(True)
             self._headers_model.blockSignals(True)
@@ -36,7 +36,7 @@ class CalculatedDataModel(QObject):
             self._headers_model.blockSignals(False)
             self._data_model.layoutChanged.emit()
             self._headers_model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData end") # profiling
+        logging.info("+++++++++++++++++++++++++ setData end") # profiling
 
     modelChanged = Signal()
 

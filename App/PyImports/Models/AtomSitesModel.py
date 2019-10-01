@@ -32,10 +32,10 @@ class AtomSitesModel(QObject):
 
     def _setModelFromProject(self):
         """Create the model needed for GUI ..."""
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData start") # profiling
+        logging.info("+++++++++++++++++++++++++ setData start") # profiling
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
-            ##self._model.blockSignals(True)
+            self._model.blockSignals(True)
             # set list of atoms
             data = []
             for atom_id, atom_dict in phase_dict['atom_site'].items():
@@ -65,9 +65,9 @@ class AtomSitesModel(QObject):
                     self._model.setData(index, value, role)
                     #print(index)
             # unblock signals and emit model layout changed
-            ##self._model.blockSignals(False)
-            ##self._model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData end") # profiling
+            self._model.blockSignals(False)
+            self._model.layoutChanged.emit()
+        logging.info("+++++++++++++++++++++++++ setData end") # profiling
 
     modelChanged = Signal()
 

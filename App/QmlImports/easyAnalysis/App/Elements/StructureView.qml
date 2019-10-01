@@ -27,7 +27,7 @@ Rectangle {
         visible: false
         text: proxy.timeStamp
         onTextChanged: {
-            print("--------------------------------------------------------- Time stamp: ", text)
+            //print("--------------------------------------------------------- Time stamp: ", text)
 
 
             /*
