@@ -7,9 +7,33 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 import easyAnalysis.Logic 1.0 as GenericLogic
+import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
     spacing: 0
+
+    property var type_symbol_dict: ({})
+
+    ////////////////////////
+    // Check if data changed
+    ////////////////////////
+
+    Text {
+        visible: false
+        text: proxy.timeStamp
+        onTextChanged: {
+            print("--------------------------------------------------------- Time stamp: ", text)
+            const atom_site_dict = Specific.Variables.project.phases.Fe3O4.atom_site
+            let type_symbol_list = []
+            for (let atom_id in atom_site_dict) {
+                type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
+            }
+            type_symbol_list = Array.from(new Set(type_symbol_list))
+            for (let i = 0; i < type_symbol_list.length; i++) {
+                type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
+            }
+        }
+    }
 
     ///////////
     // Groupbox
@@ -112,23 +136,11 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         title: "Atoms, atomic coordinates and occupations"
         content: GenericAppElements.ColumnLayout {
-            GenericAppElements.ParametersTable {
-                enabled: false
 
-                model: ListModel {
-                    id: atomsModel
-                    ListElement { num:0; label:""; atom:""; color:""; x:""; y:""; z:""; occ:"" }
-                }
-
-                Controls1.TableViewColumn { role:"num";     title:"No.";    resizable: false }
-                Controls1.TableViewColumn { role:"label";   title:"Label";  resizable: false }
-                Controls1.TableViewColumn { role:"atom";    title:"Atom";   resizable: false }
-                Controls1.TableViewColumn { role:"color";   title:"Color";  resizable: false }
-                Controls1.TableViewColumn { role:"x";       title:"x" }
-                Controls1.TableViewColumn { role:"y";       title:"y" }
-                Controls1.TableViewColumn { role:"z";       title:"z" }
-                Controls1.TableViewColumn { role:"occ";     title:"Occupancy" }
-                Controls1.TableViewColumn { role:"remove";  title:"Remove"; resizable: false }
+            // Table
+            GenericAppElements.AtomsTableView {
+                Layout.fillWidth: true
+                model: proxy.atomSites
             }
 
             // Buttons

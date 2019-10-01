@@ -18,6 +18,56 @@ Rectangle {
     color: "coral"
     clip: true
 
+
+    ////////////////////////
+    // Check if data changed
+    ////////////////////////
+
+    Text {
+        visible: false
+        text: proxy.timeStamp
+        onTextChanged: {
+            print("--------------------------------------------------------- Time stamp: ", text)
+
+            // Create dictionary b_scattering:color
+            const bscatList = Array.from(new Set(proxy.atom_site_bscat_list()))
+            let bscatColorDict = {}
+            for (let i = 0; i < bscatList.length; i++ ) {
+                bscatColorDict[bscatList[i]] = Generic.Style.atomColorList[i]
+            }
+
+            // Unit cell parameters
+            const a = parseFloat(proxy.cell_length_a())
+            const b = parseFloat(proxy.cell_length_b())
+            const c = parseFloat(proxy.cell_length_c())
+
+            // Remove old atom scatters
+            for (let i = 0, len = chart.seriesList.length; i < len; i++) {
+                chart.removeSeries(chart.seriesList[1])
+            }
+
+            // Populate chart with atoms. Every atom is an individual scatter serie
+            for (let i = 0, len = proxy.tmp_no_symmetry_atom_site_fract_x_list().length; i < len; i++ ) {
+                var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml");
+                if (component.status === Component.Ready) {
+                    var series = component.createObject()
+                    if (series === null) {
+                        console.log("Error creating object")
+                    } else {
+                        series.atomSize = Math.abs(proxy.tmp_no_symmetry_atom_site_bscat_list()[i]) * 0.4
+                        series.atomColor = bscatColorDict[proxy.tmp_no_symmetry_atom_site_bscat_list()[i]]
+                        series.atomModel.append({
+                            x: parseFloat(proxy.tmp_no_symmetry_atom_site_fract_x_list()[i]) * a,
+                            y: parseFloat(proxy.tmp_no_symmetry_atom_site_fract_y_list()[i]) * b,
+                            z: parseFloat(proxy.tmp_no_symmetry_atom_site_fract_z_list()[i]) * c
+                        })
+                    }
+                    chart.addSeries(series)
+                }
+            }
+        }
+    }
+
     ///////
     // Plot
     ///////
@@ -78,17 +128,22 @@ Rectangle {
             labelFormat: ""
         }
 
+        //GenericAppElements.AtomScatter3DSeries {
+        //    atomModel: proxy.cellBox
+        //}
+
         // Unit cell chart settings
         Scatter3DSeries {
             mesh: Abstract3DSeries.MeshSphere
             itemSize: 0.03
             baseColor: "grey"
             colorStyle: Theme3D.ColorStyleUniform
+
             ItemModelScatterDataProxy {
-                itemModel: ListModel { id: cellBox }
-                xPosRole: "x"
-                yPosRole: "y"
-                zPosRole: "z"
+                itemModel: proxy.cellBox
+                xPosRole: "xPos"
+                yPosRole: "yPos"
+                zPosRole: "zPos"
             }
         }
     }
@@ -130,5 +185,7 @@ Rectangle {
         color: "grey"
         background: Rectangle { color: "white"; opacity: 0.9; border.width: 0; radius: Generic.Style.toolbarButtonRadius }
     }
+
+
 
 }

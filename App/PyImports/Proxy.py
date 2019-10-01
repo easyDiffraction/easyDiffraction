@@ -1,6 +1,8 @@
 from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItemModel
 
+import numpy as np
+
 import logging
 logging.basicConfig(format="%(asctime)-15s [%(levelname)s] %(filename)s %(funcName)s [%(lineno)d]: %(message)s", level=logging.INFO)
 
@@ -8,6 +10,8 @@ from PyImports.Calculators.CryspyCalculator import *
 from PyImports.Models.MeasuredDataModel import *
 from PyImports.Models.CalculatedDataModel import *
 from PyImports.Models.BraggPeaksModel import *
+from PyImports.Models.CellBoxModel import *
+from PyImports.Models.AtomSitesModel import *
 from PyImports.Models.FitablesModel import *
 
 class Proxy(QObject):
@@ -18,6 +22,8 @@ class Proxy(QObject):
         self._measured_data_model = None
         self._calculated_data_model = None
         self._bragg_peaks_model = None
+        self._cell_box_model = None
+        self._atom_sites_model = None
         self._fitables_model = None
 
     # Load rcif
@@ -30,6 +36,8 @@ class Proxy(QObject):
         self._calculated_data_model = CalculatedDataModel(self._project_model)
         self._calculated_data_model.modelChanged.connect(self.projectChanged)
         self._bragg_peaks_model = BraggPeaksModel(self._project_model)
+        self._cell_box_model = CellBoxModel(self._project_model)
+        self._atom_sites_model = AtomSitesModel(self._project_model)
         self._fitables_model = FitablesModel(self._project_model)
         #self._fitables_model.modelChanged.connect(self.projectChanged)
         self.projectChanged.emit()
@@ -38,6 +46,8 @@ class Proxy(QObject):
         self.calculatedDataHeaderChanged.emit()
         self.calculatedDataChanged.emit()
         self.braggPeaksChanged.emit()
+        self.cellBoxChanged.emit()
+        self.atomSitesChanged.emit()
         self.fitablesChanged.emit()
 
     # Project model for QML
@@ -100,16 +110,36 @@ class Proxy(QObject):
         logging.info("")
         if self._bragg_peaks_model is None:
             return QStandardItemModel()
-##        return QStandardItemModel()
         return self._bragg_peaks_model.asDataModel()
     def getBraggPeaksTicks(self):
         logging.info("")
         if self._bragg_peaks_model is None:
             return QStandardItemModel()
-##        return QStandardItemModel()
         return self._bragg_peaks_model.asTickModel()
     braggPeaks = Property('QVariant', getBraggPeaks, notify=braggPeaksChanged)
     braggPeaksTicks = Property('QVariant', getBraggPeaksTicks, notify=braggPeaksChanged)
+
+    # Cell box model for QML
+    cellBoxChanged = Signal()
+    def getCellBox(self):
+        logging.info("")
+        logging.info("--BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+        if self._cell_box_model is None:
+            return QStandardItemModel()
+        logging.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+        return self._cell_box_model.asModel()
+    cellBox = Property('QVariant', getCellBox, notify=cellBoxChanged)
+
+    # Atom sites model for QML
+    atomSitesChanged = Signal()
+    def getAtomSites(self):
+        logging.info("")
+        logging.info("--AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        if self._atom_sites_model is None:
+            return QStandardItemModel()
+        logging.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        return self._atom_sites_model.asModel()
+    atomSites = Property('QVariant', getAtomSites, notify=atomSitesChanged)
 
     # Fitables model for QML
     fitablesChanged = Signal()
@@ -120,6 +150,9 @@ class Proxy(QObject):
         return self._fitables_model.asModel()
     fitables = Property('QVariant', getFitables, notify=fitablesChanged)
 
+    # Time stamp of changes
+    timeStamp = Property(str, lambda self: str(np.datetime64('now')), notify=projectChanged)
+
     @Slot(result='QVariant')
     def refine(self):
         """refinement ..."""
@@ -127,3 +160,4 @@ class Proxy(QObject):
         res = self._project_model.refine()
         logging.info("")
         return res
+
