@@ -5,6 +5,7 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea.MainArea 1.0 as GenericMainArea
 import easyAnalysis.App.ContentArea.MainArea.Pages.Analysis 1.0 as GenericMainAreaAnalysis
 import easyAnalysis.App.ContentArea.Sidebar.Pages.Analysis 1.0 as GenericSidebarAnalysis
+import easyDiffraction 1.0 as Specific
 
 GenericAppElements.ContentAreaStack {
 
@@ -13,8 +14,8 @@ GenericAppElements.ContentAreaStack {
         id: tabBar
         //GenericMainArea.TabButton { text: qsTr("Simulation"); tabbarWidth: mainArea.width } // fix width
         GenericMainArea.TabButton { text: qsTr("Fitting"); tabbarWidth: mainArea.width } // fix width
-        GenericMainArea.TabButton { text: qsTr("Constraints"); tabbarWidth: mainArea.width } // fix width
-        GenericMainArea.TabButton { text: qsTr("Text View (RCIF)"); tabbarWidth: mainArea.width } // fix width
+        //GenericMainArea.TabButton { text: qsTr("Constraints"); tabbarWidth: mainArea.width } // fix width
+        GenericMainArea.TabButton { text: qsTr("Text View"); tabbarWidth: mainArea.width } // fix width
     }
 
     mainAreaContent: StackLayout {
@@ -24,15 +25,18 @@ GenericAppElements.ContentAreaStack {
         ///height: 400
         //GenericMainAreaAnalysis.Simulation { }
         GenericMainAreaAnalysis.Fitting { }
-        GenericMainAreaAnalysis.Constraints { }
-        GenericMainAreaAnalysis.Editor { }
+        //GenericMainAreaAnalysis.Constraints { }
+        GenericMainAreaAnalysis.Editor { id: editor }
+        onCurrentIndexChanged: {
+            editor.showContent = (currentIndex === 1)
+        }
     }
 
     sideBarContent: StackLayout {
         currentIndex: tabBar.currentIndex
         //GenericSidebarAnalysis.Simulation { }
         GenericSidebarAnalysis.Fitting { }
-        GenericSidebarAnalysis.Constraints { }
+        //GenericSidebarAnalysis.Constraints { }
         GenericSidebarAnalysis.Editor { }
     }
 

@@ -12,14 +12,17 @@ GenericAppElements.ContentAreaStack {
         spacing: 0
         id: tabBar
         GenericMainArea.TabButton { text: qsTr("Structure View"); tabbarWidth: mainArea.width } // fix width
-        GenericMainArea.TabButton { text: qsTr("Text View (CIF)"); tabbarWidth: mainArea.width } // fix width
+        GenericMainArea.TabButton { text: qsTr("Text View"); tabbarWidth: mainArea.width } // fix width
     }
 
     mainAreaContent: StackLayout {
         id: mainArea
         currentIndex: tabBar.currentIndex
         GenericMainAreaSampleModel.StructureView { }
-        GenericMainAreaSampleModel.TextView {  }
+        GenericMainAreaSampleModel.TextView { id: textView }
+        onCurrentIndexChanged: {
+            textView.showContent = (currentIndex === 1)
+        }
     }
 
     sideBarContent: StackLayout {

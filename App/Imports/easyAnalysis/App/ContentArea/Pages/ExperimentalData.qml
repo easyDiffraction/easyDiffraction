@@ -21,7 +21,10 @@ GenericAppElements.ContentAreaStack {
         currentIndex: tabBar.currentIndex
         GenericMainAreaSampleModel.PlotView { }
         GenericMainAreaSampleModel.TableView { }
-        GenericMainAreaSampleModel.TextView { }
+        GenericMainAreaSampleModel.TextView { id: textView }
+        onCurrentIndexChanged: {
+            textView.showContent = (currentIndex === 2)
+        }
     }
 
     sideBarContent: StackLayout {
