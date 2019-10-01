@@ -6,15 +6,17 @@ import easyDiffraction 1.0 as Specific
 Rectangle {
     property int margin: 20
 
-    id: parentRectangle
+    id: mainRectangle
 
     Layout.fillWidth: true
     Layout.fillHeight: true
 
     color: Generic.Style.appBkgColor
 
+    // State 1: No Project Created/Opened
+
     Column {
-        visible: !proxy.project_opened
+        visible: !Generic.Variables.projectOpened
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
@@ -27,8 +29,10 @@ Rectangle {
         }
     }
 
+    // State 2: Project Created/Opened
+
     Column {
-        visible: proxy.project_opened
+        visible: Generic.Variables.projectOpened
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
@@ -36,28 +40,21 @@ Rectangle {
         spacing: 10
 
         Text {
-            text: proxy.project_opened ? proxy.project_name : ""
-            /*
-            onTextChanged: {
-                print("typeof proxy.cell_length_a", typeof proxy.cell_length_a)
-                print("typeof text", typeof text)
-                print("proxy.cell_length_a", proxy.cell_length_a)
-                print("text", text)
-                proxy.cell_length_a = text
-            }
-            */
+            text: Generic.Variables.projectOpened ? proxy.project.info.name : ""
             font.pointSize: Generic.Style.fontPointSize * 3
             font.family: Generic.Style.fontFamily
         }
 
         Text {
-            text: proxy.project_opened ? "Keywords: " + proxy.project_info : ""
+            text: Generic.Variables.projectOpened ? proxy.project.info.keywords.join(", ") : ""
             font.pointSize: Generic.Style.fontPointSize + 1
             font.family: Generic.Style.fontFamily
         }
 
         Item { height: 1; width: 1 }
 
+        // Temporary hide images
+        /*
         Row {
             spacing: margin
 
@@ -65,7 +62,7 @@ Rectangle {
                 model: ["structure", "refinement"]
 
                 Rectangle {
-                    height: (parentRectangle.width - 3*margin) / 2
+                    height: (mainRectangle.width - 3*margin) / 2
                     width: height
                     color: "white"
                     border.color: Generic.Style.appBorderColor
@@ -81,9 +78,11 @@ Rectangle {
                 }
             }
         }
+        */
 
         Item { height: Generic.Style.fontPointSize * 3; width: 1 }
     }
+
 }
 
 
