@@ -18,7 +18,7 @@ class CellBoxModel(QObject):
 
     def _setModelFromProject(self):
         """Create the model needed for GUI structure chart (unit cell box)."""
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData start") # profiling
+        logging.info("+++++++++++++++++++++++++ setData start") # profiling
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
             self._model.blockSignals(True)
@@ -59,7 +59,7 @@ class CellBoxModel(QObject):
             # unblock signals and emit model layout changed
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData end") # profiling
+        logging.info("+++++++++++++++++++++++++ setData end") # profiling
 
     modelChanged = Signal()
 
