@@ -7,6 +7,8 @@
     "App/PyImports/Models/MeasuredDataModel.py",
     "App/PyImports/Models/CalculatedDataModel.py",
     "App/PyImports/Models/BraggPeaksModel.py",
+    "App/PyImports/Models/CellBoxModel.py",
+    "App/PyImports/Models/AtomSitesModel.py",
     "App/PyImports/Models/FitablesModel.py",
     "App/Gui.qml",
     "App/QmlResource.qrc"
