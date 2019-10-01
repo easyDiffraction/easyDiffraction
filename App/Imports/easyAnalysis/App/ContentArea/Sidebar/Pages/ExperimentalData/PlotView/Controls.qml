@@ -7,47 +7,14 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 import easyAnalysis.Logic 1.0 as GenericLogic
+import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
     spacing: 0
 
 
-    ////////////////////////
-    // Check if data changed
-    ////////////////////////
-
-    Text {
-        id: dataChanged
-        visible: false
-        text: proxy.time_stamp
-        onTextChanged: {
-            print("Time stamp: ", proxy.time_stamp)
-
-            // Update Parameters
-
-            // dataExplorerTable
-            dataExplorerTable.model.clear()
-            dataExplorerTable.model.append({
-                'num':"1",
-                'fname':proxy.tmp_rcif_file_name(),
-                'fdir':proxy.tmp_rcif_dir_name()
-            })
-
-            // instrument parameters
-            wavelength.text = proxy.tmp_setup_wavelength()
-            u.text = proxy.tmp_setup_resolution_u()
-            x.text = proxy.tmp_setup_resolution_x()
-            zeroShift.text = proxy.tmp_setup_zero_shift()
-            v.text = proxy.tmp_setup_resolution_v()
-            y.text = proxy.tmp_setup_resolution_y()
-            w.text = proxy.tmp_setup_resolution_w()
-        }
-    }
-
-
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         title: "Data Explorer"
         collapsible: false
@@ -97,28 +64,13 @@ ColumnLayout {
         }
     }
 
-    ///////////
     // Groupbox
-    ///////////
-    /*
-    GenericAppElements.GroupBox {
-        title: "Metadata"
-        collapsed: true
-        enabled: false
-        content: GenericAppElements.ColumnLayout {
-            Text { text: "To be added" }
-        }
-    }
-    */
 
-    ///////////
-    // Groupbox
-    ///////////
     GenericAppElements.GroupBox {
         title: "Instrument"//"Diffractometer"
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
-                //enabled: false
+                enabled: false
                 columns: 3
                 rowSpacing: 2
 
@@ -126,7 +78,6 @@ ColumnLayout {
                 Text { text: "Instrument    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 Text { text: "Configuration"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 GenericAppElements.ComboBox { currentIndex: 5; model: ["ESS", "ISIS", "SNS", "ILL", "MLZ", "LLB", "Custom"] }
-                //GenericAppElements.ComboBox { currentIndex: 6; model: ["BEER", "D2B", "DREAM", "HEIMDAL", "MAGiC", "POLARIS", "6T2", "Custom neutron", "Custom X-ray"] }
                 GenericAppElements.ComboBox { currentIndex: 0; model: ["6T2", "Custom"] }
                 GenericAppElements.ComboBox { currentIndex: 0; model: ["Standard"] }
 
@@ -144,14 +95,13 @@ ColumnLayout {
         }
     }
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
-        title: "Peak profile"
+        title: "Peak profile" // https://wiki-ext.aps.anl.gov/ug11bm/index.php/GSAS_Profile_Terms
         content: GenericAppElements.ColumnLayout {
             spacing: 12
-            //enabled: false
+            enabled: false
             ColumnLayout {
                 spacing: 2
                 Text { text: "Instrument resolution function"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
@@ -164,30 +114,26 @@ ColumnLayout {
                 rowSpacing: 10
                 enabled: false
                 // Row
-                Text { text: qsTr("U") } // https://wiki-ext.aps.anl.gov/ug11bm/index.php/GSAS_Profile_Terms
-                GenericAppElements.TextField { id: u }
+                Text { text: qsTr("U") }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.u.value.toFixed(4) : "" }
                 Text {}
                 Text { text: qsTr("V") }
-                GenericAppElements.TextField { id: v }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.v.value.toFixed(4) : "" }
                 Text {}
                 Text { text: qsTr("W") }
-                GenericAppElements.TextField { id: w }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.w.value.toFixed(4) : "" }
                 // Row
                 Text { text: qsTr("X") }
-                GenericAppElements.TextField { id: x }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.x.value.toFixed(4) : "" }
                 Text {}
                 Text { text: qsTr("Y") }
-                GenericAppElements.TextField { id: y }
-                //Text {}
-                //Text { text: qsTr("Z") }
-                //GenericAppElements.TextField { id: z }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.y.value.toFixed(4) : "" }
             }
         }
     }
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         title: "Misc"//"Instrument parameters"
         content: GridLayout {
@@ -195,46 +141,26 @@ ColumnLayout {
             columnSpacing: 15
             rowSpacing: 10
             enabled: false
-            // Row
             Text { text: qsTr("Wavelength") }
-            GenericAppElements.TextField { id: wavelength; units: "\u212B" }
+            GenericAppElements.TextField {
+                text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.wavelength.value.toFixed(4) : ""
+                units: "\u212B"
+            }
             Text {}
             Text { text: qsTr("Zero shift") }
-            GenericAppElements.TextField { id: zeroShift; units: "\u00B0" }
+            GenericAppElements.TextField {
+                text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.offset.value.toFixed(4) : ""
+                units: "\u00B0"
+            }
         }
     }
 
-    /////////
     // Spacer
-    /////////
+
     Item { Layout.fillHeight: true }
 
-    ///////////
     // Groupbox
-    ///////////
-    /*
-    GenericAppElements.GroupBox {
-        collapsible: false
-        showBorder: false
-        content: GenericAppElements.RowLayout {
-            GenericAppContentAreaButtons.GoNext {
-                text: "Next step: Instrument Model"
-                ToolTip.text: qsTr("Go to the next step: Instrument Model description")
-                onClicked: {
-                    Generic.Variables.dataPageFinished = true
-                    Generic.Variables.toolbarCurrentIndex = Generic.Variables.InstrumentModelIndex
-                }
-            }
-            GenericAppContentAreaButtons.SaveState {}
-            GenericAppContentAreaButtons.Help {}
-            GenericAppContentAreaButtons.Bug {}
-        }
-    }
-    */
 
-    ///////////
-    // Groupbox
-    ///////////
     GenericAppElements.GroupBox {
         collapsible: false
         showBorder: false
