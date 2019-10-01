@@ -1,3 +1,13 @@
 {
-"files": ["App/easyDiffraction.py", "App/RhoChiQml.py", "App/Gui.qml", "App/QmlResource.qrc"]
+"files": [
+    "App/easyDiffraction.py",
+    "App/Proxy.py",
+    "App/MeasuredDataModel.py",
+    "App/CalculatedDataModel.py",
+    "App/BraggPeaksModel.py",
+    "App/FitablesModel.py",
+    "App/CryspyCalculator.py",
+    "App/Gui.qml",
+    "App/QmlResource.qrc"
+    ]
 }
