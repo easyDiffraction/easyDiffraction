@@ -3,7 +3,10 @@ import operator
 
 def nested_get(dictionary, keys_list):
     """Access a nested object in root by key sequence."""
-    return reduce(operator.getitem, keys_list, dictionary)
+    try:
+        return reduce(operator.getitem, keys_list, dictionary)
+    except:
+        return ""
 
 def nested_set(dictionary, keys_list, value):
     """Get a value in a nested object in root by key sequence."""
