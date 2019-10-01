@@ -9,112 +9,23 @@ import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 import easyAnalysis.Logic 1.0 as GenericLogic
 
 ColumnLayout {
-    spacing: 0
-
     property bool isFitting: true
 
-    Text {
-        id: dataChanged
-        visible: false
-        text: proxy.time_stamp
-        onTextChanged: {
-            print("Time stamp: ", proxy.time_stamp)
+    spacing: 0
 
-            // Set data
-            const parameters = proxy.get_parameters()
-            //print("parameters.length", parameters.length)
-            //print("parameters", parameters)
-            for (let i = 0; i < parameters.length; i++) {
-                for (const key in parameters[i]) {
-                    dataExplorerTableModel.set(i, {
-                        'num':i+1,
-                        'group':parameters[i][key]['group'],
-                        'subgroup':parameters[i][key]['subgroup'],
-                        'parameter':parameters[i][key]['name'],
-                        'started':parameters[i][key]['value'],
-                        'min':parameters[i][key]['min'],
-                        'max':parameters[i][key]['max'],
-                        'fit':parameters[i][key]['fit'],
-                        'refined':parameters[i][key]['value'].includes('(') ? parameters[i][key]['value'] : "",
-                        'error':parameters[i][key]['esd']
-                    })
-                }
-            }
-        }
-    }
-
-
-    ///////////
     // Groupbox
-    ///////////
-    /*
-    GenericAppElements.GroupBox {
-        title: "Jobs"
-        collapsible: false
-        visible: false
-        content: GenericAppElements.ColumnLayout {
-            // Table
-            GenericAppElements.ParametersTable {
-                selectable: true
-                model: ListModel {
-                    ListElement { num:"1"; name: "POLARIS CeCuAl3" }
-                    ListElement { num:"2"; name: "POLARIS CeCuAl3 + Al" }
-                    ListElement { num:"3"; name: "POLARIS CeCuAl3 + Al & DREAM CeCuAl3" }
-                }
-                Controls1.TableViewColumn { role:"num";    title:"No.";  resizable: false }
-                Controls1.TableViewColumn { role:"name";   title:"Name" }
-                Controls1.TableViewColumn { role:"remove"; title:"Remove"; resizable: false }
-            }
-        }
-    }
-    */
 
-    ///////////
-    // Groupbox
-    ///////////
     GenericAppElements.GroupBox {
         title: "Parameters"
         id: dataExplorerTable
         collapsible: false
         content: GenericAppElements.ColumnLayout {
-            // Table
-            GenericAppElements.ParametersTable {
-                selectable: true
-                selectedRow: 0
-                enabled: true
-                model: ListModel {
-                    id: dataExplorerTableModel
-                    ListElement { num:1; group:"sample";      subgroup:"cell";        parameter:"CeCuAl3 a    "; started:"4.25";  min:"";     max:"";     fit:true;   refined:"4.2598";   error:"0.0001" }
-                    ListElement { num:6; group:"instrument";  subgroup:"resolution";  parameter:"POLARIS Sig-2"; started:"0.00";  min:"";     max:"";     fit:false;  refined:"";         error:"" }
-                    //ListElement { num:1; type:"sample";      group:"cell";       parameter:"CeCuAl3 a    "; started:"4.25";  min:"4.00";     max:"5.00";     fit:true;   refined:"4.2598";   error:"0.0001" }
-                    //ListElement { num:6; type:"instrument";  group:"resolution"; parameter:"POLARIS Sig-2"; started:"0.00";  min:"";         max:"";         fit:false;  refined:"";         error:"" }
-                }
-                Controls1.TableViewColumn { role:"num";         title:"No.";  resizable: false }
-                Controls1.TableViewColumn { role:"group";       title:"Type"; resizable: false }
-                Controls1.TableViewColumn { role:"subgroup";    title:"Group" }
-                Controls1.TableViewColumn { role:"parameter";   title:"Parameter" }
-                Controls1.TableViewColumn { role:"min";         title:"Min"; resizable: false }
-                Controls1.TableViewColumn { role:"started";     title:"Started" }
-                Controls1.TableViewColumn { role:"max";         title:"Max"; resizable: false }
-                Controls1.TableViewColumn { role:"fit";         title:"Fit"; resizable: false }
-                Controls1.TableViewColumn { role:"refined";     title:"Refined" }
-                //Controls1.TableViewColumn { role:"error";       title:"Error" }
-            }
 
-            // Slider
-            GenericAppElements.RowLayout {
-                Text { enabled: false; text: "-\u221E" }
-                Slider {
-                    enabled: false
-                    Layout.fillWidth: true
-                    padding: 0
-                    from: 0.00
-                    value: 1.00
-                    to: 2.00
-                }
-                Text { enabled: false; text: "+\u221E" }
+            // Fitables table
+            GenericAppElements.FitablesView {
+                Layout.fillWidth: true
+                model: proxy.fitables
             }
-
 
             // Buttons
             GenericAppElements.GridLayout {
@@ -122,11 +33,20 @@ ColumnLayout {
 
                 GenericAppContentAreaButtons.PausePlay {
                     id: pausePlayButton;
-                    text: proxy.fitButtonState;
+                    text: "Start fitting" ///proxy.fitButtonState;
                     onClicked: {
                         const res = proxy.refine()
                         print(res)
-                        pausePlayButton.text = proxy.fitButtonState
+                        ///pausePlayButton.text = proxy.fitButtonState
+                        infoLabel.text = `${res.refinement_message}`
+                        infoLabel.text += res.num_refined_parameters ? `\nNumber of refined parameters: ${res.num_refined_parameters}` : ""
+                        infoLabel.text += res.nfev ? `\nnfev: ${res.nfev}` : ""
+                        infoLabel.text += res.nit ? `\nnfev: ${res.nit}` : ""
+                        infoLabel.text += res.njev ? `\nnfev: ${res.njev}` : ""
+                        infoLabel.text += res.started_chi_sq ? `\nStarted goodnes-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(3)}` : ""
+                        infoLabel.text += res.final_chi_sq ? `\nFinal goodnes-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(3)}` : ""
+                        infoLabel.text += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
+                        info.open()
                     }
                 }
                 CheckBox { enabled: false; checked: false; text: "Auto-update"; }
@@ -154,15 +74,12 @@ ColumnLayout {
         }
     }
 
-    /////////
     // Spacer
-    /////////
 
     Item { Layout.fillHeight: true }
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         collapsible: false
         showBorder: false
@@ -192,6 +109,20 @@ ColumnLayout {
             GenericAppContentAreaButtons.Bug {
                 onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/contact.html")
             }
+        }
+    }
+
+    // Info dialog (after refinement)
+
+    Dialog {
+        id: info
+        parent: Overlay.overlay
+        anchors.centerIn: parent
+        modal: true
+
+        Label {
+            id: infoLabel
+            anchors.centerIn: parent
         }
     }
 
