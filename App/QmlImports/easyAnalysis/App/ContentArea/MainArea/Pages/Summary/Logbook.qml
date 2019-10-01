@@ -18,36 +18,6 @@ Rectangle {
     //anchors.fill: parent
     Layout.fillWidth: true
 
-    Text {
-        id: dataChanged
-        visible: false
-        text: proxy.time_stamp
-        onTextChanged: {
-            print("Time stamp: ", proxy.time_stamp)
-
-            // Set data
-            const parameters = proxy.get_parameters()
-            //print("parameters.length", parameters.length)
-            //print("parameters", parameters)
-            dataExplorerTable.visibleRowsCount =  parameters.length
-            for (let i = 0; i < parameters.length; i++) {
-                for (const key in parameters[i]) {
-                    dataExplorerTableModel.set(i, {
-                        'num':i+1,
-                        'group':parameters[i][key]['group'],
-                        'subgroup':parameters[i][key]['subgroup'],
-                        'parameter':parameters[i][key]['name'],
-                        'started':parameters[i][key]['value'],
-                        'min':parameters[i][key]['min'],
-                        'max':parameters[i][key]['max'],
-                        'fit':parameters[i][key]['fit'],
-                        'refined':parameters[i][key]['value'].includes('(') ? parameters[i][key]['value'] : "",
-                        'error':parameters[i][key]['esd']
-                    })
-                }
-            }
-        }
-    }
 
 
     ScrollView {
@@ -70,14 +40,14 @@ Rectangle {
                 textFormat: Text.RichText
                 text:
 "
-<h1>" + proxy.project_name + "</h1>
+<h1>" + "proxy.project_name" + "</h1>
 <p>
 <b>Creation date: </b>11.04.2019<br>
-<b>Project folder: </b>" + proxy.tmp_rcif_dir_name() + "<br>
-<b>Project file: </b>" + proxy.tmp_rcif_file_name() + "<br>
-<b>Experimental data file: </b>" + proxy.tmp_rcif_file_name() + "<br>
+<b>Project folder: </b>" + "proxy.tmp_rcif_dir_name()" + "<br>
+<b>Project file: </b>" + "proxy.tmp_rcif_file_name()" + "<br>
+<b>Experimental data file: </b>" + "proxy.tmp_rcif_file_name()" + "<br>
 <b>Instrument: </b>6T2 at LLB<br>
-<b>Sample: </b>" + proxy.project_name + "<br>
+<b>Sample: </b>" + "proxy.project_name" + "<br>
 </p>
 
 <h2>Parameters</h2>

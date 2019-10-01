@@ -4,11 +4,11 @@ from PySide2.QtGui import QStandardItemModel
 import logging
 logging.basicConfig(format="%(asctime)-15s [%(levelname)s] %(filename)s %(funcName)s [%(lineno)d]: %(message)s", level=logging.INFO)
 
-from CryspyCalculator import *
-from MeasuredDataModel import *
-from CalculatedDataModel import *
-from BraggPeaksModel import *
-from FitablesModel import *
+from PyImports.Calculators.CryspyCalculator import *
+from PyImports.Models.MeasuredDataModel import *
+from PyImports.Models.CalculatedDataModel import *
+from PyImports.Models.BraggPeaksModel import *
+from PyImports.Models.FitablesModel import *
 
 class Proxy(QObject):
     def __init__(self, parent=None):

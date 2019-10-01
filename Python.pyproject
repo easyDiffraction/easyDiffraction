@@ -1,12 +1,13 @@
 {
 "files": [
     "App/easyDiffraction.py",
-    "App/Proxy.py",
-    "App/MeasuredDataModel.py",
-    "App/CalculatedDataModel.py",
-    "App/BraggPeaksModel.py",
-    "App/FitablesModel.py",
-    "App/CryspyCalculator.py",
+    "App/PyImports/Proxy.py",
+    "App/PyImports/Helpers.py",
+    "App/PyImports/Calculators/CryspyCalculator.py",
+    "App/PyImports/Models/MeasuredDataModel.py",
+    "App/PyImports/Models/CalculatedDataModel.py",
+    "App/PyImports/Models/BraggPeaksModel.py",
+    "App/PyImports/Models/FitablesModel.py",
     "App/Gui.qml",
     "App/QmlResource.qrc"
     ]

@@ -47,12 +47,12 @@ ApplicationWindow {
         source: Generic.Style.dummyIconPath
         onSourceChanged: {
             const currentFilePath = GenericLogic.Misc.dirFromPath(source.toString())
-            Specific.Variables.resourcesPath = currentFilePath + "Imports/easyDiffraction/Resources/"
-            Generic.Variables.resourcesPath = currentFilePath + "Imports/easyAnalysis/Resources/"
+            Specific.Variables.resourcesPath = currentFilePath + "QmlImports/easyDiffraction/Resources/"
+            Generic.Variables.resourcesPath = currentFilePath + "QmlImports/easyAnalysis/Resources/"
             //Generic.Variables.thirdPartyIconsPath = Generic.Variables.resourcesPath + "Icons/"
             Generic.Variables.originalIconsPath = Generic.Variables.resourcesPath + "Icons/"
             Generic.Variables.thirdPartyIconsPath = Generic.Variables.resourcesPath + "Fonts/Awesome/svgs/"
-            Generic.Variables.qmlElementsPath = currentFilePath + "Imports/easyAnalysis/App/Elements/"
+            Generic.Variables.qmlElementsPath = currentFilePath + "QmlImports/easyAnalysis/App/Elements/"
         }
     }
 
