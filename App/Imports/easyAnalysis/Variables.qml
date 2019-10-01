@@ -41,15 +41,16 @@ QtObject {
 
     // States
     property bool isDebug: true
-    property bool homePageFinished: isDebug ? false : true
-    property bool dataPageFinished: isDebug ? false : true
-    property bool samplePageFinished: isDebug ? false : true
+    property bool homePageFinished: isDebug ? true : false
+    property bool dataPageFinished: isDebug ? true : false
+    property bool samplePageFinished: isDebug ? true : false
     //property bool instrumentPageFinished: false
     //property bool linkingPageFinished: false
-    property bool analysisPageFinished: isDebug ? false : true
-    property bool summaryPageFinished: isDebug ? false : true
+    property bool analysisPageFinished: isDebug ? true : false
+    property bool summaryPageFinished: isDebug ? true : false
 
-    property bool modelLoaded: false
+    property bool projectOpened: false
+    //property bool modelLoaded: false
 
     // Data arrays
     property var xPeaks: []
