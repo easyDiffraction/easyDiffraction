@@ -198,6 +198,14 @@ class CryspyCalculator(QObject):
                     'hide': z.constraint_flag,
                     'refine': z.refinement }
 
+            # Atom site neutron scattering length
+            for label, scat_length_neutron in zip(phase.atom_site.label, phase.atom_site.scat_length_neutron):
+                self._phases_dict[phase.label]['atom_site'][label]['scat_length_neutron'] = {
+                    'header': '',
+                    'tooltip': '',
+                    'url': '',
+                    'value': scat_length_neutron }
+
             # Atom site occupancy
             for label, occupancy in zip(phase.atom_site.label, phase.atom_site.occupancy):
                 self._phases_dict[phase.label]['atom_site'][label]['occupancy'] = {
