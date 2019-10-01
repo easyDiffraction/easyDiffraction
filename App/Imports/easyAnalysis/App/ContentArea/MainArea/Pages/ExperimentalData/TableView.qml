@@ -6,45 +6,90 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 
 Rectangle {
-    //anchors.fill: parent
+    //property alias headerModel: headerTableView.model
+    //property alias dataModel: contentTableView.model
 
-    color: "white"
+    property bool editable: false
 
-    ////////////////////////
-    // Check if data changed
-    ////////////////////////
+    property int borderWidth: 0
+    property int cellWidth: 130
+    property int cellHeight: 30
+    property int rowCountToDisplayWithoutHeader: 3
 
-    Text {
-        id: dataChanged
-        visible: false
-        text: proxy.time_stamp
-        onTextChanged: {
-            print("Time stamp: ", proxy.time_stamp)
+    property string rowBackgroundColor: 'white'
+    property string alternateRowBackgroundColor: '#f7f7f7'
+    property string headerBackgroundColor: '#eee'
+    property string headerBorderColor: '#dedede'
 
-            // remove old data points
-            listModel.clear()
+    width: parent.width
+    height: parent.height
+    border.color: headerBorderColor
+    border.width: borderWidth
 
-            for (let i = 0, len = proxy.tmp_tth_list().length; i < len; i++ ) {
-                const x = proxy.tmp_tth_list()[i]
-                const yobs = proxy.tmp_int_u_list()[i]
-                const syobs = proxy.tmp_sint_u_list()[i]
+    Column {
+        width: parent.width
+        height: parent.height
+        x: borderWidth
+        y: borderWidth
+        spacing: 0
+        clip: true
 
-                listModel.append( { x: x, y: yobs, sy: syobs } )
+        // Header
+        TableView {
+            id: headerTableView
+            width: parent.width//cellWidth * columns
+            height: cellHeight
+            enabled: false
+
+            model: proxy.measuredDataHeader
+
+            delegate: Rectangle {
+                implicitWidth: cellWidth
+                implicitHeight: cellHeight
+                color: headerBackgroundColor
+
+                Text {
+                    anchors.fill: parent
+                    leftPadding: font.pixelSize
+                    rightPadding: leftPadding
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignRight
+                    enabled: false
+                    text: display
+                }
             }
         }
-    }
 
-    ListModel {
-        id: listModel
-    }
+        // Main content
+        TableView {
+            id: contentTableView
+            width: parent.width//cellWidth * columns
+            height: parent.height - headerTableView.height
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
 
-    GenericAppElements.ParametersTable {
-        customFrameVisible: false
-        anchors.fill: parent
-        model: listModel
-        Controls1.TableViewColumn { role:"x";  title:"TOF";   resizable: false; width: Generic.Variables.mainAreaWidth / 4 - 1 }
-        Controls1.TableViewColumn { role:"y";  title:"Yobs";  resizable: false; width: Generic.Variables.mainAreaWidth / 4 - 1 }
-        Controls1.TableViewColumn { role:"sy"; title:"sYobs"; resizable: false; width: Generic.Variables.mainAreaWidth / 4 - 1 }
-        Controls1.TableViewColumn { }
+            ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
+            //ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 1 / contentTableView.columns }
+            ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
+
+            model: proxy.measuredData
+
+            delegate: Rectangle {
+                implicitWidth: cellWidth
+                implicitHeight: cellHeight
+                color: row % 2 ? alternateRowBackgroundColor : rowBackgroundColor
+
+                TextInput {
+                    anchors.fill: parent
+                    leftPadding: font.pixelSize
+                    rightPadding: leftPadding
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignRight
+                    enabled: editable
+                    text: display.toFixed(4)
+                    onEditingFinished: edit = text
+                }
+            }
+        }
     }
 }
