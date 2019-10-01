@@ -29,6 +29,9 @@ Rectangle {
         onTextChanged: {
             print("--------------------------------------------------------- Time stamp: ", text)
 
+
+            /*
+
             // Create dictionary b_scattering:color
             const bscatList = Array.from(new Set(proxy.atom_site_bscat_list()))
             let bscatColorDict = {}
@@ -65,6 +68,8 @@ Rectangle {
                     chart.addSeries(series)
                 }
             }
+
+            */
         }
     }
 
