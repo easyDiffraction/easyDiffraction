@@ -12,6 +12,8 @@ from PyImports.Models.CalculatedDataModel import *
 from PyImports.Models.BraggPeaksModel import *
 from PyImports.Models.CellBoxModel import *
 from PyImports.Models.AtomSitesModel import *
+from PyImports.Models.AtomAdpsModel import *
+from PyImports.Models.AtomMspsModel import *
 from PyImports.Models.FitablesModel import *
 
 class Proxy(QObject):
@@ -24,6 +26,8 @@ class Proxy(QObject):
         self._bragg_peaks_model = None
         self._cell_box_model = None
         self._atom_sites_model = None
+        self._atom_adps_model = None
+        self._atom_msps_model = None
         self._fitables_model = None
 
     # Load rcif
@@ -38,6 +42,8 @@ class Proxy(QObject):
         self._bragg_peaks_model = BraggPeaksModel(self._project_model)
         self._cell_box_model = CellBoxModel(self._project_model)
         self._atom_sites_model = AtomSitesModel(self._project_model)
+        self._atom_adps_model = AtomAdpsModel(self._project_model)
+        self._atom_msps_model = AtomMspsModel(self._project_model)
         self._fitables_model = FitablesModel(self._project_model)
         #self._fitables_model.modelChanged.connect(self.projectChanged)
         self.projectChanged.emit()
@@ -48,12 +54,15 @@ class Proxy(QObject):
         self.braggPeaksChanged.emit()
         self.cellBoxChanged.emit()
         self.atomSitesChanged.emit()
+        self.atomAdpsChanged.emit()
+        self.atomMspsChanged.emit()
         self.fitablesChanged.emit()
 
     # Project model for QML
     projectChanged = Signal()
     def getProject(self):
-        logging.info("********************************** GET PROJECT *******************************")
+        logging.info("")
+        #logging.info("********************************** GET PROJECT *******************************")
         if self._project_model is None:
             return ""
         return self._project_model.asDict()
@@ -62,7 +71,7 @@ class Proxy(QObject):
     # CIF model for QML
     def getCif(self):
         logging.info("")
-        logging.info("********************************** GET CIF *******************************")
+        #logging.info("********************************** GET CIF *******************************")
         if self._project_model is None:
             return ""
         return self._project_model.asCifDict()
@@ -123,10 +132,8 @@ class Proxy(QObject):
     cellBoxChanged = Signal()
     def getCellBox(self):
         logging.info("")
-        logging.info("--BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
         if self._cell_box_model is None:
             return QStandardItemModel()
-        logging.info("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
         return self._cell_box_model.asModel()
     cellBox = Property('QVariant', getCellBox, notify=cellBoxChanged)
 
@@ -134,12 +141,28 @@ class Proxy(QObject):
     atomSitesChanged = Signal()
     def getAtomSites(self):
         logging.info("")
-        logging.info("--AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         if self._atom_sites_model is None:
             return QStandardItemModel()
-        logging.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         return self._atom_sites_model.asModel()
     atomSites = Property('QVariant', getAtomSites, notify=atomSitesChanged)
+
+    # Atom ADPs model for QML
+    atomAdpsChanged = Signal()
+    def getAtomAdps(self):
+        logging.info("")
+        if self._atom_adps_model is None:
+            return QStandardItemModel()
+        return self._atom_adps_model.asModel()
+    atomAdps = Property('QVariant', getAtomAdps, notify=atomAdpsChanged)
+
+    # Atom MSPs model for QML
+    atomMspsChanged = Signal()
+    def getAtomMsps(self):
+        logging.info("")
+        if self._atom_msps_model is None:
+            return QStandardItemModel()
+        return self._atom_msps_model.asModel()
+    atomMsps = Property('QVariant', getAtomMsps, notify=atomMspsChanged)
 
     # Fitables model for QML
     fitablesChanged = Signal()
