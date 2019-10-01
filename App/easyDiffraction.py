@@ -7,25 +7,31 @@ from PySide2.QtQml import QQmlApplicationEngine
 
 import QmlResource
 
-import RhoChiQml
+from Proxy import *
 
 if __name__ == '__main__':
-
     QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+
     app = QApplication(sys.argv)
+
     app.setOrganizationName("easyDiffraction")
     app.setOrganizationDomain("easyDiffraction.org")
     app.setApplicationName("easyDiffraction")
 
-    proxy = RhoChiQml.Proxy()
     engine = QQmlApplicationEngine()
+
+    proxy = Proxy()
     engine.rootContext().setContextProperty("proxy", proxy)
 
-    engine.addImportPath(":/Imports")
-    engine.load(":/Gui.qml")
+    current_dir = os.path.dirname(sys.argv[0])
+    qml_gui_path = os.path.join(current_dir, "Gui.qml")
+    imports_path = os.path.join(current_dir, "Imports")
 
-    #engine.addImportPath(os.path.join(os.path.dirname(sys.argv[0]), "Imports"))
-    #engine.load(QUrl.fromLocalFile(os.path.join(os.path.dirname(sys.argv[0]), "Gui.qml")))
+    engine.addImportPath(imports_path)
+    engine.load(qml_gui_path)
+
+    #engine.addImportPath(":/Imports")
+    #engine.load(":/Gui.qml")
 
     if engine.rootObjects():
         sys.exit(app.exec_())
