@@ -21,3 +21,4 @@ DifferenceChartView 1.0 DifferenceChartView.qml
 LineSeries 1.0 LineSeries.qml
 AtomScatter3DSeries 1.0 AtomScatter3DSeries.qml
 TextField 1.0 TextField.qml
+FitablesView 1.0 FitablesView.qml
