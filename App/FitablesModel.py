@@ -49,9 +49,6 @@ class FitablesModel(QObject):
         column = []
         for path in Helpers.find_in_obj(project_dict, 'refine'):
             keys_list = path[:-1]
-            hide = Helpers.nested_get(project_dict, keys_list + ['hide'])
-            if hide:
-                continue
             item = QStandardItem()
             for role, role_name_bytes in self._roles_dict.items():
                 role_name = role_name_bytes.decode()
