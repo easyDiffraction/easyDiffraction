@@ -10,13 +10,13 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 import easyAnalysis.Logic 1.0 as GenericLogic
+import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
     spacing: 0
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         title: "Get Started"
         collapsible: false
@@ -36,17 +36,17 @@ ColumnLayout {
             // Open project dialog
             FileDialog{
                 id: fileDialog
-                nameFilters: [ "RhoChi files (*.rcif)" ]
+                nameFilters: [ "CtysPy files (*.rcif)", "CIF files (*.cif)" ]
                 folder: settings.value("lastOpenedProjectFolder", QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation))
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    proxy.load_rhochi_model_and_update_proxy(fileUrl.toString())
-                    Generic.Variables.modelLoaded = true
-                    Generic.Variables.homePageFinished = false
-                    Generic.Variables.dataPageFinished = false
-                    Generic.Variables.samplePageFinished = false
-                    Generic.Variables.analysisPageFinished = false
-                    Generic.Variables.summaryPageFinished = false
+                    proxy.init(fileUrl.toString().replace("file://", ""))
+                    Generic.Variables.projectOpened = true
+                    Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
                     fileDialog.close()
                 }
             }
@@ -69,9 +69,8 @@ ColumnLayout {
         }
     }
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         title: "Recent Projects"
         enabled: false
@@ -98,9 +97,9 @@ ColumnLayout {
         }
     }
 
-    ///////////
+
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         title: "Examples"
         enabled: false
@@ -123,9 +122,9 @@ ColumnLayout {
         }
     }
 
-    ///////////
+
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         title: "Program Preferences"
         content: GenericAppElements.ColumnLayout {
@@ -144,14 +143,12 @@ ColumnLayout {
         }
     }
 
-    /////////
     // Spacer
-    /////////
+
     Item { Layout.fillHeight: true }
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         collapsible: false
         showBorder: false
@@ -159,8 +156,8 @@ ColumnLayout {
             GenericAppContentAreaButtons.GoNext {
                 text: "Experimental Data"
                 ToolTip.text: qsTr("Go to the next step: Experimental data")
-                enabled: Generic.Variables.modelLoaded
-                highlighted: Generic.Variables.modelLoaded
+                enabled: Generic.Variables.projectOpened
+                highlighted: Generic.Variables.projectOpened
 
                 onClicked: {
                     Generic.Variables.homePageFinished = true
