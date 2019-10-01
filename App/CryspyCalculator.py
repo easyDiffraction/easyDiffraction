@@ -238,6 +238,7 @@ class CryspyCalculator(QObject):
             for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
                 phase.atom_site_aniso.u_11, phase.atom_site_aniso.u_22, phase.atom_site_aniso.u_33,
                 phase.atom_site_aniso.u_12, phase.atom_site_aniso.u_13, phase.atom_site_aniso.u_23):
+                print(phase.label, u_11.constraint_flag, u_22.constraint_flag, u_33.constraint_flag, u_13.constraint_flag)
                 self._phases_dict[phase.label]['atom_site'][label]['u_11'] = {
                     'header': 'U11',
                     'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
