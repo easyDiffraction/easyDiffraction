@@ -4,43 +4,26 @@ import easyAnalysis 1.0 as Generic
 import easyDiffraction 1.0 as Specific
 
 Rectangle {
+    property bool showContent: false
+
     color: "white"
-
-    Text {
-        id: dataChanged
-        visible: false
-        text: proxy.time_stamp
-        onTextChanged: {
-            print("Time stamp: ", proxy.time_stamp)
-
-            // Set data
-            textArea.text = proxy.rcif_as_string()
-        }
-    }
 
     ScrollView {
         anchors.fill: parent
         clip: true
 
-        TextArea {
-            id: textArea
+        TextEdit {
             //anchors.fill: parent
             padding: 10
             readOnly: true
+            color: "#333"
             font.family: Generic.Style.monoFontFamily
-            antialiasing: true
-            wrapMode: Text.WordWrap
-            //text: fileContent()
+            font.pointSize: Generic.Style.fontPointSize
+            //antialiasing: true
+            wrapMode: Text.NoWrap
+            text: showContent ? Specific.Variables.cif.calculations : ""
         }
     }
-
-    function fileContent () {
-        const xhr = new XMLHttpRequest
-        xhr.open("GET", Specific.Variables.resourcesPath + "Examples/CeCuAl3_POLARIS/cecual_vesta.cif", false)
-        xhr.send()
-        return xhr.responseText
-    }
-
 }
 
 

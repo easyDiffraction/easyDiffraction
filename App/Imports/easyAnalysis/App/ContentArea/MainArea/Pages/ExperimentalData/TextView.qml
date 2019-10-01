@@ -6,6 +6,8 @@ import easyDiffraction 1.0 as Specific
 //https://forum.qt.io/topic/90101/textarea-does-not-automatically-scroll/5
 
 Rectangle {
+    property bool showContent: false
+
     color: "white"
 
 	Flickable {
@@ -23,17 +25,10 @@ Rectangle {
             font.family: Generic.Style.monoFontFamily
             //antialiasing: true
             //wrapMode: Text.WordWrap
-            text: fileContent()
+            text: showContent ? Specific.Variables.cif.experiments : ""
         }
-		ScrollBar.vertical: ScrollBar {}
+        ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 0.1 }
 
-    }
-
-    function fileContent () {
-        const xhr = new XMLHttpRequest
-        xhr.open("GET", Specific.Variables.resourcesPath + "Examples/Fe3O4_6T2_0T_powder_1d/full.dat", false)
-        xhr.send()
-        return xhr.responseText
     }
 
 }

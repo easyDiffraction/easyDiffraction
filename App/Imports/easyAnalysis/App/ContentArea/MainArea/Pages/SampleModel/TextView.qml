@@ -6,43 +6,27 @@ import easyDiffraction 1.0 as Specific
 //https://forum.qt.io/topic/90101/textarea-does-not-automatically-scroll/5
 
 Rectangle {
+    property bool showContent: false
+
     color: "white"
-
-    Text {
-        id: dataChanged
-        visible: false
-        text: proxy.time_stamp
-        onTextChanged: {
-            print("Time stamp: ", proxy.time_stamp)
-
-            // Set data
-            textArea.text = proxy.rcif_as_string()
-        }
-    }
 
     ScrollView {
         anchors.fill: parent
         clip: true
 
         TextArea {
-            id: textArea
             //anchors.fill: parent
             padding: 10
             readOnly: true
-            //font.family: "Monaco"
+            color: "#333"
             font.family: Generic.Style.monoFontFamily
+            font.pointSize: Generic.Style.fontPointSize
             //antialiasing: true
-            wrapMode: Text.WordWrap
-            //text: fileContent()
+            wrapMode: Text.NoWrap
+            text: showContent ? Specific.Variables.cif.phases : ""
         }
     }
 
-    function fileContent () {
-        const xhr = new XMLHttpRequest
-        xhr.open("GET", Specific.Variables.resourcesPath + "Examples/CeCuAl3_POLARIS/cecual_vesta.cif", false)
-        xhr.send()
-        return xhr.responseText
-    }
 }
 
 
