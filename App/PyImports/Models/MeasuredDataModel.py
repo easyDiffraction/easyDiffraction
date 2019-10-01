@@ -14,7 +14,7 @@ class MeasuredDataModel(QObject):
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI measured data table and chart."""
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData start") # profiling
+        logging.info("+++++++++++++++++++++++++ setData start") # profiling
         for experiment_id, experiment_dict in self._project_dict['experiments'].items():
             self._data_model.blockSignals(True)
             self._headers_model.blockSignals(True)
@@ -38,7 +38,7 @@ class MeasuredDataModel(QObject):
             #
             self._data_model.layoutChanged.emit()
             self._headers_model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ setData end") # profiling
+        logging.info("+++++++++++++++++++++++++ setData end") # profiling
 
     def asHeadersModel(self):
         """Return headers model."""
