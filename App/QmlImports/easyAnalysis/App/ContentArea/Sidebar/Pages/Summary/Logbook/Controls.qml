@@ -19,9 +19,24 @@ ColumnLayout {
         collapsible: false
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.RowLayout {
-                GenericAppContentAreaButtons.Export { id: exportButton; implicitWidth: 60; text: "Export" }
-                TextField { Layout.fillWidth: true; implicitHeight: 32; placeholderText: "Report File Name"; horizontalAlignment: Text.AlignRight}
-                GenericAppElements.ComboBox { implicitWidth: 60; model: [".PDF", ".HTML"] }
+                GenericAppContentAreaButtons.Export {
+                    id: exportButton
+                    implicitWidth: 60
+                    text: "Export"
+                    onClicked: { proxy.save_report(exportFileName.text, exportFileExt.currentText) }
+                }
+                TextField {
+                    id: exportFileName
+                    Layout.fillWidth: true
+                    implicitHeight: 32
+                    placeholderText: "Report File Name"
+                    horizontalAlignment: Text.AlignRight
+                }
+                GenericAppElements.ComboBox {
+                    id: exportFileExt
+                    implicitWidth: 60
+                    model: [".HTML"]
+                }
 
                 GenericAppElements.GuideWindow {
                     id: guidWindow

@@ -41,13 +41,13 @@ ColumnLayout {
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     proxy.init(fileUrl.toString().replace("file://", ""))
-                    fileDialog.close()
                     Generic.Variables.projectOpened = true
                     Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                    fileDialog.close()
                 }
             }
 
