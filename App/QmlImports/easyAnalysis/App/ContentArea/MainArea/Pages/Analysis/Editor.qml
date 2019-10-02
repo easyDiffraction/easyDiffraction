@@ -8,12 +8,17 @@ Rectangle {
 
     color: "white"
 
-    ScrollView {
-        anchors.fill: parent
-        clip: true
+	Flickable {
+		id: flickable
+		anchors.fill: parent
+		flickableDirection: Flickable.VerticalFlick
+		ScrollBar.vertical: ScrollBar {}
+		ScrollBar.horizontal: ScrollBar {}
+		clip: true
 
-        TextEdit {
-            //anchors.fill: parent
+        boundsBehavior: Flickable.StopAtBounds
+        TextArea.flickable: TextArea {
+			//anchors.fill: parent
             padding: 10
             readOnly: true
             color: "#333"
