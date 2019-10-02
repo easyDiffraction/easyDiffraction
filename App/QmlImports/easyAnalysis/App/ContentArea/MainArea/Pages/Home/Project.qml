@@ -54,31 +54,32 @@ Rectangle {
         Item { height: 1; width: 1 }
 
         // Temporary hide images
-        /*
+
         Row {
             spacing: margin
 
             Repeater {
-                model: ["structure", "refinement"]
+                model: ["saved_structure", "saved_refinement"]
 
                 Rectangle {
+                    visible: image.progress
                     height: (mainRectangle.width - 3*margin) / 2
                     width: height
                     color: "white"
                     border.color: Generic.Style.appBorderColor
                     Image {
+                        id: image
                         anchors.fill: parent
                         anchors.margins: 10
                         fillMode: Image.PreserveAspectFit
                         clip: true
                         antialiasing: true
                         smooth: true
-                        source: proxy.project_opened ? proxy.project_dir_absolute_path + "/" + modelData + ".png" : ""
+                        source: Generic.Variables.projectOpened ? proxy.project_dir_absolute_path + "/" + modelData + ".png" : ""
                     }
                 }
             }
         }
-        */
 
         Item { height: Generic.Style.fontPointSize * 3; width: 1 }
     }
