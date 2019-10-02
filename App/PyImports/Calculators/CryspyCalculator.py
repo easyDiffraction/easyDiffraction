@@ -639,6 +639,7 @@ class CryspyCalculator(QObject):
 
     def setProjectDictFromCryspyObj(self):
         """Combine all the data to one project dictionary"""
+        self._cryspy_obj.apply_constraint()
         self.setAppDict()
         self.setInfoDict()
         self.setPhasesDictFromCryspyObj()
