@@ -22,8 +22,8 @@ ColumnLayout {
         visible: false
         text: proxy.timeStamp
         onTextChanged: {
-            print("--------------------------------------------------------- Time stamp: ", text)
-            if (Specific.Variables.projectOpened) {
+            //print("--------------------------------------------------------- Time stamp: ", text)
+            if (Generic.Variables.projectOpened) {
                 const atom_site_dict = Specific.Variables.project.phases.Fe3O4.atom_site
                 let type_symbol_list = []
                 for (let atom_id in atom_site_dict) {
@@ -132,9 +132,8 @@ ColumnLayout {
         }
     }
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         title: "Atoms, atomic coordinates and occupations"
         content: GenericAppElements.ColumnLayout {
@@ -154,70 +153,40 @@ ColumnLayout {
         }
     }
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
-        title: "Atomic displacement parameters (\u200A\u00D7\u200A10\u2075\u200A)"
+        title: "Atomic displacement parameters" //(\u200A\u00D7\u200A10\u2075\u200A)"
         content: GenericAppElements.ColumnLayout {
-            GenericAppElements.ParametersTable {
-                enabled: false
 
-                model: ListModel {
-                    id: adpModel
-                    ListElement { num:0; label:""; type:""; uiso:""; u11:""; u22:""; u33:""; u12:""; u13:""; u23:"" }
-                }
-
-                Controls1.TableViewColumn { role:"num";     title:"No.";    resizable: false }
-                Controls1.TableViewColumn { role:"label";   title:"Label";  resizable: false }
-                Controls1.TableViewColumn { role:"type";    title:"Type";   resizable: false }
-                Controls1.TableViewColumn { role:"uiso";    title:"Uiso" }
-                Controls1.TableViewColumn { role:"u11";     title:"U11" }
-                Controls1.TableViewColumn { role:"u22";     title:"U22" }
-                Controls1.TableViewColumn { role:"u33";     title:"U33" }
-                Controls1.TableViewColumn { role:"u12";     title:"U12" }
-                Controls1.TableViewColumn { role:"u13";     title:"U13" }
-                Controls1.TableViewColumn { role:"u23";     title:"U23" }
+            // Table
+            GenericAppElements.AtomAdpsTableView {
+                Layout.fillWidth: true
+                model: proxy.atomAdps
             }
         }
     }
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         title: "Magnetic susceptibility parameters"
         content: GenericAppElements.ColumnLayout {
-            GenericAppElements.ParametersTable {
-                enabled: false
 
-                model: ListModel {
-                    id: chiModel
-                    ListElement { num:0; label:""; type:""; chiiso:""; chi11:""; chi22:""; chi33:""; chi12:""; chi13:""; chi23:"" }
-                }
-
-                Controls1.TableViewColumn { role:"num";     title:"No.";    resizable: false }
-                Controls1.TableViewColumn { role:"label";   title:"Label";  resizable: false }
-                Controls1.TableViewColumn { role:"type";    title:"Type";   resizable: false }
-                Controls1.TableViewColumn { role:"chiiso";  title:"\u03C7iso" }
-                Controls1.TableViewColumn { role:"chi11";   title:"\u03C711" }
-                Controls1.TableViewColumn { role:"chi22";   title:"\u03C722" }
-                Controls1.TableViewColumn { role:"chi33";   title:"\u03C733" }
-                Controls1.TableViewColumn { role:"chi12";   title:"\u03C712" }
-                Controls1.TableViewColumn { role:"chi13";   title:"\u03C713" }
-                Controls1.TableViewColumn { role:"chi23";   title:"\u03C723" }
+            // Table
+            GenericAppElements.AtomMspsTableView {
+                Layout.fillWidth: true
+                model: proxy.atomMsps
             }
         }
     }
 
-    /////////
     // Spacer
-    /////////
+
     Item { Layout.fillHeight: true }
 
-    ///////////
     // Groupbox
-    ///////////
+
     GenericAppElements.GroupBox {
         collapsible: false
         showBorder: false

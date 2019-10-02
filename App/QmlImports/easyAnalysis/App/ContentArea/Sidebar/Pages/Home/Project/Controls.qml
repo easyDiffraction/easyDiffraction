@@ -39,14 +39,14 @@ ColumnLayout {
                 nameFilters: [ "CtysPy files (*.rcif)", "CIF files (*.cif)" ]
                 folder: settings.value("lastOpenedProjectFolder", QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation))
                 onAccepted: {
-                    settings.setValue("lastOpenedProjectFolder", folder)
-                    proxy.init(fileUrl.toString().replace("file://", ""))
                     Generic.Variables.projectOpened = true
                     Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                    settings.setValue("lastOpenedProjectFolder", folder)
+                    proxy.init(fileUrl.toString().replace("file://", ""))
                     fileDialog.close()
                 }
             }
