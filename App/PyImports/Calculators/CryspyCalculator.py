@@ -642,6 +642,7 @@ class CryspyCalculator(QObject):
         self._cryspy_obj.apply_constraint()
         self.setAppDict()
         self.setInfoDict()
+        self._info_dict['last_modified_date'] = str(np.datetime64('now'))
         self.setPhasesDictFromCryspyObj()
         self.setExperimentsDictFromCryspyObj()
         self.setCalculationsDictFromCryspyObj()
@@ -766,8 +767,8 @@ class CryspyCalculator(QObject):
         self.getByPath(keys[:-1])[keys[-1]] = value
         self.setCryspyObjFromProjectDict() # updates value in cryspy obj (actually all values, which is too expensive...)
         if not isinstance(value, bool):
-            self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
-            self._info_dict['last_modified_date'] = str(np.datetime64('now'))
+            #self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
+            self.setProjectDictFromCryspyObj()
             print(self._project_dict["info"])
             self.projectDictChanged.emit()
 
@@ -810,7 +811,6 @@ class CryspyCalculator(QObject):
         scipy_refinement_res = self._cryspy_obj.refine()
         #logging.info(scipy_refinement_res)
         self.setProjectDictFromCryspyObj()
-        self._info_dict['last_modified_date'] = str(np.datetime64('now'))
         self.projectDictChanged.emit()
         try:
             return {
