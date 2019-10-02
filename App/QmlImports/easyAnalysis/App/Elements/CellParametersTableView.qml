@@ -209,7 +209,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: length_b//toFixed(length_b)
+                            text: toFixed(length_b)
                             color: foregroundColor()
                         }
                         Text {
