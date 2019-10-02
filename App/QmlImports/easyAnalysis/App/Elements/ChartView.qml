@@ -64,8 +64,8 @@ ColumnLayout {
                 labelsVisible: !showDiff
                 labelsFont: commonFont
                 titleFont: commonFont
-                min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.main.x_min : 0
-                max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.main.x_max : 1
+                min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_min : 0
+                max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_max : 1
             }
 
             // Y-axis for measured and calculated data
@@ -80,8 +80,8 @@ ColumnLayout {
                 titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                 labelsFont: commonFont
                 titleFont: commonFont
-                min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.main.y_min : 0
-                max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.main.y_max : 0
+                min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_min : 0
+                max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_max : 0
             }
 
             // Measured curve
@@ -358,8 +358,8 @@ ColumnLayout {
                 titleText: "Iobs - Icalc"
                 labelsFont: commonFont
                 titleFont: commonFont
-                min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.difference.y_min : 0
-                max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations.pnd.limits.difference.y_max : 0
+                min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min : 0
+                max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max : 0
             }
 
             AreaSeries {

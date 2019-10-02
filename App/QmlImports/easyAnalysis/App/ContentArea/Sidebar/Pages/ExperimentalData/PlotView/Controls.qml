@@ -115,19 +115,19 @@ ColumnLayout {
                 enabled: false
                 // Row
                 Text { text: qsTr("U") }
-                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.u.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.u.value.toFixed(4) : "" }
                 Text {}
                 Text { text: qsTr("V") }
-                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.v.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.v.value.toFixed(4) : "" }
                 Text {}
                 Text { text: qsTr("W") }
-                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.w.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.w.value.toFixed(4) : "" }
                 // Row
                 Text { text: qsTr("X") }
-                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.x.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.x.value.toFixed(4) : "" }
                 Text {}
                 Text { text: qsTr("Y") }
-                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.resolution.y.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.y.value.toFixed(4) : "" }
             }
         }
     }
@@ -143,13 +143,13 @@ ColumnLayout {
             enabled: false
             Text { text: qsTr("Wavelength") }
             GenericAppElements.TextField {
-                text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.wavelength.value.toFixed(4) : ""
+                text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].wavelength.value.toFixed(4) : ""
                 units: "\u212B"
             }
             Text {}
             Text { text: qsTr("Zero shift") }
             GenericAppElements.TextField {
-                text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments.pnd.offset.value.toFixed(4) : ""
+                text: Generic.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].offset.value.toFixed(4) : ""
                 units: "\u00B0"
             }
         }

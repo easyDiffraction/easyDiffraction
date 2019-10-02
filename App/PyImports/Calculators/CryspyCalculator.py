@@ -39,6 +39,8 @@ class CryspyCalculator(QObject):
         self._info_dict = {
             'name': 'Fe3O4',
             'keywords': ['neutron diffraction', 'powder', '1d'],
+            'phase_ids': ['Fe3O4'],
+            'experiment_ids': ['pnd'],
             'created_date': '',
             'last_modified_date': str(np.datetime64('now'))
         }
