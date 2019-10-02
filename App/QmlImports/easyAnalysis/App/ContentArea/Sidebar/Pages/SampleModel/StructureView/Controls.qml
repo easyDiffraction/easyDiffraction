@@ -113,20 +113,10 @@ ColumnLayout {
                 rowSpacing: 2
                 Text { text: "Cell parameters"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
 
-                GenericAppElements.ParametersTable {
-                    enabled: false
-
-                    model: ListModel {
-                        id: latticeParametersModel
-                        ListElement { a:""; b:""; c:""; alpha:""; beta:""; gamma:"" }
-                    }
-
-                    Controls1.TableViewColumn { role:"a";       title:"a (\u212B)" }
-                    Controls1.TableViewColumn { role:"b";       title:"b (\u212B)" }
-                    Controls1.TableViewColumn { role:"c";       title:"c (\u212B)" }
-                    Controls1.TableViewColumn { role:"alpha";   title:"alpha (°)" }
-                    Controls1.TableViewColumn { role:"beta";    title:"beta (°)" }
-                    Controls1.TableViewColumn { role:"gamma";   title:"gamma (°)" }
+                // Table
+                GenericAppElements.CellParametersTableView {
+                    Layout.fillWidth: true
+                    model: proxy.cellParameters
                 }
             }
         }
