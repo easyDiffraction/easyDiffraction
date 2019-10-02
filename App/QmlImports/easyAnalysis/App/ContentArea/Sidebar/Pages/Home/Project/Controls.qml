@@ -40,7 +40,9 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation))
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    proxy.init(fileUrl.toString().replace("file://", ""))
+                    var filename = fileUrl.toString().replace("file:///", "")
+                    filename = filename.replace("file://", "")
+                    proxy.init(filename)
                     fileDialog.close()
                     Generic.Variables.projectOpened = true
                     Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
