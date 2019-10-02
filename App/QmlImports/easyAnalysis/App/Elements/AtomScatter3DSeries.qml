@@ -4,7 +4,7 @@ import QtDataVisualization 1.3
 Scatter3DSeries {
     property real atomSize: 0.5
     property color atomColor: "coral"
-    property alias atomModel: dataProxy.itemModel
+    property alias atomModel: itemModel
 
     itemSize: atomSize
     baseColor: atomColor
@@ -12,10 +12,11 @@ Scatter3DSeries {
     mesh: Abstract3DSeries.MeshSphere
 
     ItemModelScatterDataProxy {
-        id: dataProxy
-        xPosRole: "xPos"
-        yPosRole: "yPos"
-        zPosRole: "zPos"
+        itemModel: ListModel { id: itemModel }
+
+        xPosRole: "x"
+        yPosRole: "y"
+        zPosRole: "z"
     }
 }
 

@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.12
 import QtDataVisualization 1.3 // versions above 1.3 are not recognized by PySide2 (Qt for Python)
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
+import easyDiffraction 1.0 as Specific
 
 Rectangle {
     property bool showInfo: true
@@ -25,51 +26,49 @@ Rectangle {
 
     Text {
         visible: false
-        text: proxy.timeStamp
+        text: Generic.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
+            if (Generic.Variables.projectOpened) {
+                // Create dictionary b_scattering:color
+                const bscatList = Array.from(new Set(Specific.Variables.project.phases.Fe3O4.atom_site_list.scat_length_neutron))
 
-
-            /*
-
-            // Create dictionary b_scattering:color
-            const bscatList = Array.from(new Set(proxy.atom_site_bscat_list()))
-            let bscatColorDict = {}
-            for (let i = 0; i < bscatList.length; i++ ) {
-                bscatColorDict[bscatList[i]] = Generic.Style.atomColorList[i]
-            }
-
-            // Unit cell parameters
-            const a = parseFloat(proxy.cell_length_a())
-            const b = parseFloat(proxy.cell_length_b())
-            const c = parseFloat(proxy.cell_length_c())
-
-            // Remove old atom scatters
-            for (let i = 0, len = chart.seriesList.length; i < len; i++) {
-                chart.removeSeries(chart.seriesList[1])
-            }
-
-            // Populate chart with atoms. Every atom is an individual scatter serie
-            for (let i = 0, len = proxy.tmp_no_symmetry_atom_site_fract_x_list().length; i < len; i++ ) {
-                var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml");
-                if (component.status === Component.Ready) {
-                    var series = component.createObject()
-                    if (series === null) {
-                        console.log("Error creating object")
-                    } else {
-                        series.atomSize = Math.abs(proxy.tmp_no_symmetry_atom_site_bscat_list()[i]) * 0.4
-                        series.atomColor = bscatColorDict[proxy.tmp_no_symmetry_atom_site_bscat_list()[i]]
-                        series.atomModel.append({
-                            x: parseFloat(proxy.tmp_no_symmetry_atom_site_fract_x_list()[i]) * a,
-                            y: parseFloat(proxy.tmp_no_symmetry_atom_site_fract_y_list()[i]) * b,
-                            z: parseFloat(proxy.tmp_no_symmetry_atom_site_fract_z_list()[i]) * c
-                        })
-                    }
-                    chart.addSeries(series)
+                let bscatColorDict = {}
+                for (let i = 0; i < bscatList.length; i++ ) {
+                    bscatColorDict[bscatList[i]] = Generic.Style.atomColorList[i]
                 }
-            }
 
-            */
+                // Unit cell parameters
+                const a = Specific.Variables.project.phases.Fe3O4.cell.length_a.value
+                const b = Specific.Variables.project.phases.Fe3O4.cell.length_b.value
+                const c = Specific.Variables.project.phases.Fe3O4.cell.length_c.value
+
+                // Remove old atom scatters, but unit cell box (number 1)
+                for (let i = 1, len = chart.seriesList.length; i < len; i++) {
+                    chart.removeSeries(chart.seriesList[1])
+                }
+
+                // Populate chart with atoms. Every atom is an individual scatter serie
+                for (let i = 0, len = Specific.Variables.project.phases.Fe3O4.atom_site_list.fract_x.length; i < len; i++ ) {
+                    var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml");
+                    if (component.status === Component.Ready) {
+                        var series = component.createObject()
+                        if (series === null) {
+                            console.log("Error creating object")
+                        } else {
+                            series.atomSize = Math.abs(Specific.Variables.project.phases.Fe3O4.atom_site_list.scat_length_neutron[i]) * 0.4
+                            series.atomColor = bscatColorDict[Specific.Variables.project.phases.Fe3O4.atom_site_list.scat_length_neutron[i]]
+                            series.atomModel.append({
+                                x: Specific.Variables.project.phases.Fe3O4.atom_site_list.fract_x[i] * a,
+                                y: Specific.Variables.project.phases.Fe3O4.atom_site_list.fract_y[i] * b,
+                                z: Specific.Variables.project.phases.Fe3O4.atom_site_list.fract_z[i] * c
+                            })
+                        }
+                        chart.addSeries(series)
+                    }
+                }
+
+            }
         }
     }
 

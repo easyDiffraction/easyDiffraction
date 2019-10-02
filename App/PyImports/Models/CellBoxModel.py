@@ -27,7 +27,7 @@ class CellBoxModel(QObject):
             b = phase_dict['cell']['length_b']['value']
             c = phase_dict['cell']['length_c']['value']
             # get number of dots along different axes
-            dots_per_angstrom = 10
+            dots_per_angstrom = 30
             dots_along_a = int(a * dots_per_angstrom)
             dots_along_b = int(b * dots_per_angstrom)
             dots_along_c = int(c * dots_per_angstrom)
