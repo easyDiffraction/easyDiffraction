@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import QtGraphicalEffects 1.12
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyDiffraction 1.0 as Specific
 
 Column {
@@ -28,15 +30,21 @@ Column {
         const allColumnWidth = width - borderWidth * 2
         const numberColumnWidth = 40
         const colorColumnWidth = 40
-        const flexibleColumnsWidth = allColumnWidth - numberColumnWidth - colorColumnWidth
+        const iconColumnWidth = cellHeight
+        const flexibleColumnsWidth = allColumnWidth - numberColumnWidth - colorColumnWidth - iconColumnWidth
         const flexibleColumnsCount = 6
         if (column === 1)
             return numberColumnWidth
         else if (column === 4)
             return colorColumnWidth
+        else if (column === 9)
+            return iconColumnWidth
         else
             return flexibleColumnsWidth / flexibleColumnsCount
     }
+
+    //height: Generic.Style.tableRowHeight * 0.6
+    //width: height
 
     ////////////////////////
     // Check if data changed
@@ -46,8 +54,8 @@ Column {
         visible: false
         text: proxy.timeStamp
         onTextChanged: {
-            print("--------------------------------------------------------- Time stamp: ", text)
-            if (Specific.Variables.projectOpened) {
+            //print("--------------------------------------------------------- Time stamp: ", text)
+            if (Generic.Variables.projectOpened) {
                 const atom_site_dict = Specific.Variables.project.phases.Fe3O4.atom_site
                 let type_symbol_list = []
                 for (let atom_id in atom_site_dict) {
@@ -177,6 +185,25 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: "Occupancy"
                         }
+                        Item {
+                            width: cellWidthProvider(9)
+                            height: width
+                            Image {
+                                id: headerCellIcon
+                                visible: false
+                                anchors.fill: parent
+                                anchors.margins: 8
+                                smooth: true
+                                sourceSize.width: parent.width
+                                sourceSize.height: parent.height
+                                source: Generic.Variables.thirdPartyIconsPath + "trash-alt.svg"
+                            }
+                            ColorOverlay {
+                                source: headerCellIcon
+                                anchors.fill: headerCellIcon
+                                color: Generic.Style.buttonIconEnabledColor
+                            }
+                        }
                     }
                 }
             }
@@ -298,6 +325,34 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: typeof occupancy === 'number' ? occupancy.toFixed(4) : occupancy
                             color: foregroundColor()
+                        }
+                        GenericAppContentArea.Button {
+                            id: button
+                            enabled: false
+                            ToolTip.visible: hovered
+                            ToolTip.text: qsTr("Remove this row from the table")
+                            width: cellWidthProvider(9)
+                            height: width
+                            padding: 3
+                            leftPadding: padding
+                            rightPadding: padding
+                            background: Rectangle {
+                                anchors.fill: parent
+                                anchors.margins: button.padding
+                                anchors.leftMargin: button.leftPadding
+                                anchors.rightMargin: button.rightPadding
+                                radius: Generic.Style.toolbarButtonRadius
+                                border.color: button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.appBorderColor
+                                color: {
+                                    if (!button.enabled)
+                                        return Generic.Style.buttonBkgDisabledColor
+                                    var color1 = button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgEnabledColor
+                                    var color2 = Generic.Style.buttonBkgBlendColor
+                                    var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
+                                    return Color.blend(color1, color2, alpha)
+                                }
+                            }
+                            icon.source: Generic.Variables.thirdPartyIconsPath + "minus-circle.svg"
                         }
                     }
 
