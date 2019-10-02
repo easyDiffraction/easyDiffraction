@@ -20,9 +20,6 @@ Column {
     property string headerBackgroundColor: '#eee'
     property string headerBorderColor: '#dedede'
 
-    //property string colorCell: "black"
-    property var type_symbol_dict: ({})
-
     height: childrenRect.height
     spacing: 12
 
@@ -43,31 +40,23 @@ Column {
             return flexibleColumnsWidth / flexibleColumnsCount
     }
 
-    //height: Generic.Style.tableRowHeight * 0.6
-    //width: height
+    function colorProvider(atom) {
+        const atom_site_dict = Specific.Variables.project.phases.Fe3O4.atom_site
+        let type_symbol_list = []
+        for (let atom_id in atom_site_dict) {
+            type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
+        }
+        type_symbol_list = Array.from(new Set(type_symbol_list))
+        let type_symbol_dict = {}
+        for (let i = 0; i < type_symbol_list.length; i++) {
+            type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
+        }
+        return type_symbol_dict[atom]
+    }
 
     ////////////////////////
     // Check if data changed
     ////////////////////////
-
-    Text {
-        visible: false
-        text: proxy.timeStamp
-        onTextChanged: {
-            //print("--------------------------------------------------------- Time stamp: ", text)
-            if (Generic.Variables.projectOpened) {
-                const atom_site_dict = Specific.Variables.project.phases.Fe3O4.atom_site
-                let type_symbol_list = []
-                for (let atom_id in atom_site_dict) {
-                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
-                }
-                type_symbol_list = Array.from(new Set(type_symbol_list))
-                for (let i = 0; i < type_symbol_list.length; i++) {
-                    type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
-                }
-            }
-        }
-    }
 
     Rectangle {
         id: listViewWrapper
@@ -276,7 +265,8 @@ Column {
                             width: cellWidthProvider(4)
                             height: parent.height - y * 2
                             y: 3
-                            color: type_symbol_dict[atom]
+                            //color: type_symbol_dict[atom]
+                            color: colorProvider(atom)
                         }
                         Text {
                             width: cellWidthProvider(5)
