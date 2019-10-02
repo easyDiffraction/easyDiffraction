@@ -44,20 +44,10 @@ ColumnLayout {
         title: "Structural phases"
         collapsible: false
         content: GenericAppElements.ColumnLayout {
+
             // Table
-            GenericAppElements.ParametersTable {
-                selectable: false
-                enabled: false
-
-                model: ListModel {
-                    id: structuralPhasesModel
-                    ListElement { num:0; name:""; note:"" }
-                }
-
-                Controls1.TableViewColumn { role:"num";     title:"No.";    resizable: false }
-                Controls1.TableViewColumn { role:"name";    title:"Name ";   resizable: false }
-                Controls1.TableViewColumn { role:"note";    title:"Note" }
-                Controls1.TableViewColumn { role:"remove";  title:"Remove"; resizable: false }
+            GenericAppElements.PhasesTableView {
+                Layout.fillWidth: true
             }
 
             // Buttons
