@@ -10,15 +10,20 @@ Rectangle {
     property bool showInfo: true
     property real xRotationInitial: -50.0
     property real yRotationInitial:  3.0
-    property real zoomLevelInitial: 100.0
+    property real zoomLevelInitial: 200.0
     property real xTargetInitial: 0.0
     property real yTargetInitial: 0.0
     property real zTargetInitial: 0.0
     property int animationDuration: 1000
 
-    color: "coral"
-    clip: true
+    //width: 100//parent.width
+    //height: 100//parent.height
 
+    //id: container
+    //anchors.fill: parent
+    color: "transparent"
+    //clip: true
+    //spacing: 0
 
     ////////////////////////
     // Check if data changed
@@ -68,6 +73,10 @@ Rectangle {
                     }
                 }
 
+                chart.grabToImage(function(result) {
+                    result.saveToFile(proxy.project_dir_absolute_path + "/saved_structure.png")
+                })
+
             }
         }
     }
@@ -76,104 +85,83 @@ Rectangle {
     // Plot
     ///////
 
-    Scatter3D {
-        id: chart
-        anchors.fill: parent
-        anchors.topMargin: -60
-        anchors.leftMargin: -250
-        anchors.rightMargin: -250
-        clip: true
+    Rectangle {
+        width: parent.width
+        anchors.top: parent.top
+        anchors.bottom: infoLabel.top
 
-        // Camera view settings
-        orthoProjection: false
-        //scene.activeCamera.cameraPreset: Camera3D.CameraPresetIsometricLeftHigh
-        scene.activeCamera.xRotation: xRotationInitial
-        scene.activeCamera.yRotation: yRotationInitial
-        scene.activeCamera.zoomLevel: zoomLevelInitial
-        scene.activeCamera.target.x: xTargetInitial
-        scene.activeCamera.target.y: yTargetInitial
-        scene.activeCamera.target.z: zTargetInitial
+        Scatter3D {
+            id: chart
+            width: Math.min(parent.width, parent.height)
+            height: Math.min(parent.width, parent.height)
+            anchors.centerIn: parent
+            clip: true
 
-        // Geometrical settings
-        //horizontalAspectRatio: 0.0
-        aspectRatio: 1.0
+            // Camera view settings
+            orthoProjection: false
+            //scene.activeCamera.cameraPreset: Camera3D.CameraPresetIsometricLeftHigh
+            scene.activeCamera.xRotation: xRotationInitial
+            scene.activeCamera.yRotation: yRotationInitial
+            scene.activeCamera.zoomLevel: zoomLevelInitial
+            scene.activeCamera.target.x: xTargetInitial
+            scene.activeCamera.target.y: yTargetInitial
+            scene.activeCamera.target.z: zTargetInitial
 
-        // Interactivity
-        selectionMode: AbstractGraph3D.SelectionNone // Left mouse button will be used for "reset view" coded below
+            // Geometrical settings
+            //horizontalAspectRatio: 0.0
+            aspectRatio: 1.0
 
-        // Visualization settings
-        theme: Theme3D {
-            type: Theme3D.ThemeUserDefined
-            ambientLightStrength: 0.5
-            lightStrength: 5.0
-            windowColor: "white"
-            backgroundEnabled: false
-            labelBackgroundEnabled: false
-            labelBorderEnabled: false
-            labelTextColor: "grey"
-            gridEnabled: false
-            font.pointSize: 60
-            font.family: Generic.Style.fontFamily
-        }
-        shadowQuality: AbstractGraph3D.ShadowQualityNone // AbstractGraph3D.ShadowQualitySoftHigh
+            // Interactivity
+            selectionMode: AbstractGraph3D.SelectionNone // Left mouse button will be used for "reset view" coded below
 
-        // X axis
-        axisX: ValueAxis3D {
-            labelFormat: ""
-        }
+            // Visualization settings
+            theme: Theme3D {
+                type: Theme3D.ThemeUserDefined
+                ambientLightStrength: 0.5
+                lightStrength: 5.0
+                windowColor: "white"
+                backgroundEnabled: false
+                labelBackgroundEnabled: false
+                labelBorderEnabled: false
+                labelTextColor: "grey"
+                gridEnabled: false
+                font.pointSize: 60
+                font.family: Generic.Style.fontFamily
+            }
+            shadowQuality: AbstractGraph3D.ShadowQualityNone // AbstractGraph3D.ShadowQualitySoftHigh
 
-        // Y axis
-        axisY: ValueAxis3D {
-            labelFormat: ""
-        }
+            // Axes
+            axisX: ValueAxis3D { labelFormat: "" }
+            axisY: ValueAxis3D { labelFormat: "" }
+            axisZ: ValueAxis3D { labelFormat: "" }
 
-        // Z axis
-        axisZ: ValueAxis3D {
-            labelFormat: ""
-        }
+            //GenericAppElements.AtomScatter3DSeries {
+            //    atomModel: proxy.cellBox
+            //}
 
-        //GenericAppElements.AtomScatter3DSeries {
-        //    atomModel: proxy.cellBox
-        //}
+            // Unit cell chart settings
+            Scatter3DSeries {
+                mesh: Abstract3DSeries.MeshSphere
+                itemSize: 0.03
+                baseColor: "grey"
+                colorStyle: Theme3D.ColorStyleUniform
 
-        // Unit cell chart settings
-        Scatter3DSeries {
-            mesh: Abstract3DSeries.MeshSphere
-            itemSize: 0.03
-            baseColor: "grey"
-            colorStyle: Theme3D.ColorStyleUniform
-
-            ItemModelScatterDataProxy {
-                itemModel: proxy.cellBox
-                xPosRole: "xPos"
-                yPosRole: "yPos"
-                zPosRole: "zPos"
+                ItemModelScatterDataProxy {
+                    itemModel: proxy.cellBox
+                    xPosRole: "xPos"
+                    yPosRole: "yPos"
+                    zPosRole: "zPos"
+                }
             }
         }
     }
 
-    ///////////
-    // Helpers
-    ///////////
-
-    // Reset view with animation: Override default left mouse button
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.LeftButton
-        onClicked: animo.restart()
-    }
-    ParallelAnimation {
-        id: animo
-        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.target.x"; to: xTargetInitial; duration: animationDuration }
-        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.target.y"; to: yTargetInitial; duration: animationDuration }
-        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.target.z"; to: zTargetInitial; duration: animationDuration }
-        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.xRotation"; to: xRotationInitial; duration: animationDuration }
-        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.yRotation"; to: yRotationInitial; duration: animationDuration }
-        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.zoomLevel"; to: zoomLevelInitial; duration: animationDuration }
-    }
-
+    /////////////
     // Info area
+    /////////////
+
     Label {
+        id: infoLabel
         visible: showInfo
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
@@ -190,6 +178,26 @@ Rectangle {
         background: Rectangle { color: "white"; opacity: 0.9; border.width: 0; radius: Generic.Style.toolbarButtonRadius }
     }
 
+    ///////////
+    // Helpers
+    ///////////
 
+    // Reset view with animation: Override default left mouse button
+    MouseArea {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton
+        onClicked: animo.restart()
+    }
+    ParallelAnimation {
+        id: animo
+        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.target.x"; to: xTargetInitial; duration: animationDuration }
+        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.target.y"; to: yTargetInitial; duration: animationDuration }
+        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.target.z"; to: zTargetInitial; duration: animationDuration }
+        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.xRotation"; to: xRotationInitial; duration: animationDuration }
+        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.yRotation"; to: yRotationInitial; duration: animationDuration }
+        NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.zoomLevel"; to: zoomLevelInitial; duration: animationDuration }
+    }
 
 }
