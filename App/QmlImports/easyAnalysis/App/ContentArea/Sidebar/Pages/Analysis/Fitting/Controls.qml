@@ -47,6 +47,7 @@ ColumnLayout {
                         infoLabel.text += res.final_chi_sq ? `\nFinal goodnes-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(3)}` : ""
                         infoLabel.text += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
                         info.open()
+                        Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(4) : Generic.Variables.chiSquared
                     }
                 }
                 CheckBox { enabled: false; checked: false; text: "Auto-update"; }
