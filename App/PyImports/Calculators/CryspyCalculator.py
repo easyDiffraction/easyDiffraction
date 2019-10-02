@@ -40,7 +40,7 @@ class CryspyCalculator(QObject):
             'name': 'Fe3O4',
             'keywords': ['neutron diffraction', 'powder', '1d'],
             'created_date': '',
-            'last_modified_date': ''
+            'last_modified_date': str(np.datetime64('now'))
         }
 
     def setPhasesDictFromCryspyObj(self):
@@ -205,6 +205,37 @@ class CryspyCalculator(QObject):
                     'tooltip': '',
                     'url': '',
                     'value': scat_length_neutron }
+
+            # Atom sites for structure view (all the positions inside unit cell of 1x1x1)
+            atom_site_list = [[], [], [], []]
+            for x, y, z, scat_length_neutron in zip(phase.atom_site.x, phase.atom_site.y, phase.atom_site.z, phase.atom_site.scat_length_neutron):
+                x_array, y_array, z_array, _ = phase.space_group.calc_xyz_mult(x.value, y.value, z.value)
+                scat_length_neutron_array = np.full_like(x_array, scat_length_neutron)
+                atom_site_list[0] += x_array.tolist()
+                atom_site_list[1] += y_array.tolist()
+                atom_site_list[2] += z_array.tolist()
+                atom_site_list[3] += scat_length_neutron_array.tolist()
+            for x, y, z, scat_length_neutron in zip(atom_site_list[0], atom_site_list[1], atom_site_list[2], atom_site_list[3]):
+                if x == 0.0:
+                    atom_site_list[0].append(1.0)
+                    atom_site_list[1].append(y)
+                    atom_site_list[2].append(z)
+                    atom_site_list[3].append(scat_length_neutron)
+                if y == 0.0:
+                    atom_site_list[0].append(x)
+                    atom_site_list[1].append(1.0)
+                    atom_site_list[2].append(z)
+                    atom_site_list[3].append(scat_length_neutron)
+                if z == 0.0:
+                    atom_site_list[0].append(x)
+                    atom_site_list[1].append(y)
+                    atom_site_list[2].append(1.0)
+                    atom_site_list[3].append(scat_length_neutron)
+            self._phases_dict[phase.label]['atom_site_list'] = {}
+            self._phases_dict[phase.label]['atom_site_list']['fract_x'] = atom_site_list[0]
+            self._phases_dict[phase.label]['atom_site_list']['fract_y'] = atom_site_list[1]
+            self._phases_dict[phase.label]['atom_site_list']['fract_z'] = atom_site_list[2]
+            self._phases_dict[phase.label]['atom_site_list']['scat_length_neutron'] = atom_site_list[3]
 
             # Atom site occupancy
             for label, occupancy in zip(phase.atom_site.label, phase.atom_site.occupancy):
@@ -735,6 +766,8 @@ class CryspyCalculator(QObject):
         self.setCryspyObjFromProjectDict() # updates value in cryspy obj (actually all values, which is too expensive...)
         if not isinstance(value, bool):
             self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
+            self._info_dict['last_modified_date'] = str(np.datetime64('now'))
+            print(self._project_dict["info"])
             self.projectDictChanged.emit()
 
     def phasesCount(self):
@@ -771,12 +804,12 @@ class CryspyCalculator(QObject):
             'calculations': self._cryspy_obj.experiments[0].calc_to_cif
             }
 
-
     def refine(self):
         """refinement ..."""
         scipy_refinement_res = self._cryspy_obj.refine()
         #logging.info(scipy_refinement_res)
         self.setProjectDictFromCryspyObj()
+        self._info_dict['last_modified_date'] = str(np.datetime64('now'))
         self.projectDictChanged.emit()
         try:
             return {
