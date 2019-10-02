@@ -19,21 +19,10 @@ ColumnLayout {
         title: "Data Explorer"
         collapsible: false
         content: GenericAppElements.ColumnLayout {
+
             // Table
-            GenericAppElements.ParametersTable {
-                id: dataExplorerTable
-                selectable: false
-                //selectedRow: 1
-                enabled: false
-
-                model: ListModel {
-                    ListElement { num:""; fname:"0123456789"; fdir:"" }
-                }
-
-                Controls1.TableViewColumn { role:"num";    title:"No.";  resizable: false }
-                Controls1.TableViewColumn { role:"fname";  title:"File"; resizable: false }
-                Controls1.TableViewColumn { role:"fdir";   title:"Directory" }
-                Controls1.TableViewColumn { role:"remove"; title:"Remove"; resizable: false }
+            GenericAppElements.ExperimentsTableView {
+                Layout.fillWidth: true
             }
 
             // Buttons
