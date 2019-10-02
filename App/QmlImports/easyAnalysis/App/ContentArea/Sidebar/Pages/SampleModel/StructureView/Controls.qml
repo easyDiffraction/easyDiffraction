@@ -103,9 +103,9 @@ ColumnLayout {
                 Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
 
-                GenericAppElements.ComboBox { id: singonyComboBox }
-                GenericAppElements.ComboBox { id: spaceGroupComboBox }
-                GenericAppElements.ComboBox { id: settingComboBox }
+                GenericAppElements.ComboBox { model: [Generic.Variables.projectOpened ? Specific.Variables.project.phases.Fe3O4.space_group.crystal_system.value : ""] }
+                GenericAppElements.ComboBox { model: [Generic.Variables.projectOpened ? Specific.Variables.project.phases.Fe3O4.space_group.space_group_IT_number.value + '.  ' + Specific.Variables.project.phases.Fe3O4.space_group['space_group_name_H-M_alt'].value : ""] }
+                GenericAppElements.ComboBox { model: [Generic.Variables.projectOpened ? Specific.Variables.project.phases.Fe3O4.space_group.origin_choice.value : ""] }
             }
 
             GenericAppElements.GridLayout {
