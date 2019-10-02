@@ -10,6 +10,7 @@ from PyImports.Calculators.CryspyCalculator import *
 from PyImports.Models.MeasuredDataModel import *
 from PyImports.Models.CalculatedDataModel import *
 from PyImports.Models.BraggPeaksModel import *
+from PyImports.Models.CellParametersModel import *
 from PyImports.Models.CellBoxModel import *
 from PyImports.Models.AtomSitesModel import *
 from PyImports.Models.AtomAdpsModel import *
@@ -24,6 +25,7 @@ class Proxy(QObject):
         self._measured_data_model = None
         self._calculated_data_model = None
         self._bragg_peaks_model = None
+        self._cell_parameters_model = None
         self._cell_box_model = None
         self._atom_sites_model = None
         self._atom_adps_model = None
@@ -40,6 +42,7 @@ class Proxy(QObject):
         self._calculated_data_model = CalculatedDataModel(self._project_model)
         self._calculated_data_model.modelChanged.connect(self.projectChanged)
         self._bragg_peaks_model = BraggPeaksModel(self._project_model)
+        self._cell_parameters_model = CellParametersModel(self._project_model)
         self._cell_box_model = CellBoxModel(self._project_model)
         self._atom_sites_model = AtomSitesModel(self._project_model)
         self._atom_adps_model = AtomAdpsModel(self._project_model)
@@ -52,6 +55,7 @@ class Proxy(QObject):
         self.calculatedDataHeaderChanged.emit()
         self.calculatedDataChanged.emit()
         self.braggPeaksChanged.emit()
+        self.cellParametersChanged.emit()
         self.cellBoxChanged.emit()
         self.atomSitesChanged.emit()
         self.atomAdpsChanged.emit()
@@ -127,6 +131,15 @@ class Proxy(QObject):
         return self._bragg_peaks_model.asTickModel()
     braggPeaks = Property('QVariant', getBraggPeaks, notify=braggPeaksChanged)
     braggPeaksTicks = Property('QVariant', getBraggPeaksTicks, notify=braggPeaksChanged)
+
+    # Cell parameters model for QML
+    cellParametersChanged = Signal()
+    def getCellParameters(self):
+        logging.info("")
+        if self._cell_parameters_model is None:
+            return QStandardItemModel()
+        return self._cell_parameters_model.asModel()
+    cellParameters = Property('QVariant', getCellParameters, notify=cellParametersChanged)
 
     # Cell box model for QML
     cellBoxChanged = Signal()

@@ -8,6 +8,7 @@
     "App/PyImports/Models/AtomSitesModel.py",
     "App/PyImports/Models/AtomAdpsModel.py",
     "App/PyImports/Models/AtomMspsModel.py",
+    "App/PyImports/Models/CellParametersModel.py",
     "App/PyImports/Models/CellBoxModel.py",
     "App/PyImports/Models/CalculatedDataModel.py",
     "App/PyImports/Models/BraggPeaksModel.py",
