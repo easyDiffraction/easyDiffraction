@@ -187,7 +187,7 @@ class Proxy(QObject):
     fitables = Property('QVariant', getFitables, notify=fitablesChanged)
 
     # Time stamp of changes
-    timeStamp = Property(str, lambda self: str(np.datetime64('now')), notify=projectChanged)
+    #timeStamp = Property(str, lambda self: str(np.datetime64('now')), notify=projectChanged)
 
     @Slot(result='QVariant')
     def refine(self):

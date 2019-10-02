@@ -41,7 +41,7 @@ Column {
 
     Text {
         visible: false
-        text: proxy.timeStamp
+        text: Generic.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
             if (Generic.Variables.projectOpened) {
