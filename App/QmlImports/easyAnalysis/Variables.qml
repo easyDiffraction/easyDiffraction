@@ -21,6 +21,9 @@ QtObject {
     // Intro page
     property int introAnimationDuration: 1000
 
+    // Reliability factors
+    property string chiSquared: "not calculated yet"
+
     // Paths
     property string resourcesPath: ""
     property string originalIconsPath: ""
