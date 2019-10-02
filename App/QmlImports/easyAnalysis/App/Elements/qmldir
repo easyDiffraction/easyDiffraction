@@ -25,3 +25,4 @@ FitablesView 1.0 FitablesView.qml
 AtomsTableView 1.0 AtomsTableView.qml
 AtomAdpsTableView 1.0 AtomAdpsTableView.qml
 AtomMspsTableView 1.0 AtomMspsTableView.qml
+CellParametersTableView 1.0 CellParametersTableView.qml
