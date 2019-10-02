@@ -5,12 +5,9 @@ import QtQuick.Layouts 1.12
 import QtCharts 2.3
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
+import easyDiffraction 1.0 as Specific
 
 Rectangle {
-    property real coeff: 0.7
-    property int extraPadding: 12
-    property int ratio: 3
-
     property int commonMargin: 10
 
     id: wrapper
@@ -18,150 +15,115 @@ Rectangle {
     //anchors.fill: parent
     Layout.fillWidth: true
 
+    function writeHtmlHead() {
+        let s = ''
+        s += '<head>'
+        s += '<style>'
+        s += 'table {'
+        s += 'font-family: arial, sans-serif;'
+        s += 'border-collapse: collapse;'
+        s += '}'
+        s += 'td, th {'
+        s += 'border: 1px solid #ddd;'
+        s += 'padding: 8px;'
+        s += '}'
+        s += 'tr:nth-child(even) {'
+        s += 'background-color: #eee;'
+        s += '}'
+        s += '</style>'
+        s += '</head>'
+        return s
+    }
 
+    function writeHtmlTable() {
+        let s = ''
+        s += '<table>'
+        s += '<tr>'
+        s += '<th align="right">No.</th>'
+        s += '<th align="left">Parameter</th>'
+        s += '<th align="right">Value</th>'
+        s += '<th align="right">Error</th>'
+        s += '<th align="right">Fit</th>'
+        s += '</tr>'
+        for (let row_index = 0; row_index < proxy.fitables.rowCount(); row_index++) {
+            const index = proxy.fitables.index(row_index, 0)
+            const label = proxy.fitables.data(index, Qt.UserRole + 2)
+            const refine = proxy.fitables.data(index, Qt.UserRole + 7)
+            const value = proxy.fitables.data(index, Qt.UserRole + 3).toFixed(5)
+            const error = refine ? proxy.fitables.data(index, Qt.UserRole + 4).toFixed(5) : ''
+            const fit = refine ? '+' : ''
+            s += '<tr>'
+            s += '<td align="right">' + (row_index + 1) + '</td>'
+            s += '<td align="left">' + label + '</td>'
+            s += '<td align="right">' + value + '</td>'
+            s += '<td align="right">' + error + '</td>'
+            s += '<td align="right">' + fit + '</td>'
+            s += '</tr>'
+        }
+        s += '</table>'
+        return s
+    }
 
-    ScrollView {
+    function writeHtmlBody() {
+        let s = ''
+        s += '<body>'
+        s += '<h1>' + proxy.project.info.name + '</h1>'
+        s += '<p>'
+        s += '<b>Creation date: </b>11.04.2019<br>'
+        s += '<b>Keywords: </b>' + proxy.project.info.keywords.join(', ') + '<br>'
+        s += '<b>Instrument: </b>6T2 at LLB<br>'
+        s += '</p>'
+        s += '<h2>Parameters</h2>'
+        s += '<p>'
+        s += writeHtmlTable()
+        s += '</p>'
+        s += '<p>'
+        s += '<p></p>'
+        s += '<b>Chi2: </b>' + Generic.Variables.chiSquared + '<br>'
+        s += '</p>'
+        //s += '<h2>&nbsp;</h2>'
+        s += '<h2>Fitting</h2>'
+        s += '<p>'
+        s += '<img src="' + proxy.project_dir_absolute_path + '/saved_refinement.png" width="' + Math.round(wrapper.width * 0.8) + '" >'
+        s += '</p>'
+        //s += '<h2>&nbsp;</h2>'
+        s += '<h2>Structure</h2>'
+        s += '<p>'
+        s += '<img src="' + proxy.project_dir_absolute_path + '/saved_structure.png" width="' + Math.round(wrapper.width * 0.8) + '" >'
+        s += '</p>'
+        s += '</body>'
+        return s
+    }
+
+    function writeHTML() {
+        let s = ''
+        s += '<!DOCTYPE html>'
+        s += '<html>'
+        s += writeHtmlHead()
+        s += writeHtmlBody()
+        s += '</html>'
+        proxy.store_report(s)
+        return proxy.get_report_html()
+    }
+
+    Flickable {
+        id: flickable
         anchors.fill: parent
-        clip: true
+        flickableDirection: Flickable.VerticalFlick
+        boundsBehavior: Flickable.StopAtBounds
 
+        ScrollBar.vertical: ScrollBar {}
 
-        GenericAppElements.ColumnLayout {
-
-
-            ///////
-            // JOB
-            //////
-
-            TextArea {
-                Layout.fillWidth: true
-                padding: commonMargin
-                readOnly: true
-                antialiasing: true
-                textFormat: Text.RichText
-                text:
-"
-<h1>" + "proxy.project_name" + "</h1>
-<p>
-<b>Creation date: </b>11.04.2019<br>
-<b>Project folder: </b>" + "proxy.tmp_rcif_dir_name()" + "<br>
-<b>Project file: </b>" + "proxy.tmp_rcif_file_name()" + "<br>
-<b>Experimental data file: </b>" + "proxy.tmp_rcif_file_name()" + "<br>
-<b>Instrument: </b>6T2 at LLB<br>
-<b>Sample: </b>" + "proxy.project_name" + "<br>
-</p>
-
-<h2>Parameters</h2>
-"
-            }
-
-            /////////////
-            // PARAMETERS
-            /////////////
-
-            Row {
-                // Left margin
-                Item { width: 1.5*commonMargin; height: 1 }
-                // Table
-                GenericAppElements.ParametersTable {
-                    id: dataExplorerTable
-                    width: Generic.Variables.mainAreaWidth - 3*commonMargin
-                    selectable: false
-                    enabled: false
-                    model: ListModel {
-                        id: dataExplorerTableModel
-                        ListElement { num:1; group:"sample";      subgroup:"cell";        parameter:"CeCuAl3 a    "; started:"4.25";  min:"";     max:"";     fit:true;   refined:"4.2598";   error:"0.0001" }
-                        ListElement { num:6; group:"instrument";  subgroup:"resolution";  parameter:"POLARIS Sig-2"; started:"0.00";  min:"";     max:"";     fit:false;  refined:"";         error:"" }
-                        //ListElement { num:1; type:"sample";      group:"cell";       parameter:"CeCuAl3 a    "; started:"4.25";  min:"4.00";     max:"5.00";     fit:true;   refined:"4.2598";   error:"0.0001" }
-                        //ListElement { num:6; type:"instrument";  group:"resolution"; parameter:"POLARIS Sig-2"; started:"0.00";  min:"";         max:"";         fit:false;  refined:"";         error:"" }
-                    }
-                    Controls1.TableViewColumn { role:"num";         title:"No.";  resizable: false }
-                    Controls1.TableViewColumn { role:"group";       title:"Type"; resizable: false }
-                    Controls1.TableViewColumn { role:"subgroup";    title:"Group" }
-                    Controls1.TableViewColumn { role:"parameter";   title:"Parameter" }
-                    Controls1.TableViewColumn { role:"min";         title:"Min"; resizable: false }
-                    Controls1.TableViewColumn { role:"started";     title:"Started" }
-                    Controls1.TableViewColumn { role:"max";         title:"Max"; resizable: false }
-                    Controls1.TableViewColumn { role:"fit";         title:"Fit"; resizable: false }
-                    Controls1.TableViewColumn { role:"refined";     title:"Refined" }
-                    //Controls1.TableViewColumn { role:"error";       title:"Error" }
-                }
-
-           }
-
-            /////////////////////
-            // OBS VS. CALC title
-            /////////////////////
-
-            TextArea {
-                Layout.fillWidth: true
-                padding: commonMargin
-                topPadding: 3*commonMargin
-                bottomPadding: 0
-                readOnly: true
-                antialiasing: true
-                textFormat: Text.RichText
-                text:
-"
-<h2>Fitting</h2>
-"
-            }
-
-            ///////////////////////
-            // OBS VS. CALC figures
-            ///////////////////////
-
-            Row {
-                z: 70
-                enabled: false
-                GenericAppElements.ChartView {
-                    width: wrapper.width
-                    height: width
-                    showObs: true
-                    showCalc: true
-                    showDiff: true
-                    showBragg: true
-                    showInfo: false
-                }
-            }
-
-            ///////////////////
-            // STRUCTURE title
-            ///////////////////
-
-            TextArea {
-                z: 60
-                Layout.fillWidth: true
-                padding: commonMargin
-                //topPadding: -commonMargin
-                bottomPadding: 0
-                readOnly: true
-                antialiasing: true
-                textFormat: Text.RichText
-                text:
-"
-<h2>Structure</h2>
-"
-            }
-
-            ////////////
-            // STRUCTURE
-            ////////////
-
-            Column {
-                z: 50
-                enabled: false
-                topPadding: -100
-                GenericAppElements.StructureView {
-                    width: wrapper.width
-                    height: width
-                    showInfo: false
-                }
-            }
-
-
-
-
+        TextArea.flickable: TextArea {
+            visible: true
+            Layout.fillWidth: true
+            padding: commonMargin
+            topPadding: 3*commonMargin
+            bottomPadding: 0
+            readOnly: true
+            antialiasing: true
+            textFormat: Text.RichText
+            text: Generic.Variables.projectOpened ? writeHTML() : ""
         }
     }
 }
-
