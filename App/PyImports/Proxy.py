@@ -1,6 +1,8 @@
 from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItemModel
 
+import os
+import sys
 import numpy as np
 
 import logging
@@ -21,6 +23,7 @@ class Proxy(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         logging.info("")
+        self._main_rcif_path = None
         self._project_model = None
         self._measured_data_model = None
         self._calculated_data_model = None
@@ -36,7 +39,8 @@ class Proxy(QObject):
     @Slot(str)
     def init(self, main_rcif_path):
         logging.info("")
-        self._project_model = CryspyCalculator(main_rcif_path)
+        self._main_rcif_path = main_rcif_path
+        self._project_model = CryspyCalculator(self._main_rcif_path)
         ##print(self._project_model.asDict())
         self._measured_data_model = MeasuredDataModel(self._project_model)
         self._calculated_data_model = CalculatedDataModel(self._project_model)
@@ -180,7 +184,7 @@ class Proxy(QObject):
     # Fitables model for QML
     fitablesChanged = Signal()
     def getFitables(self):
-        logging.info("")
+        ###logging.info("")
         if self._fitables_model is None:
             return QStandardItemModel()
         return self._fitables_model.asModel()
@@ -196,4 +200,66 @@ class Proxy(QObject):
         res = self._project_model.refine()
         logging.info("")
         return res
+
+
+    # ######
+    # REPORT
+    # ######
+
+    def get_project_dir_absolute_path(self):
+        return os.path.dirname(os.path.abspath(self._main_rcif_path))
+    project_dir_absolute_path = Property(str, get_project_dir_absolute_path, notify=projectChanged)
+    project_url_absolute_path = Property(str, lambda self: str(QUrl.fromLocalFile(os.path.dirname(self._main_rcif_path)).toString()), notify=projectChanged)
+
+    @Slot(str)
+    def store_report(self, report=""):
+        """
+        Keep the QML generated HTML report for saving
+        """
+        self.report_html = report
+
+    @Slot(str, str)
+    def save_report(self, filename="", extension="html"):
+        """
+        Save the generated report to the specified file
+        Currently only html
+        """
+        full_filename = filename + extension.lower()
+        full_filename = os.path.join(self.get_project_dir_absolute_path(), full_filename)
+
+        if not self.report_html:
+            print("No report to save")
+            return
+
+        # HTML can contain non-ascii, so need to open with right encoding
+        with open(full_filename, 'w', encoding='utf-8') as report_file:
+            report_file.write(self.report_html)
+            print("Report written")
+
+        # Show the generated report in the default browser
+        # TODO: refactor this part out
+        import webbrowser
+        try:
+            webbrowser.open('file://' + os.path.realpath(full_filename))
+        except ex as Exception:
+            print("Report viewing failed: "+ str(ex))
+
+    @Slot(result=str)
+    def get_report_html(self):
+        return self.report_html
+
+    # Not used?
+    @Slot(result=str)
+    def get_table_html(self):
+        tableHTML = \
+        "<h1>" + self.project_name + "</h1><p>" + \
+        "<b>Creation date: </b>11.04.2019<br>" + \
+        "<b>Project folder: </b>" + self.tmp_rcif_dir_name() + "<br>" + \
+        "<b>Project file: </b>" + self.tmp_rcif_file_name() + "<br>" + \
+        "<b>Experimental data file: </b>" + self.tmp_rcif_file_name() + "<br>" + \
+        "<b>Instrument: </b>6T2 at LLB<br>" + \
+        "<b>Sample: </b>" + self.project_name + "<br> </p>" + \
+        "<h2>Parameters</h2>"
+        return tableHTML
+
 
