@@ -42,7 +42,7 @@ ColumnLayout {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     var filename = fileUrl.toString().replace("file:///", "")
                     filename = filename.replace("file://", "")
-                    proxy.init(filename)
+                    print("---open file", filename)
                     proxy.init(filename)
                     fileDialog.close()
                     Generic.Variables.projectOpened = true
