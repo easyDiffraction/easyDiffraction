@@ -11,6 +11,8 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "View settings"
+        enabled: false
+        collapsed: false
         content: GenericAppElements.GridLayout {
             columns: 2
             GenericAppElements.CheckBox { checked:true;  text:qsTr("Show experimental data") }
@@ -26,6 +28,7 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Minimizer"
+        enabled: false
         content: GenericAppElements.GridLayout {
             columns: 2
             columnSpacing: 20
