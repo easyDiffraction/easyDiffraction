@@ -34,6 +34,7 @@ install:
   - python -m pip install --upgrade pip
   - pip3 install PySide2
   - pip3 install scipy
+  - pip3 install cryspy
   - pip3 install numpy==1.16.4
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
   - pip3 install pytest
