@@ -5,7 +5,7 @@ from PySide2.QtCore import QUrl, Qt, QCoreApplication
 from PySide2.QtWidgets import QApplication
 from PySide2.QtQml import QQmlApplicationEngine
 
-import QmlResource
+#import QmlResource
 
 from PyImports.Proxy import *
 
