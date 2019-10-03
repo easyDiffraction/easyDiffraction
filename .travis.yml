@@ -40,6 +40,7 @@ install:
   - pip3 install pytest
   - pip3 install pytest_mock
   - pip3 install pytest-cov
+  - pip3 install pytest-qt
   - pip3 install coveralls
 
 before_script:

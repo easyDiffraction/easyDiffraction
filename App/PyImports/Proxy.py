@@ -16,7 +16,7 @@ from PyImports.Models.AtomSitesModel import *
 from PyImports.Models.AtomAdpsModel import *
 from PyImports.Models.AtomMspsModel import *
 from PyImports.Models.FitablesModel import *
-from .Refinement import *
+from PyImports.Refinement import *
 
 class Proxy(QObject):
 
