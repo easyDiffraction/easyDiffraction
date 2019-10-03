@@ -33,7 +33,6 @@ ColumnLayout {
 
                 GenericAppContentAreaButtons.PausePlay {
                     id: pausePlayButton
-                    text: proxy.refinementRunning ? "Stop fitting" : "Start fitting"
                     //blinking: proxy.refinementRunning
                     onClicked: {
                         proxy.refine()
