@@ -1,4 +1,4 @@
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
+from PySide2.QtCore import QUrl, Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItemModel
 
 import os
@@ -39,7 +39,7 @@ class Proxy(QObject):
     @Slot(str)
     def init(self, main_rcif_path):
         logging.info("")
-        self._main_rcif_path = main_rcif_path
+        self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
         self._project_model = CryspyCalculator(self._main_rcif_path)
         ##print(self._project_model.asDict())
         self._measured_data_model = MeasuredDataModel(self._project_model)
