@@ -20,24 +20,14 @@ ColumnLayout {
         id: dataExplorerTable
         collapsible: false
         content: GenericAppElements.ColumnLayout {
-
             // Fitables table
             GenericAppElements.FitablesView {
                 Layout.fillWidth: true
-                model: proxy.fitables
-            }
-
-            // Buttons
-            GenericAppElements.GridLayout {
-                columns: 2
-
-                GenericAppContentAreaButtons.PausePlay {
-                    id: pausePlayButton;
-                    text: "Start fitting" ///proxy.fitButtonState;
-                    onClicked: {
-                        const res = proxy.refine()
-                        print(res)
-                        ///pausePlayButton.text = proxy.fitButtonState
+                model: {
+                    pausePlayButton.text = proxy.fitButtonState;
+                    const res = proxy.fit_results();
+                    // Show the label on refinement success
+                    if(typeof res !== "undefined"){
                         infoLabel.text = `${res.refinement_message}`
                         infoLabel.text += res.num_refined_parameters ? `\nNumber of refined parameters: ${res.num_refined_parameters}` : ""
                         infoLabel.text += res.nfev ? `\nnfev: ${res.nfev}` : ""
@@ -47,6 +37,21 @@ ColumnLayout {
                         infoLabel.text += res.final_chi_sq ? `\nFinal goodnes-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(3)}` : ""
                         infoLabel.text += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
                         info.open()
+                    };
+                    proxy.fitables
+                }
+            }
+
+            // Buttons
+            GenericAppElements.GridLayout {
+                columns: 2
+
+                GenericAppContentAreaButtons.PausePlay {
+                    id: pausePlayButton;
+                    text: proxy.fitButtonState
+                    onClicked: {
+                        proxy.refine()
+                        pausePlayButton.text = proxy.fitButtonState
                     }
                 }
                 CheckBox { enabled: false; checked: false; text: "Auto-update"; }

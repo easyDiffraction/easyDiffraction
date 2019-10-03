@@ -16,8 +16,10 @@ from PyImports.Models.AtomSitesModel import *
 from PyImports.Models.AtomAdpsModel import *
 from PyImports.Models.AtomMspsModel import *
 from PyImports.Models.FitablesModel import *
+from .Refinement import *
 
 class Proxy(QObject):
+
     def __init__(self, parent=None):
         super().__init__(parent)
         logging.info("")
@@ -31,6 +33,9 @@ class Proxy(QObject):
         self._atom_adps_model = None
         self._atom_msps_model = None
         self._fitables_model = None
+        self.is_being_refined = False
+        self.refine_thread = None
+        self._fit_result = None
 
     # Load rcif
     @Slot(str)
@@ -61,6 +66,8 @@ class Proxy(QObject):
         self.atomAdpsChanged.emit()
         self.atomMspsChanged.emit()
         self.fitablesChanged.emit()
+
+        self.refine_thread = Refiner(self._project_model, 'refine')
 
     # Project model for QML
     projectChanged = Signal()
@@ -189,11 +196,53 @@ class Proxy(QObject):
     # Time stamp of changes
     #timeStamp = Property(str, lambda self: str(np.datetime64('now')), notify=projectChanged)
 
-    @Slot(result='QVariant')
+    @Slot()
     def refine(self):
-        """refinement ..."""
+        """
+        Start refinement as a separate thread
+        """
         logging.info("")
-        res = self._project_model.refine()
+        if self.is_being_refined:
+            # stop the fitting.
+            logging.info("Fitting stopped")
+            # This lacks actual stopping functionality, needs to be added
+            self.is_being_refined = False
+            self.fitablesChanged.emit()
+            return
+        self._fit_result = None
+        self.is_being_refined = True
+        self.refine_thread.finished.connect(self.thread_finished)
+        self.refine_thread.failed.connect(self.thread_failed)
+        self.refine_thread.start()
+        self.fitablesChanged.emit() # Allow for GUI elements change
         logging.info("")
-        return res
+
+    @Slot(result=str)
+    def fit_button_state(self):
+        ret_string = "Stop fitting" if self.is_being_refined else "Start fitting"
+        return ret_string
+    fitButtonState = Property(str, fit_button_state, notify=fitablesChanged)
+
+    @Slot(result='QVariant')
+    def fit_results(self):
+        return self._fit_result
+
+    def thread_finished(self, res):
+        """
+        Notfy the listeners about refinement results
+        """
+        logging.info("")
+        self.is_being_refined = False
+        self._fit_result = res
+        # TODO: re-enable disabled gui items
+        self.fitablesChanged.emit()
+
+    def thread_failed(self, reason):
+        """
+        Notify the GUI about failure so a message can be shown
+        """
+        logging.info("Refinement failed: " + str(reason))
+        self.is_being_refined = False
+        self._fit_result = None
+        self.fitablesChanged.emit()
 
