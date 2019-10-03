@@ -7,6 +7,7 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 import easyAnalysis.Logic 1.0 as GenericLogic
+import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
     property bool isFitting: true
@@ -24,7 +25,7 @@ ColumnLayout {
             // Fitables table
             GenericAppElements.FitablesView {
                 Layout.fillWidth: true
-                model: proxy.fitables
+                model: Specific.Variables.projectOpened ? proxy.fitables : null
             }
 
             // Buttons

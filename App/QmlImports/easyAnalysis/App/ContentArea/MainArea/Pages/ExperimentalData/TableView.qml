@@ -4,6 +4,7 @@ import QtQuick.Controls 1.4 as Controls1
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
+import easyDiffraction 1.0 as Specific
 
 Rectangle {
     //property alias headerModel: headerTableView.model
@@ -41,7 +42,7 @@ Rectangle {
             height: cellHeight
             enabled: false
 
-            model: proxy.measuredDataHeader
+            model: Specific.Variables.projectOpened ? proxy.measuredDataHeader : null
 
             delegate: Rectangle {
                 implicitWidth: cellWidth
@@ -72,7 +73,7 @@ Rectangle {
             //ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 1 / contentTableView.columns }
             ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
 
-            model: proxy.measuredData
+            model: Specific.Variables.projectOpened ? proxy.measuredData : null
 
             delegate: Rectangle {
                 implicitWidth: cellWidth

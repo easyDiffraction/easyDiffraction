@@ -52,9 +52,6 @@ QtObject {
     property bool analysisPageFinished: isDebug ? true : false
     property bool summaryPageFinished: isDebug ? true : false
 
-    property bool projectOpened: false
-    //property bool modelLoaded: false
-
     // Data arrays
     property var xPeaks: []
     property var xObs: []

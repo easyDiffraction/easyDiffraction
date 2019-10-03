@@ -16,7 +16,7 @@ Rectangle {
     // State 1: No Project Created/Opened
 
     Column {
-        visible: !Generic.Variables.projectOpened
+        visible: !Specific.Variables.projectOpened
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
@@ -32,7 +32,7 @@ Rectangle {
     // State 2: Project Created/Opened
 
     Column {
-        visible: Generic.Variables.projectOpened
+        visible: Specific.Variables.projectOpened
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
@@ -40,13 +40,13 @@ Rectangle {
         spacing: 10
 
         Text {
-            text: Generic.Variables.projectOpened ? proxy.project.info.name : ""
+            text: Specific.Variables.projectOpened ? proxy.project.info.name : ""
             font.pointSize: Generic.Style.fontPointSize * 3
             font.family: Generic.Style.fontFamily
         }
 
         Text {
-            text: Generic.Variables.projectOpened ? proxy.project.info.keywords.join(", ") : ""
+            text: Specific.Variables.projectOpened ? proxy.project.info.keywords.join(", ") : ""
             font.pointSize: Generic.Style.fontPointSize + 1
             font.family: Generic.Style.fontFamily
         }
@@ -75,7 +75,7 @@ Rectangle {
                         clip: true
                         antialiasing: true
                         smooth: true
-                        source: Generic.Variables.projectOpened ? proxy.project_dir_absolute_path + "/" + modelData + ".png" : ""
+                        source: Specific.Variables.projectOpened ? proxy.project_dir_absolute_path + "/" + modelData + ".png" : ""
                     }
                 }
             }

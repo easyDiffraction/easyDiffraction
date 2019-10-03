@@ -41,7 +41,7 @@ Column {
     }
 
     function colorProvider(atom) {
-        if (!Generic.Variables.projectOpened)
+        if (!Specific.Variables.projectOpened)
             return "black"
         const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site
         let type_symbol_list = []

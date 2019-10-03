@@ -20,10 +20,10 @@ ColumnLayout {
 
     Text {
         visible: false
-        text: Generic.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
+        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
-            if (Generic.Variables.projectOpened) {
+            if (Specific.Variables.projectOpened) {
                 const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site
                 let type_symbol_list = []
                 for (let atom_id in atom_site_dict) {
@@ -93,9 +93,9 @@ ColumnLayout {
                 Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
 
-                GenericAppElements.ComboBox { model: [Generic.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.crystal_system.value : ""] }
-                GenericAppElements.ComboBox { model: [Generic.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.space_group_IT_number.value + '.  ' + Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group['space_group_name_H-M_alt'].value : ""] }
-                GenericAppElements.ComboBox { model: [Generic.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.origin_choice.value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.crystal_system.value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.space_group_IT_number.value + '.  ' + Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group['space_group_name_H-M_alt'].value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.origin_choice.value : ""] }
             }
 
             GenericAppElements.GridLayout {
@@ -106,7 +106,7 @@ ColumnLayout {
                 // Table
                 GenericAppElements.CellParametersTableView {
                     Layout.fillWidth: true
-                    model: proxy.cellParameters
+                    model: Specific.Variables.projectOpened ? proxy.cellParameters : null
                 }
             }
         }
@@ -121,7 +121,7 @@ ColumnLayout {
             // Table
             GenericAppElements.AtomsTableView {
                 Layout.fillWidth: true
-                model: proxy.atomSites
+                model: Specific.Variables.projectOpened ? proxy.atomSites : null
             }
 
             // Buttons
@@ -142,7 +142,7 @@ ColumnLayout {
             // Table
             GenericAppElements.AtomAdpsTableView {
                 Layout.fillWidth: true
-                model: proxy.atomAdps
+                model: Specific.Variables.projectOpened ? proxy.atomAdps : null
             }
         }
     }
@@ -156,7 +156,7 @@ ColumnLayout {
             // Table
             GenericAppElements.AtomMspsTableView {
                 Layout.fillWidth: true
-                model: proxy.atomMsps
+                model: Specific.Variables.projectOpened ? proxy.atomMsps : null
             }
         }
     }

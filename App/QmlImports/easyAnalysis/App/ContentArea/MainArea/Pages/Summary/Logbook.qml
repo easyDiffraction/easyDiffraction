@@ -125,7 +125,7 @@ Rectangle {
             readOnly: true
             antialiasing: true
             textFormat: Text.RichText
-            text: Generic.Variables.projectOpened ? writeHTML() : ""
+            text: Specific.Variables.projectOpened ? writeHTML() : ""
         }
     }
 }

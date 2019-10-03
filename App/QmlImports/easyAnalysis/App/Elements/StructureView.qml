@@ -31,10 +31,10 @@ Rectangle {
 
     Text {
         visible: false
-        text: Generic.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
+        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
-            if (Generic.Variables.projectOpened) {
+            if (Specific.Variables.projectOpened) {
                 // Create dictionary b_scattering:color
                 const bscatList = Array.from(new Set(Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.scat_length_neutron))
 
@@ -147,7 +147,7 @@ Rectangle {
                 colorStyle: Theme3D.ColorStyleUniform
 
                 ItemModelScatterDataProxy {
-                    itemModel: proxy.cellBox
+                    itemModel: Specific.Variables.projectOpened ? proxy.cellBox : null
                     xPosRole: "xPos"
                     yPosRole: "yPos"
                     zPosRole: "zPos"

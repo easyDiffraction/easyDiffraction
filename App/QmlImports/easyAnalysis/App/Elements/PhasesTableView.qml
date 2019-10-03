@@ -125,7 +125,7 @@ Column {
                 ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
                 ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 1 / rowCountToDisplayWithoutHeader }
 
-                model: Generic.Variables.projectOpened ? Specific.Variables.project.info.phase_ids : 1
+                model: Specific.Variables.projectOpened ? Specific.Variables.project.info.phase_ids : 1
 
                 // Content row
                 delegate: Rectangle {
@@ -165,7 +165,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: Generic.Variables.projectOpened ? Specific.Variables.project.info.phase_ids[index] : ""
+                            text: Specific.Variables.projectOpened ? Specific.Variables.project.info.phase_ids[index] : ""
                             color: foregroundColor()
                         }
                         GenericAppContentArea.Button {

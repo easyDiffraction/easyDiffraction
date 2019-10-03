@@ -29,10 +29,10 @@ ColumnLayout {
 
     Text {
         visible: false
-        text: Generic.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
+        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
-            if (Generic.Variables.projectOpened && showDiff) {
+            if (Specific.Variables.projectOpened && showDiff) {
 
                 adjustLeftAxesAnchor()
 
@@ -91,8 +91,8 @@ ColumnLayout {
                     labelsVisible: !showDiff
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_min : 0
-                    max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_max : 1
+                    min: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_min : 0
+                    max: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_max : 1
                 }
 
                 // Y-axis for measured and calculated data
@@ -107,8 +107,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_min : 0
-                    max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_max : 0
+                    min: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_min : 0
+                    max: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_max : 0
                 }
 
                 // Measured curve
@@ -123,8 +123,23 @@ ColumnLayout {
                     borderColor: Qt.darker(Generic.Style.blueColor, 1.1)
                     borderWidth: 1.5
                     useOpenGL: true
-                    lowerSeries: LineSeries { VXYModelMapper{ model: proxy.measuredData; xColumn: 0; yColumn: 5 } }
-                    upperSeries: LineSeries { VXYModelMapper{ model: proxy.measuredData; xColumn: 0; yColumn: 6 } }
+
+                    lowerSeries: LineSeries {
+                        VXYModelMapper{
+                            model: Specific.Variables.projectOpened ? proxy.measuredData : null
+                            xColumn: 0
+                            yColumn: 5
+                        }
+                    }
+
+                    upperSeries: LineSeries {
+                        VXYModelMapper{
+                            model: Specific.Variables.projectOpened ? proxy.measuredData : null
+                            xColumn: 0
+                            yColumn: 6
+                        }
+                    }
+
                     onHovered: {
                         const p = topChart.mapToPosition(point)
                         const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
@@ -148,7 +163,11 @@ ColumnLayout {
                     color: Generic.Style.redColor
                     width: 2.5
                     useOpenGL: true
-                    VXYModelMapper{ model: proxy.calculatedData; xColumn: 0; yColumn: 1 }
+                    VXYModelMapper{
+                        model: Specific.Variables.projectOpened ? proxy.calculatedData : null
+                        xColumn: 0
+                        yColumn: 1
+                    }
                     onHovered: {
                         const p = topChart.mapToPosition(point)
                         const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
@@ -304,7 +323,11 @@ ColumnLayout {
                     borderWidth: 0.0001
                     borderColor: "transparent"
                     color: "#333"
-                    VXYModelMapper{ model: proxy.braggPeaksTicks; xColumn: 0; yColumn: 1 }
+                    VXYModelMapper{
+                        model: Specific.Variables.projectOpened ? proxy.braggPeaksTicks : null
+                        xColumn: 0
+                        yColumn: 1
+                    }
 
                     /*
                     onHovered: {
@@ -384,8 +407,8 @@ ColumnLayout {
                     titleText: "Iobs - Icalc"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min : 0
-                    max: Generic.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max : 0
+                    min: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min : 0
+                    max: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max : 0
                 }
 
                 AreaSeries {
@@ -396,24 +419,27 @@ ColumnLayout {
                     opacity: 0.4
                     borderColor: Generic.Style.darkGreenColor
                     borderWidth: 1.5
+
                     upperSeries: LineSeries {
                         id: upperDiffSeries
                         useOpenGL: true
                         VXYModelMapper{
-                            model: proxy.calculatedData
+                            model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                             xColumn: 0
                             yColumn: 2
                         }
                     }
+
                     lowerSeries: LineSeries {
                         id: lowerDiffSeries
                         useOpenGL: true
                         VXYModelMapper{
-                            model: proxy.calculatedData
+                            model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                             xColumn: 0
                             yColumn: 3
                         }
                     }
+
                     onHovered: {
                         const p = bottomChart.mapToPosition(point)
                         const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
