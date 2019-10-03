@@ -21,6 +21,9 @@ QtObject {
     // Intro page
     property int introAnimationDuration: 1000
 
+    // Reliability factors
+    property string chiSquared: "not calculated yet"
+
     // Paths
     property string resourcesPath: ""
     property string originalIconsPath: ""
@@ -48,9 +51,6 @@ QtObject {
     //property bool linkingPageFinished: false
     property bool analysisPageFinished: isDebug ? true : false
     property bool summaryPageFinished: isDebug ? true : false
-
-    property bool projectOpened: false
-    //property bool modelLoaded: false
 
     // Data arrays
     property var xPeaks: []

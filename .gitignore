@@ -68,3 +68,4 @@ dist
 
 # Misc
 ..*
+*.log

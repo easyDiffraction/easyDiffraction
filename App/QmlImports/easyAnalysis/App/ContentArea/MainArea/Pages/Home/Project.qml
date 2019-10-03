@@ -16,7 +16,7 @@ Rectangle {
     // State 1: No Project Created/Opened
 
     Column {
-        visible: !Generic.Variables.projectOpened
+        visible: !Specific.Variables.projectOpened
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
@@ -32,7 +32,7 @@ Rectangle {
     // State 2: Project Created/Opened
 
     Column {
-        visible: Generic.Variables.projectOpened
+        visible: Specific.Variables.projectOpened
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
@@ -40,13 +40,13 @@ Rectangle {
         spacing: 10
 
         Text {
-            text: Generic.Variables.projectOpened ? proxy.project.info.name : ""
+            text: Specific.Variables.projectOpened ? proxy.project.info.name : ""
             font.pointSize: Generic.Style.fontPointSize * 3
             font.family: Generic.Style.fontFamily
         }
 
         Text {
-            text: Generic.Variables.projectOpened ? proxy.project.info.keywords.join(", ") : ""
+            text: Specific.Variables.projectOpened ? proxy.project.info.keywords.join(", ") : ""
             font.pointSize: Generic.Style.fontPointSize + 1
             font.family: Generic.Style.fontFamily
         }
@@ -54,31 +54,32 @@ Rectangle {
         Item { height: 1; width: 1 }
 
         // Temporary hide images
-        /*
+
         Row {
             spacing: margin
 
             Repeater {
-                model: ["structure", "refinement"]
+                model: ["saved_structure", "saved_refinement"]
 
                 Rectangle {
+                    visible: image.progress
                     height: (mainRectangle.width - 3*margin) / 2
                     width: height
                     color: "white"
                     border.color: Generic.Style.appBorderColor
                     Image {
+                        id: image
                         anchors.fill: parent
                         anchors.margins: 10
                         fillMode: Image.PreserveAspectFit
                         clip: true
                         antialiasing: true
                         smooth: true
-                        source: proxy.project_opened ? proxy.project_dir_absolute_path + "/" + modelData + ".png" : ""
+                        source: Specific.Variables.projectOpened ? proxy.project_dir_absolute_path + "/" + modelData + ".png" : ""
                     }
                 }
             }
         }
-        */
 
         Item { height: Generic.Style.fontPointSize * 3; width: 1 }
     }

@@ -1,10 +1,9 @@
+import logging
+
 from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 import PyImports.Helpers as Helpers
-
-import logging
-logging.basicConfig(format="%(asctime)-15s [%(levelname)s] %(filename)s %(funcName)s [%(lineno)d]: %(message)s", level=logging.INFO)
 
 class AtomAdpsModel(QObject):
     def __init__(self, calculator, parent=None):

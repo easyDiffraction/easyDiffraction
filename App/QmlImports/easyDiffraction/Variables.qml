@@ -6,6 +6,8 @@ QtObject {
     property string resourcesPath: ""
 
     // Python models
-    property var project: proxy.project
-    property var cif: proxy.cif
+    property bool projectOpened: false
+    property bool refinementDone: false
+    property var project: projectOpened ? proxy.project : null
+    property var cif: projectOpened ? proxy.cif : null
 }

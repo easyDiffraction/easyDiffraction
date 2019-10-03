@@ -7,6 +7,7 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 import easyAnalysis.Logic 1.0 as GenericLogic
+import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
     property bool isFitting: true
@@ -28,6 +29,8 @@ ColumnLayout {
                     const res = proxy.fit_results();
                     // Show the label on refinement success
                     if(typeof res !== "undefined"){
+                        Specific.Variables.refinementDone = true;
+                        Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(4) : Generic.Variables.chiSquared;
                         infoLabel.text = `${res.refinement_message}`
                         infoLabel.text += res.num_refined_parameters ? `\nNumber of refined parameters: ${res.num_refined_parameters}` : ""
                         infoLabel.text += res.nfev ? `\nnfev: ${res.nfev}` : ""
@@ -36,7 +39,7 @@ ColumnLayout {
                         infoLabel.text += res.started_chi_sq ? `\nStarted goodnes-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(3)}` : ""
                         infoLabel.text += res.final_chi_sq ? `\nFinal goodnes-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(3)}` : ""
                         infoLabel.text += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
-                        info.open()
+                        info.open();
                     };
                     proxy.fitables
                 }
@@ -98,6 +101,8 @@ ColumnLayout {
             }
             GenericAppContentAreaButtons.GoNext {
                 text: "Summary"
+                enabled: Specific.Variables.refinementDone
+                highlighted: Specific.Variables.refinementDone
                 ToolTip.text: qsTr("Go to the next step: Summary")
                 onClicked: {
                     Generic.Variables.analysisPageFinished = true

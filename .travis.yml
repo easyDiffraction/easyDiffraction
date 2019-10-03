@@ -34,6 +34,7 @@ install:
   - python -m pip install --upgrade pip
   - pip3 install PySide2
   - pip3 install scipy
+  - pip3 install cryspy
   - pip3 install numpy==1.16.4
   - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
   - pip3 install pytest
@@ -49,10 +50,12 @@ before_script:
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
+# Download cryspy
+  - git clone --single-branch --branch master https://github.com/ikibalin/cryspy
 # Make the app
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App;." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.ico; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.icns; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onefile --log-level WARN --add-data "App:."; fi
+  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy;cryspy" --add-data "App;." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.ico; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.icns; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onefile --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:."; fi
 
 # Temporarily remove unit testing
 #script:
@@ -63,7 +66,7 @@ before_script:
 after_success:
 #  - coveralls
   - cd dist
-  - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
+  - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffraction.app; fi
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
@@ -77,7 +80,7 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "Travis Builder"
   - git config --local user.email "travis@travis-ci.org"
-  - export TRAVIS_TAG=v$(cat ../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
+  - export TRAVIS_TAG=v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - '[ "$TRAVIS_BRANCH" == master ] || export TRAVIS_TAG=$TRAVIS_BRANCH-$TRAVIS_TAG'                
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
   # This writes a changelog. If wanted

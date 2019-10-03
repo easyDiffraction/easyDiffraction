@@ -1,13 +1,11 @@
+import logging
+import operator
+from functools import reduce
+
 from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
-from functools import reduce
-import operator
-
 import PyImports.Helpers as Helpers
-
-import logging
-logging.basicConfig(format="%(asctime)-15s [%(levelname)s] %(filename)s %(funcName)s [%(lineno)d]: %(message)s", level=logging.INFO)
 
 class FitablesModel(QObject):
     def __init__(self, calculator, parent=None):

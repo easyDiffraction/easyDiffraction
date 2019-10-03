@@ -40,11 +40,9 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation))
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    var filename = fileUrl.toString().replace("file:///", "")
-                    filename = filename.replace("file://", "")
-                    proxy.init(filename)
+                    proxy.init(fileUrl)
                     fileDialog.close()
-                    Generic.Variables.projectOpened = true
+                    Specific.Variables.projectOpened = true
                     Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
@@ -158,8 +156,8 @@ ColumnLayout {
             GenericAppContentAreaButtons.GoNext {
                 text: "Experimental Data"
                 ToolTip.text: qsTr("Go to the next step: Experimental data")
-                enabled: Generic.Variables.projectOpened
-                highlighted: Generic.Variables.projectOpened
+                enabled: Specific.Variables.projectOpened
+                highlighted: Specific.Variables.projectOpened
 
                 onClicked: {
                     Generic.Variables.homePageFinished = true
