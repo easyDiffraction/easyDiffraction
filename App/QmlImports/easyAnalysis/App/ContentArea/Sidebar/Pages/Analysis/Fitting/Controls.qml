@@ -24,25 +24,7 @@ ColumnLayout {
             // Fitables table
             GenericAppElements.FitablesView {
                 Layout.fillWidth: true
-                model: {
-                    pausePlayButton.text = proxy.fitButtonState;
-                    const res = proxy.fit_results();
-                    // Show the label on refinement success
-                    if(typeof res !== "undefined"){
-                        Specific.Variables.refinementDone = true;
-                        Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(4) : Generic.Variables.chiSquared;
-                        infoLabel.text = `${res.refinement_message}`
-                        infoLabel.text += res.num_refined_parameters ? `\nNumber of refined parameters: ${res.num_refined_parameters}` : ""
-                        infoLabel.text += res.nfev ? `\nnfev: ${res.nfev}` : ""
-                        infoLabel.text += res.nit ? `\nnfev: ${res.nit}` : ""
-                        infoLabel.text += res.njev ? `\nnfev: ${res.njev}` : ""
-                        infoLabel.text += res.started_chi_sq ? `\nStarted goodnes-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(3)}` : ""
-                        infoLabel.text += res.final_chi_sq ? `\nFinal goodnes-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(3)}` : ""
-                        infoLabel.text += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
-                        info.open();
-                    };
-                    proxy.fitables
-                }
+                model: proxy.fitables
             }
 
             // Buttons
@@ -50,11 +32,10 @@ ColumnLayout {
                 columns: 2
 
                 GenericAppContentAreaButtons.PausePlay {
-                    id: pausePlayButton;
-                    text: proxy.fitButtonState
+                    id: pausePlayButton
+                    text: proxy.refinementRunning ? "Stop fitting" : "Start fitting"
                     onClicked: {
                         proxy.refine()
-                        pausePlayButton.text = proxy.fitButtonState
                     }
                 }
                 CheckBox { enabled: false; checked: false; text: "Auto-update"; }
@@ -101,8 +82,8 @@ ColumnLayout {
             }
             GenericAppContentAreaButtons.GoNext {
                 text: "Summary"
-                enabled: Specific.Variables.refinementDone
-                highlighted: Specific.Variables.refinementDone
+                enabled: proxy.refinementDone
+                highlighted: proxy.refinementDone
                 ToolTip.text: qsTr("Go to the next step: Summary")
                 onClicked: {
                     Generic.Variables.analysisPageFinished = true
@@ -129,12 +110,27 @@ ColumnLayout {
         parent: Overlay.overlay
         anchors.centerIn: parent
         modal: true
+        visible: proxy.refinementDone
 
         Label {
             id: infoLabel
             anchors.centerIn: parent
+            text: {
+                if (!proxy.refinementDone)
+                    return ""
+                const res = proxy.refinementResult
+                Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(4) : Generic.Variables.chiSquared
+                let s = `${res.refinement_message}`
+                s += res.num_refined_parameters ? `\nNumber of refined parameters: ${res.num_refined_parameters}` : ""
+                s += res.nfev ? `\nnfev: ${res.nfev}` : ""
+                s += res.nit ? `\nnfev: ${res.nit}` : ""
+                s += res.njev ? `\nnfev: ${res.njev}` : ""
+                s += res.started_chi_sq ? `\nStarted goodnes-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(3)}` : ""
+                s += res.final_chi_sq ? `\nFinal goodnes-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(3)}` : ""
+                s += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
+                return s
+            }
         }
     }
-
 }
 

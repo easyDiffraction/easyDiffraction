@@ -7,7 +7,6 @@ QtObject {
 
     // Python models
     property bool projectOpened: false
-    property bool refinementDone: false
     property var project: projectOpened ? proxy.project : null
     property var cif: projectOpened ? proxy.cif : null
 }
