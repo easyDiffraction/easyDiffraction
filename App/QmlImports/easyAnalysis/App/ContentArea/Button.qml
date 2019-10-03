@@ -6,6 +6,7 @@ import easyAnalysis 1.0 as Generic
 
 Button {
     property bool fillWidthEqually: false
+    property bool blinking: false
 
     id: button
 
@@ -19,6 +20,7 @@ Button {
     ToolTip.visible: ToolTip.text !== "" ? hovered : false
 
     contentItem: IconLabel {
+        id: buttonIcon
         spacing: button.spacing
         mirrored: button.mirrored
         display: button.display
@@ -29,9 +31,10 @@ Button {
     }
 
     background: Rectangle {
+        id: buttonBackground
         implicitHeight: Generic.Style.buttonHeight
         color: backgroundColor()
-        border.color: button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.appBorderColor
+        border.color: borderColor()
         radius: Generic.Style.toolbarButtonRadius
     }
 
@@ -51,6 +54,12 @@ Button {
         return Color.blend(color1, color2, alpha)
     }
 
+    function borderColor() {
+        if (!button.enabled)
+            return Generic.Style.appBorderColor
+        return button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.appBorderColor
+    }
+
     function iconColor() {
         if (!button.enabled)
             return Generic.Style.buttonIconDisabledColor
@@ -61,5 +70,19 @@ Button {
         if (!button.enabled)
             return Generic.Style.buttonTextDisabledColor
         return button.highlighted ? Generic.Style.buttonTextHighlightedColor : Generic.Style.buttonTextEnabledColor
+    }
+
+    ParallelAnimation {
+        running: blinking
+        alwaysRunToEnd: true
+        loops: Animation.Infinite
+        SequentialAnimation {
+            PropertyAnimation { target: buttonBackground; property: "color"; to: "#f08c82"; duration: 500 }
+            PropertyAnimation { target: buttonBackground; property: "color"; to: backgroundColor(); duration: 500 }
+        }
+        SequentialAnimation {
+            PropertyAnimation { target: buttonBackground; property: "border.color"; to: "#f08c82"; duration: 500 }
+            PropertyAnimation { target: buttonBackground; property: "border.color"; to: borderColor(); duration: 500 }
+        }
     }
 }

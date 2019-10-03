@@ -34,17 +34,18 @@ ColumnLayout {
                 GenericAppContentAreaButtons.PausePlay {
                     id: pausePlayButton
                     text: proxy.refinementRunning ? "Stop fitting" : "Start fitting"
+                    //blinking: proxy.refinementRunning
                     onClicked: {
                         proxy.refine()
                     }
                 }
-                CheckBox { enabled: false; checked: false; text: "Auto-update"; }
+                CheckBox { enabled: false; checked: false; text: "Auto-update" }
 
                 GenericAppContentAreaButtons.Accept {
-                    enabled: false;
-                    text: "Accept refined parameters";
+                    enabled: false
+                    text: "Accept refined parameters"
                 }
-                CheckBox { enabled: false; checked: true; text: "Auto-accept"; }
+                CheckBox { enabled: false; checked: true; text: "Auto-accept" }
 
                 GenericAppElements.GuideWindow {
                     id: guidWindow

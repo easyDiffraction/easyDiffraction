@@ -8,4 +8,5 @@ GenericAppToolbar.Button {
     text: qsTr("Analysis")
     ToolTip.text: qsTr("Analysis and modelling page")
     //finished: Generic.Variables.analysisPageFinished
+    blinking: proxy.refinementRunning
 }

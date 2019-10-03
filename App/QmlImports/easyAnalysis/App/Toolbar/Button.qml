@@ -8,6 +8,9 @@ TabButton {
     //property bool withSeparator: false
     ///property bool finished: false
 
+    property bool blinking: false
+
+
     id: button
     //leftPadding: withSeparator ? 20 : 0
     ///rightPadding: withSeparator ? 20 : 0
@@ -19,6 +22,7 @@ TabButton {
     //                        implicitContentWidth + leftPadding + rightPadding +  100 )
 
     autoExclusive: true
+
 
     icon.width: Generic.Style.toolbarButtonHeight / 2
     icon.height: Generic.Style.toolbarButtonHeight / 2
@@ -35,6 +39,7 @@ TabButton {
             visible: withSeparator
         }*/
         IconLabel {
+        id: buttonIcon
         spacing: button.spacing
         mirrored: button.mirrored
         display: button.display
@@ -56,7 +61,7 @@ TabButton {
             visible: withSeparator
         }*/
         Rectangle {
-            //id: rect
+            id: buttonBackground
             Layout.fillWidth: true
             implicitHeight: Generic.Style.toolbarButtonHeight
             color: backgroundColor()
@@ -82,6 +87,8 @@ TabButton {
     }
 
     function iconColor() {
+        if (blinking)
+            return Generic.Style.buttonIconHighlightedColor
         if (!button.enabled)
             return Generic.Style.buttonIconDisabledColor
         //if (button.finished)
@@ -92,6 +99,8 @@ TabButton {
     }
 
     function textColor() {
+        if (blinking)
+            return Generic.Style.buttonTextHighlightedColor
         if (!button.enabled)
             return Generic.Style.buttonTextDisabledColor
         //if (button.finished)
@@ -110,5 +119,29 @@ TabButton {
             return Generic.Style.buttonBorderHighlightedColor
         return Generic.Style.buttonBorderFinishedColor
     }
+
+    ParallelAnimation {
+        running: blinking
+        loops: Animation.Infinite
+        SequentialAnimation {
+            PropertyAnimation { target: buttonBackground; property: "color"; to: "#f08c82"; duration: 500 }
+            PropertyAnimation { target: buttonBackground; property: "color"; to: backgroundColor(); duration: 500 }
+        }
+        SequentialAnimation {
+            PropertyAnimation { target: buttonBackground; property: "border.color"; to: "#f08c82"; duration: 500 }
+            PropertyAnimation { target: buttonBackground; property: "border.color"; to: borderColor(); duration: 500 }
+        }
+        onFinished: restoreAnimation.restart()
+    }
+
+    ParallelAnimation {
+        id: restoreAnimation
+        alwaysRunToEnd: true
+        PropertyAnimation { target: buttonBackground; property: "color"; to: backgroundColor(); duration: 500 }
+        PropertyAnimation { target: buttonBackground; property: "border.color"; to: borderColor(); duration: 500 }
+        PropertyAnimation { target: buttonIcon; property: "color"; to: textColor(); duration: 500 }
+        PropertyAnimation { target: button; property: "icon.color"; to: iconColor(); duration: 500 }
+    }
 }
+
 
