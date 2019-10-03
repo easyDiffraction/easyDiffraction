@@ -245,14 +245,27 @@ class Proxy(QObject):
     refinementDone = Property(bool, lambda self: self._refinement_done, notify=refinementChanged)
     refinementResult = Property('QVariant', lambda self: self._refinement_result, notify=refinementChanged)
 
+    # ####
+    # MISC
+    # ####
+
+    @Slot(str, result=str)
+    def fullFilePath(self, fname):
+        fpath = os.path.join(self.get_project_dir_absolute_path(), fname)
+        if os.path.isfile(fpath):
+            return fpath
+        return ""
+
+    def get_project_dir_absolute_path(self):
+        if self._main_rcif_path:
+            return os.path.dirname(os.path.abspath(self._main_rcif_path))
+        return ""
+    project_dir_absolute_path = Property(str, get_project_dir_absolute_path, notify=projectChanged)
+    project_url_absolute_path = Property(str, lambda self: str(QUrl.fromLocalFile(os.path.dirname(self._main_rcif_path)).toString()), notify=projectChanged)
+
     # ######
     # REPORT
     # ######
-
-    def get_project_dir_absolute_path(self):
-        return os.path.dirname(os.path.abspath(self._main_rcif_path))
-    project_dir_absolute_path = Property(str, get_project_dir_absolute_path, notify=projectChanged)
-    project_url_absolute_path = Property(str, lambda self: str(QUrl.fromLocalFile(os.path.dirname(self._main_rcif_path)).toString()), notify=projectChanged)
 
     @Slot(str)
     def store_report(self, report=""):

@@ -59,7 +59,7 @@ Rectangle {
             spacing: margin
 
             Repeater {
-                model: ["saved_structure", "saved_refinement"]
+                model: ["saved_structure.png", "saved_refinement.png"]
 
                 Rectangle {
                     visible: image.progress
@@ -75,7 +75,7 @@ Rectangle {
                         clip: true
                         antialiasing: true
                         smooth: true
-                        source: Specific.Variables.projectOpened ? proxy.project_dir_absolute_path + "/" + modelData + ".png" : ""
+                        source: Specific.Variables.projectOpened ? proxy.fullFilePath(modelData) : ""
                     }
                 }
             }

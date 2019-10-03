@@ -91,7 +91,7 @@ Rectangle {
         //s += '<h2>&nbsp;</h2>'
         s += '<h2>Structure</h2>'
         s += '<p>'
-        s += '<img src="' + proxy.project_dir_absolute_path + '/saved_structure.png" width="' + Math.round(wrapper.width * 0.8) + '" >'
+        s += '<img src="' + proxy.fullFilePath("saved_structure.png") + '" width="' + Math.round(wrapper.width * 0.8) + '" >'
         s += '</p>'
         s += '</body>'
         return s

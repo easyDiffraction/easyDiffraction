@@ -16,14 +16,9 @@ Rectangle {
     property real zTargetInitial: 0.0
     property int animationDuration: 1000
 
-    //width: 100//parent.width
-    //height: 100//parent.height
-
-    //id: container
-    //anchors.fill: parent
+    width: parent.width
+    height: parent.height
     color: "transparent"
-    //clip: true
-    //spacing: 0
 
     ////////////////////////
     // Check if data changed
@@ -34,7 +29,10 @@ Rectangle {
         text: Specific.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
+            chart.enabled = true // to trigger chart saving
+
             if (Specific.Variables.projectOpened) {
+
                 // Create dictionary b_scattering:color
                 const bscatList = Array.from(new Set(Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.scat_length_neutron))
 
@@ -55,7 +53,7 @@ Rectangle {
 
                 // Populate chart with atoms. Every atom is an individual scatter serie
                 for (let i = 0, len = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.fract_x.length; i < len; i++ ) {
-                    var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml");
+                    var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml")
                     if (component.status === Component.Ready) {
                         var series = component.createObject()
                         if (series === null) {
@@ -70,14 +68,11 @@ Rectangle {
                             })
                         }
                         chart.addSeries(series)
+
                     }
                 }
-
-                chart.grabToImage(function(result) {
-                    result.saveToFile(proxy.project_dir_absolute_path + "/saved_structure.png")
-                })
-
             }
+            chart.enabled = true // to trigger chart saving
         }
     }
 
@@ -86,6 +81,7 @@ Rectangle {
     ///////
 
     Rectangle {
+        id: chartContainer
         width: parent.width
         anchors.top: parent.top
         anchors.bottom: infoLabel.top
@@ -153,6 +149,11 @@ Rectangle {
                     zPosRole: "zPos"
                 }
             }
+
+            // Save chart
+            onWidthChanged: saveChart()
+            onHeightChanged: saveChart()
+            onEnabledChanged: saveChart()
         }
     }
 
@@ -184,12 +185,14 @@ Rectangle {
 
     // Reset view with animation: Override default left mouse button
     MouseArea {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
         anchors.fill: parent
-        acceptedButtons: Qt.LeftButton
-        onClicked: animo.restart()
+        acceptedButtons: Qt.LeftButton //Qt.AllButtons
+        //propagateComposedEvents: true
+        //onPressed: mouse.accepted = false
+        onReleased: animo.restart()
     }
+
+    // Animation
     ParallelAnimation {
         id: animo
         NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.target.x"; to: xTargetInitial; duration: animationDuration }
@@ -198,6 +201,15 @@ Rectangle {
         NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.xRotation"; to: xRotationInitial; duration: animationDuration }
         NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.yRotation"; to: yRotationInitial; duration: animationDuration }
         NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.zoomLevel"; to: zoomLevelInitial; duration: animationDuration }
+    }
+
+    // Save chart
+    function saveChart() {
+        if (chartContainer.width > 0) {
+            chartContainer.grabToImage(function(result) {
+                result.saveToFile(proxy.project_dir_absolute_path + "/saved_structure.png")
+            })
+        }
     }
 
 }
