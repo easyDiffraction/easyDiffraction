@@ -6,9 +6,11 @@
 #
 
 import sys
+import os
 import pytest
 
 sys.path.append('App')
+sys.path.append(os.path.join('App','PyImports'))
 sys.path.append('.')
 
 # automatically discover and run all tests under ./Tests
