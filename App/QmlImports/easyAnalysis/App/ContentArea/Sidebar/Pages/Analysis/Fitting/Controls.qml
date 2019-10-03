@@ -49,6 +49,7 @@ ColumnLayout {
                         infoLabel.text += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
                         info.open()
                         Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(4) : Generic.Variables.chiSquared
+                        Specific.Variables.refinementDone = true
                     }
                 }
                 CheckBox { enabled: false; checked: false; text: "Auto-update"; }
@@ -95,6 +96,8 @@ ColumnLayout {
             }
             GenericAppContentAreaButtons.GoNext {
                 text: "Summary"
+                enabled: Specific.Variables.refinementDone
+                highlighted: Specific.Variables.refinementDone
                 ToolTip.text: qsTr("Go to the next step: Summary")
                 onClicked: {
                     Generic.Variables.analysisPageFinished = true
