@@ -1,8 +1,7 @@
+import logging
+
 from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItemModel
-
-import logging
-logging.basicConfig(format="%(asctime)-15s [%(levelname)s] %(filename)s %(funcName)s [%(lineno)d]: %(message)s", level=logging.INFO)
 
 class BraggPeaksModel(QObject):
     def __init__(self, calculator, parent=None):

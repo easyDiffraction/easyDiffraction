@@ -1,12 +1,10 @@
-from PySide2.QtCore import QUrl, Qt, QObject, Signal, Slot, Property
-from PySide2.QtGui import QStandardItemModel
-
 import os
 import sys
+import logging
 import numpy as np
 
-import logging
-logging.basicConfig(format="%(asctime)-15s [%(levelname)s] %(filename)s %(funcName)s [%(lineno)d]: %(message)s", level=logging.INFO)
+from PySide2.QtCore import QUrl, Qt, QObject, Signal, Slot, Property
+from PySide2.QtGui import QStandardItemModel
 
 from PyImports.Calculators.CryspyCalculator import *
 from PyImports.Models.MeasuredDataModel import *
@@ -21,8 +19,8 @@ from PyImports.Models.FitablesModel import *
 
 class Proxy(QObject):
     def __init__(self, parent=None):
-        super().__init__(parent)
         logging.info("")
+        super().__init__(parent)
         self._main_rcif_path = None
         self._project_model = None
         self._measured_data_model = None
@@ -70,7 +68,6 @@ class Proxy(QObject):
     projectChanged = Signal()
     def getProject(self):
         logging.info("")
-        #logging.info("********************************** GET PROJECT *******************************")
         if self._project_model is None:
             return ""
         return self._project_model.asDict()
@@ -79,7 +76,6 @@ class Proxy(QObject):
     # CIF model for QML
     def getCif(self):
         logging.info("")
-        #logging.info("********************************** GET CIF *******************************")
         if self._project_model is None:
             return ""
         return self._project_model.asCifDict()
@@ -184,7 +180,7 @@ class Proxy(QObject):
     # Fitables model for QML
     fitablesChanged = Signal()
     def getFitables(self):
-        ###logging.info("")
+        ##logging.info("")
         if self._fitables_model is None:
             return QStandardItemModel()
         return self._fitables_model.asModel()

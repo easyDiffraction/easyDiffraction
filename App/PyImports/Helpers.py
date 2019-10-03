@@ -1,5 +1,5 @@
-from functools import reduce
 import operator
+from functools import reduce
 
 def nested_get(dictionary, keys_list):
     """Access a nested object in root by key sequence."""
