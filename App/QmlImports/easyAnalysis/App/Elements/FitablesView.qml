@@ -168,6 +168,7 @@ Column {
                             id: qwe
                             width: cellWidthProvider(3)
                             height: parent.height
+                            enabled: !proxy.refinementRunning
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
@@ -192,6 +193,7 @@ Column {
                         CheckBox {
                             width: cellWidthProvider(5)
                             height: parent.height
+                            enabled: !proxy.refinementRunning
                             checked: refine
                             onToggled: refineEdit = checked
                         }
@@ -227,6 +229,7 @@ Column {
     // Slider
     Row {
         id: slideRow
+        enabled: !proxy.refinementRunning
         width: parent.width
         height: cellHeight
         spacing: 10
