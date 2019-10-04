@@ -9,7 +9,7 @@ matrix:
       dist: xenial
     - name: "Python 3.7.4 on macOS"
       os: osx
-      osx_image: xcode10.1    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
+      osx_image: xcode10.3    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
         - python3 -m venv "$(dirname "$0")"
@@ -26,7 +26,7 @@ matrix:
         - choco install curl
         - choco install grep
         - choco install sed
-        - pip3 install pypiwin32
+        - pip install pypiwin32
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
 
