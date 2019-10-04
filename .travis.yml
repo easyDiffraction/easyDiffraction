@@ -11,9 +11,9 @@ matrix:
       os: osx
       osx_image: xcode10.1    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
-      #before_install:
+      before_install:
         #- brew update
-        #- brew upgrade python
+        - brew upgrade python
     - name: "Python 3.7.4 on Windows"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
