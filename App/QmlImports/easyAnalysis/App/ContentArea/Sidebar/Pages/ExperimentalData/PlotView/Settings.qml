@@ -12,6 +12,7 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         title: "View settings"
         content: GenericAppElements.GridLayout {
+            enabled: false
             columns: 2
             GenericAppElements.CheckBox { checked:false; text:qsTr("Show legend") }
             //GenericAppElements.CheckBox { checked:true;  text:qsTr("Display coordinate system") }

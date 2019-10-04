@@ -64,6 +64,7 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "Find"
+        enabled: false
         content: GenericAppElements.RowLayout {
             TextField { Layout.fillWidth: true; implicitHeight: 29; placeholderText: "Search text"}
             CheckBox { implicitHeight: 32; checked: true; text: qsTr("Ignore case") }

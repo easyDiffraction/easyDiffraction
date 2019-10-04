@@ -11,14 +11,13 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "View settings"
+        enabled: false
         content: GenericAppElements.GridLayout {
             columns: 2
             GenericAppElements.CheckBox { checked:true;  text:qsTr("Show experimental data") }
             GenericAppElements.CheckBox { checked:true;  text:qsTr("Show difference plot") }
-
             //GenericAppElements.CheckBox { checked:false; text:qsTr("Show Bragg positions") }
             GenericAppElements.CheckBox { checked:false; text:qsTr("Show legend") }
-
             //GenericAppElements.CheckBox { Layout.fillWidth:true; checked:true;  text:qsTr("Display coordinate system") }
         }
     }

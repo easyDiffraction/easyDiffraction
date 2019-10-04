@@ -11,6 +11,7 @@ ColumnLayout {
     ///////////
     GenericAppElements.GroupBox {
         title: "View settings"
+        enabled: false
         content: GenericAppElements.GridLayout {
             columns: 2
             GenericAppElements.CheckBox { checked:false; text:qsTr("Display labels for atoms") }
