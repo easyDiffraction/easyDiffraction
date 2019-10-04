@@ -25,7 +25,7 @@ ColumnLayout {
 
             // Buttons
             GenericAppContentAreaButtons.Create { id: createButton; enabled: false; text: qsTr("Create a new project") }
-            GenericAppContentAreaButtons.Open { text: qsTr("Open another project"); onClicked: fileDialog.open() }
+            GenericAppContentAreaButtons.Open { text: qsTr("Open another project"); enabled: !proxy.refinementRunning; onClicked: fileDialog.open() }
             GenericAppContentAreaButtons.Clone { id: cloneButton; enabled: false; text: qsTr("Clone an existing project") }
             GenericAppContentAreaButtons.Save { enabled: false; text: qsTr("Save project as...") }
 

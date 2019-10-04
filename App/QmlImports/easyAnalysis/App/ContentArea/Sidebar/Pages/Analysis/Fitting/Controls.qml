@@ -24,6 +24,7 @@ ColumnLayout {
             // Fitables table
             GenericAppElements.FitablesView {
                 Layout.fillWidth: true
+                enabled: !proxy.refinementRunning
                 model: proxy.fitables
             }
 
@@ -33,7 +34,6 @@ ColumnLayout {
 
                 GenericAppContentAreaButtons.PausePlay {
                     id: pausePlayButton
-                    //blinking: proxy.refinementRunning
                     onClicked: {
                         proxy.refine()
                     }

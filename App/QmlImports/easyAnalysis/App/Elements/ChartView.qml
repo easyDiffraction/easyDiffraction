@@ -500,7 +500,7 @@ ColumnLayout {
         repeat: false
         onTriggered: {
             if (showDiff) {
-                print("save chart")
+                //print("save chart")
                 chartContainer.grabToImage(function(result) {
                     result.saveToFile(proxy.project_dir_absolute_path + "/saved_refinement.png")
                 })

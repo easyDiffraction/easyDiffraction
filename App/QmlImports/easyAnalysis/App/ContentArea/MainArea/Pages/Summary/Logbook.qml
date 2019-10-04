@@ -17,7 +17,7 @@ Rectangle {
         running: proxy.refinementDone
         repeat: false
         onTriggered: {
-            print("create report")
+            //print("create report")
             const html = writeHTML()
             textArea.text = html
             proxy.store_report(html)

@@ -197,7 +197,7 @@ Rectangle {
         running: proxy.refinementDone
         repeat: false
         onTriggered: {
-            print("save structure")
+            //print("save structure")
             chartContainer.grabToImage(function(result) {
                 result.saveToFile(proxy.project_dir_absolute_path + "/saved_structure.png")
             })
