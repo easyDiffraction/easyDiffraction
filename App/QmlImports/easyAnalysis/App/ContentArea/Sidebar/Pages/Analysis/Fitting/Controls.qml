@@ -24,7 +24,6 @@ ColumnLayout {
             // Fitables table
             GenericAppElements.FitablesView {
                 Layout.fillWidth: true
-                enabled: !proxy.refinementRunning
                 model: Specific.Variables.projectOpened ? proxy.fitables : null
             }
 

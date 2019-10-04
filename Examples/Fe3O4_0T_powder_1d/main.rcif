@@ -71,9 +71,9 @@ _pd_calib_2theta_offset -0.1()
 loop_
 _pd_background_2theta
 _pd_background_intensity
-4.5 256.0()
-40.0 158.0()
-80.0 65.0()
+4.5 255.95
+40.0 157.96
+80.0 64.78
 
 _pd_instr_reflex_asymmetry_p1 0.0
 _pd_instr_reflex_asymmetry_p2 0.0
@@ -83,8 +83,8 @@ _pd_instr_reflex_asymmetry_p4 0.0
 _diffrn_radiation_polarization 0.0
 _diffrn_radiation_efficiency 1.0
 
-_pd_instr_resolution_u 16.9776()
-_pd_instr_resolution_v -2.8357()
+_pd_instr_resolution_u 16.9776
+_pd_instr_resolution_v -2.8357
 _pd_instr_resolution_w 0.5763
 _pd_instr_resolution_x 0.0
 _pd_instr_resolution_y 0.0

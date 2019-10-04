@@ -8,7 +8,7 @@ from PySide2.QtQml import QQmlApplicationEngine
 
 #import QmlResource
 
-from PyImports.Proxy import *
+from PyImports.Proxy import Proxy
 
 current_dir = os.path.dirname(sys.argv[0])
 
