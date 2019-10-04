@@ -31,14 +31,8 @@ ColumnLayout {
         visible: false
         text: Specific.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
         onTextChanged: {
-            //print("--------------------------------------------------------- Time stamp: ", text)
-            if (Specific.Variables.projectOpened && showDiff) {
-
+            if (Specific.Variables.projectOpened) {
                 adjustLeftAxesAnchor()
-
-                chartContainer.grabToImage(function(result) {
-                    result.saveToFile(proxy.project_dir_absolute_path + "/saved_refinement.png")
-                })
             }
         }
     }
@@ -497,6 +491,21 @@ ColumnLayout {
     ToolTip {
         id: infoToolTip
         background: Rectangle { color: "white"; opacity: 0.95 }
+    }
+
+    // Save chart onRefinementDone
+    Timer {
+        interval: 100
+        running: proxy.refinementDone
+        repeat: false
+        onTriggered: {
+            if (showDiff) {
+                print("save chart")
+                chartContainer.grabToImage(function(result) {
+                    result.saveToFile(proxy.project_dir_absolute_path + "/saved_refinement.png")
+                })
+            }
+        }
     }
 
     ////////////////

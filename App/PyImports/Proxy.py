@@ -300,6 +300,7 @@ class Proxy(QObject):
         except ex as Exception:
             print("Report viewing failed: "+ str(ex))
 
+    # Not used?
     @Slot(result=str)
     def get_report_html(self):
         return self.report_html

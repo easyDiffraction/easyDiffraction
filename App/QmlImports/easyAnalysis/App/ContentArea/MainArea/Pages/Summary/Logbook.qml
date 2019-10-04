@@ -8,12 +8,46 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyDiffraction 1.0 as Specific
 
 Rectangle {
-    property int commonMargin: 10
-
     id: wrapper
-
-    //anchors.fill: parent
     Layout.fillWidth: true
+
+    // Create report onRefinementDone
+    Timer {
+        interval: 500
+        running: proxy.refinementDone
+        repeat: false
+        onTriggered: {
+            print("create report")
+            const html = writeHTML()
+            textArea.text = html
+            proxy.store_report(html)
+        }
+    }
+
+    // TextArea
+    Flickable {
+        anchors.fill: parent
+        flickableDirection: Flickable.VerticalFlick
+        boundsBehavior: Flickable.StopAtBounds
+        clip: true
+
+        ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 0.1 }
+
+        TextArea.flickable: TextArea {
+            id: textArea
+            anchors.fill: parent
+            padding: 10
+            readOnly: true
+            antialiasing: true
+            smooth: true
+            textFormat: Text.RichText
+            onVisibleChanged: update()
+        }
+    }
+
+    /////////////
+    // Write HTML
+    /////////////
 
     function writeHtmlHead() {
         let s = ''
@@ -83,15 +117,13 @@ Rectangle {
         s += '<p></p>'
         s += '<b>Chi2: </b>' + Generic.Variables.chiSquared + '<br>'
         s += '</p>'
-        //s += '<h2>&nbsp;</h2>'
         s += '<h2>Fitting</h2>'
         s += '<p>'
-        s += '<img src="' + proxy.project_dir_absolute_path + '/saved_refinement.png" width="' + Math.round(wrapper.width * 0.8) + '" >'
+        s += '<img src="' + proxy.fullFilePath("saved_refinement.png") + '" >'
         s += '</p>'
-        //s += '<h2>&nbsp;</h2>'
         s += '<h2>Structure</h2>'
         s += '<p>'
-        s += '<img src="' + proxy.fullFilePath("saved_structure.png") + '" width="' + Math.round(wrapper.width * 0.8) + '" >'
+        s += '<img src="' + proxy.fullFilePath("saved_structure.png") + '" >'
         s += '</p>'
         s += '</body>'
         return s
@@ -104,28 +136,9 @@ Rectangle {
         s += writeHtmlHead()
         s += writeHtmlBody()
         s += '</html>'
-        proxy.store_report(s)
-        return proxy.get_report_html()
+        return s
     }
 
-    Flickable {
-        id: flickable
-        anchors.fill: parent
-        flickableDirection: Flickable.VerticalFlick
-        boundsBehavior: Flickable.StopAtBounds
-
-        ScrollBar.vertical: ScrollBar {}
-
-        TextArea.flickable: TextArea {
-            visible: true
-            Layout.fillWidth: true
-            padding: commonMargin
-            topPadding: 3*commonMargin
-            bottomPadding: 0
-            readOnly: true
-            antialiasing: true
-            textFormat: Text.RichText
-            text: Specific.Variables.projectOpened ? writeHTML() : ""
-        }
-    }
 }
+
+

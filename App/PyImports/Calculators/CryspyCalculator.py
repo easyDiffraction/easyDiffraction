@@ -768,7 +768,7 @@ class CryspyCalculator(QObject):
         if not isinstance(value, bool):
             #self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
             self.setProjectDictFromCryspyObj()
-            print(self._project_dict["info"])
+            #print(self._project_dict["info"])
             self.projectDictChanged.emit()
 
     def phasesCount(self):

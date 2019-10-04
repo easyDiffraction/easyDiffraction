@@ -28,14 +28,9 @@ Rectangle {
         visible: false
         text: Specific.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
         onTextChanged: {
-            //print("--------------------------------------------------------- Time stamp: ", text)
-            chart.enabled = true // to trigger chart saving
-
             if (Specific.Variables.projectOpened) {
-
                 // Create dictionary b_scattering:color
                 const bscatList = Array.from(new Set(Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.scat_length_neutron))
-
                 let bscatColorDict = {}
                 for (let i = 0; i < bscatList.length; i++ ) {
                     bscatColorDict[bscatList[i]] = Generic.Style.atomColorList[i]
@@ -68,11 +63,9 @@ Rectangle {
                             })
                         }
                         chart.addSeries(series)
-
                     }
                 }
             }
-            chart.enabled = true // to trigger chart saving
         }
     }
 
@@ -149,11 +142,6 @@ Rectangle {
                     zPosRole: "zPos"
                 }
             }
-
-            // Save chart
-            onWidthChanged: saveChart()
-            onHeightChanged: saveChart()
-            onEnabledChanged: saveChart()
         }
     }
 
@@ -203,9 +191,13 @@ Rectangle {
         NumberAnimation { easing.type: Easing.OutCubic; target: chart; property: "scene.activeCamera.zoomLevel"; to: zoomLevelInitial; duration: animationDuration }
     }
 
-    // Save chart
-    function saveChart() {
-        if (chartContainer.width > 0) {
+    // Save chart onRefinementDone
+    Timer {
+        interval: 100
+        running: proxy.refinementDone
+        repeat: false
+        onTriggered: {
+            print("save structure")
             chartContainer.grabToImage(function(result) {
                 result.saveToFile(proxy.project_dir_absolute_path + "/saved_structure.png")
             })
