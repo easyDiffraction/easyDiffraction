@@ -11,9 +11,9 @@ matrix:
       os: osx
       osx_image: xcode10.1    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
-      before_install:
+      #before_install:
         #- brew update
-        - brew upgrade python
+        #- brew upgrade python
     - name: "Python 3.7.4 on Windows"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
@@ -35,8 +35,8 @@ env:
 
 install:
   #- python3 --version
-  - pip3 install --upgrade pip  # all three OSes agree about 'pip3'
-  #- python3 -m pip install --upgrade pip
+  #- pip3 install --upgrade pip  # all three OSes agree about 'pip3'... but on Win: Could not install packages due to an EnvironmentError: [WinError 5] Access is denied: 'C:\\Users\\travis\\AppData\\Local\\Temp\\pip-uninstall-yqkdi8bl\\pip3.exe'. Consider using the `--user` option or check the permissions.
+  #- python -m pip install --upgrade pip
   - pip3 --version
   - pip3 install PySide2
   - pip3 install scipy
@@ -74,6 +74,7 @@ after_success:
 #  - coveralls
   - cd dist
   - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then xattr -dr com.apple.quarantine easyDiffraction.app; fi # Fix LSOpenURLsWithRole() failed with error -10810
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffraction.app; fi
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
