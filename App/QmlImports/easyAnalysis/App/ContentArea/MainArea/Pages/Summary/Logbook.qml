@@ -9,7 +9,6 @@ import easyDiffraction 1.0 as Specific
 
 Rectangle {
     id: wrapper
-    Layout.fillWidth: true
 
     // Create report onRefinementDone
     Timer {
@@ -41,7 +40,7 @@ Rectangle {
             antialiasing: true
             smooth: true
             textFormat: Text.RichText
-            onVisibleChanged: update()
+            onVisibleChanged: if (visible) update()
         }
     }
 
@@ -54,7 +53,6 @@ Rectangle {
         s += '<head>'
         s += '<style>'
         s += 'table {'
-        s += 'font-family: arial, sans-serif;'
         s += 'border-collapse: collapse;'
         s += '}'
         s += 'td, th {'
@@ -120,6 +118,7 @@ Rectangle {
         s += '<h2>Fitting</h2>'
         s += '<p>'
         s += '<img src="' + proxy.fullFilePath("saved_refinement.png") + '" >'
+        //s += '<img src="' + proxy.project_dir_absolute_path + '/saved_refinement.png" width="' + Math.round(wrapper.width * 0.8) + '" >'
         s += '</p>'
         s += '<h2>Structure</h2>'
         s += '<p>'
@@ -140,5 +139,3 @@ Rectangle {
     }
 
 }
-
-

@@ -501,9 +501,14 @@ ColumnLayout {
         onTriggered: {
             if (showDiff) {
                 //print("save chart")
-                chartContainer.grabToImage(function(result) {
-                    result.saveToFile(proxy.project_dir_absolute_path + "/saved_refinement.png")
-                })
+                const reduced_width = chartContainer.width - 10
+                const reduced_height =  chartContainer.height / chartContainer.width * reduced_width
+                chartContainer.grabToImage(
+                            function(result) {
+                                result.saveToFile(proxy.project_dir_absolute_path + "/saved_refinement.png")
+                            },
+                            Qt.size(reduced_width, reduced_height)
+                            )
             }
         }
     }
