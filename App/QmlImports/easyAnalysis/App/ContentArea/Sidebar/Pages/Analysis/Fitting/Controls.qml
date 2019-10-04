@@ -25,7 +25,7 @@ ColumnLayout {
             GenericAppElements.FitablesView {
                 Layout.fillWidth: true
                 enabled: !proxy.refinementRunning
-                model: proxy.fitables
+                model: Specific.Variables.projectOpened ? proxy.fitables : null
             }
 
             // Buttons
