@@ -81,7 +81,8 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "Travis Builder"
   - git config --local user.email "travis@travis-ci.org"
-  - export TRAVIS_TAG=v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
+  - export RELEASE_NUMBER=$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
+  - export TRAVIS_TAG=v$RELEASE_NUMBER
   - '[ "$TRAVIS_BRANCH" == master ] || export TRAVIS_TAG=$TRAVIS_BRANCH-$TRAVIS_TAG'                
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
   # This writes a changelog. If wanted
@@ -123,13 +124,11 @@ deploy:
 after_deploy:
   -  |
      if [ $TRAVIS_BRANCH = "master" ]; then
+        cd ~/
         git clone https://github.com/easyDiffraction/easyDiffraction.github.io.git
         cd easyDiffraction.github.io
-        git config --global user.email "travis@travis-ci.org"
-        git config --global user.name "Travis CI"
-        git remote rm origin
-        git remote add origin https://$GH_TOKEN@github.com/easyDiffraction/easyDiffraction.github.io.git
-        cat index_template.html | awk '{gsub(/RELEASE_V/,"'$TRAVIS_TAG'")}1' | awk '{gsub(/RELEASE_N/,"'$(cat ../../App/Imports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')'")}1' | awk '{gsub(/RELEASE_D/,"'$(date +'%d-%m-%Y')'")}1' > index.html
+        git remote set-url origin https://$GH_TOKEN@github.com/easyDiffraction/easyDiffraction.github.io.git
+        cat index_template.html | awk '{gsub(/RELEASE_V/,"'$TRAVIS_TAG'")}1' | awk '{gsub(/RELEASE_N/,"'$RELEASE_NUMBER'")}1' | awk '{gsub(/RELEASE_D/,"'$(date +'%d-%m-%Y')'")}1' > index.html
         git add index.html
         git commit -m 'Bumped release links [ci skip]'
         git push origin HEAD:master
