@@ -45,7 +45,7 @@ Column {
 
     Text {
         visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.last_modified_date : ""
+        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
             if (Specific.Variables.projectOpened) {

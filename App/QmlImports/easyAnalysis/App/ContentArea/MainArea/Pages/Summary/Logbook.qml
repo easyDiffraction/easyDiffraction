@@ -64,6 +64,7 @@ Rectangle {
         s += 'tr:nth-child(even) {'
         s += 'background-color: #eee;'
         s += '}'
+        s += `a:link { color: ${Generic.Style.blueColor}; }`
         s += '</style>'
         s += '</head>'
         return s
@@ -101,28 +102,28 @@ Rectangle {
     function writeHtmlBody() {
         let s = ''
         s += '<body>'
-        s += '<h1>' + proxy.project.info.name + '</h1>'
+        s += `<h1>${proxy.project.info.name}</h1>`
         s += '<p>'
-        s += '<b>Creation date: </b>11.04.2019<br>'
-        s += '<b>Keywords: </b>' + proxy.project.info.keywords.join(', ') + '<br>'
-        s += '<b>Instrument: </b>6T2 at LLB<br>'
+        s += `<b>Software:</b> <a href="${proxy.project.app.url}">${proxy.project.app.name} v${proxy.project.app.version}</a><br>`
+        s += `<b>Calculator:</b> <a href="${proxy.project.calculator.url}">${proxy.project.calculator.name} v${proxy.project.calculator.version}</a><br>`
+        s += `<b>Keywords:</b> ${proxy.project.info.keywords.join(', ')}<br>`
+        s += `<b>Phases:</b> ${proxy.project.info.phase_ids.join(', ')}<br>`
+        s += `<b>Experiments:</b> ${proxy.project.info.experiment_ids.join(', ')}<br>`
+        s += `<b>Instrument:</b> 6T2 at LLB<br>`
+        s += `<b>Modified:</b> ${proxy.project.info.modified_datetime}<br>`
+        s += `<b>Chi2:</b> ${Generic.Variables.chiSquared} <br>`
         s += '</p>'
         s += '<h2>Parameters</h2>'
         s += '<p>'
         s += writeHtmlTable()
-        s += '</p>'
-        s += '<p>'
-        s += '<p></p>'
-        s += '<b>Chi2: </b>' + Generic.Variables.chiSquared + '<br>'
-        s += '</p>'
+        s += '<br></p>'
         s += '<h2>Fitting</h2>'
         s += '<p>'
-        s += '<img src="' + proxy.fullFilePath("saved_refinement.png") + '" >'
-        //s += '<img src="' + proxy.project_dir_absolute_path + '/saved_refinement.png" width="' + Math.round(wrapper.width * 0.8) + '" >'
+        s += `<img src="${proxy.fullFilePath("saved_refinement.png")}">`
         s += '</p>'
         s += '<h2>Structure</h2>'
         s += '<p>'
-        s += '<img src="' + proxy.fullFilePath("saved_structure.png") + '" >'
+        s += `<img src="${proxy.fullFilePath("saved_structure.png")}">`
         s += '</p>'
         s += '</body>'
         return s

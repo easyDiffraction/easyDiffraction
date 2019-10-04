@@ -1,6 +1,9 @@
+import os
+import time
 import logging
 import operator
 from functools import reduce
+from datetime import datetime
 import numpy as np
 import cryspy
 
@@ -13,12 +16,14 @@ class CryspyCalculator(QObject):
         logging.info("")
         # internal dicts
         self._app_dict = {}
+        self._calculator_dict = {}
         self._info_dict = {}
         self._phases_dict = {}
         self._experiments_dict = {}
         self._calculations_dict = {}
         # cryspy
-        self._cryspy_obj = cryspy.rhochi_read_file(main_rcif_path)
+        self._main_rcif_path = main_rcif_path
+        self._cryspy_obj = cryspy.rhochi_read_file(self._main_rcif_path)
         # project dict
         self._project_dict = {}
         self.setProjectDictFromCryspyObj()
@@ -27,19 +32,28 @@ class CryspyCalculator(QObject):
         """Set application state"""
         self._app_dict = {
             'name': 'easyDiffraction',
-            'version': '0.3.1',
+            'version': '0.3.3',
             'url': 'http://easydiffraction.github.io'
+        }
+
+    def setCalculatorDict(self):
+        """Set calculator state"""
+        self._calculator_dict = {
+            'name': 'CrysPy',
+            'version': '0.1.12',
+            'url': 'https://github.com/ikibalin/cryspy'
         }
 
     def setInfoDict(self):
         """Set additional project info"""
         self._info_dict = {
-            'name': 'Fe3O4',
+            'name': '',
             'keywords': ['neutron diffraction', 'powder', '1d'],
-            'phase_ids': ['Fe3O4'],
-            'experiment_ids': ['pnd'],
-            'created_date': '',
-            'last_modified_date': str(np.datetime64('now'))
+            'phase_ids': [],
+            'experiment_ids': [],
+            'created_datetime': '',
+            'modified_datetime': '',
+            'refinement_datetime': ''
         }
 
     def setPhasesDictFromCryspyObj(self):
@@ -640,13 +654,19 @@ class CryspyCalculator(QObject):
         """Combine all the data to one project dictionary"""
         self._cryspy_obj.apply_constraint()
         self.setAppDict()
+        self.setCalculatorDict()
         self.setInfoDict()
-        self._info_dict['last_modified_date'] = str(np.datetime64('now'))
         self.setPhasesDictFromCryspyObj()
         self.setExperimentsDictFromCryspyObj()
         self.setCalculationsDictFromCryspyObj()
+        self._info_dict['name'] = list(self._phases_dict.keys())[0]
+        self._info_dict['phase_ids'] = list(self._phases_dict.keys())
+        self._info_dict['experiment_ids'] = list(self._experiments_dict.keys())
+        self._info_dict['modified_datetime'] = datetime.fromtimestamp(os.path.getmtime(self._main_rcif_path)).strftime('%d %b %Y, %H:%M:%S')
+        self._info_dict['refinement_datetime'] = str(np.datetime64('now'))
         self._project_dict = {
             'app': self._app_dict,
+            'calculator': self._calculator_dict,
             'info': self._info_dict,
             'phases': self._phases_dict,
             'experiments': self._experiments_dict,

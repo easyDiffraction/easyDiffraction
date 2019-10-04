@@ -46,7 +46,16 @@ Rectangle {
         }
 
         Text {
-            text: Specific.Variables.projectOpened ? proxy.project.info.keywords.join(", ") : ""
+            text: {
+                let s = ""
+                if (!Specific.Variables.projectOpened)
+                    return s
+                s += "Keywords: " + proxy.project.info.keywords.join(", ") + "\n"
+                s += "Phases: " + proxy.project.info.phase_ids.join(", ") + "\n"
+                s += "Experiments: " + proxy.project.info.experiment_ids.join(", ") + "\n"
+                s += "Instrument: 6T2 at LLB\n"
+                s += "Modified: " + proxy.project.info.modified_datetime
+            }
             font.pointSize: Generic.Style.fontPointSize + 1
             font.family: Generic.Style.fontFamily
         }
