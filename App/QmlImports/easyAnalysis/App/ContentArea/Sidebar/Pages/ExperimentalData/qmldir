@@ -1,0 +1,4 @@
+module easyAnalysis.App.ContentArea.Sidebar.Pages.ExperimentalData
+PlotView 1.0 PlotView.qml
+TableView 1.0 TableView.qml
+TextView 1.0 TextView.qml
