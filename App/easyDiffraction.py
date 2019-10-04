@@ -15,8 +15,8 @@ current_dir = os.path.dirname(sys.argv[0])
 logging.basicConfig(
     format = "%(asctime)-15s [%(levelname)s] %(filename)s %(funcName)s [%(lineno)d]: %(message)s",
     level = logging.INFO,
-    filename = os.path.join(current_dir, 'easyDiffraction.log'),
-    filemode = 'w'
+    #filename = os.path.join(current_dir, 'easyDiffraction.log'),
+    #filemode = 'w'
     )
 logger = logging.getLogger()
 logger.disabled = True
