@@ -11,7 +11,9 @@ matrix:
       os: osx
       osx_image: xcode10.1    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
-      #before_install:
+      before_install:
+        - python3 -m venv "$(dirname "$0")"
+        - source "$(dirname "$0")"/bin/activate
         #- brew update
         #- brew upgrade python
     - name: "Python 3.7.4 on Windows"
@@ -36,19 +38,19 @@ env:
 install:
   #- python3 --version
   #- pip3 install --upgrade pip  # all three OSes agree about 'pip3'... but on Win: Could not install packages due to an EnvironmentError: [WinError 5] Access is denied: 'C:\\Users\\travis\\AppData\\Local\\Temp\\pip-uninstall-yqkdi8bl\\pip3.exe'. Consider using the `--user` option or check the permissions.
-  - python3 --version || python --version
-  - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip #- python -m pip install --upgrade pip # 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
-  - pip3 --version
-  - pip3 install cryspy
-  - pip3 install PySide2
-  - pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+  - python --version
+  - python -m pip install --upgrade pip #- python -m pip install --upgrade pip # 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
+  - pip --version
+  - pip install cryspy
+  - pip install PySide2
+  - pip install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
   #- pip3 install scipy
   #- pip3 install numpy==1.16.4
-  - pip3 install pytest
-  - pip3 install pytest_mock
-  - pip3 install pytest-cov
-  - pip3 install pytest-qt
-  - pip3 install coveralls
+  - pip install pytest
+  - pip install pytest_mock
+  - pip install pytest-cov
+  - pip install pytest-qt
+  - pip install coveralls
 
 before_script:
 # Fix python packaging, becaues it sucks
