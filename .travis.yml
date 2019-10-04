@@ -9,7 +9,7 @@ matrix:
       dist: xenial
     - name: "Python 3.7.0 on macOS 10.13 (High Sierra)"
       os: osx
-      osx_image: xcode11 #10.1    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
+      osx_image: xcode10.1 # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
         #- brew install python3
