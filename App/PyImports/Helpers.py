@@ -1,4 +1,5 @@
 import operator
+import webbrowser
 from functools import reduce
 
 def nested_get(dictionary, keys_list):
@@ -26,3 +27,13 @@ def find_in_obj(obj, condition, path=None):
                 new_path = list(path)
                 new_path.append(key)
                 yield new_path
+
+def open_url(url=""):
+    """
+    Open the given URL in the default sytem browser
+    """
+    try:
+        webbrowser.open('file://' + os.path.realpath(full_filename))
+    except Exception as ex:
+        print("Report viewing failed: "+ str(ex))
+

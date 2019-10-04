@@ -17,6 +17,7 @@ from PyImports.Models.AtomAdpsModel import *
 from PyImports.Models.AtomMspsModel import *
 from PyImports.Models.FitablesModel import *
 from PyImports.Refinement import *
+import PyImports.Helpers as Helpers
 
 class Proxy(QObject):
 
@@ -293,30 +294,6 @@ class Proxy(QObject):
             print("Report written")
 
         # Show the generated report in the default browser
-        # TODO: refactor this part out
-        import webbrowser
-        try:
-            webbrowser.open('file://' + os.path.realpath(full_filename))
-        except ex as Exception:
-            print("Report viewing failed: "+ str(ex))
-
-    # Not used?
-    @Slot(result=str)
-    def get_report_html(self):
-        return self.report_html
-
-    # Not used?
-    @Slot(result=str)
-    def get_table_html(self):
-        tableHTML = \
-        "<h1>" + self.project_name + "</h1><p>" + \
-        "<b>Creation date: </b>11.04.2019<br>" + \
-        "<b>Project folder: </b>" + self.tmp_rcif_dir_name() + "<br>" + \
-        "<b>Project file: </b>" + self.tmp_rcif_file_name() + "<br>" + \
-        "<b>Experimental data file: </b>" + self.tmp_rcif_file_name() + "<br>" + \
-        "<b>Instrument: </b>6T2 at LLB<br>" + \
-        "<b>Sample: </b>" + self.project_name + "<br> </p>" + \
-        "<h2>Parameters</h2>"
-        return tableHTML
-
+        url = 'file://' + os.path.realpath(full_filename)
+        Helpers.open_url(url=url)
 

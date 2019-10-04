@@ -25,7 +25,8 @@ TEST_FILE = "file:Tests/Data/main.rcif"
 def test_Proxy_properties():
     proxy = Proxy()
     assert proxy._main_rcif_path == None
-    assert isinstance(proxy.is_being_refined, bool)
+    assert proxy._refinement_running == False
+    assert proxy._refinement_done == False
 
 def test_Proxy_init():
     proxy = Proxy()
@@ -41,7 +42,10 @@ def test_Proxy_init():
     assert isinstance(proxy._atom_adps_model, AtomAdpsModel)
     assert isinstance(proxy._atom_msps_model, AtomMspsModel)
     assert isinstance(proxy._fitables_model, FitablesModel)
-    assert isinstance(proxy.refine_thread, Refiner)
+    assert isinstance(proxy._refine_thread, Refiner)
+
+    assert "\\easyDiffraction\\Tests\\Data" in proxy.project_dir_absolute_path
+    assert "file:Tests/Data" in proxy.project_url_absolute_path
 
 def test_Proxy_getProject():
     proxy = Proxy()
@@ -167,16 +171,16 @@ def no_test_refine(qtbot, capsys):  # to be modified with AS's changes
     proxy = Proxy()
     proxy.init(TEST_FILE)
 
-    assert proxy.is_being_refined == False
+    assert proxy._refinement_running == False
     captured = capsys.readouterr()
 
-    with qtbot.waitSignal(proxy.refine_thread.finished, timeout=60000) as blocker:
-        blocker.connect(proxy.refine_thread.failed)  # Can add other signals to blocker
-        proxy.refine_thread.start()
+    with qtbot.waitSignal(proxy._refine_thread.finished, timeout=60000) as blocker:
+        blocker.connect(proxy._refine_thread.failed)  # Can add other signals to blocker
+        proxy._refine_thread.start()
         # Test will block at this point until signal is emitted or
         # 60 seconds has elapsed
 
-    assert proxy.is_being_refined == False
+    assert proxy._refinement_running == False
     assert proxy._fit_result == None
     assert captured.err == "" # modify
     assert captured.out == "" # modify
@@ -193,24 +197,34 @@ def test_get_project_dir_absolute_path():
 
 def test_store_report():
     proxy = Proxy()
-    proxy.init(TEST_FILE)
-
     report = "test report"
 
     proxy.store_report(report)
 
     assert proxy.report_html == report
-    assert proxy.get_report_html() == report
 
-def no_test_get_table_html():
+@pytest.fixture
+def open():
+    """
+    fixture for mocking system open call
+    """
+    f = open(os.devnull,"w")
+    return f
+
+def no_test_save_report(open):
     proxy = Proxy()
     proxy.init(TEST_FILE)
 
-    html = proxy.get_table_html()
+    report = "<h1><blink>I am a duck</blink></h1>"
+    html = proxy.store_report(report)
+    full_filename = "test"
 
-    assert "Parameters" in html
-    assert "Creation date:" in html
+    with open(full_filename, 'w', encoding='utf-8') as report_file:
+        open.assert_called_once_with("poop")
 
+
+
+    
 
 
     
