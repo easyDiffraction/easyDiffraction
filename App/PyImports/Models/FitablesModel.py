@@ -1,8 +1,6 @@
-import logging
-import operator
 from functools import reduce
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
+from PySide2.QtCore import Qt, QObject, Signal
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 import PyImports.Helpers as Helpers
