@@ -12,7 +12,7 @@ matrix:
       osx_image: xcode10.3    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
-        - python3 -m venv "$(dirname "$0")"
+        - python3 -m venv "$(dirname "$0")" # create virtual environment
         - source "$(dirname "$0")"/bin/activate
         #- brew update
         #- brew upgrade python
@@ -36,10 +36,8 @@ env:
     secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
 
 install:
-  #- python3 --version
-  #- pip3 install --upgrade pip  # all three OSes agree about 'pip3'... but on Win: Could not install packages due to an EnvironmentError: [WinError 5] Access is denied: 'C:\\Users\\travis\\AppData\\Local\\Temp\\pip-uninstall-yqkdi8bl\\pip3.exe'. Consider using the `--user` option or check the permissions.
   - python --version
-  - python -m pip install --upgrade pip #- python -m pip install --upgrade pip # 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
+  - python -m pip install --upgrade pip
   - pip --version
   - pip install cryspy
   - pip install PySide2
@@ -55,7 +53,7 @@ install:
 before_script:
 # Fix python packaging, becaues it sucks
   - if [ "$TRAVIS_OS_NAME" == windows ]; then cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/; fi
-  - if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/; fi
+  #- if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/; fi
 # Compile qrc (qt resource file) into python file
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
