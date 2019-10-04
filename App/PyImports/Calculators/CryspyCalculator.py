@@ -7,8 +7,7 @@ from datetime import datetime
 import numpy as np
 import cryspy
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
-from PySide2.QtGui import QStandardItemModel
+from PySide2.QtCore import QObject, Signal
 
 class CryspyCalculator(QObject):
     def __init__(self, main_rcif_path, parent=None):
