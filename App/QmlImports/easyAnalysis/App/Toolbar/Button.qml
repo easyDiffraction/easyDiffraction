@@ -124,11 +124,11 @@ TabButton {
         running: blinking
         loops: Animation.Infinite
         SequentialAnimation {
-            PropertyAnimation { easing.type: Easing.InOutExpo; target: buttonBackground; property: "color"; to: "#f08c82"; duration: 500 }
+            PropertyAnimation { easing.type: Easing.InOutExpo; target: buttonBackground; property: "color"; to: "salmon"; duration: 500 }
             PropertyAnimation { easing.type: Easing.InOutExpo; target: buttonBackground; property: "color"; to: backgroundColor(); duration: 500 }
         }
         SequentialAnimation {
-            PropertyAnimation { easing.type: Easing.InOutExpo; target: buttonBackground; property: "border.color"; to: "#f08c82"; duration: 500 }
+            PropertyAnimation { easing.type: Easing.InOutExpo; target: buttonBackground; property: "border.color"; to: "salmon"; duration: 500 }
             PropertyAnimation { easing.type: Easing.InOutExpo; target: buttonBackground; property: "border.color"; to: borderColor(); duration: 500 }
         }
         onFinished: restoreAnimation.restart()

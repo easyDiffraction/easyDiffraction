@@ -8,6 +8,8 @@ import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 GenericAppContentArea.Button {
     id: button
 
+    enabled: false // Disable until properly implemented
+
     Layout.fillWidth: false
     implicitWidth: implicitHeight
 
@@ -26,18 +28,28 @@ GenericAppContentArea.Button {
         font: button.font
         color: textColor() //button.enabled ? Generic.Style.buttonTextEnabledColor : Generic.Style.buttonTextDisabledColor
     }
+
+    background: Rectangle {
+        implicitHeight: Generic.Style.buttonHeight
+        color: backgroundColor()
+        border.color: borderColor()
+        radius: Generic.Style.toolbarButtonRadius
+    }
+
+    onClicked: checked = false
+
     function iconColor() {
         if (!button.enabled)
             return Generic.Style.buttonIconDisabledColor
         return button.checked ? Generic.Style.buttonIconHighlightedColor : Generic.Style.buttonIconEnabledColor
     }
 
-    background: Rectangle {
-        implicitHeight: Generic.Style.buttonHeight
-        color: backgroundColor()
-        border.color: button.checked ? "salmon" : Generic.Style.appBorderColor
-        radius: Generic.Style.toolbarButtonRadius
+    function borderColor() {
+        if (!button.enabled)
+            return Generic.Style.appBorderColor
+        return button.checked ? "salmon" : Generic.Style.appBorderColor
     }
+
     function backgroundColor() {
         if (!button.enabled)
             return Generic.Style.buttonBkgDisabledColor
@@ -46,8 +58,5 @@ GenericAppContentArea.Button {
         var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
         return Color.blend(color1, color2, alpha)
     }
-
-    onClicked: checked = false
-
 }
 
