@@ -9,7 +9,7 @@ matrix:
       dist: xenial
     - name: "Python 3.7.4 on macOS"
       os: osx
-      osx_image: xcode11    # Python 3.7.4 running on macOS 10.14.4
+      osx_image: xcode8    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
     - name: "Python 3.7.4 on Windows"
       os: windows           # Windows 10.0.17134 N/A Build 17134
@@ -20,9 +20,9 @@ matrix:
         - choco install zip
         - choco install curl
         - choco install grep
-        - choco install sed 
+        - choco install sed
         - pip3 install pypiwin32
-      env: 
+      env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
 
 ## We can secure environmental vars
@@ -83,7 +83,7 @@ before_deploy:
   - git config --local user.email "travis@travis-ci.org"
   - export RELEASE_NUMBER=$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - export TRAVIS_TAG=v$RELEASE_NUMBER
-  - '[ "$TRAVIS_BRANCH" == master ] || export TRAVIS_TAG=$TRAVIS_BRANCH-$TRAVIS_TAG'                
+  - '[ "$TRAVIS_BRANCH" == master ] || export TRAVIS_TAG=$TRAVIS_BRANCH-$TRAVIS_TAG'
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
   # This writes a changelog. If wanted
   #- '[ "$TRAVIS_BRANCH" != master ] || cd ../ && pip3 install gitchangelog pystache && echo "output_engine = mustache(\"markdown\")" > .gitchangelog.rc && gitchangelog ^$(git describe --abbrev=0 --tags) HEAD > CHANGELOG'
