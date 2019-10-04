@@ -1,6 +1,6 @@
 import logging
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
+from PySide2.QtCore import Qt, QObject, Signal
 from PySide2.QtGui import QStandardItemModel
 
 class BraggPeaksModel(QObject):
