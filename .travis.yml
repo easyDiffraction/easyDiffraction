@@ -80,7 +80,8 @@ after_success:
   - cd dist
   - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
   #- if [ "$TRAVIS_OS_NAME" == "osx" ]; then xattr -dr com.apple.quarantine easyDiffraction.app; fi # Fix LSOpenURLsWithRole() failed with error -10810
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffraction.app; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then hdiutil create ./easyDiffraction.dmg -srcfolder easyDiffraction.app -ov; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffraction.dmg; fi
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
   - cp $TRAVIS_N ../
