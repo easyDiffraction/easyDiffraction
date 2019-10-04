@@ -4,19 +4,20 @@ cache: pip
 
 matrix:
   include:
-    - name: "Python 3.7.1 on Xenial Linux"
+    - name: "Python 3.7.1 on Ubuntu Linux 16.04 (Xenial)"
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       dist: xenial
     - name: "Python 3.7.4 on macOS"
       os: osx
-      osx_image: xcode10.3    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
+      osx_image: xcode10.1    # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
-        - python3 -m venv "$(dirname "$0")" # create virtual environment
-        - source "$(dirname "$0")"/bin/activate
+        - brew install python3
+        - python3 -m venv "$(dirname "$0")"/.python-venv # create virtual environment
+        - source "$(dirname "$0")"/.python-venv/bin/activate
         #- brew update
         #- brew upgrade python
-    - name: "Python 3.7.4 on Windows"
+    - name: "Python 3.7.4 on Windows 10.0"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
       filter_secrets: false
@@ -54,6 +55,7 @@ before_script:
 # Fix python packaging, becaues it sucks
   - if [ "$TRAVIS_OS_NAME" == windows ]; then cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/; fi
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/; fi
+  - if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp "$(dirname "$0")"/.python-venv/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib "$(dirname "$0")"/.python-venv/lib/python3.7/site-packages/PySide2/; fi
 # Compile qrc (qt resource file) into python file
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
