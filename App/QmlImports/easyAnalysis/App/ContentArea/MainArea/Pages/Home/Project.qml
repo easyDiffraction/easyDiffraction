@@ -84,7 +84,7 @@ Rectangle {
                         clip: true
                         antialiasing: true
                         smooth: true
-                        source: Specific.Variables.projectOpened ? proxy.fullFilePath(modelData) : ""
+                        source: Specific.Variables.projectOpened ? Qt.resolvedUrl(proxy.fullFilePath(modelData)) : ""
                     }
                 }
             }
