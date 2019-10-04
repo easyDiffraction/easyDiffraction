@@ -252,16 +252,21 @@ class Proxy(QObject):
     @Slot(str, result=str)
     def fullFilePath(self, fname):
         fpath = os.path.join(self.get_project_dir_absolute_path(), fname)
+        furl = os.path.join(self.get_project_url_absolute_path(), fname)
         if os.path.isfile(fpath):
-            return fpath
+            return furl
         return ""
 
     def get_project_dir_absolute_path(self):
         if self._main_rcif_path:
             return os.path.dirname(os.path.abspath(self._main_rcif_path))
         return ""
+    def get_project_url_absolute_path(self):
+        if self._main_rcif_path:
+            return str(QUrl.fromLocalFile(os.path.dirname(self._main_rcif_path)).toString())
+        return ""
     project_dir_absolute_path = Property(str, get_project_dir_absolute_path, notify=projectChanged)
-    #project_url_absolute_path = Property(str, lambda self: str(QUrl.fromLocalFile(os.path.dirname(self._main_rcif_path)).toString()), notify=projectChanged)
+    project_url_absolute_path = Property(str, get_project_url_absolute_path, notify=projectChanged)
 
     # ######
     # REPORT
