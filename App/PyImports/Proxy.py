@@ -1,9 +1,7 @@
 import os
-import sys
 import logging
-import numpy as np
 
-from PySide2.QtCore import QUrl, Qt, QObject, Signal, Slot, Property
+from PySide2.QtCore import QUrl, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItemModel
 
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
