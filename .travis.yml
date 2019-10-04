@@ -44,7 +44,7 @@ install:
   - pip --version
   - pip install cryspy
   - pip install PySide2
-  - pip install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+  - pip install pyinstaller #- pip install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
   #- pip3 install scipy
   #- pip3 install numpy==1.16.4
   - pip install pytest
