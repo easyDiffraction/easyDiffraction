@@ -18,6 +18,8 @@ logging.basicConfig(
     filename = os.path.join(current_dir, 'easyDiffraction.log'),
     filemode = 'w'
     )
+logger = logging.getLogger()
+logger.disabled = True
 
 if __name__ == '__main__':
     QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
