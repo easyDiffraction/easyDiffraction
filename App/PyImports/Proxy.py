@@ -6,17 +6,17 @@ import numpy as np
 from PySide2.QtCore import QUrl, Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItemModel
 
-from PyImports.Calculators.CryspyCalculator import *
-from PyImports.Models.MeasuredDataModel import *
-from PyImports.Models.CalculatedDataModel import *
-from PyImports.Models.BraggPeaksModel import *
-from PyImports.Models.CellParametersModel import *
-from PyImports.Models.CellBoxModel import *
-from PyImports.Models.AtomSitesModel import *
-from PyImports.Models.AtomAdpsModel import *
-from PyImports.Models.AtomMspsModel import *
-from PyImports.Models.FitablesModel import *
-from PyImports.Refinement import *
+from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from PyImports.Models.MeasuredDataModel import MeasuredDataModel
+from PyImports.Models.CalculatedDataModel import CalculatedDataModel
+from PyImports.Models.BraggPeaksModel import BraggPeaksModel
+from PyImports.Models.CellParametersModel import CellParametersModel
+from PyImports.Models.CellBoxModel import CellBoxModel
+from PyImports.Models.AtomSitesModel import AtomSitesModel
+from PyImports.Models.AtomAdpsModel import AtomAdpsModel
+from PyImports.Models.AtomMspsModel import AtomMspsModel
+from PyImports.Models.FitablesModel import FitablesModel
+from PyImports.Refinement import Refiner
 
 class Proxy(QObject):
 

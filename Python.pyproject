@@ -3,6 +3,7 @@
     "App/easyDiffraction.py",
     "App/PyImports/Proxy.py",
     "App/PyImports/Helpers.py",
+    "App/PyImports/Refinement.py",
     "App/PyImports/Calculators/CryspyCalculator.py",
     "App/PyImports/Models/MeasuredDataModel.py",
     "App/PyImports/Models/AtomSitesModel.py",
