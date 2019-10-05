@@ -36,7 +36,7 @@ ColumnLayout {
             // Open project dialog
             FileDialog{
                 id: fileDialog
-                nameFilters: [ "CtysPy files (*.rcif)", "CIF files (*.cif)" ]
+                nameFilters: [ "CrysPy files (*.rcif)", "CIF files (*.cif)" ]
                 folder: settings.value("lastOpenedProjectFolder", QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation))
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
