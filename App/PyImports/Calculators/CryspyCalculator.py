@@ -818,10 +818,18 @@ class CryspyCalculator(QObject):
         logging.info("")
         #logging.info(self._cryspy_obj.experiments[0].to_cif)
         #logging.info("asCifDict")
+        experiments = {}
+        calculations = {}
+        phases = {}
+        if len(self._cryspy_obj.experiments) > 0:
+            experiments = "data_" + self._cryspy_obj.experiments[0].label + "\n" + self._cryspy_obj.experiments[0].params_to_cif + "\n" + self._cryspy_obj.experiments[0].data_to_cif, # maybe meas_to_cif
+            calculations = self._cryspy_obj.experiments[0].calc_to_cif
+        if len(self._cryspy_obj.crystals) > 0:
+            phases = self._cryspy_obj.crystals[0].to_cif
         return {
-            'phases': self._cryspy_obj.crystals[0].to_cif,
-            'experiments': "data_" + self._cryspy_obj.experiments[0].label + "\n" + self._cryspy_obj.experiments[0].params_to_cif + "\n" + self._cryspy_obj.experiments[0].data_to_cif, # maybe meas_to_cif
-            'calculations': self._cryspy_obj.experiments[0].calc_to_cif
+            'phases': phases,
+            'experiments': experiments,
+            'calculations': calculations
             }
 
     def refine(self):
