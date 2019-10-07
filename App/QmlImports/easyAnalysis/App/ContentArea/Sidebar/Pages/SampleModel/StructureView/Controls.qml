@@ -50,7 +50,7 @@ ColumnLayout {
                 Layout.fillWidth: true
                 GenericAppElements.GuideWindow {
                     message: "Here you can see structural phases labels."
-                    position: "right"
+                    position: "left"
                     guideCurrentIndex: 0
                     toolbarCurrentIndex: Generic.Variables.SampleModelIndex
                     guidesCount: Generic.Variables.SampleModelGuidesCount
@@ -104,7 +104,7 @@ ColumnLayout {
         }
         GenericAppElements.GuideWindow {
             message: "The sidebar groups contain details related to the sample model.\n\nClick on the group name to unfold it."
-            position: "right"
+            position: "left"
             guideCurrentIndex: 1
             toolbarCurrentIndex: Generic.Variables.SampleModelIndex
             guidesCount: Generic.Variables.SampleModelGuidesCount

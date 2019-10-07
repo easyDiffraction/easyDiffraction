@@ -46,7 +46,7 @@ QtObject {
     property int guideCurrentIndex: 0
     enum GuideCountEnum {
         HomeGuidesCount = 3,
-        ExperimentalDataGuidesCount = 4,
+        ExperimentalDataGuidesCount = 7,
         SampleModelGuidesCount = 4,
         AnalysisGuidesCount = 4,
         SummaryGuidesCount = 1

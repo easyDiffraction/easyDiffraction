@@ -26,7 +26,7 @@ ColumnLayout {
                     onClicked: proxy.save_report(exportFileName.text, exportFileExt.currentText)
                     GenericAppElements.GuideWindow {
                         message: "Here you can export the report."
-                        position: "right"
+                        position: "left"
                         guideCurrentIndex: 0
                         toolbarCurrentIndex: Generic.Variables.SummaryIndex
                         guidesCount: Generic.Variables.SummaryGuidesCount

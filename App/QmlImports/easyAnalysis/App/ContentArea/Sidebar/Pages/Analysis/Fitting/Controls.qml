@@ -27,7 +27,7 @@ ColumnLayout {
                 model: Specific.Variables.projectOpened ? proxy.fitables : null
                 GenericAppElements.GuideWindow {
                     message: "Here you can see all the refinable parameters.\n\nYou can change their starting values manually\nor using the slider below."
-                    position: "right"
+                    position: "left"
                     guideCurrentIndex: 0
                     toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                     guidesCount: Generic.Variables.AnalysisGuidesCount
@@ -45,7 +45,7 @@ ColumnLayout {
                     }
                     GenericAppElements.GuideWindow {
                         message: "Click here to start or stop fitting."
-                        position: "right"
+                        position: "left"
                         guideCurrentIndex: 1
                         toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                         guidesCount: Generic.Variables.AnalysisGuidesCount

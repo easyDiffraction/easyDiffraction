@@ -26,7 +26,7 @@ ColumnLayout {
 
                 GenericAppElements.GuideWindow {
                     message: "Here you can see experimental data labels."
-                    position: "right"
+                    position: "left"
                     guideCurrentIndex: 0
                     toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
                     guidesCount: Generic.Variables.ExperimentalDataGuidesCount
@@ -37,7 +37,7 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 2
 
-                GenericAppContentAreaButtons.Import { id: importButton; enabled: false; text: "Import data from local drive"; }
+                GenericAppContentAreaButtons.Import { enabled: false; text: "Import data from local drive"; }
                 GenericAppContentAreaButtons.Link { enabled: false; text: "Link to data on local drive"; }
                 GenericAppContentAreaButtons.Cloud { enabled: false; id: cloudButton; text: "Import data from SciCat" }
                 GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all data" }
@@ -77,8 +77,8 @@ ColumnLayout {
 
         GenericAppElements.GuideWindow {
             message: "The sidebar groups contain details related to the experiment.\n\nClick on the group name to unfold it."
-            position: "right"
-            guideCurrentIndex: 1
+            position: "left"
+            guideCurrentIndex: 4
             toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
             guidesCount: Generic.Variables.ExperimentalDataGuidesCount
         }
@@ -163,7 +163,7 @@ ColumnLayout {
                 GenericAppElements.GuideWindow {
                     message: "Click here to go to the previous step: Home."
                     position: "top"
-                    guideCurrentIndex: 2
+                    guideCurrentIndex: 5
                     toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
                     guidesCount: Generic.Variables.ExperimentalDataGuidesCount
                 }
@@ -178,7 +178,7 @@ ColumnLayout {
                 GenericAppElements.GuideWindow {
                     message: "Click here to go to the next step: Sample model."
                     position: "top"
-                    guideCurrentIndex: 3
+                    guideCurrentIndex: 6
                     toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
                     guidesCount: Generic.Variables.ExperimentalDataGuidesCount
                 }

@@ -32,7 +32,7 @@ ColumnLayout {
                 onClicked: fileDialog.open()
                 GenericAppElements.GuideWindow {
                     message: "Click here to open existing project."
-                    position: "right"
+                    position: "left"
                     guideCurrentIndex: 0
                     toolbarCurrentIndex: Generic.Variables.HomeIndex
                     guidesCount: Generic.Variables.HomeGuidesCount
@@ -139,7 +139,7 @@ ColumnLayout {
         }
         GenericAppElements.GuideWindow {
             message: "Here you can set application preferences."
-            position: "right"
+            position: "left"
             guideCurrentIndex: 1
             toolbarCurrentIndex: Generic.Variables.HomeIndex
             guidesCount: Generic.Variables.HomeGuidesCount

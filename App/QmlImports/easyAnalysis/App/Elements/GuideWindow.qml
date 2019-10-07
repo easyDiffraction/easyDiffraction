@@ -10,7 +10,7 @@ import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 Dialog {
     property alias message: messageItem.text
 
-    property string position: "right"
+    property string position: "left"
 
     property int toolbarCurrentIndex: 0
     property int guideCurrentIndex: 0
@@ -30,19 +30,23 @@ Dialog {
     padding: 0
 
     x: {
-        if (position === "right") {
+        if (position === "left") {
             return -canvas.width - extraMargin }
-        else if (position === "top") {
+        else if (position === "right") {
+            return parent.width + extraMargin }
+        else if (position === "top" || position === "bottom") {
             return (-canvas.width + parent.width ) / 2 }
         else {
             print("Unknown position: " + position)
             return 0 }
     }
     y: {
-        if (position === "right") {
+        if (position === "left" || position === "right") {
             return (-canvas.height + parent.height ) / 2 }
         else if (position === "top") {
             return -canvas.height - extraMargin }
+        else if (position === "bottom") {
+            return parent.height + extraMargin }
         else {
             print("Unknown position: " + position)
             return 0 }
@@ -70,15 +74,15 @@ Dialog {
         id: canvas
 
         width: {
-            if (position === "right") {
+            if (position === "left" || position === "right") {
                 return layout.width + arrowThikness }
-            else if (position === "top") {
+            else if (position === "top" || position === "bottom") {
                 return layout.width }
         }
         height: {
-            if (position === "right") {
+            if (position === "left" || position === "right") {
                 return layout.height }
-            else if (position === "top") {
+            else if (position === "top" || position === "bottom") {
                 return layout.height + arrowLength }
         }
 
@@ -90,22 +94,41 @@ Dialog {
 
             // background
             ctx.beginPath()
-            ctx.moveTo(0, 0)
-            if (position === "right") {
+            if (position === "left") {
+                ctx.moveTo(0, 0)
                 ctx.lineTo(0, height)
                 ctx.lineTo(width - arrowLength, height)
                 ctx.lineTo(width - arrowLength, height/2 + arrowThikness)
                 ctx.lineTo(width, height/2 )
                 ctx.lineTo(width - arrowLength, height/2 - arrowThikness)
-                ctx.lineTo(width - arrowLength, 0) }
+                ctx.lineTo(width - arrowLength, 0)
+            }
+            else if (position === "right") {
+                ctx.moveTo(arrowLength, 0)
+                ctx.lineTo(arrowLength, height/2 - arrowThikness)
+                ctx.lineTo(0, height/2 )
+                ctx.lineTo(arrowLength, height/2 + arrowThikness)
+                ctx.lineTo(arrowLength, height)
+                ctx.lineTo(width, height)
+                ctx.lineTo(width, 0)
+            }
             else if (position === "top") {
+                ctx.moveTo(0, 0)
                 ctx.lineTo(0, height - arrowLength)
                 ctx.lineTo(width/2 - arrowThikness, height - arrowLength)
                 ctx.lineTo(width/2, height)
                 ctx.lineTo(width/2 + arrowThikness, height - arrowLength)
                 ctx.lineTo(width, height - arrowLength)
                 ctx.lineTo(width, 0)
-
+            }
+            else if (position === "bottom") {
+                ctx.moveTo(0, arrowLength)
+                ctx.lineTo(width/2 - arrowThikness, arrowLength)
+                ctx.lineTo(width/2, 0)
+                ctx.lineTo(width/2 + arrowThikness, arrowLength)
+                ctx.lineTo(width, arrowLength)
+                ctx.lineTo(width, height)
+                ctx.lineTo(0, height)
             }
             ctx.fill()
         }
@@ -113,8 +136,9 @@ Dialog {
         // Cross (close button)
         Button {
             id: buttonClose
-            x: 0
-            y: 0
+            x: position === "right" ? arrowLength : 0
+            y: position === "bottom" ? arrowLength : 0
+
             text: "\u2715"
             background: Rectangle {
                 color: "transparent"
@@ -134,6 +158,8 @@ Dialog {
         ColumnLayout {
             id: layout
             spacing: 0
+            x: position === "right" ? arrowLength : 0
+            y: position === "bottom" ? arrowLength : 0
 
             // Upper circles to show current index
             RowLayout {
