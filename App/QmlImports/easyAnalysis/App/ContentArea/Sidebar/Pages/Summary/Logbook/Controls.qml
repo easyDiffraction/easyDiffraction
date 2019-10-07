@@ -23,7 +23,14 @@ ColumnLayout {
                     id: exportButton
                     implicitWidth: 60
                     text: "Export"
-                    onClicked: { proxy.save_report(exportFileName.text, exportFileExt.currentText) }
+                    onClicked: proxy.save_report(exportFileName.text, exportFileExt.currentText)
+                    GenericAppElements.GuideWindow {
+                        message: "Here you can export the report."
+                        position: "right"
+                        guideCurrentIndex: 0
+                        toolbarCurrentIndex: Generic.Variables.SummaryIndex
+                        guidesCount: Generic.Variables.SummaryGuidesCount
+                    }
                 }
                 TextField {
                     id: exportFileName
@@ -36,19 +43,6 @@ ColumnLayout {
                     id: exportFileExt
                     implicitWidth: 60
                     model: [".HTML"]
-                }
-
-                GenericAppElements.GuideWindow {
-                    id: guidWindow
-                    message: "Click here to export a logbook."
-                    toY: exportButton.y + exportButton.height / 2
-
-                    visible: Generic.Variables.showGuide && Generic.Variables.toolbarCurrentIndex === Generic.Variables.SummaryIndex ? true : false
-
-                    GenericAppContentAreaButtons.Add { id: exportButtonClone }
-                    Component.onCompleted: {
-                        GenericLogic.Copy.copyButton(exportButton, exportButtonClone)
-                    }
                 }
             }
         }

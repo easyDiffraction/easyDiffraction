@@ -23,5 +23,4 @@ ColumnLayout {
     // Spacer
     /////////
     Item { Layout.fillHeight: true }
-
 }

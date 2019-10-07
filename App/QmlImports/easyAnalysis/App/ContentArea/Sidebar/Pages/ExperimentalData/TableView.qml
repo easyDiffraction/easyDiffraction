@@ -6,6 +6,6 @@ import easyAnalysis.App.ContentArea.Sidebar.Pages.ExperimentalData.TableView 1.0
 import easyAnalysis.App.ContentArea.Sidebar.Pages.ExperimentalData.PlotView 1.0 as ConstrainedSidebarContent
 
 GenericAppElements.SidebarStack {
-    controlsContent: ConstrainedSidebarContent.Controls { anchors.fill: parent }
+    controlsContent: GenericSidebarContent.Controls { anchors.fill: parent }
     settingsContent: GenericSidebarContent.Settings { anchors.fill: parent }
 }

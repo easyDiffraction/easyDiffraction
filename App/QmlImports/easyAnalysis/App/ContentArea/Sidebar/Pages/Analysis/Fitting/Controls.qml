@@ -25,6 +25,13 @@ ColumnLayout {
             GenericAppElements.FitablesView {
                 Layout.fillWidth: true
                 model: Specific.Variables.projectOpened ? proxy.fitables : null
+                GenericAppElements.GuideWindow {
+                    message: "Here you can see all the refinable parameters.\n\nYou can change their starting values manually\nor using the slider below."
+                    position: "right"
+                    guideCurrentIndex: 0
+                    toolbarCurrentIndex: Generic.Variables.AnalysisIndex
+                    guidesCount: Generic.Variables.AnalysisGuidesCount
+                }
             }
 
             // Buttons
@@ -36,6 +43,13 @@ ColumnLayout {
                     onClicked: {
                         proxy.refine()
                     }
+                    GenericAppElements.GuideWindow {
+                        message: "Click here to start or stop fitting."
+                        position: "right"
+                        guideCurrentIndex: 1
+                        toolbarCurrentIndex: Generic.Variables.AnalysisIndex
+                        guidesCount: Generic.Variables.AnalysisGuidesCount
+                    }
                 }
                 CheckBox { enabled: false; checked: false; text: "Auto-update" }
 
@@ -44,19 +58,6 @@ ColumnLayout {
                     text: "Accept refined parameters"
                 }
                 CheckBox { enabled: false; checked: true; text: "Auto-accept" }
-
-                GenericAppElements.GuideWindow {
-                    id: guidWindow
-                    message: "Click here to start or stop fitting."
-                    toY: pausePlayButton.y + pausePlayButton.height / 2
-
-                    visible: Generic.Variables.showGuide && Generic.Variables.toolbarCurrentIndex === Generic.Variables.AnalysisIndex ? true : false
-
-                    GenericAppContentAreaButtons.Add { id: pausePlayButtonClone }
-                    Component.onCompleted: {
-                        GenericLogic.Copy.copyButton(pausePlayButton, pausePlayButtonClone)
-                    }
-                }
 
             }
         }
@@ -78,6 +79,13 @@ ColumnLayout {
                 onClicked: {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
                 }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to go to the previous step: Sample Model."
+                    position: "top"
+                    guideCurrentIndex: 2
+                    toolbarCurrentIndex: Generic.Variables.AnalysisIndex
+                    guidesCount: Generic.Variables.AnalysisGuidesCount
+                }
             }
             GenericAppContentAreaButtons.GoNext {
                 text: "Summary"
@@ -88,6 +96,13 @@ ColumnLayout {
                     Generic.Variables.analysisPageFinished = true
                     Generic.Variables.summaryPageFinished = true
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
+                }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to go to the next step: Summary.\n\nThis button will be enabled after fitting is done."
+                    position: "top"
+                    guideCurrentIndex: 3
+                    toolbarCurrentIndex: Generic.Variables.AnalysisIndex
+                    guidesCount: Generic.Variables.AnalysisGuidesCount
                 }
             }
             GenericAppContentAreaButtons.SaveState {

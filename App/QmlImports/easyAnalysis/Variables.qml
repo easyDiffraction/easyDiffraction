@@ -42,8 +42,18 @@ QtObject {
         SummaryIndex = 4
     }
 
+    // User guides
+    property int guideCurrentIndex: 0
+    enum GuideCountEnum {
+        HomeGuidesCount = 3,
+        ExperimentalDataGuidesCount = 4,
+        SampleModelGuidesCount = 4,
+        AnalysisGuidesCount = 4,
+        SummaryGuidesCount = 1
+    }
+
     // States
-    property bool isDebug: false
+    property bool isDebug: true
     property bool homePageFinished: isDebug ? true : false
     property bool dataPageFinished: isDebug ? true : false
     property bool samplePageFinished: isDebug ? true : false

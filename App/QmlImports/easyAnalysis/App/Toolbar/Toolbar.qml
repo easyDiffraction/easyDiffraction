@@ -22,6 +22,8 @@ ColumnLayout{
 
         currentIndex: Generic.Variables.toolbarCurrentIndex
 
+        onCurrentIndexChanged: Generic.Variables.guideCurrentIndex = 0
+
         GenericAppToolbarButtons.Home {
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
         }
