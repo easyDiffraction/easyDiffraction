@@ -88,8 +88,8 @@ Dialog {
 
         onPaint:{
             let ctx = canvas.getContext('2d');
-            ctx.fillStyle = "coral"//Qt.rgba(0.9, 0.9, 0.9, 1)
-            ctx.strokeStyle = "#999"
+            ctx.fillStyle = Generic.Style.redColor//Qt.rgba(0.9, 0.9, 0.9, 1)
+            //ctx.strokeStyle = "#999"
             ctx.lineWidth = 1.5
 
             // background
@@ -146,10 +146,10 @@ Dialog {
             contentItem: Text {
                 text: parent.text
                 font: parent.font
-                opacity: parent.down ? 0.3 : 0.7
+                opacity: parent.down ? 0.4 : 0.8
                 color: "white"
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                verticalAlignment: Text.AlignTop
             }
             onPressed: dialog.close()
         }
@@ -182,8 +182,10 @@ Dialog {
             Text {
                 id: messageItem
                 Layout.margins: canvasMargins
-                horizontalAlignment: Text.AlignHCenter
                 color: "white"
+                horizontalAlignment: Text.AlignHCenter
+                font.family: Generic.Style.fontFamily
+                font.pointSize: Generic.Style.fontPointSize
             }
 
             // Additional spacing
@@ -206,8 +208,9 @@ Dialog {
                     }
                     contentItem: Text {
                         text: parent.text
-                        font: parent.font
-                        opacity: !enabled || parent.down ? 0.3 : 0.7
+                        font.family: Generic.Style.introCondencedRegularFontFamily
+                        font.pointSize: Generic.Style.systemFontPointSize
+                        opacity: !enabled || parent.down ? 0.4 : 0.8
                         color: "white"
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -223,8 +226,9 @@ Dialog {
                     }
                     contentItem: Text {
                         text: parent.text
-                        font: parent.font
-                        opacity: !enabled || parent.down ? 0.3 : 0.7
+                        font.family: Generic.Style.introCondencedRegularFontFamily
+                        font.pointSize: Generic.Style.systemFontPointSize
+                        opacity: !enabled || parent.down ? 0.4 : 0.8
                         color: "white"
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
