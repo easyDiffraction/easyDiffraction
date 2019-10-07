@@ -64,4 +64,21 @@ def test_AtomAdpsModel():
     # test asModel
     assert m._model == m.asModel()
 
+def test_AtomAdpsModel_bad_calculator():
+
+    calculator = None
+
+    # null calculator
+    with pytest.raises(AttributeError):
+        m = Model.AtomAdpsModel(calculator)
+
+    # empty file
+    file_path = QUrl("file:Tests/Data/Empty.rcif").toLocalFile()
+    with pytest.raises(IndexError):
+        calculator = CryspyCalculator(file_path)
+
+    # old style rcif
+    file_path = QUrl("file:Tests/Data/full.rcif").toLocalFile()
+    with pytest.raises(AttributeError):
+        calculator = CryspyCalculator(file_path)
 
