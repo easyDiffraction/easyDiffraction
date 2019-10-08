@@ -66,7 +66,7 @@ print('qtifw_installerbase:', qtifw_installerbase)
 print()
 print('Download QtInstallerFramework installer')
 qtifw_installer = requests.get(qtifw_url, allow_redirects=True)
-open(qtifw_installer_path, 'wb').write(qtifw_installer.content)
+open(qtifw_setup_path, 'wb').write(qtifw_installer.content)
 
 # Attach QtInstallerFramework DMG
 print()
