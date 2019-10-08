@@ -52,11 +52,6 @@ install:
   - pip install pytest-cov
   - pip install pytest-qt
   - pip install coveralls
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    curl -L -O https://download.qt.io/official_releases/qt-installer-framework/QtInstallerFramework-mac-x64/${QTIFW_BASE}.dmg;
-    hdiutil attach "QtInstallerFramework-mac-x64.dmg";
-    /Volumes/QtInstallerFramework-mac-x64/QtInstallerFramework-mac-x64.app/Contents/MacOS/QtInstallerFramework-mac-x64 --script ${QTIFW_SCRIPT};
-    fi
 
 before_script:
 # Fix python packaging, becaues it sucks

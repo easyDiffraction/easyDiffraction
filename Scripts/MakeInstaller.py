@@ -9,6 +9,9 @@ import distutils
 # Start
 print()
 
+# Project
+project_name = 'easyDifraction'
+
 # Main paths
 scripts_dir_path = os.path.dirname(os.path.realpath(__file__))
 project_dir_path = os.path.join(scripts_dir_path, '..')
@@ -22,7 +25,7 @@ print('installer_dir_path:', installer_dir_path)
 
 # What to include to installer
 examples_dir_path = os.path.join(project_dir_path, 'Examples')
-freezed_app_path = os.path.join(project_dir_path, 'dist', 'easyDiffraction.app')
+freezed_app_path = os.path.join(dist_dir_path, project_name + '.app')
 print('examples_dir_path:', examples_dir_path)
 print('freezed_app_path:', freezed_app_path)
 
@@ -34,7 +37,7 @@ print('silent_install_script_path:', silent_install_script_path)
 config_xml_path = os.path.join(installer_dir_path, 'config', 'config.xml')
 packages_dir_path = os.path.join(installer_dir_path, 'packages')
 data_dir_path = os.path.join(packages_dir_path, 'io.github.easydiffraction', 'data')
-installer_name = 'easyDiffractionInstaller'
+installer_name = project_name + 'Installer'
 installer_app_path = os.path.join(installer_dir_path, installer_name) + '.app'
 installer_dmg_path = os.path.join(dist_dir_path, installer_name) + '.dmg'
 
@@ -59,42 +62,49 @@ print('qtifw_url:', qtifw_url)
 print('qtifw_binarycreator:', qtifw_binarycreator)
 print('qtifw_installerbase:', qtifw_installerbase)
 
-# Download
+# Download QtInstallerFramework DMG
 print()
 print('Download QtInstallerFramework installer')
 qtifw_installer = requests.get(qtifw_url, allow_redirects=True)
 open(qtifw_installer_path, 'wb').write(qtifw_installer.content)
 
-# Attach
+# Attach QtInstallerFramework DMG
 print()
 print('Attach QtInstallerFramework DMG')
 args = ['hdiutil', 'attach', qtifw_setup_path]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
 
-# Install
+# Install QtInstallerFramework from attached DMG
+print()
 print('Install QtInstallerFramework silently')
 args = [qtifw_setup_exe_path, '--script', silent_install_script_path]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
 
-# Copy files/dirs for installer
+# Copy files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
+print()
+print('Copy files/dirs needed for creating installer')
 distutils.dir_util.copy_tree(examples_dir_path, os.path.join(data_dir_path, os.path.basename(examples_dir_path)))
 distutils.dir_util.copy_tree(freezed_app_path, os.path.join(data_dir_path, os.path.basename(freezed_app_path)))
 
-# Create installer
+# Create installer from copied files
+print()
+print('Create installer from copied files')
 args = [qtifw_binarycreator,
         '--verbose',
         '--offline-only',
         '-c', config_xml_path,
         '-p', packages_dir_path,
         '-t', qtifw_installerbase,
-        'easyDiffractionInstaller'
+        installer_name
         ]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
 
-# Create dmg
+# Create DMG from installer
+print()
+print('Create DMG from installer')
 args = ['hdiutil',
         'create',
         '-volname', installer_name,
