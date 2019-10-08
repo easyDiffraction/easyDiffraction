@@ -87,7 +87,7 @@ after_success:
   #- if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffraction.dmg; fi # Create DMG for macOS
   - cd ..
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then python ./Scripts/MakeInstaller.py; fi # Create Installer for macOS
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then hdiutil create -volname easyDiffraction -srcfolder easyDiffraction -ov ./dist/easyDiffraction.dmg; fi # Create DMG for macOS
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then hdiutil create -volname easyDiffraction -srcfolder ./Installer/easyDiffractionInstaller.app -ov ./dist/easyDiffraction.dmg; fi # Create DMG for macOS
   - cd dist
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffraction.dmg; fi
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
