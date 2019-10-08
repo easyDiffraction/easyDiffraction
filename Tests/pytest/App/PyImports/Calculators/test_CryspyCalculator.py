@@ -62,13 +62,29 @@ def test_setPhasesDictFromCryspyObj(cal):
     assert len(cal._phases_dict) == 1
     assert len(cal._phases_dict['Fe3O4']) == 4
     assert len(cal._phases_dict['Fe3O4']['cell']) == 6
+    # cell
     assert cal._phases_dict['Fe3O4']['cell']['length_a']['value'] == 8.57
     assert cal._phases_dict['Fe3O4']['cell']['length_b']['hide'] == True
-    assert cal._phases_dict['Fe3O4']['cell']['length_c']['max'] == 1.2
-    assert cal._phases_dict['Fe3O4']['cell']['angle_beta']['error'] == 0.0
+    assert cal._phases_dict['Fe3O4']['cell']['length_c']['max'] == 10.284
+    assert cal._phases_dict['Fe3O4']['cell']['angle_beta']['error'] == None
     assert cal._phases_dict['Fe3O4']['cell']['angle_gamma']['constraint'] == None
-
+    # space_group
     assert len(cal._phases_dict['Fe3O4']['space_group']) == 4
-    assert cal._phases_dict['Fe3O4']['space_group']['crystal_system'] == 'mm'
-    assert cal._phases_dict['Fe3O4']['space_group']['origin_choice'] == 'mm'
+    assert cal._phases_dict['Fe3O4']['space_group']['crystal_system']['value'] == 'cubic'
+    assert cal._phases_dict['Fe3O4']['space_group']['origin_choice']['value'] == '2'
+
+    # atom sites
+    assert len(cal._phases_dict['Fe3O4']['atom_site']) == 3
+    assert list(cal._phases_dict['Fe3O4']['atom_site'].keys()) == ['Fe3A', 'Fe3B', 'O1']
+    assert cal._phases_dict['Fe3O4']['atom_site']['Fe3A']['fract_x']['value'] == 0.125
+    assert cal._phases_dict['Fe3O4']['atom_site']['Fe3B']['fract_y']['value'] == 0.5
+    assert cal._phases_dict['Fe3O4']['atom_site']['O1']['fract_z']['value'] == 0.25521
+    assert cal._phases_dict['Fe3O4']['atom_site']['O1']['fract_z']['error'] == 0.0
+    assert cal._phases_dict['Fe3O4']['atom_site']['O1']['fract_z']['header'] == 'z'
+
+    assert cal._phases_dict['Fe3O4']['atom_site']['Fe3B']['scat_length_neutron']['value'] == 0.945
+
+    # occupancy
+    assert cal._phases_dict['Fe3O4']['atom_site']['Fe3A']['occupancy']['value'] == 1.0
+    assert cal._phases_dict['Fe3O4']['atom_site']['Fe3A']['occupancy']['refine'] == False
 
