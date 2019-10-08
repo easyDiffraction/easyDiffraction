@@ -1,11 +1,9 @@
-import sys
-import os
 import pytest
-from pytest_mock import mocker
-from _pytest import monkeypatch
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property, QUrl
-from PySide2.QtGui import QStandardItem, QStandardItemModel
+from PySide2.QtCore import Qt, QUrl
+from PySide2.QtGui import QStandardItemModel
+
+from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
@@ -32,15 +30,15 @@ def test_BraggPeaksModel():
     assert m._tick_model.columnCount() == 2
 
     # Test stuff from _setModelFromProject here
-    assert m._data_model.item(0,0).data(role=Qt.DisplayRole) == 1
-    assert m._data_model.item(0,3).data(role=Qt.DisplayRole) == 9.638782163644526
-    assert m._data_model.item(94,0).data(role=Qt.DisplayRole) == 12
-    assert m._data_model.item(94,3).data(role=Qt.DisplayRole) == 82.12103627681525
+    assert m._data_model.item(0, 0).data(role=Qt.DisplayRole) == 1
+    assert m._data_model.item(0, 3).data(role=Qt.DisplayRole) == 9.638782163644526
+    assert m._data_model.item(94, 0).data(role=Qt.DisplayRole) == 12
+    assert m._data_model.item(94, 3).data(role=Qt.DisplayRole) == 82.12103627681525
 
-    assert m._tick_model.item(0,0).data(role=Qt.DisplayRole) == 9.638782163644526
-    assert m._tick_model.item(0,1).data(role=Qt.DisplayRole) == 0
-    assert m._tick_model.item(664,0).data(role=Qt.DisplayRole) == 82.12103627681525
-    assert m._tick_model.item(664,1).data(role=Qt.DisplayRole) == 6
+    assert m._tick_model.item(0, 0).data(role=Qt.DisplayRole) == 9.638782163644526
+    assert m._tick_model.item(0, 1).data(role=Qt.DisplayRole) == 0
+    assert m._tick_model.item(664, 0).data(role=Qt.DisplayRole) == 82.12103627681525
+    assert m._tick_model.item(664, 1).data(role=Qt.DisplayRole) == 6
 
     # test asModel
     assert m._data_model == m.asDataModel()
@@ -63,6 +61,3 @@ def test_BraggPeaksModel_bad_calculator():
     file_path = QUrl("file:Tests/Data/full.rcif").toLocalFile()
     with pytest.raises(AttributeError):
         calculator = CryspyCalculator(file_path)
-
-
-

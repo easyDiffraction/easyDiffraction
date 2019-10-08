@@ -1,11 +1,7 @@
-import sys
-import os
 import pytest
-from pytest_mock import mocker
-from _pytest import monkeypatch
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property, QUrl
-from PySide2.QtGui import QStandardItem, QStandardItemModel
+from PySide2.QtCore import Qt, QUrl
+from PySide2.QtGui import QStandardItemModel
 
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
@@ -32,10 +28,10 @@ def test_CalculatedDataModel():
     assert m._headers_model.columnCount() == 0
 
     # Test stuff from _setModelFromProject here
-    assert m._data_model.item(0,0).data(role=Qt.DisplayRole) == 4.0
-    assert m._data_model.item(0,3).data(role=Qt.DisplayRole) == 438.3046174533981
-    assert m._data_model.item(380,0).data(role=Qt.DisplayRole) == 80.0
-    assert m._data_model.item(380,3).data(role=Qt.DisplayRole) == 58.024190593574644
+    assert m._data_model.item(0, 0).data(role=Qt.DisplayRole) == 4.0
+    assert m._data_model.item(0, 3).data(role=Qt.DisplayRole) == 438.3046174533981
+    assert m._data_model.item(380, 0).data(role=Qt.DisplayRole) == 80.0
+    assert m._data_model.item(380, 3).data(role=Qt.DisplayRole) == 58.024190593574644
 
     # test asModel
     assert m._data_model == m.asDataModel()
@@ -59,5 +55,3 @@ def test_CalculatedDataModel_bad_calculator():
     file_path = QUrl("file:Tests/Data/full.rcif").toLocalFile()
     with pytest.raises(AttributeError):
         calculator = CryspyCalculator(file_path)
-
-

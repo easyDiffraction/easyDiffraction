@@ -1,11 +1,7 @@
-import sys
-import os
 import pytest
-from pytest_mock import mocker
-from _pytest import monkeypatch
 
-from PySide2.QtCore import QObject, Signal, Slot, Property, QUrl
-from PySide2.QtGui import QStandardItem, QStandardItemModel
+from PySide2.QtCore import QUrl
+from PySide2.QtGui import QStandardItemModel
 
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
@@ -31,35 +27,35 @@ def test_AtomMspsModel():
     assert m._model.columnCount() == 1
 
     # Test stuff from _setModelFromProject here
-    assert m._model.item(0,0).data() == 'Fe3A'
-    assert m._model.item(0,0).data(role=m._type_role) == 'cani'
-    assert m._model.item(0,0).data(role=m._chiiso_role) == ''
-    assert m._model.item(0,0).data(role=m._chi11_role) == -0.5
-    assert m._model.item(0,0).data(role=m._chi22_role) == -0.5
-    assert m._model.item(0,0).data(role=m._chi33_role) == -0.5
-    assert m._model.item(0,0).data(role=m._chi12_role) == 0.0
-    assert m._model.item(0,0).data(role=m._chi13_role) == 0.0
-    assert m._model.item(0,0).data(role=m._chi23_role) == 0.0
+    assert m._model.item(0, 0).data() == 'Fe3A'
+    assert m._model.item(0, 0).data(role=m._type_role) == 'cani'
+    assert m._model.item(0, 0).data(role=m._chiiso_role) == ''
+    assert m._model.item(0, 0).data(role=m._chi11_role) == -0.5
+    assert m._model.item(0, 0).data(role=m._chi22_role) == -0.5
+    assert m._model.item(0, 0).data(role=m._chi33_role) == -0.5
+    assert m._model.item(0, 0).data(role=m._chi12_role) == 0.0
+    assert m._model.item(0, 0).data(role=m._chi13_role) == 0.0
+    assert m._model.item(0, 0).data(role=m._chi23_role) == 0.0
 
-    assert m._model.item(1,0).data() == 'Fe3B'
-    assert m._model.item(1,0).data(role=m._type_role) == 'cani'
-    assert m._model.item(1,0).data(role=m._chiiso_role) == ''
-    assert m._model.item(1,0).data(role=m._chi11_role) == 0.2
-    assert m._model.item(1,0).data(role=m._chi22_role) == 0.2
-    assert m._model.item(1,0).data(role=m._chi33_role) == 0.2
-    assert m._model.item(1,0).data(role=m._chi12_role) == 0.0
-    assert m._model.item(1,0).data(role=m._chi13_role) == 0.0
-    assert m._model.item(1,0).data(role=m._chi23_role) == 0.0
+    assert m._model.item(1, 0).data() == 'Fe3B'
+    assert m._model.item(1, 0).data(role=m._type_role) == 'cani'
+    assert m._model.item(1, 0).data(role=m._chiiso_role) == ''
+    assert m._model.item(1, 0).data(role=m._chi11_role) == 0.2
+    assert m._model.item(1, 0).data(role=m._chi22_role) == 0.2
+    assert m._model.item(1, 0).data(role=m._chi33_role) == 0.2
+    assert m._model.item(1, 0).data(role=m._chi12_role) == 0.0
+    assert m._model.item(1, 0).data(role=m._chi13_role) == 0.0
+    assert m._model.item(1, 0).data(role=m._chi23_role) == 0.0
 
-    assert m._model.item(2,0).data() == 'O1'
-    assert m._model.item(2,0).data(role=m._type_role) == ''
-    assert m._model.item(2,0).data(role=m._chi11_role) == ''
-    assert m._model.item(2,0).data(role=m._chi11_role) == ''
-    assert m._model.item(2,0).data(role=m._chi22_role) == ''
-    assert m._model.item(2,0).data(role=m._chi33_role) == ''
-    assert m._model.item(2,0).data(role=m._chi12_role) == ''
-    assert m._model.item(2,0).data(role=m._chi13_role) == ''
-    assert m._model.item(2,0).data(role=m._chi23_role) == ''
+    assert m._model.item(2, 0).data() == 'O1'
+    assert m._model.item(2, 0).data(role=m._type_role) == ''
+    assert m._model.item(2, 0).data(role=m._chi11_role) == ''
+    assert m._model.item(2, 0).data(role=m._chi11_role) == ''
+    assert m._model.item(2, 0).data(role=m._chi22_role) == ''
+    assert m._model.item(2, 0).data(role=m._chi33_role) == ''
+    assert m._model.item(2, 0).data(role=m._chi12_role) == ''
+    assert m._model.item(2, 0).data(role=m._chi13_role) == ''
+    assert m._model.item(2, 0).data(role=m._chi23_role) == ''
 
     # test asModel
     assert m._model == m.asModel()
