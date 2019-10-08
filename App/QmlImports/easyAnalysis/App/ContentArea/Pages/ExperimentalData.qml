@@ -17,7 +17,7 @@ GenericAppElements.ContentAreaStack {
             text: qsTr("Table View")
             tabbarWidth: mainArea.width
             GenericAppElements.GuideWindow {
-                message: "This tab displays experimental data as table."
+                message: "This tab button switches to the table\nview of the measured data."
                 position: "bottom"
                 guideCurrentIndex: 2
                 toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
@@ -28,7 +28,7 @@ GenericAppElements.ContentAreaStack {
             text: qsTr("Text View")
             tabbarWidth: mainArea.width
             GenericAppElements.GuideWindow {
-                message: "This tab displays experimental data as text."
+                message: "This tab button allows to see the\nmeasured data as plain text."
                 position: "bottom"
                 guideCurrentIndex: 3
                 toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex

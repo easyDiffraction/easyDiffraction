@@ -27,7 +27,7 @@ ColumnLayout {
                     GenericAppElements.GuideWindow {
                         message: "Here you can export the report."
                         position: "left"
-                        guideCurrentIndex: 0
+                        guideCurrentIndex: 1
                         toolbarCurrentIndex: Generic.Variables.SummaryIndex
                         guidesCount: Generic.Variables.SummaryGuidesCount
                     }
@@ -35,7 +35,7 @@ ColumnLayout {
                 TextField {
                     id: exportFileName
                     Layout.fillWidth: true
-                    implicitHeight: 32
+                    implicitHeight: 33
                     placeholderText: "Report File Name"
                     horizontalAlignment: Text.AlignRight
                 }
@@ -82,6 +82,13 @@ ColumnLayout {
                 ToolTip.text: qsTr("Go to the previous step: Analysis")
                 onClicked: {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
+                }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to go to the previous step: Analysis.\n\nAlternatively, you can click on the 'Analysis' button in toolbar."
+                    position: "top"
+                    guideCurrentIndex: 2
+                    toolbarCurrentIndex: Generic.Variables.SummaryIndex
+                    guidesCount: Generic.Variables.SummaryGuidesCount
                 }
             }
             GenericAppContentAreaButtons.SaveState {

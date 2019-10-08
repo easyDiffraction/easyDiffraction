@@ -24,12 +24,26 @@ ColumnLayout {
             columns: 2
 
             // Buttons
-            GenericAppContentAreaButtons.Create { id: createButton; enabled: false; text: qsTr("Create a new project") }
+            GenericAppContentAreaButtons.Create {
+                enabled: false
+                text: qsTr("Create a new project")
+
+                GenericAppElements.GuideWindow {
+                    message: "Disables buttons are not implemented yet."
+                    position: "left"
+                    guideCurrentIndex: 2
+                    toolbarCurrentIndex: Generic.Variables.HomeIndex
+                    guidesCount: Generic.Variables.HomeGuidesCount
+                }
+            }
+
             GenericAppContentAreaButtons.Open {
                 id: openButton
                 text: qsTr("Open another project")
                 enabled: !proxy.refinementRunning
+
                 onClicked: fileDialog.open()
+
                 GenericAppElements.GuideWindow {
                     message: "Click here to open existing project."
                     position: "left"
@@ -38,8 +52,16 @@ ColumnLayout {
                     guidesCount: Generic.Variables.HomeGuidesCount
                 }
             }
-            GenericAppContentAreaButtons.Clone { id: cloneButton; enabled: false; text: qsTr("Clone an existing project") }
-            GenericAppContentAreaButtons.Save { enabled: false; text: qsTr("Save project as...") }
+
+            GenericAppContentAreaButtons.Clone {
+                enabled: false
+                text: qsTr("Clone an existing project")
+            }
+
+            GenericAppContentAreaButtons.Save {
+                enabled: false
+                text: qsTr("Save project as...")
+            }
 
             // Persistent settings
             Settings { id: settings }
@@ -91,6 +113,14 @@ ColumnLayout {
                 Controls1.TableViewColumn { role:"remove";          title:"Remove"; resizable: false }
             }
         }
+
+        GenericAppElements.GuideWindow {
+            message: "The sidebar groups can be folded and unfolded.\n\nClick on the group name to unfold the group.\n\nDisabled groups are not implemented yet."
+            position: "left"
+            guideCurrentIndex: 3
+            toolbarCurrentIndex: Generic.Variables.HomeIndex
+            guidesCount: Generic.Variables.HomeGuidesCount
+        }
     }
 
 
@@ -138,9 +168,9 @@ ColumnLayout {
             }
         }
         GenericAppElements.GuideWindow {
-            message: "Here you can set application preferences."
+            message: "Application user guides and animated intro\ncan be disabled or enabled here."
             position: "left"
-            guideCurrentIndex: 1
+            guideCurrentIndex: 4
             toolbarCurrentIndex: Generic.Variables.HomeIndex
             guidesCount: Generic.Variables.HomeGuidesCount
         }
@@ -168,7 +198,7 @@ ColumnLayout {
                 GenericAppElements.GuideWindow {
                     message: "Click here to go to the next step: Experimental data."
                     position: "top"
-                    guideCurrentIndex: 2
+                    guideCurrentIndex: 5
                     toolbarCurrentIndex: Generic.Variables.HomeIndex
                     guidesCount: Generic.Variables.HomeGuidesCount
                 }

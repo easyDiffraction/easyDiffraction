@@ -4,6 +4,14 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 
 GenericAppElements.StructureView {
+
+    GenericAppElements.GuideWindow {
+        message: "Crystal structure is shown in the main area."
+        position: "right"
+        guideCurrentIndex: 1
+        toolbarCurrentIndex: Generic.Variables.SampleModelIndex
+        guidesCount: Generic.Variables.SampleModelGuidesCount
+    }
 }
 
 

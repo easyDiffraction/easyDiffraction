@@ -8,5 +8,15 @@ GenericAppElements.ChartView {
     showCalc: true
     showDiff: true
     showBragg: true
+
+    GenericAppElements.GuideWindow {
+        message: "Measured (Iobs, blue) and calculate (Icalc, red) data\npoints are shown in the main area.\n\nTheir difference (Iobs-Icalc, green) is given\nin the bottom plot.\n\nVertical ticks between the plots indicate\nBragg peak positions."
+        position: "right"
+        guideCurrentIndex: 1
+        toolbarCurrentIndex: Generic.Variables.AnalysisIndex
+        guidesCount: Generic.Variables.AnalysisGuidesCount
+    }
 }
+
+
 

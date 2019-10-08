@@ -35,6 +35,13 @@ ColumnLayout{
         GenericAppToolbarButtons.ExperimentalData {
             enabled: Generic.Variables.homePageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+            GenericAppElements.GuideWindow {
+                message: "This is a toolbar button of the tab with\ninformation about experimental data."
+                position: "bottom"
+                guideCurrentIndex: 6
+                toolbarCurrentIndex: Generic.Variables.HomeIndex
+                guidesCount: Generic.Variables.HomeGuidesCount
+            }
         }
         //GenericAppToolbarButtons.InstrumentModel {
         //    enabled: Generic.Variables.dataPageFinished

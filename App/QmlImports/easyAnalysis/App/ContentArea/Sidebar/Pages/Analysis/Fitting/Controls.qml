@@ -46,7 +46,7 @@ ColumnLayout {
                     GenericAppElements.GuideWindow {
                         message: "Click here to start or stop fitting."
                         position: "left"
-                        guideCurrentIndex: 1
+                        guideCurrentIndex: 3
                         toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                         guidesCount: Generic.Variables.AnalysisGuidesCount
                     }
@@ -80,9 +80,9 @@ ColumnLayout {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
                 }
                 GenericAppElements.GuideWindow {
-                    message: "Click here to go to the previous step: Sample Model."
+                    message: "Click here to go to the previous step: Sample Model.\n\nAlternatively, you can click on the 'Sample Model' button in toolbar."
                     position: "top"
-                    guideCurrentIndex: 2
+                    guideCurrentIndex: 4
                     toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                     guidesCount: Generic.Variables.AnalysisGuidesCount
                 }
@@ -100,7 +100,7 @@ ColumnLayout {
                 GenericAppElements.GuideWindow {
                     message: "Click here to go to the next step: Summary.\n\nThis button will be enabled after fitting is done."
                     position: "top"
-                    guideCurrentIndex: 3
+                    guideCurrentIndex: 5
                     toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                     guidesCount: Generic.Variables.AnalysisGuidesCount
                 }

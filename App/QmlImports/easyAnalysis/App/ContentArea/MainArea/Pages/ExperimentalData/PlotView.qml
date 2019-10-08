@@ -8,7 +8,7 @@ GenericAppElements.ChartView {
     showCalc: false
 
     GenericAppElements.GuideWindow {
-        message: "Here you can see experimental data plot."
+        message: "Measured data points are plotted in the main area."
         position: "right"
         guideCurrentIndex: 1
         toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex

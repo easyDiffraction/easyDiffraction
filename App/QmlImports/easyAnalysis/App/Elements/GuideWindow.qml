@@ -59,7 +59,7 @@ Dialog {
     closePolicy: Popup.NoAutoClose
     modal: true
     background: Rectangle { color: "transparent" }
-    Overlay.modal: Rectangle { color: Color.transparent("black", 0.1) }
+    Overlay.modal: Rectangle { color: Color.transparent("black", 0.2) }
 
     // Animation on dialog window
     enter: Transition {

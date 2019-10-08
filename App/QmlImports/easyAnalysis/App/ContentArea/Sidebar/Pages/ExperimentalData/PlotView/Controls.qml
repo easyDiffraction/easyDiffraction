@@ -25,7 +25,7 @@ ColumnLayout {
                 Layout.fillWidth: true
 
                 GenericAppElements.GuideWindow {
-                    message: "Here you can see experimental data labels."
+                    message: "Here you can see labels of the experimental data."
                     position: "left"
                     guideCurrentIndex: 0
                     toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
@@ -76,7 +76,7 @@ ColumnLayout {
         }
 
         GenericAppElements.GuideWindow {
-            message: "The sidebar groups contain details related to the experiment.\n\nClick on the group name to unfold it."
+            message: "The sidebar groups contain details related to the experiment.\n\nClick on the group name to unfold the group."
             position: "left"
             guideCurrentIndex: 4
             toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
@@ -161,7 +161,7 @@ ColumnLayout {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
                 }
                 GenericAppElements.GuideWindow {
-                    message: "Click here to go to the previous step: Home."
+                    message: "Click here to go to the previous step: Home.\n\nAlternatively, you can click on the 'Home' button in toolbar."
                     position: "top"
                     guideCurrentIndex: 5
                     toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex

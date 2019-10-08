@@ -49,7 +49,7 @@ ColumnLayout {
             GenericAppElements.PhasesTableView {
                 Layout.fillWidth: true
                 GenericAppElements.GuideWindow {
-                    message: "Here you can see structural phases labels."
+                    message: "Here you can see labels of the structural phases."
                     position: "left"
                     guideCurrentIndex: 0
                     toolbarCurrentIndex: Generic.Variables.SampleModelIndex
@@ -61,9 +61,9 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 2
 
-                GenericAppContentAreaButtons.Add { id: addButton; enabled: false; text: "Add new phase manually"; }
+                GenericAppContentAreaButtons.Add { enabled: false; text: "Add new phase manually" }
                 GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all phases" }
-                GenericAppContentAreaButtons.Import { id: importButton; enabled: false; text: "Import new phase from CIF" }
+                GenericAppContentAreaButtons.Import { enabled: false; text: "Import new phase from CIF" }
                 GenericAppContentAreaButtons.Export { enabled: false; text: "Export selected phase to CIF" }
             }
         }
@@ -103,9 +103,9 @@ ColumnLayout {
             }
         }
         GenericAppElements.GuideWindow {
-            message: "The sidebar groups contain details related to the sample model.\n\nClick on the group name to unfold it."
+            message: "The sidebar groups contain details related to the sample model.\n\nClick on the group name to unfold the group."
             position: "left"
-            guideCurrentIndex: 1
+            guideCurrentIndex: 3
             toolbarCurrentIndex: Generic.Variables.SampleModelIndex
             guidesCount: Generic.Variables.SampleModelGuidesCount
         }
@@ -177,9 +177,9 @@ ColumnLayout {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
                 }
                 GenericAppElements.GuideWindow {
-                    message: "Click here to go to the previous step: Experimental Data."
+                    message: "Click here to go to the previous step: Experimental data.\n\nAlternatively, you can click on the 'Experimental data' button in toolbar."
                     position: "top"
-                    guideCurrentIndex: 2
+                    guideCurrentIndex: 4
                     toolbarCurrentIndex: Generic.Variables.SampleModelIndex
                     guidesCount: Generic.Variables.SampleModelGuidesCount
                 }
@@ -194,7 +194,7 @@ ColumnLayout {
                 GenericAppElements.GuideWindow {
                     message: "Click here to go to the next step: Structure refinement."
                     position: "top"
-                    guideCurrentIndex: 3
+                    guideCurrentIndex: 5
                     toolbarCurrentIndex: Generic.Variables.SampleModelIndex
                     guidesCount: Generic.Variables.SampleModelGuidesCount
                 }
