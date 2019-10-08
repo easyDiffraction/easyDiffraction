@@ -6,6 +6,7 @@ import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 
 GenericAppContentArea.Button {
     Layout.fillWidth: true
+    enabled: !proxy.refinementRunning
     text: proxy.refinementRunning ? "Stop fitting" : "Start fitting"
     icon.source: proxy.refinementRunning ? Generic.Variables.thirdPartyIconsPath + "stop-circle.svg" : Generic.Variables.thirdPartyIconsPath + "play-circle.svg"
 }
