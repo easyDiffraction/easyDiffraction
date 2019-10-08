@@ -154,6 +154,25 @@ Dialog {
             }
         }
         Button {
+            id: disableButton
+            visible: Generic.Variables.showIntro
+            text: "Disable"
+            contentItem: IconLabel {
+                text: disableButton.text
+                font.family: Generic.Style.introThinFontFamily
+                font.pointSize: repeatFontSize
+                color: "#666"
+            }
+            background: Rectangle {
+                color: "transparent"
+            }
+            onClicked: {
+                animo.complete()
+                Generic.Variables.showIntro = false
+            }
+        }
+        /*
+        Button {
             id: repeatButton
             visible: Generic.Variables.showIntro
             text: "Repeat"
@@ -171,6 +190,7 @@ Dialog {
                 animo.restart()
             }
         }
+        */
     }
 
     // Reset intro

@@ -22,6 +22,8 @@ ColumnLayout{
 
         currentIndex: Generic.Variables.toolbarCurrentIndex
 
+        onCurrentIndexChanged: Generic.Variables.guideCurrentIndex = 0
+
         GenericAppToolbarButtons.Home {
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
         }
@@ -33,6 +35,13 @@ ColumnLayout{
         GenericAppToolbarButtons.ExperimentalData {
             enabled: Generic.Variables.homePageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+            GenericAppElements.GuideWindow {
+                message: "This is a toolbar button of the tab with\ninformation about experimental data."
+                position: "bottom"
+                guideCurrentIndex: 6
+                toolbarCurrentIndex: Generic.Variables.HomeIndex
+                guidesCount: Generic.Variables.HomeGuidesCount
+            }
         }
         //GenericAppToolbarButtons.InstrumentModel {
         //    enabled: Generic.Variables.dataPageFinished
@@ -66,7 +75,7 @@ ColumnLayout{
         // -------
 
         GenericAppToolbarButtons.Summary {
-            enabled: proxy.refinementDone//Generic.Variables.analysisPageFinished
+            enabled: proxy.refinementDone || Generic.Variables.isDebug//Generic.Variables.analysisPageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
         }
     }

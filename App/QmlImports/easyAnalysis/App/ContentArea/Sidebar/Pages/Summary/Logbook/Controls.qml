@@ -18,38 +18,35 @@ ColumnLayout {
         title: "Export as..."
         collapsible: false
         content: GenericAppElements.ColumnLayout {
+
             GenericAppElements.RowLayout {
-                GenericAppContentAreaButtons.Export {
-                    id: exportButton
-                    implicitWidth: 60
-                    text: "Export"
-                    onClicked: { proxy.save_report(exportFileName.text, exportFileExt.currentText) }
-                }
-                TextField {
+                GenericAppElements.TextField {
                     id: exportFileName
-                    Layout.fillWidth: true
-                    implicitHeight: 32
+                    implicitWidth: Generic.Style.sidebarWidth - Generic.Style.sidebarGroupIndicatorIconSize - exportFileExt.implicitWidth - exportButton.implicitWidth
                     placeholderText: "Report File Name"
                     horizontalAlignment: Text.AlignRight
+                    GenericAppElements.GuideWindow {
+                        message: "Here you can export the report."
+                        position: "left"
+                        guideCurrentIndex: 1
+                        toolbarCurrentIndex: Generic.Variables.SummaryIndex
+                        guidesCount: Generic.Variables.SummaryGuidesCount
+                    }
                 }
+
                 GenericAppElements.ComboBox {
                     id: exportFileExt
-                    implicitWidth: 60
+                    implicitWidth: 100
                     model: [".HTML"]
                 }
 
-                GenericAppElements.GuideWindow {
-                    id: guidWindow
-                    message: "Click here to export a logbook."
-                    toY: exportButton.y + exportButton.height / 2
-
-                    visible: Generic.Variables.showGuide && Generic.Variables.toolbarCurrentIndex === Generic.Variables.SummaryIndex ? true : false
-
-                    GenericAppContentAreaButtons.Add { id: exportButtonClone }
-                    Component.onCompleted: {
-                        GenericLogic.Copy.copyButton(exportButton, exportButtonClone)
-                    }
+                GenericAppContentAreaButtons.Export {
+                    id: exportButton
+                    implicitWidth: 190
+                    text: "Export"
+                    onClicked: proxy.save_report(exportFileName.text, exportFileExt.currentText)
                 }
+
             }
         }
     }
@@ -83,11 +80,19 @@ ColumnLayout {
         collapsible: false
         showBorder: false
         content: GenericAppElements.RowLayout {
+
             GenericAppContentAreaButtons.GoPrevious {
                 text: "Analysis"
                 ToolTip.text: qsTr("Go to the previous step: Analysis")
                 onClicked: {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
+                }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to go to the previous step: Analysis.\n\nAlternatively, you can click on the 'Analysis' button in toolbar."
+                    position: "top"
+                    guideCurrentIndex: 2
+                    toolbarCurrentIndex: Generic.Variables.SummaryIndex
+                    guidesCount: Generic.Variables.SummaryGuidesCount
                 }
             }
             GenericAppContentAreaButtons.SaveState {
@@ -97,6 +102,13 @@ ColumnLayout {
             }
             GenericAppContentAreaButtons.Bug {
                 onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/contact.html")
+                GenericAppElements.GuideWindow {
+                    message: "Please send us your feedback.\n\nYour opinion matters!"
+                    position: "top left"
+                    guideCurrentIndex: 3
+                    toolbarCurrentIndex: Generic.Variables.SummaryIndex
+                    guidesCount: Generic.Variables.SummaryGuidesCount
+                }
             }
         }
     }

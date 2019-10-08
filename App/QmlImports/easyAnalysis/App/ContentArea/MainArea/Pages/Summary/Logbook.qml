@@ -139,4 +139,11 @@ Rectangle {
         return s
     }
 
+    GenericAppElements.GuideWindow {
+        message: "A report which includes brief project details,\nlist of fitable parameters, fitting and\nstructure plot is shown in the main area."
+        position: "right"
+        guideCurrentIndex: 0
+        toolbarCurrentIndex: Generic.Variables.SummaryIndex
+        guidesCount: Generic.Variables.SummaryGuidesCount
+    }
 }
