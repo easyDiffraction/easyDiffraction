@@ -18,12 +18,13 @@ ColumnLayout {
         title: "Export as..."
         collapsible: false
         content: GenericAppElements.ColumnLayout {
+
             GenericAppElements.RowLayout {
-                GenericAppContentAreaButtons.Export {
-                    id: exportButton
-                    implicitWidth: 60
-                    text: "Export"
-                    onClicked: proxy.save_report(exportFileName.text, exportFileExt.currentText)
+                GenericAppElements.TextField {
+                    id: exportFileName
+                    implicitWidth: Generic.Style.sidebarWidth - Generic.Style.sidebarGroupIndicatorIconSize - exportFileExt.implicitWidth - exportButton.implicitWidth
+                    placeholderText: "Report File Name"
+                    horizontalAlignment: Text.AlignRight
                     GenericAppElements.GuideWindow {
                         message: "Here you can export the report."
                         position: "left"
@@ -32,18 +33,20 @@ ColumnLayout {
                         guidesCount: Generic.Variables.SummaryGuidesCount
                     }
                 }
-                TextField {
-                    id: exportFileName
-                    Layout.fillWidth: true
-                    implicitHeight: 33
-                    placeholderText: "Report File Name"
-                    horizontalAlignment: Text.AlignRight
-                }
+
                 GenericAppElements.ComboBox {
                     id: exportFileExt
-                    implicitWidth: 60
+                    implicitWidth: 100
                     model: [".HTML"]
                 }
+
+                GenericAppContentAreaButtons.Export {
+                    id: exportButton
+                    implicitWidth: 190
+                    text: "Export"
+                    onClicked: proxy.save_report(exportFileName.text, exportFileExt.currentText)
+                }
+
             }
         }
     }
@@ -77,6 +80,7 @@ ColumnLayout {
         collapsible: false
         showBorder: false
         content: GenericAppElements.RowLayout {
+
             GenericAppContentAreaButtons.GoPrevious {
                 text: "Analysis"
                 ToolTip.text: qsTr("Go to the previous step: Analysis")
@@ -98,6 +102,13 @@ ColumnLayout {
             }
             GenericAppContentAreaButtons.Bug {
                 onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/contact.html")
+                GenericAppElements.GuideWindow {
+                    message: "Please send us your feedback.\n\nYour opinion matters!"
+                    position: "top left"
+                    guideCurrentIndex: 3
+                    toolbarCurrentIndex: Generic.Variables.SummaryIndex
+                    guidesCount: Generic.Variables.SummaryGuidesCount
+                }
             }
         }
     }

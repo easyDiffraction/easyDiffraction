@@ -49,7 +49,7 @@ QtObject {
         ExperimentalDataGuidesCount = 7,
         SampleModelGuidesCount = 6,
         AnalysisGuidesCount = 6,
-        SummaryGuidesCount = 3
+        SummaryGuidesCount = 4
     }
 
     // States

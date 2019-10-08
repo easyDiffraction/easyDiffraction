@@ -32,6 +32,8 @@ Dialog {
     x: {
         if (position === "left") {
             return -canvas.width - extraMargin }
+        else if (position === "top left") {
+            return -canvas.width + parent.width/2 + 2*arrowThikness - extraMargin }
         else if (position === "right") {
             return parent.width + extraMargin }
         else if (position === "top" || position === "bottom") {
@@ -43,7 +45,7 @@ Dialog {
     y: {
         if (position === "left" || position === "right") {
             return (-canvas.height + parent.height ) / 2 }
-        else if (position === "top") {
+        else if (position === "top" || position === "top left") {
             return -canvas.height - extraMargin }
         else if (position === "bottom") {
             return parent.height + extraMargin }
@@ -76,13 +78,13 @@ Dialog {
         width: {
             if (position === "left" || position === "right") {
                 return layout.width + arrowThikness }
-            else if (position === "top" || position === "bottom") {
+            else if (position === "top" || position === "top left" || position === "bottom") {
                 return layout.width }
         }
         height: {
             if (position === "left" || position === "right") {
                 return layout.height }
-            else if (position === "top" || position === "bottom") {
+            else if (position === "top" || position === "top left" || position === "bottom") {
                 return layout.height + arrowLength }
         }
 
@@ -129,6 +131,15 @@ Dialog {
                 ctx.lineTo(width, arrowLength)
                 ctx.lineTo(width, height)
                 ctx.lineTo(0, height)
+            }
+            else if (position === "top left") {
+                ctx.moveTo(0, 0)
+                ctx.lineTo(0, height - arrowLength)
+                ctx.lineTo(width - 3*arrowThikness, height - arrowLength)
+                ctx.lineTo(width - 2*arrowThikness, height)
+                ctx.lineTo(width - arrowThikness, height - arrowLength)
+                ctx.lineTo(width, height - arrowLength)
+                ctx.lineTo(width, 0)
             }
             ctx.fill()
         }
