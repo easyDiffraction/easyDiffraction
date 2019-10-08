@@ -11,13 +11,14 @@ print()
 
 # Project
 project_name = 'easyDifraction'
+print('Variables')
+print('project_name:', project_name)
 
 # Main paths
 scripts_dir_path = os.path.dirname(os.path.realpath(__file__))
 project_dir_path = os.path.join(scripts_dir_path, '..')
 dist_dir_path = os.path.join(project_dir_path, 'dist')
 installer_dir_path = os.path.join(project_dir_path, 'Installer')
-print('Variables')
 print('project_dir_path:', project_dir_path)
 print('scripts_dir_path:', scripts_dir_path)
 print('dist_dir_path:', dist_dir_path)
@@ -40,7 +41,6 @@ data_dir_path = os.path.join(packages_dir_path, 'io.github.easydiffraction', 'da
 installer_name = project_name + 'Installer'
 installer_app_path = os.path.join(installer_dir_path, installer_name) + '.app'
 installer_dmg_path = os.path.join(dist_dir_path, installer_name) + '.dmg'
-
 print('config_xml_path:', config_xml_path)
 print('packages_dir_path:', packages_dir_path)
 print('data_dir_path:', data_dir_path)
