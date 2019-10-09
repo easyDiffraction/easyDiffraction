@@ -92,9 +92,10 @@ open(qtifw_setup_path, 'wb').write(qtifw_installer.content)
 if (os_name == 'osx'):
     print()
     print('***** Attach QtInstallerFramework DMG')
-    #args = ['hdiutil', 'attach', qtifw_setup_path]
-    #result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    #print(result)
+    args = ['hdiutil', 'attach', qtifw_setup_path]
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+exit()
 
 # Install QtInstallerFramework from attached DMG
 print()
@@ -102,7 +103,6 @@ print('***** Install QtInstallerFramework silently')
 args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
-exit()
 
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
 print()
