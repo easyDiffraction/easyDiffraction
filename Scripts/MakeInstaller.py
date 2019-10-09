@@ -12,7 +12,7 @@ print('***** Variables')
 print()
 
 # Project
-project_name = 'easyDifraction'
+project_name = 'easyDiffraction'
 print('project_name:', project_name)
 
 # Main paths
