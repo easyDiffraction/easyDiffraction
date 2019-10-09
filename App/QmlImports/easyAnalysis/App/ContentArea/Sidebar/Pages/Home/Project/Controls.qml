@@ -29,7 +29,7 @@ ColumnLayout {
                 text: qsTr("Create a new project")
 
                 GenericAppElements.GuideWindow {
-                    message: examplesDir //"Disables buttons are not implemented yet."
+                    message: "Disables buttons are not implemented yet."
                     position: "left"
                     guideCurrentIndex: 2
                     toolbarCurrentIndex: Generic.Variables.HomeIndex
