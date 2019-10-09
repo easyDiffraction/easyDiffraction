@@ -114,7 +114,7 @@ shutil.move(examples_dir_path, data_dir_path)
 
 # Create installer from copied files
 print()
-print('***** Create installer from copied files')
+print('***** Create installer from moved files/dirs')
 args = [qtifw_binarycreator,
         '--verbose',
         '--offline-only',
