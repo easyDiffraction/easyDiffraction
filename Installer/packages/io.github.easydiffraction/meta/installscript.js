@@ -89,13 +89,13 @@ Component.prototype.createOperations = function()
         component.addOperation("CreateShortcut",
         "@TargetDir@/@ProductName@/@ProductName@Uninstaller.exe",
         "@StartMenuDir@/@ProductName@/@ProductName@Uninstaller.lnk",
-        "workingDirectory=@TargetDir@/@ProductName@",
-        "iconPath=@TargetDir@/@ProductName@/@ProductName@Uninstaller.exe", "iconId=0",
+        "workingDirectory=@TargetDir@",
+        "iconPath=@TargetDir@/@ProductName@Uninstaller.exe", "iconId=0",
         "description=@ProductName@Uninstaller");
         // Add desktop shortcut for the app
         component.addOperation("CreateShortcut",
         "@TargetDir@/@ProductName@/@ProductName@.exe",
-        "@DesktopDir@/@ProductName@/@ProductName@.lnk",
+        "@DesktopDir@/@ProductName@.lnk",
         "workingDirectory=@TargetDir@/@ProductName@",
         "iconPath=@TargetDir@/@ProductName@/@ProductName@.exe", "iconId=0",
         "description=@ProductName@");
