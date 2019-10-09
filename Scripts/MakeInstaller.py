@@ -4,19 +4,21 @@ import os
 import sys
 import requests
 import subprocess
-import distutils.dir_util
+import shutil
 
 # Start
+print()
+print('***** Variables')
 print()
 
 # Project
 project_name = 'easyDifraction'
-print('Variables')
 print('project_name:', project_name)
 
 # Main paths
+user_home_dir = os.path.expanduser('~')
 scripts_dir_path = os.path.dirname(os.path.realpath(__file__))
-project_dir_path = os.path.join(scripts_dir_path, '..')
+project_dir_path = os.path.realpath(os.path.join(scripts_dir_path, '..'))
 dist_dir_path = os.path.join(project_dir_path, 'dist')
 installer_dir_path = os.path.join(project_dir_path, 'Installer')
 print('project_dir_path:', project_dir_path)
@@ -49,10 +51,10 @@ print('data_dir_path:', data_dir_path)
 qtifw_version = '3.1.1'
 qtifw_setup_base = 'QtInstallerFramework-mac-x64'
 qtifw_setup_ext = 'dmg'
-qtifw_setup_name = '{}.{}'.format(qtifw_setup_base, qtifw_setup_ext)
+qtifw_setup_name = '{0}.{1}'.format(qtifw_setup_base, qtifw_setup_ext)
 qtifw_setup_path = os.path.join(scripts_dir_path, qtifw_setup_name)
 qtifw_setup_exe_path = '/Volumes/{0}/{0}.app/Contents/MacOS/{0}'.format(qtifw_setup_base)
-qtifw_bin_path = '~/Qt/QtIFW-{0}/bin'.format(qtifw_version)
+qtifw_bin_path = '{0}/Qt/QtIFW-{1}/bin'.format(user_home_dir, qtifw_version)
 qtifw_url = 'https://download.qt.io/official_releases/qt-installer-framework/{0}/{1}'.format(qtifw_version, qtifw_setup_name)
 qtifw_binarycreator = os.path.join(qtifw_bin_path, 'binarycreator')
 qtifw_installerbase = os.path.join(qtifw_bin_path, 'installerbase')
@@ -64,33 +66,33 @@ print('qtifw_installerbase:', qtifw_installerbase)
 
 # Download QtInstallerFramework DMG
 print()
-print('Download QtInstallerFramework installer')
+print('***** Download QtInstallerFramework installer')
 qtifw_installer = requests.get(qtifw_url, allow_redirects=True)
 open(qtifw_setup_path, 'wb').write(qtifw_installer.content)
 
 # Attach QtInstallerFramework DMG
 print()
-print('Attach QtInstallerFramework DMG')
+print('***** Attach QtInstallerFramework DMG')
 args = ['hdiutil', 'attach', qtifw_setup_path]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
 
 # Install QtInstallerFramework from attached DMG
 print()
-print('Install QtInstallerFramework silently')
+print('***** Install QtInstallerFramework silently')
 args = [qtifw_setup_exe_path, '--script', silent_install_script_path]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
 
-# Copy files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
+# Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
 print()
-print('Copy files/dirs needed for creating installer')
-distutils.dir_util.copy_tree(examples_dir_path, os.path.join(data_dir_path, os.path.basename(examples_dir_path)))
-distutils.dir_util.copy_tree(freezed_app_path, os.path.join(data_dir_path, os.path.basename(freezed_app_path)))
+print('***** Move files/dirs needed for creating installer')
+shutil.move(freezed_app_path, data_dir_path)
+shutil.move(examples_dir_path, data_dir_path)
 
 # Create installer from copied files
 print()
-print('Create installer from copied files')
+print('***** Create installer from copied files')
 args = [qtifw_binarycreator,
         '--verbose',
         '--offline-only',
@@ -104,7 +106,7 @@ print(result)
 
 # Create DMG from installer
 print()
-print('Create DMG from installer')
+print('***** Create DMG from installer')
 args = ['hdiutil',
         'create',
         '-volname', installer_name,
