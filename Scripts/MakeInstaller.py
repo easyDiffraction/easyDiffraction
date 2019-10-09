@@ -33,7 +33,7 @@ print('installer_dir_path:', installer_dir_path)
 # What to include to installer
 examples_dir_path = os.path.join(project_dir_path, 'Examples')
 freezed_app_path = os.path.join(dist_dir_path, project_name)
-if os_name == 'osx': freezed_app_path += '.app'
+if os_name == 'osx': freezed_app_path += '.app' # '/' is needed for shutil.move to move app bundle as folder rather than its content!
 print('examples_dir_path:', examples_dir_path)
 print('freezed_app_path:', freezed_app_path)
 
@@ -111,15 +111,15 @@ print(result)
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
 print()
 print('***** Move files/dirs needed for creating installer')
-print('data_dir list (before):', os.listdir(data_dir_path))
+#print('data_dir list (before):', os.listdir(data_dir_path))
 shutil.move(examples_dir_path, data_dir_path)
 shutil.move(freezed_app_path, data_dir_path)
-print('data_dir list (after):', os.listdir(data_dir_path))
+#print('data_dir list (after):', os.listdir(data_dir_path))
 
 # Create installer from copied files
 print()
 print('***** Create installer from moved files/dirs')
-print('dist_dir list (before):', os.listdir(dist_dir_path))
+#print('dist_dir list (before):', os.listdir(dist_dir_path))
 args = [qtifw_binarycreator,
         '--verbose',
         '--offline-only',
@@ -128,9 +128,9 @@ args = [qtifw_binarycreator,
         '-t', qtifw_installerbase,
         installer_name
         ]
-#result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
-print('dist_dir list (after):', os.listdir(dist_dir_path))
+#print('dist_dir list (after):', os.listdir(dist_dir_path))
 
 # Create DMG from installer
 if (os_name == 'osx'):
