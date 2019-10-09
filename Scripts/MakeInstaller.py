@@ -4,7 +4,7 @@ import os
 import sys
 import requests
 import subprocess
-import distutils
+import distutils.dir_util
 
 # Start
 print()
