@@ -112,16 +112,6 @@ print('***** Move files/dirs needed for creating installer')
 print('data_dir list (before):', os.listdir(data_dir_path))
 shutil.move(examples_dir_path, data_dir_path)
 shutil.move(freezed_app_path, data_dir_path)
-args = [qtifw_binarycreator,
-        '--verbose',
-        '--offline-only',
-        '-c', config_xml_path,
-        '-p', packages_dir_path,
-        '-t', qtifw_installerbase,
-        installer_name
-        ]
-result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-print(result)
 print('data_dir list (after):', os.listdir(data_dir_path))
 
 # Create installer from copied files
@@ -136,7 +126,7 @@ args = [qtifw_binarycreator,
         '-t', qtifw_installerbase,
         installer_name
         ]
-result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+#result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
 print('dist_dir list (after):', os.listdir(dist_dir_path))
 
@@ -147,7 +137,7 @@ if (os_name == 'osx'):
     installer_dmg_path = os.path.join(dist_dir_path, installer_name) + '.dmg'
     args = ['hdiutil',
             'create',
-            '-volname', installer_name,
+            '-volname', project_name,
             '-srcfolder', installer_app_path,
             '-ov', installer_dmg_path
             ]
