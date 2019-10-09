@@ -75,6 +75,7 @@ qtifw_binarycreator = os.path.join(qtifw_bin_path, 'binarycreator')
 qtifw_installerbase = os.path.join(qtifw_bin_path, 'installerbase')
 print('qtifw_version:', qtifw_version)
 print('qtifw_setup_path:', qtifw_setup_path)
+print('qtifw_setup_exe_path:', qtifw_setup_exe_path[os_name])
 print('qtifw_url:', qtifw_url)
 print('qtifw_binarycreator:', qtifw_binarycreator)
 print('qtifw_installerbase:', qtifw_installerbase)
@@ -84,6 +85,7 @@ print()
 print('***** Download QtInstallerFramework installer')
 qtifw_installer = requests.get(qtifw_url, allow_redirects=True)
 open(qtifw_setup_path, 'wb').write(qtifw_installer.content)
+exit()
 
 # Attach QtInstallerFramework DMG
 if (os_name == 'osx'):
@@ -94,21 +96,21 @@ if (os_name == 'osx'):
     print(result)
 
 # Install QtInstallerFramework from attached DMG
-#print()
-#print('***** Install QtInstallerFramework silently')
-#args = [qtifw_setup_exe_path, '--script', silent_install_script_path]
-#result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-#print(result)
+print()
+print('***** Install QtInstallerFramework silently')
+args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path]
+result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+print(result)
 
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
-#print()
-#print('***** Move files/dirs needed for creating installer')
-#shutil.move(freezed_app_path, data_dir_path)
-#shutil.move(examples_dir_path, data_dir_path)
+print()
+print('***** Move files/dirs needed for creating installer')
+shutil.move(freezed_app_path, data_dir_path)
+shutil.move(examples_dir_path, data_dir_path)
 
 # Create installer from copied files
-#print()
-#print('***** Create installer from copied files')
+print()
+print('***** Create installer from copied files')
 args = [qtifw_binarycreator,
         '--verbose',
         '--offline-only',
@@ -117,20 +119,20 @@ args = [qtifw_binarycreator,
         '-t', qtifw_installerbase,
         installer_name
         ]
-#result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-#print(result)
+result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+print(result)
 
 # Create DMG from installer
-#print()
-#print('***** Create DMG from installer')
+print()
+print('***** Create DMG from installer')
 args = ['hdiutil',
         'create',
         '-volname', installer_name,
         '-srcfolder', installer_app_path,
         '-ov', installer_dmg_path
         ]
-#result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-#print(result)
+result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+print(result)
 
 # End
 print()
