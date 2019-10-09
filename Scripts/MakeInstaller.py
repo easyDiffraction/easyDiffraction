@@ -108,7 +108,6 @@ print()
 print('***** Move files/dirs needed for creating installer')
 shutil.move(freezed_app_path, data_dir_path)
 shutil.move(examples_dir_path, data_dir_path)
-exit()
 
 # Create installer from copied files
 print()
@@ -123,6 +122,7 @@ args = [qtifw_binarycreator,
         ]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
+exit()
 
 # Create DMG from installer
 if (os_name == 'osx'):
