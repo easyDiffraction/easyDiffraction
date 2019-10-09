@@ -78,7 +78,15 @@ Component.prototype.createOperations = function()
 
     if (systemInfo.productType === "windows")
     {
+        // Add desktop shortcut for the app
+        component.addOperation("CreateShortcut",
+          "@TargetDir@/@ProductName@/@ProductName@.exe",
+          "@DesktopDir@/@ProductName@.lnk",
+          "workingDirectory=@TargetDir@/@ProductName@",
+          "iconPath=@TargetDir@/@ProductName@/@ProductName@.exe", "iconId=0",
+          "description=@ProductName@");
         // Add start menu shortcut for the app
+        /*
         component.addOperation("CreateShortcut",
           "@TargetDir@/@ProductName@/@ProductName@.exe",
           "@StartMenuDir@/@ProductName@/@ProductName@.lnk",
@@ -92,13 +100,7 @@ Component.prototype.createOperations = function()
           "workingDirectory=@TargetDir@",
           "iconPath=@TargetDir@/@ProductName@Uninstaller.exe", "iconId=0",
           "description=@ProductName@Uninstaller");
-        // Add desktop shortcut for the app
-        component.addOperation("CreateShortcut",
-          "@TargetDir@/@ProductName@/@ProductName@.exe",
-          "@DesktopDir@/@ProductName@.lnk",
-          "workingDirectory=@TargetDir@/@ProductName@",
-          "iconPath=@TargetDir@/@ProductName@/@ProductName@.exe", "iconId=0",
-          "description=@ProductName@");
+          */
     }
 
     if (installer.value("os") == "x11")
