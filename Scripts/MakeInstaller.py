@@ -72,7 +72,7 @@ qtifw_setup_exe_path = {
     }
 qtifw_bin_path = {
     'osx': '{0}/Qt/QtIFW-{1}/bin'.format(user_home_dir, qtifw_version),
-    'windows': 'C:\Qt\QtIFW-{0}\bin'.format(qtifw_version),
+    'windows': 'C:\\Qt\\QtIFW-{0}\\bin'.format(qtifw_version),
     'linux': '{0}/Qt/QtIFW-{1}/bin'.format(user_home_dir, qtifw_version)
     }
 qtifw_url = 'https://download.qt.io/official_releases/qt-installer-framework/{0}/{1}'.format(qtifw_version, qtifw_setup_name)
