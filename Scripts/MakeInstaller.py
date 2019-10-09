@@ -67,15 +67,17 @@ qtifw_setup_name = '{0}.{1}'.format(qtifw_setup_base[os_name], qtifw_setup_ext[o
 qtifw_setup_path = os.path.join(scripts_dir_path, qtifw_setup_name)
 qtifw_setup_exe_path = {
     'osx': '/Volumes/{0}/{0}.app/Contents/MacOS/{0}'.format(qtifw_setup_base[os_name]),
-    'windows': qtifw_setup_path
+    'windows': qtifw_setup_path,
+    'linux': qtifw_setup_path
     }
 qtifw_bin_path = {
     'osx': '{0}/Qt/QtIFW-{1}/bin'.format(user_home_dir, qtifw_version),
-    'windows': 'C:\Qt\QtIFW-{0}\bin'.format(qtifw_version)
+    'windows': 'C:\Qt\QtIFW-{0}\bin'.format(qtifw_version),
+    'linux': '{0}/Qt/QtIFW-{1}/bin'.format(user_home_dir, qtifw_version)
     }
 qtifw_url = 'https://download.qt.io/official_releases/qt-installer-framework/{0}/{1}'.format(qtifw_version, qtifw_setup_name)
-qtifw_binarycreator = os.path.join(qtifw_bin_path, 'binarycreator')
-qtifw_installerbase = os.path.join(qtifw_bin_path, 'installerbase')
+qtifw_binarycreator = os.path.join(qtifw_bin_path[os_name], 'binarycreator')
+qtifw_installerbase = os.path.join(qtifw_bin_path[os_name], 'installerbase')
 print('qtifw_version:', qtifw_version)
 print('qtifw_setup_path:', qtifw_setup_path)
 print('qtifw_setup_exe_path:', qtifw_setup_exe_path[os_name])
