@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     proxy = Proxy()
 
-    examples_dir = os.path.join(installationPath(), 'Examples')
+    examples_dir = str(QUrl.fromLocalFile(os.path.join(installationPath(), 'Examples')).toString())
 
     qml_gui_path = os.path.join(current_dir, "Gui.qml")
     imports_path = os.path.join(current_dir, "QmlImports")

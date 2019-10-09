@@ -23,19 +23,13 @@ Rectangle {
         width: parent.width
 
         Text {
-            height: parent.height - name.height
+            height: parent.height
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             text: "No Project Created/Opened"
             font.pointSize: Generic.Style.fontPointSize * 3
             font.family: Generic.Style.fontFamily
-            color: "lightgrey"
-        }
-
-        Text {
-            id: name
-            text: settings.value("lastOpenedProjectFolder")  + '\n' + examplesDir
             color: "lightgrey"
         }
 
