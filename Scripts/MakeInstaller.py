@@ -33,7 +33,7 @@ print('installer_dir_path:', installer_dir_path)
 # What to include to installer
 examples_dir_path = os.path.join(project_dir_path, 'Examples')
 freezed_app_path = os.path.join(dist_dir_path, project_name)
-if os_name == 'osx': freezed_app_path += '.app' # '/' is needed for shutil.move to move app bundle as folder rather than its content!
+if os_name == 'osx': freezed_app_path += '.app'
 print('examples_dir_path:', examples_dir_path)
 print('freezed_app_path:', freezed_app_path)
 
