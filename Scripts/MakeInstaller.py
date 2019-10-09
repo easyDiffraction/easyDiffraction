@@ -45,11 +45,13 @@ config_xml_path = os.path.join(installer_dir_path, 'config', 'config.xml')
 packages_dir_path = os.path.join(installer_dir_path, 'packages')
 data_dir_path = os.path.join(packages_dir_path, 'io.github.easydiffraction', 'data')
 installer_name = project_name + 'Installer'
-installer_app_path = os.path.join(installer_dir_path, installer_name) + '.app'
+installer_app_path = os.path.join(dist_dir_path, installer_name) + '.app'
 installer_dmg_path = os.path.join(dist_dir_path, installer_name) + '.dmg'
 print('config_xml_path:', config_xml_path)
 print('packages_dir_path:', packages_dir_path)
 print('data_dir_path:', data_dir_path)
+print('installer_app_path:', installer_app_path)
+print('installer_dmg_path:', installer_dmg_path)
 
 # QtInstallerFramework
 qtifw_version = '3.1.1'
@@ -85,15 +87,14 @@ print()
 print('***** Download QtInstallerFramework installer')
 qtifw_installer = requests.get(qtifw_url, allow_redirects=True)
 open(qtifw_setup_path, 'wb').write(qtifw_installer.content)
-exit()
 
 # Attach QtInstallerFramework DMG
 if (os_name == 'osx'):
     print()
     print('***** Attach QtInstallerFramework DMG')
-    args = ['hdiutil', 'attach', qtifw_setup_path]
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
+    #args = ['hdiutil', 'attach', qtifw_setup_path]
+    #result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    #print(result)
 
 # Install QtInstallerFramework from attached DMG
 print()
@@ -101,12 +102,13 @@ print('***** Install QtInstallerFramework silently')
 args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
+exit()
 
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
 print()
 print('***** Move files/dirs needed for creating installer')
-shutil.move(freezed_app_path, data_dir_path)
-shutil.move(examples_dir_path, data_dir_path)
+#shutil.move(freezed_app_path, data_dir_path)
+#shutil.move(examples_dir_path, data_dir_path)
 
 # Create installer from copied files
 print()
@@ -119,20 +121,21 @@ args = [qtifw_binarycreator,
         '-t', qtifw_installerbase,
         installer_name
         ]
-result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-print(result)
+#result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+#print(result)
 
 # Create DMG from installer
-print()
-print('***** Create DMG from installer')
-args = ['hdiutil',
-        'create',
-        '-volname', installer_name,
-        '-srcfolder', installer_app_path,
-        '-ov', installer_dmg_path
-        ]
-result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-print(result)
+if (os_name == 'osx'):
+    print()
+    print('***** Create DMG from installer')
+    args = ['hdiutil',
+            'create',
+            '-volname', installer_name,
+            '-srcfolder', installer_app_path,
+            '-ov', installer_dmg_path
+            ]
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
 
 # End
 print()
