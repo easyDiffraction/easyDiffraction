@@ -13,8 +13,9 @@ from PyImports.Proxy import Proxy
 current_dir = os.path.dirname(sys.argv[0])
 
 def installationPath():
+    print(sys.platform)
     if sys.platform.startswith('win'):
-        return os.path.realpath(os.path.join(current_dir, '..', '..'))
+        return os.path.realpath(os.path.join(current_dir, '..'))
     elif sys.platform.startswith('darwin'):
         return os.path.realpath(os.path.join(current_dir, '..', '..', '..'))
     return os.path.join(current_dir)
@@ -29,7 +30,7 @@ logging.basicConfig(
     #filemode = 'w'
     )
 logger = logging.getLogger()
-logger.disabled = True
+logger.disabled = True # App crashes on Windows. Permissions?
 
 if __name__ == '__main__':
     QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
@@ -43,6 +44,9 @@ if __name__ == '__main__':
     proxy = Proxy()
 
     examples_dir = os.path.join(installationPath(), 'Examples')
+    print(installationPath())
+    print(examples_dir)
+
     qml_gui_path = os.path.join(current_dir, "Gui.qml")
     imports_path = os.path.join(current_dir, "QmlImports")
 
