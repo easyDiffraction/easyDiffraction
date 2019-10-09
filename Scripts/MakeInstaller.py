@@ -46,8 +46,6 @@ config_xml_path = os.path.join(installer_dir_path, 'config', 'config.xml')
 packages_dir_path = os.path.join(installer_dir_path, 'packages')
 data_dir_path = os.path.join(packages_dir_path, 'io.github.easydiffraction', 'data')
 installer_name = project_name + 'Installer'
-installer_app_path = os.path.join(dist_dir_path, installer_name)
-if os_name == 'osx': installer_app_path += '.app'
 print('config_xml_path:', config_xml_path)
 print('packages_dir_path:', packages_dir_path)
 print('data_dir_path:', data_dir_path)
@@ -136,7 +134,8 @@ print(result)
 if (os_name == 'osx'):
     print()
     print('***** Create DMG from installer')
-    installer_dmg_path = os.path.join(dist_dir_path, installer_name) + '.dmg'
+    installer_app_path = os.path.join(dist_dir_path, installer_name + '.app')
+    installer_dmg_path = os.path.join(dist_dir_path, installer_name + '.dmg')
     args = ['hdiutil',
             'create',
             '-volname', project_name,
