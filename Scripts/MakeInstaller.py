@@ -32,7 +32,7 @@ print('installer_dir_path:', installer_dir_path)
 
 # What to include to installer
 examples_dir_path = os.path.join(project_dir_path, 'Examples')
-freezed_app_path = os.path.join(dist_dir_path, project_name + '.app')
+freezed_app_path = os.path.join(dist_dir_path, project_name + '.app' if os_name == 'osx' else '')
 print('examples_dir_path:', examples_dir_path)
 print('freezed_app_path:', freezed_app_path)
 
@@ -45,13 +45,11 @@ config_xml_path = os.path.join(installer_dir_path, 'config', 'config.xml')
 packages_dir_path = os.path.join(installer_dir_path, 'packages')
 data_dir_path = os.path.join(packages_dir_path, 'io.github.easydiffraction', 'data')
 installer_name = project_name + 'Installer'
-installer_app_path = os.path.join(dist_dir_path, installer_name) + '.app'
-installer_dmg_path = os.path.join(dist_dir_path, installer_name) + '.dmg'
+installer_app_path = os.path.join(dist_dir_path, installer_name) + '.app' if os_name == 'osx' else ''
 print('config_xml_path:', config_xml_path)
 print('packages_dir_path:', packages_dir_path)
 print('data_dir_path:', data_dir_path)
 print('installer_app_path:', installer_app_path)
-print('installer_dmg_path:', installer_dmg_path)
 
 # QtInstallerFramework
 qtifw_version = '3.1.1'
@@ -71,7 +69,10 @@ qtifw_setup_exe_path = {
     'osx': '/Volumes/{0}/{0}.app/Contents/MacOS/{0}'.format(qtifw_setup_base[os_name]),
     'windows': qtifw_setup_path
     }
-qtifw_bin_path = '{0}/Qt/QtIFW-{1}/bin'.format(user_home_dir, qtifw_version)
+qtifw_bin_path = {
+    'osx': '{0}/Qt/QtIFW-{1}/bin'.format(user_home_dir, qtifw_version),
+    'windows': 'C:\Qt\QtIFW-{0}\bin'.format(qtifw_version)
+    }
 qtifw_url = 'https://download.qt.io/official_releases/qt-installer-framework/{0}/{1}'.format(qtifw_version, qtifw_setup_name)
 qtifw_binarycreator = os.path.join(qtifw_bin_path, 'binarycreator')
 qtifw_installerbase = os.path.join(qtifw_bin_path, 'installerbase')
@@ -96,7 +97,7 @@ if (os_name == 'osx'):
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-# Install QtInstallerFramework from attached DMG
+# Install QtInstallerFramework
 print()
 print('***** Install QtInstallerFramework silently')
 args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path]
@@ -127,6 +128,7 @@ print(result)
 if (os_name == 'osx'):
     print()
     print('***** Create DMG from installer')
+    installer_dmg_path = os.path.join(dist_dir_path, installer_name) + '.dmg'
     args = ['hdiutil',
             'create',
             '-volname', installer_name,
