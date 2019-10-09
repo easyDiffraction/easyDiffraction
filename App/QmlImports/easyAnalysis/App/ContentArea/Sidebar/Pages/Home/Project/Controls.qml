@@ -71,7 +71,7 @@ ColumnLayout {
             Dialogs1.FileDialog{
                 id: fileDialog
                 nameFilters: [ "CrysPy files (*.rcif)", "CIF files (*.cif)" ]
-                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                folder: examplesDir//settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     proxy.init(fileUrl)

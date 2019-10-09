@@ -14,7 +14,7 @@ current_dir = os.path.dirname(sys.argv[0])
 
 def installationPath():
     if sys.platform.startswith('win'):
-        return os.path.realpath(os.path.join(current_dir, '..'))
+        return os.path.realpath(os.path.join(current_dir, '..', '..'))
     elif sys.platform.startswith('darwin'):
         return os.path.realpath(os.path.join(current_dir, '..', '..', '..'))
     return os.path.join(current_dir)
