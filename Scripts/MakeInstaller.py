@@ -32,7 +32,8 @@ print('installer_dir_path:', installer_dir_path)
 
 # What to include to installer
 examples_dir_path = os.path.join(project_dir_path, 'Examples')
-freezed_app_path = os.path.join(dist_dir_path, project_name + '.app/' if os_name == 'osx' else '')
+freezed_app_path = os.path.join(dist_dir_path, project_name)
+if os_name == 'osx': freezed_app_path += '.app'
 print('examples_dir_path:', examples_dir_path)
 print('freezed_app_path:', freezed_app_path)
 
@@ -45,7 +46,8 @@ config_xml_path = os.path.join(installer_dir_path, 'config', 'config.xml')
 packages_dir_path = os.path.join(installer_dir_path, 'packages')
 data_dir_path = os.path.join(packages_dir_path, 'io.github.easydiffraction', 'data')
 installer_name = project_name + 'Installer'
-installer_app_path = os.path.join(dist_dir_path, installer_name) + '.app' if os_name == 'osx' else ''
+installer_app_path = os.path.join(dist_dir_path, installer_name)
+if os_name == 'osx': installer_app_path += '.app'
 print('config_xml_path:', config_xml_path)
 print('packages_dir_path:', packages_dir_path)
 print('data_dir_path:', data_dir_path)
