@@ -82,7 +82,7 @@ Component.prototype.createOperations = function()
         component.addOperation("CreateShortcut",
           "@TargetDir@/@ProductName@/@ProductName@.exe",
           "@DesktopDir@/@ProductName@.lnk",
-          "workingDirectory=@TargetDir@/@ProductName@",
+          "workingDirectory=@TargetDir@",
           "iconPath=@TargetDir@/@ProductName@/@ProductName@.exe", "iconId=0",
           "description=@ProductName@");
         // Add start menu shortcut for the app

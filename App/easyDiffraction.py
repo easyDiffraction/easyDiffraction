@@ -25,11 +25,11 @@ def logFilePath(log_name):
 logging.basicConfig(
     format = "%(asctime)-15s [%(levelname)s] %(filename)s %(funcName)s [%(lineno)d]: %(message)s",
     level = logging.INFO,
-    filename = logFilePath('easyDiffraction.log'),
-    filemode = 'w'
+    #filename = logFilePath('easyDiffraction.log'),
+    #filemode = 'w'
     )
 logger = logging.getLogger()
-#logger.disabled = True
+logger.disabled = True
 
 if __name__ == '__main__':
     QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
@@ -42,13 +42,13 @@ if __name__ == '__main__':
 
     proxy = Proxy()
 
-    examples_dir = os.path.join(installationPath(), 'Examples')
+#    examples_dir = os.path.join(installationPath(), 'Examples')
     qml_gui_path = os.path.join(current_dir, "Gui.qml")
     imports_path = os.path.join(current_dir, "QmlImports")
 
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("proxy", proxy)
-    engine.rootContext().setContextProperty("examplesDir", examples_dir)
+#    engine.rootContext().setContextProperty("examplesDir", examples_dir)
     engine.addImportPath(imports_path)
     engine.load(qml_gui_path)
     #engine.addImportPath(":/QmlImports")
