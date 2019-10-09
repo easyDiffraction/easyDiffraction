@@ -95,7 +95,6 @@ if (os_name == 'osx'):
     args = ['hdiutil', 'attach', qtifw_setup_path]
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
-exit()
 
 # Install QtInstallerFramework from attached DMG
 print()
@@ -103,12 +102,13 @@ print('***** Install QtInstallerFramework silently')
 args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
+exit()
 
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
 print()
 print('***** Move files/dirs needed for creating installer')
-#shutil.move(freezed_app_path, data_dir_path)
-#shutil.move(examples_dir_path, data_dir_path)
+shutil.move(freezed_app_path, data_dir_path)
+shutil.move(examples_dir_path, data_dir_path)
 
 # Create installer from copied files
 print()
@@ -121,8 +121,8 @@ args = [qtifw_binarycreator,
         '-t', qtifw_installerbase,
         installer_name
         ]
-#result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-#print(result)
+result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+print(result)
 
 # Create DMG from installer
 if (os_name == 'osx'):
