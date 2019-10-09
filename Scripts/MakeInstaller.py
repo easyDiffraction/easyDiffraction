@@ -49,7 +49,6 @@ installer_name = project_name + 'Installer'
 print('config_xml_path:', config_xml_path)
 print('packages_dir_path:', packages_dir_path)
 print('data_dir_path:', data_dir_path)
-print('installer_app_path:', installer_app_path)
 
 # QtInstallerFramework
 qtifw_version = '3.1.1'

@@ -84,8 +84,6 @@ after_success:
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.exe; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then zip -r $TRAVIS_N easyDiffractionInstaller; fi
   - cp $TRAVIS_N ../
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then dir; fi
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; cd ..; tree /f /a; fi
 
 #cache:
 #  directories:
