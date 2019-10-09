@@ -80,25 +80,25 @@ Component.prototype.createOperations = function()
     {
         // Add start menu shortcut for the app
         component.addOperation("CreateShortcut",
-        "@TargetDir@/@ProductName@/@ProductName@.exe",
-        "@StartMenuDir@/@ProductName@/@ProductName@.lnk",
-        "workingDirectory=@TargetDir@/@ProductName@",
-        "iconPath=@TargetDir@/@ProductName@/@ProductName@.exe", "iconId=0",
-        "description=@ProductName@");
+          "@TargetDir@/@ProductName@/@ProductName@.exe",
+          "@StartMenuDir@/@ProductName@/@ProductName@.lnk",
+          "workingDirectory=@TargetDir@/@ProductName@",
+          "iconPath=@TargetDir@/@ProductName@/@ProductName@.exe", "iconId=0",
+          "description=@ProductName@");
         // Add start menu shortcut for the app uninstaller
         component.addOperation("CreateShortcut",
-        "@TargetDir@/@ProductName@/@ProductName@Uninstaller.exe",
-        "@StartMenuDir@/@ProductName@/@ProductName@Uninstaller.lnk",
-        "workingDirectory=@TargetDir@",
-        "iconPath=@TargetDir@/@ProductName@Uninstaller.exe", "iconId=0",
-        "description=@ProductName@Uninstaller");
+          "@TargetDir@/@ProductName@Uninstaller.exe",
+          "@StartMenuDir@/@ProductName@/@ProductName@Uninstaller.lnk",
+          "workingDirectory=@TargetDir@",
+          "iconPath=@TargetDir@/@ProductName@Uninstaller.exe", "iconId=0",
+          "description=@ProductName@Uninstaller");
         // Add desktop shortcut for the app
         component.addOperation("CreateShortcut",
-        "@TargetDir@/@ProductName@/@ProductName@.exe",
-        "@DesktopDir@/@ProductName@.lnk",
-        "workingDirectory=@TargetDir@/@ProductName@",
-        "iconPath=@TargetDir@/@ProductName@/@ProductName@.exe", "iconId=0",
-        "description=@ProductName@");
+          "@TargetDir@/@ProductName@/@ProductName@.exe",
+          "@DesktopDir@/@ProductName@.lnk",
+          "workingDirectory=@TargetDir@/@ProductName@",
+          "iconPath=@TargetDir@/@ProductName@/@ProductName@.exe", "iconId=0",
+          "description=@ProductName@");
     }
 
     if (installer.value("os") == "x11")
