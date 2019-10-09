@@ -11,6 +11,10 @@ print()
 print('***** Variables')
 print()
 
+# Os
+os_name = sys.argv[1] if len(sys.argv) > 1 else 'osx'
+print('os_name:', os_name)
+
 # Project
 project_name = 'easyDiffraction'
 print('project_name:', project_name)
