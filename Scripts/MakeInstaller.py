@@ -109,12 +109,9 @@ print(result)
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
 print()
 print('***** Move files/dirs needed for creating installer')
+print('data_dir list (before):', os.listdir(data_dir_path))
 shutil.move(examples_dir_path, data_dir_path)
 shutil.move(freezed_app_path, data_dir_path)
-
-# Create installer from copied files
-print()
-print('***** Create installer from moved files/dirs')
 args = [qtifw_binarycreator,
         '--verbose',
         '--offline-only',
@@ -125,6 +122,23 @@ args = [qtifw_binarycreator,
         ]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
+print('data_dir list (after):', os.listdir(data_dir_path))
+
+# Create installer from copied files
+print()
+print('***** Create installer from moved files/dirs')
+print('dist_dir list (before):', os.listdir(dist_dir_path))
+args = [qtifw_binarycreator,
+        '--verbose',
+        '--offline-only',
+        '-c', config_xml_path,
+        '-p', packages_dir_path,
+        '-t', qtifw_installerbase,
+        installer_name
+        ]
+result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+print(result)
+print('dist_dir list (after):', os.listdir(dist_dir_path))
 
 # Create DMG from installer
 if (os_name == 'osx'):
