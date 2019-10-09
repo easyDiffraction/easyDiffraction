@@ -32,7 +32,7 @@ print('installer_dir_path:', installer_dir_path)
 
 # What to include to installer
 examples_dir_path = os.path.join(project_dir_path, 'Examples')
-freezed_app_path = os.path.join(dist_dir_path, project_name + '.app' if os_name == 'osx' else '')
+freezed_app_path = os.path.join(dist_dir_path, project_name + '.app/' if os_name == 'osx' else '')
 print('examples_dir_path:', examples_dir_path)
 print('freezed_app_path:', freezed_app_path)
 
@@ -109,8 +109,8 @@ print(result)
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
 print()
 print('***** Move files/dirs needed for creating installer')
-shutil.move(freezed_app_path, data_dir_path)
 shutil.move(examples_dir_path, data_dir_path)
+shutil.move(freezed_app_path, data_dir_path)
 
 # Create installer from copied files
 print()
