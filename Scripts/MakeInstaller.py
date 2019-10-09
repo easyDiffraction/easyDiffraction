@@ -122,7 +122,6 @@ args = [qtifw_binarycreator,
         ]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
-exit()
 
 # Create DMG from installer
 if (os_name == 'osx'):
