@@ -48,31 +48,23 @@ ColumnLayout {
             // Table
             GenericAppElements.PhasesTableView {
                 Layout.fillWidth: true
+                GenericAppElements.GuideWindow {
+                    message: "Here you can see labels of the structural phases."
+                    position: "left"
+                    guideCurrentIndex: 0
+                    toolbarCurrentIndex: Generic.Variables.SampleModelIndex
+                    guidesCount: Generic.Variables.SampleModelGuidesCount
+                }
             }
 
             // Buttons
             GenericAppElements.GridLayout {
                 columns: 2
 
-                GenericAppContentAreaButtons.Add { id: addButton; enabled: false; text: "Add new phase manually"; }
+                GenericAppContentAreaButtons.Add { enabled: false; text: "Add new phase manually" }
                 GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all phases" }
-                GenericAppContentAreaButtons.Import { id: importButton; enabled: false; text: "Import new phase from CIF" }
+                GenericAppContentAreaButtons.Import { enabled: false; text: "Import new phase from CIF" }
                 GenericAppContentAreaButtons.Export { enabled: false; text: "Export selected phase to CIF" }
-
-                GenericAppElements.GuideWindow {
-                    id: guidWindow
-                    message: "Click here to add or import a new proxy."
-                    toY: (addButton.y + addButton.height + importButton.y) / 2
-
-                    visible: Generic.Variables.showGuide && Generic.Variables.toolbarCurrentIndex === Generic.Variables.SampleModelIndex ? true : false
-
-                    GenericAppContentAreaButtons.Add { id: addButtonClone }
-                    GenericAppContentAreaButtons.Import { id: importButtonClone }
-                    Component.onCompleted: {
-                        GenericLogic.Copy.copyButton(addButton, addButtonClone)
-                        GenericLogic.Copy.copyButton(importButton, importButtonClone)
-                    }
-                }
             }
         }
     }
@@ -109,6 +101,13 @@ ColumnLayout {
                     model: Specific.Variables.projectOpened ? proxy.cellParameters : null
                 }
             }
+        }
+        GenericAppElements.GuideWindow {
+            message: "The sidebar groups contain details related to the sample model.\n\nClick on the group name to unfold the group."
+            position: "left"
+            guideCurrentIndex: 3
+            toolbarCurrentIndex: Generic.Variables.SampleModelIndex
+            guidesCount: Generic.Variables.SampleModelGuidesCount
         }
     }
 
@@ -177,6 +176,13 @@ ColumnLayout {
                 onClicked: {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
                 }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to go to the previous step: Experimental data.\n\nAlternatively, you can click on the 'Experimental data' button in toolbar."
+                    position: "top"
+                    guideCurrentIndex: 4
+                    toolbarCurrentIndex: Generic.Variables.SampleModelIndex
+                    guidesCount: Generic.Variables.SampleModelGuidesCount
+                }
             }
             GenericAppContentAreaButtons.GoNext {
                 text: "Analysis"
@@ -184,6 +190,13 @@ ColumnLayout {
                 onClicked: {
                     Generic.Variables.samplePageFinished = true
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
+                }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to go to the next step: Structure refinement."
+                    position: "top"
+                    guideCurrentIndex: 5
+                    toolbarCurrentIndex: Generic.Variables.SampleModelIndex
+                    guidesCount: Generic.Variables.SampleModelGuidesCount
                 }
             }
 

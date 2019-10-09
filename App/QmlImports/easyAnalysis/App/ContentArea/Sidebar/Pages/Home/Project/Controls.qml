@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Layouts 1.12
-import QtQuick.Dialogs 1.3
+import QtQuick.Dialogs 1.3 as Dialogs1
 import Qt.labs.settings 1.1
 import Qt.labs.platform 1.1 as QtLabsPlatform
 import easyAnalysis 1.0 as Generic
@@ -24,20 +24,54 @@ ColumnLayout {
             columns: 2
 
             // Buttons
-            GenericAppContentAreaButtons.Create { id: createButton; enabled: false; text: qsTr("Create a new project") }
-            GenericAppContentAreaButtons.Open { text: qsTr("Open another project"); enabled: !proxy.refinementRunning; onClicked: fileDialog.open() }
-            GenericAppContentAreaButtons.Clone { id: cloneButton; enabled: false; text: qsTr("Clone an existing project") }
-            GenericAppContentAreaButtons.Save { enabled: false; text: qsTr("Save project as...") }
+            GenericAppContentAreaButtons.Create {
+                enabled: false
+                text: qsTr("Create a new project")
+
+                GenericAppElements.GuideWindow {
+                    message: "Disables buttons are not implemented yet."
+                    position: "left"
+                    guideCurrentIndex: 2
+                    toolbarCurrentIndex: Generic.Variables.HomeIndex
+                    guidesCount: Generic.Variables.HomeGuidesCount
+                }
+            }
+
+            GenericAppContentAreaButtons.Open {
+                id: openButton
+                text: qsTr("Open another project")
+                enabled: !proxy.refinementRunning
+
+                onClicked: fileDialog.open()
+
+                GenericAppElements.GuideWindow {
+                    message: "Click here to open existing project."
+                    position: "left"
+                    guideCurrentIndex: 0
+                    toolbarCurrentIndex: Generic.Variables.HomeIndex
+                    guidesCount: Generic.Variables.HomeGuidesCount
+                }
+            }
+
+            GenericAppContentAreaButtons.Clone {
+                enabled: false
+                text: qsTr("Clone an existing project")
+            }
+
+            GenericAppContentAreaButtons.Save {
+                enabled: false
+                text: qsTr("Save project as...")
+            }
 
             // Persistent settings
             Settings { id: settings }
             //settings.setValue("appWindowWidth", window.width)
 
             // Open project dialog
-            FileDialog{
+            Dialogs1.FileDialog{
                 id: fileDialog
-                nameFilters: [ "CtysPy files (*.rcif)", "CIF files (*.cif)" ]
-                folder: settings.value("lastOpenedProjectFolder", QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation))
+                nameFilters: [ "CrysPy files (*.rcif)", "CIF files (*.cif)" ]
+                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     proxy.init(fileUrl)
@@ -48,22 +82,6 @@ ColumnLayout {
                     Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
-                }
-            }
-
-            // Guide window
-            GenericAppElements.GuideWindow {
-                id: guidWindow
-                message: "Click here to create a new project or clone an existing one."
-                toY: (createButton.y + createButton.height + cloneButton.y) / 2
-
-                visible: Generic.Variables.showGuide && Generic.Variables.toolbarCurrentIndex === Generic.Variables.HomeIndex ? true : false
-
-                GenericAppContentAreaButtons.Import { id: createButtonClone }
-                GenericAppContentAreaButtons.Cloud { id: cloneButtonClone }
-                Component.onCompleted: {
-                    GenericLogic.Copy.copyButton(createButton, createButtonClone)
-                    GenericLogic.Copy.copyButton(cloneButton, cloneButtonClone)
                 }
             }
         }
@@ -94,6 +112,14 @@ ColumnLayout {
                 Controls1.TableViewColumn { title:"Creation date";  role:"cdate";   resizable: false }
                 Controls1.TableViewColumn { role:"remove";          title:"Remove"; resizable: false }
             }
+        }
+
+        GenericAppElements.GuideWindow {
+            message: "The sidebar groups can be folded and unfolded.\n\nClick on the group name to unfold the group.\n\nDisabled groups are not implemented yet."
+            position: "left"
+            guideCurrentIndex: 3
+            toolbarCurrentIndex: Generic.Variables.HomeIndex
+            guidesCount: Generic.Variables.HomeGuidesCount
         }
     }
 
@@ -141,6 +167,13 @@ ColumnLayout {
                 onCheckStateChanged: Generic.Variables.showGuide = checked
             }
         }
+        GenericAppElements.GuideWindow {
+            message: "Application user guides and animated intro\ncan be disabled or enabled here."
+            position: "left"
+            guideCurrentIndex: 4
+            toolbarCurrentIndex: Generic.Variables.HomeIndex
+            guidesCount: Generic.Variables.HomeGuidesCount
+        }
     }
 
     // Spacer
@@ -158,10 +191,16 @@ ColumnLayout {
                 ToolTip.text: qsTr("Go to the next step: Experimental data")
                 enabled: Specific.Variables.projectOpened
                 highlighted: Specific.Variables.projectOpened
-
                 onClicked: {
                     Generic.Variables.homePageFinished = true
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+                }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to go to the next step: Experimental data."
+                    position: "top"
+                    guideCurrentIndex: 5
+                    toolbarCurrentIndex: Generic.Variables.HomeIndex
+                    guidesCount: Generic.Variables.HomeGuidesCount
                 }
             }
             GenericAppContentAreaButtons.SaveState {

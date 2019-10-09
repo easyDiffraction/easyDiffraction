@@ -7,16 +7,15 @@ matrix:
     - name: "Python 3.7.1 on Ubuntu Linux 16.04 (Xenial)"
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       dist: xenial
+      env: BADGE=linux
     - name: "Python 3.7.0 on macOS 10.13 (High Sierra)"
       os: osx
       osx_image: xcode10.1 # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
-        #- brew install python3
         - python3 -m venv "$(dirname "$0")"/.python-venv # create virtual environment
         - source "$(dirname "$0")"/.python-venv/bin/activate
-        #- brew update
-        #- brew upgrade python
+      env: BADGE=osx
     - name: "Python 3.7.4 on Windows 10.0"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
@@ -30,6 +29,7 @@ matrix:
         - pip install pypiwin32
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
+        - BADGE=win
 
 ## We can secure environmental vars
 env:
@@ -67,7 +67,7 @@ before_script:
 # Make the app
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy;cryspy" --add-data "App;." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.ico; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.icns; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onefile --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:."; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:."; fi
 
 # Temporarily remove unit testing
 #script:
@@ -79,14 +79,10 @@ after_success:
 #  - coveralls
   - cd dist
   - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then rm -rf easyDiffraction; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then mkdir easyDiffraction; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then mv easyDiffraction.app easyDiffraction; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then mv ../Examples easyDiffraction; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then hdiutil create -volname easyDiffraction -srcfolder easyDiffraction -ov easyDiffraction.dmg; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffraction.dmg; fi # Create DMG for macOS
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then zip -r $TRAVIS_N easyDiffraction/; fi
+  - python ../Scripts/MakeInstaller.py "$TRAVIS_OS_NAME"
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.dmg; fi
+  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.exe; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then zip -r $TRAVIS_N easyDiffractionInstaller; fi
   - cp $TRAVIS_N ../
 
 #cache:
@@ -144,7 +140,7 @@ after_deploy:
         git clone https://github.com/easyDiffraction/easyDiffraction.github.io.git
         cd easyDiffraction.github.io
         git remote set-url origin https://$GH_TOKEN@github.com/easyDiffraction/easyDiffraction.github.io.git
-        cat index_template.html | awk '{gsub(/RELEASE_V/,"'$TRAVIS_TAG'")}1' | awk '{gsub(/RELEASE_N/,"'$RELEASE_NUMBER'")}1' | awk '{gsub(/RELEASE_D/,"'$(date +'%d-%m-%Y')'")}1' > index.html
+        cat index_template.html | awk '{gsub(/RELEASE_V/,"'$TRAVIS_TAG'")}1' | awk '{gsub(/RELEASE_N/,"'$RELEASE_NUMBER'")}1' | awk '{gsub(/RELEASE_D/,"'$(date +'%d %b %Y')'")}1' > index.html
         git add index.html
         git commit -m 'Bumped release links [ci skip]'
         git push origin HEAD:master

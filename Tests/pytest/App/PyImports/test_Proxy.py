@@ -17,6 +17,7 @@ from PyImports.Models.AtomAdpsModel import *
 from PyImports.Models.AtomMspsModel import *
 from PyImports.Models.FitablesModel import *
 from PyImports.Refinement import *
+import PyImports.Helpers as Helpers
 
 # tested module
 from Proxy import *
@@ -203,25 +204,30 @@ def test_store_report():
 
     assert proxy.report_html == report
 
-@pytest.fixture
-def open():
-    """
-    fixture for mocking system open call
-    """
-    f = open(os.devnull,"w")
-    return f
-
-def no_test_save_report(open):
+def test_save_report(mocker, tmp_path):
     proxy = Proxy()
     proxy.init(TEST_FILE)
+    mocker.patch.object(Helpers, 'open_url', autospec=True)
 
+    # no html
+    proxy = Proxy()
+    proxy.init(TEST_FILE)
+    proxy.store_report("")
+
+    proxy.save_report()
+    assert Helpers.open_url.called == False
+
+    # good html
     report = "<h1><blink>I am a duck</blink></h1>"
     html = proxy.store_report(report)
     full_filename = "test"
 
-    with open(full_filename, 'w', encoding='utf-8') as report_file:
-        open.assert_called_once_with("poop")
+    # temp dir instead of project dir
+    tmp_dir = os.path.join(tmp_path,"local_dir")
+    mocker.patch.object(proxy, 'get_project_dir_absolute_path', return_value=tmp_path, autospec=True)
 
+    proxy.save_report()
+    assert Helpers.open_url.called == True
 
 
     

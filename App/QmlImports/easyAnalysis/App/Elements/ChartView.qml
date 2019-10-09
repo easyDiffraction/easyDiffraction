@@ -71,6 +71,7 @@ ColumnLayout {
                 backgroundColor: "transparent"
                 titleFont: commonFont
 
+
                 // X-axis for measured and calculated data
 
                 ValueAxis {
@@ -244,6 +245,7 @@ ColumnLayout {
                     adjustLeftAxesAnchor()
                 }
             }
+
         }
 
         /////////////////////////////

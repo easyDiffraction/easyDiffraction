@@ -23,32 +23,24 @@ ColumnLayout {
             // Table
             GenericAppElements.ExperimentsTableView {
                 Layout.fillWidth: true
+
+                GenericAppElements.GuideWindow {
+                    message: "Here you can see labels of the experimental data."
+                    position: "left"
+                    guideCurrentIndex: 0
+                    toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
+                    guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                }
             }
 
             // Buttons
             GenericAppElements.GridLayout {
                 columns: 2
 
-                GenericAppContentAreaButtons.Import { id: importButton; enabled: false; text: "Import data from local drive"; }
+                GenericAppContentAreaButtons.Import { enabled: false; text: "Import data from local drive"; }
                 GenericAppContentAreaButtons.Link { enabled: false; text: "Link to data on local drive"; }
                 GenericAppContentAreaButtons.Cloud { enabled: false; id: cloudButton; text: "Import data from SciCat" }
                 GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all data" }
-
-                GenericAppElements.GuideWindow {
-                    id: guidWindow
-                    //message: "Click here to add or import new data.\n\nSkip this step, if only simulations are needed."
-                    message: "Click here to add or import new data."
-                    toY: (importButton.y + importButton.height + cloudButton.y) / 2
-
-                    visible: Generic.Variables.showGuide && Generic.Variables.toolbarCurrentIndex === Generic.Variables.ExperimentalDataIndex ? true : false
-
-                    GenericAppContentAreaButtons.Import { id: importButtonClone }
-                    GenericAppContentAreaButtons.Cloud { id: cloudButtonClone }
-                    Component.onCompleted: {
-                        GenericLogic.Copy.copyButton(importButton, importButtonClone)
-                        GenericLogic.Copy.copyButton(cloudButton, cloudButtonClone)
-                    }
-                }
             }
         }
     }
@@ -81,6 +73,14 @@ ColumnLayout {
                 GenericAppElements.ComboBox { currentIndex: 0; model: ["Constant wavelength", "Time-of-flight"] }
                 GenericAppElements.ComboBox { currentIndex: 0; model: ["Powder", "Single crystal"] }
             }
+        }
+
+        GenericAppElements.GuideWindow {
+            message: "The sidebar groups contain details related to the experiment.\n\nClick on the group name to unfold the group."
+            position: "left"
+            guideCurrentIndex: 4
+            toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
+            guidesCount: Generic.Variables.ExperimentalDataGuidesCount
         }
     }
 
@@ -160,6 +160,13 @@ ColumnLayout {
                 onClicked: {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
                 }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to go to the previous step: Home.\n\nAlternatively, you can click on the 'Home' button in toolbar."
+                    position: "top"
+                    guideCurrentIndex: 5
+                    toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
+                    guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                }
             }
             GenericAppContentAreaButtons.GoNext {
                 text: "Sample Model"
@@ -167,6 +174,13 @@ ColumnLayout {
                 onClicked: {
                     Generic.Variables.dataPageFinished = true
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
+                }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to go to the next step: Sample model."
+                    position: "top"
+                    guideCurrentIndex: 6
+                    toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
+                    guidesCount: Generic.Variables.ExperimentalDataGuidesCount
                 }
             }
             GenericAppContentAreaButtons.SaveState {

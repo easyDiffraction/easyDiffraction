@@ -6,7 +6,7 @@ import easyAnalysis.App.ContentArea.Sidebar.Pages.SampleModel.TextView 1.0 as Ge
 import easyAnalysis.App.ContentArea.Sidebar.Pages.SampleModel.StructureView 1.0 as ConstrainedSidebarContent
 
 GenericAppElements.SidebarStack {
-    controlsContent: ConstrainedSidebarContent.Controls { anchors.fill: parent }
+    controlsContent: GenericSidebarContent.Controls { anchors.fill: parent }
     settingsContent: GenericSidebarContent.Settings { anchors.fill: parent }
 }
 

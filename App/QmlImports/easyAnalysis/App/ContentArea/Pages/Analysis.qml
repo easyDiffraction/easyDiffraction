@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
+import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea.MainArea 1.0 as GenericMainArea
 import easyAnalysis.App.ContentArea.MainArea.Pages.Analysis 1.0 as GenericMainAreaAnalysis
@@ -15,7 +16,17 @@ GenericAppElements.ContentAreaStack {
         //GenericMainArea.TabButton { text: qsTr("Simulation"); tabbarWidth: mainArea.width } // fix width
         GenericMainArea.TabButton { text: qsTr("Fitting"); tabbarWidth: mainArea.width } // fix width
         //GenericMainArea.TabButton { text: qsTr("Constraints"); tabbarWidth: mainArea.width } // fix width
-        GenericMainArea.TabButton { text: qsTr("Text View"); tabbarWidth: mainArea.width } // fix width
+        GenericMainArea.TabButton {
+            text: qsTr("Text View")
+            tabbarWidth: mainArea.width
+            GenericAppElements.GuideWindow {
+                message: "This tab button allows to see the\ncalcualted data as plain text."
+                position: "bottom"
+                guideCurrentIndex: 2
+                toolbarCurrentIndex: Generic.Variables.AnalysisIndex
+                guidesCount: Generic.Variables.AnalysisGuidesCount
+            }
+        }
     }
 
     mainAreaContent: StackLayout {

@@ -6,4 +6,12 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 GenericAppElements.ChartView {
     showObs: true
     showCalc: false
+
+    GenericAppElements.GuideWindow {
+        message: "Measured data points are plotted in the main area."
+        position: "right"
+        guideCurrentIndex: 1
+        toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
+        guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+    }
 }

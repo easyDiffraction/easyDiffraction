@@ -1,0 +1,13 @@
+<Package>
+  <DisplayName>easyDiffraction</DisplayName>
+  <Version>0.3.4</Version>
+  <ReleaseDate>2019-10-09</ReleaseDate>
+  <Description>A scientific software for modelling and analysis of the neutron diffraction data</Description>
+  <Script>installscript.js</Script>
+  <Licenses>
+    <License name="GNU General Public License Version 3" file="LICENSE" />
+  </Licenses>
+  <Default>true</Default>
+  <Essential>true</Essential>
+  <ForcedInstallation>true</ForcedInstallation>
+</Package>
