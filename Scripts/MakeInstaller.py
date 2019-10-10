@@ -106,29 +106,18 @@ if (os_name == 'linux'):
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
+# export QT_QPA_PLATFORM=minimal
+if (os_name == 'linux'):
+    print()
+    print('***** export QT_QPA_PLATFORM=minimal')
+    os.environ["QT_QPA_PLATFORM"] = "minimal"
+
 # Install QtInstallerFramework
 print()
 print('***** Install QtInstallerFramework silently')
 args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path, '--no-force-installations']
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
-
-if (os_name == 'linux'):
-    print()
-    print('***** Paths')
-    print("-----/home/travis")
-    args = ['ls', '/home/travis']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    print("-----/usr/local/bin")
-    args = ['ls', '/usr/local/bin']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    print("-----/opt")
-    args = ['ls', '/opt']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-
 
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
 print()
