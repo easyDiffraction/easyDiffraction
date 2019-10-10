@@ -1,5 +1,5 @@
-_name 'Fe3O4'
+_name Fe3O4
 _keywords 'neutron diffraction, powder, 1d'
-_phases_file 'phases.rcif'
-_instruments_file 'instruments.rcif'
-_measurements_file 'measurements.rcif'
+_phases_file phases.rcif
+_instruments_file instruments.rcif
+_measurements_file measurements.rcif
