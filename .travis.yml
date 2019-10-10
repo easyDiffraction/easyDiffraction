@@ -80,7 +80,7 @@ after_success:
   - coveralls
   - cd dist
   - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then export QT_QPA_PLATFORM=minimal; fi
+  #- if [ "$TRAVIS_OS_NAME" == "linux" ]; then export QT_QPA_PLATFORM=minimal; fi
   - python ../Scripts/MakeInstaller.py "$TRAVIS_OS_NAME"
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.dmg; fi
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.exe; fi
