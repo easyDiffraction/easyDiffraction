@@ -807,11 +807,12 @@ class CryspyCalculator(QObject):
         """Get a value in a nested object in root by key sequence."""
         self.getByPath(keys[:-1])[keys[-1]] = value
         self.setCryspyObjFromProjectDict() # updates value in cryspy obj (actually all values, which is too expensive...)
-        if not isinstance(value, bool):
-            #self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
-            self.setProjectDictFromCryspyObj()
-            #print(self._project_dict["info"])
-            self.projectDictChanged.emit()
+        logging.info(value)
+        # Temporarly disable this check below and update model even if just 'fit' checkbox is changed.
+        #if not isinstance(value, bool):
+        #self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
+        self.setProjectDictFromCryspyObj()
+        self.projectDictChanged.emit()
 
     def phasesCount(self):
         """Returns number of phases in the project."""
