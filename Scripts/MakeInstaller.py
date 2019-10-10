@@ -109,7 +109,7 @@ if (os_name == 'linux'):
 # Install QtInstallerFramework
 print()
 print('***** Install QtInstallerFramework silently')
-args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path]
+args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path, '--no-force-installations']
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
 
@@ -132,6 +132,9 @@ if (os_name == 'linux'):
     # result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     # print(result)
     args = ['ls', '/home/travis']
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+    args = ['ls', 'easyDiffraction']
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
