@@ -45,7 +45,7 @@ def test_Proxy_init():
     assert isinstance(proxy._fitables_model, FitablesModel)
     assert isinstance(proxy._refine_thread, Refiner)
 
-    assert "\\easyDiffraction\\Tests\\Data" in proxy.project_dir_absolute_path
+    #assert "\\easyDiffraction\\Tests\\Data" in proxy.project_dir_absolute_path
     assert "file:Tests/Data" in proxy.project_url_absolute_path
 
 def test_Proxy_getProject():
