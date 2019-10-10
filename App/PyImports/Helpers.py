@@ -1,6 +1,7 @@
 import os
 import operator
 import webbrowser
+import logging
 from functools import reduce
 
 def nested_get(dictionary, keys_list):
@@ -36,5 +37,5 @@ def open_url(url=""):
     try:
         webbrowser.open('file://' + os.path.realpath(url))
     except Exception as ex:
-        print("Report viewing failed: "+ str(ex))
+        logging.info("Report viewing failed: "+ str(ex))
 
