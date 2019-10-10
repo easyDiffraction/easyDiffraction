@@ -71,7 +71,7 @@ before_script:
 
 script:
   - pytest --version
-  - if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:$PYTHONPATH; pytest --cov=App Tests; fi
+  - if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
   - if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
 
 after_success:
