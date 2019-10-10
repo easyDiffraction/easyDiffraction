@@ -98,6 +98,14 @@ if (os_name == 'osx'):
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
+# Fix permissions
+if (os_name == 'linux'):
+    print()
+    print('***** Fix permissions')
+    args = ['chmod', 'a+x', qtifw_setup_exe_path[os_name]]
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
 # Install QtInstallerFramework
 print()
 print('***** Install QtInstallerFramework silently')
