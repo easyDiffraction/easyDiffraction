@@ -6,6 +6,7 @@ from functools import reduce
 from datetime import datetime
 import numpy as np
 import cryspy
+import pycifstar
 
 from PySide2.QtCore import QObject, Signal
 
@@ -22,10 +23,32 @@ class CryspyCalculator(QObject):
         self._calculations_dict = {}
         # cryspy
         self._main_rcif_path = main_rcif_path
-        self._cryspy_obj = cryspy.rhochi_read_file(self._main_rcif_path)
+        self._main_rcif = None
+        self._cryspy_obj = self._createCryspyObj() #cryspy.rhochi_read_file(self._main_rcif_path)
         # project dict
         self._project_dict = {}
         self.setProjectDictFromCryspyObj()
+
+    def _createCryspyObj(self):
+        self._main_rcif = pycifstar.read_star_file(self._main_rcif_path)
+
+        phases_rcif_path = self._main_rcif_path.replace("main.rcif", self._main_rcif["_phases_file"].value)
+        instruments_rcif_path = self._main_rcif_path.replace("main.rcif", self._main_rcif["_instruments_file"].value)
+        measurements_rcif_path = self._main_rcif_path.replace("main.rcif", self._main_rcif["_measurements_file"].value)
+
+        with open(phases_rcif_path, 'r') as f:
+            phases_and_instruments_rcif = f.read()
+        with open(instruments_rcif_path, 'r') as f:
+            phases_and_instruments_rcif += f.read()
+        with open(measurements_rcif_path, 'r') as f:
+            experiments_rcif = f.read()
+
+        rho_chi = cryspy.RhoChi()
+        rho_chi.from_cif(phases_and_instruments_rcif)
+        for experiment in rho_chi.experiments:
+            experiment.from_cif(experiments_rcif)
+
+        return rho_chi
 
     def setAppDict(self):
         """Set application state"""
@@ -46,8 +69,8 @@ class CryspyCalculator(QObject):
     def setInfoDict(self):
         """Set additional project info"""
         self._info_dict = {
-            'name': '',
-            'keywords': ['neutron diffraction', 'powder', '1d'],
+            'name': self._main_rcif["_name"].value,
+            'keywords': self._main_rcif["_keywords"].value.split(', '),
             'phase_ids': [],
             'experiment_ids': [],
             'created_datetime': '',
@@ -658,7 +681,6 @@ class CryspyCalculator(QObject):
         self.setPhasesDictFromCryspyObj()
         self.setExperimentsDictFromCryspyObj()
         self.setCalculationsDictFromCryspyObj()
-        self._info_dict['name'] = list(self._phases_dict.keys())[0]
         self._info_dict['phase_ids'] = list(self._phases_dict.keys())
         self._info_dict['experiment_ids'] = list(self._experiments_dict.keys())
         self._info_dict['modified_datetime'] = datetime.fromtimestamp(os.path.getmtime(self._main_rcif_path)).strftime('%d %b %Y, %H:%M:%S')
