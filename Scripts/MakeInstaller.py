@@ -109,7 +109,7 @@ if (os_name == 'linux'):
 # Install QtInstallerFramework
 print()
 print('***** Install QtInstallerFramework silently')
-args = ['QT_QPA_PLATFORM=minimal', qtifw_setup_exe_path[os_name], '--script', silent_install_script_path, '--no-force-installations']
+args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path, '--no-force-installations']
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
 
