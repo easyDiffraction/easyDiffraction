@@ -119,39 +119,22 @@ if (os_name == 'linux'):
     #args = ['ls', '/home']
     #result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     #print(result)
-    args = ['ls', '/home/travis']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    args = ['ls']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    args = ['cd', 'travis']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    args = ['ls']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    args = ['cd', 'Qt']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    args = ['ls']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    args = ['cd', 'QtIFW-3.1.1']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    args = ['ls']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    args = ['ls', '/home/travis/Qt']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
+    #args = ['ls', '/home/travis']
+    #result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    #print(result)
+    # args = ['ls', '/home/travis/Qt']
+    # result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    # print(result)
     # args = ['ls', '/home/travis/Qt/QtIFW-3.1.1']
     # result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     # print(result)
     # args = ['ls', '/home/travis/Qt/QtIFW-3.1.1/bin']
     # result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     # print(result)
+    args = ['ls', '/usr/local']
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
 
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
 print()
