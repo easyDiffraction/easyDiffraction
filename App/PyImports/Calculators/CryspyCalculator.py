@@ -30,6 +30,7 @@ class CryspyCalculator(QObject):
         self.setProjectDictFromCryspyObj()
 
     def _createCryspyObj(self):
+        """Temporary solution to create cryspy object from separate rcif files"""
         self._main_rcif = pycifstar.read_star_file(self._main_rcif_path)
 
         phases_rcif_path = self._main_rcif_path.replace("main.rcif", self._main_rcif["_phases_file"].value)
