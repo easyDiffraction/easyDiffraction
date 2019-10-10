@@ -1,3 +1,4 @@
+import os
 import operator
 import webbrowser
 from functools import reduce
@@ -33,7 +34,7 @@ def open_url(url=""):
     Open the given URL in the default sytem browser
     """
     try:
-        webbrowser.open('file://' + os.path.realpath(full_filename))
+        webbrowser.open('file://' + os.path.realpath(url))
     except Exception as ex:
         print("Report viewing failed: "+ str(ex))
 

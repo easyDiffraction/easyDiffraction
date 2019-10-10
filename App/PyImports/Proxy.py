@@ -297,6 +297,6 @@ class Proxy(QObject):
             print("Report written")
 
         # Show the generated report in the default browser
-        url = 'file://' + os.path.realpath(full_filename)
+        url = os.path.realpath(full_filename)
         Helpers.open_url(url=url)
 
