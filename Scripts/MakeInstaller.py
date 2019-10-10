@@ -116,21 +116,6 @@ print(result)
 if (os_name == 'linux'):
     print()
     print('***** Paths')
-    #args = ['ls', '/home']
-    #result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    #print(result)
-    #args = ['ls', '/home/travis']
-    #result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    #print(result)
-    # args = ['ls', '/home/travis/Qt']
-    # result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    # print(result)
-    # args = ['ls', '/home/travis/Qt/QtIFW-3.1.1']
-    # result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    # print(result)
-    # args = ['ls', '/home/travis/Qt/QtIFW-3.1.1/bin']
-    # result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    # print(result)
     print("-----/home/travis")
     args = ['ls', '/home/travis']
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
@@ -141,10 +126,6 @@ if (os_name == 'linux'):
     print(result)
     print("-----/opt")
     args = ['ls', '/opt']
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    print("-----/opt/Qt")
-    args = ['ls', '/opt/Qt']
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
