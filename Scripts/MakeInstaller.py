@@ -131,7 +131,10 @@ if (os_name == 'linux'):
     # args = ['ls', '/home/travis/Qt/QtIFW-3.1.1/bin']
     # result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     # print(result)
-    args = ['ls', '/usr/local']
+    args = ['ls', '/home/travis/easyDiffraction']
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+    args = ['ls', '/home/travis/virtualenv']
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
