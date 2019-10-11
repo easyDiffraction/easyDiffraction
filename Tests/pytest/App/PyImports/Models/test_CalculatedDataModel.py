@@ -29,9 +29,9 @@ def test_CalculatedDataModel():
 
     # Test stuff from _setModelFromProject here
     assert m._data_model.item(0, 0).data(role=Qt.DisplayRole) == 4.0
-    assert m._data_model.item(0, 3).data(role=Qt.DisplayRole) == 438.3046174533981
+    assert m._data_model.item(0, 3).data(role=Qt.DisplayRole) == pytest.approx(438.4046174)
     assert m._data_model.item(380, 0).data(role=Qt.DisplayRole) == 80.0
-    assert m._data_model.item(380, 3).data(role=Qt.DisplayRole) == 58.024190593574644
+    assert m._data_model.item(380, 3).data(role=Qt.DisplayRole) == pytest.approx(58.4643675)
 
     # test asModel
     assert m._data_model == m.asDataModel()
@@ -48,7 +48,7 @@ def test_CalculatedDataModel_bad_calculator():
 
     # empty file
     file_path = QUrl("file:Tests/Data/Empty.rcif").toLocalFile()
-    with pytest.raises(IndexError):
+    with pytest.raises(AttributeError):
         calculator = CryspyCalculator(file_path)
 
     # old style rcif

@@ -54,7 +54,7 @@ def test_BraggPeaksModel_bad_calculator():
 
     # empty file
     file_path = QUrl("file:Tests/Data/Empty.rcif").toLocalFile()
-    with pytest.raises(IndexError):
+    with pytest.raises(AttributeError):
         calculator = CryspyCalculator(file_path)
 
     # old style rcif
