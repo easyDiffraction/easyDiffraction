@@ -34,7 +34,8 @@ matrix:
 ## We can secure environmental vars
 env:
   global:
-    secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
+    - secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
+    - secure: "HKJHPXRJPpTVVLUY8xjNQyr1aahcX2V65TOAp9IIM9UMvkHuQCMwLIcT4hlXPCAYZktGjbua6WHkr1N7FDsW72R2AdKy7OeBuSgVbiRDHvyJRppKPoDy56cwvhvwpPCWkEyj6c+aqP4WQLt31kCqkuly0nY0k9FxJY9RkMO7x3kwxNBWM7TdB3yvlFMqdF/NqqYMwBJz2TQXOjCPZ4XshFHYF7G/VxJVIKtwf95oVmiZtKpTq4BLlVrn7gg1E02ZjTuZZ8lYt304H8RMuYNgAV50z33eUVWzpWLoBUaNKdm47F9GP5JXzuJKPHn87Aihp7VP4fiicLwNMFCNSYrP7co1jXNEJdK2S/jh2jWmQeDMuQ+y69HAh8zE3f4vjNakbi4T1+scTWRENfpBHBB4+hRYW0VV6OLipX70AicTbe0lc5cg8n1vPIKD0EgjTypdoEKDj1y8LcAKL+12UYm2LbfCemVqi2zRN0cdNJbiS2AXRo7+V7jxHYjxtusR4WWbqrnKBJo8IC3lLM7O7FGABRuNS61/PfC1/83igxPkiWW93dvoFd7+voKTKgprMyVb+ughL2jLx4wmchhkhuNVyo0iuyaERiioSr9UIL9WtW/goOAyaFPl/Me0gVdJdBkRf1GukdQlmIm6ClXpGEOVpDldVa7eztwrMWl+yU/6/8A="
 
 install:
   #- python3 --version || python --version
@@ -80,7 +81,6 @@ after_success:
   - coveralls
   - cd dist
   - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
-  #- if [ "$TRAVIS_OS_NAME" == "linux" ]; then export QT_QPA_PLATFORM=minimal; fi
   - python ../Scripts/MakeInstaller.py "$TRAVIS_OS_NAME"
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.dmg; fi
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.exe; fi
