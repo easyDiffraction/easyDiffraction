@@ -48,7 +48,7 @@ if (os_name == 'windows'):
     # Signing data
     print()
     print('***** Signing data')
-    signtool_exe_path = os.path.join('C:', os.sep, 'Program Files (x86)', 'Windows Kits', '10', 'bin', 'x64', 'signtool.exe')
+    signtool_exe_path = os.path.join('C:', os.sep, 'Program Files (x86)', 'Windows Kits', '10', 'bin', 'x86', 'signtool.exe')
     certificate_file_path = os.path.join(project_dir_path, 'external', 'ESS_cert.pfx')
     print('signtool_exe_path:', signtool_exe_path)
     print('certificate_file_path:', certificate_file_path)
