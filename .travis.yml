@@ -34,19 +34,16 @@ matrix:
 ## We can secure environmental vars
 env:
   global:
-    secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
+    - secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
+    - secure: "PIjVWtpybl0XK5MfCkxoQqzNZ9clrPpsMMd+YSKpB7HltjJ00HKXzzgEWc/fTjObI3IXUtyTFYV0u8CU38Vaudz23gVlAzzTI4YeFeeFuovKdgFV3UvNVVq0yrtBBlDMGxA3fU7Dl9P3AcVGY4nzEQV/G76FTQfC+iEvuGlzBxWOVR8q7C2bgAH3l0n2TDXJmtICDgNjFpp41eJL0DebDyS3eCD8t6Cs9mjLYIcGEYBGqe0qhX+rZ2QJZZY1n0FRAobm2hSmNjuT5isj7HGTYkFuBJY5al20T2uEOKeeO4XYQa+/wx5XkTvYC3sj6uwsK5h/xQ4ba8t69i8xbGgpN2xA+VbDVMeTCKo/SGoJH/iNx8ppyJfIIH0EzJEqnbaKiTby+KkvBGuqQyd2yBLdYDYLa1drPDuaPMWx055ykqzDf7kyRGzjgnk5xTYaJ7AqfZ22/H0RYOuOq9SnjkmbsJ5KU3Q/z8Wim6c7UT5UdaKy5ETjnWUbpwZaqZakHNfepblKejvpAOBCzNF1MYfmivKID2dqljsTBUqycrjhvIY2KTv8tRuyH3Qr7qOzDmeupwAVSlQ2woaIKyT/f3lsR5tAiUscVYcaJ9yL91aZKPCGGUKuvSjMGcjsinSMNqF2JhTa6BlSmCPVJiH5ExOYxP3taJ6GDbNUDrQhVbqGFIU="
 
 install:
-  #- python3 --version || python --version
-  #- python3 -m pip install --upgrade pip || python -m pip install --upgrade pip #- python -m pip install --upgrade pip # 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
   - python --version
   - python -m pip install --upgrade pip
   - pip --version
   - pip install cryspy
   - pip install PySide2
-  - pip install pyinstaller #- pip install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
-  #- pip3 install scipy
-  #- pip3 install numpy==1.16.4
+  - pip install pyinstaller
   - pip install pytest
   - pip install pytest_mock
   - pip install pytest-cov
@@ -59,33 +56,26 @@ before_script:
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/; fi
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp "$(dirname "$0")"/.python-venv/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib "$(dirname "$0")"/.python-venv/lib/python3.7/site-packages/PySide2/; fi
 # Compile qrc (qt resource file) into python file
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
+  #- pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress
 # Download cryspy
   - git clone --single-branch --branch master https://github.com/ikibalin/cryspy
 # Make the app
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy;cryspy" --add-data "App;." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.ico; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.icns; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:."; fi
-# Add hidpi support for macOS
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then plutil -insert NSHighResolutionCapable -bool YES ./dist/easyDiffraction.app/Contents/Info.plist; fi
 
 script:
   - pytest --version
-  #- if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
-  #- if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
+  - if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
+  - if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
 
 after_success:
-  - coveralls
-  - cd dist
-  - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
-  #- if [ "$TRAVIS_OS_NAME" == "linux" ]; then export QT_QPA_PLATFORM=minimal; fi
-  - python ../Scripts/MakeInstaller.py "$TRAVIS_OS_NAME"
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.dmg; fi
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.exe; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then zip -r $TRAVIS_N easyDiffractionInstaller; fi
-  - cp $TRAVIS_N ../
+  - python Scripts/MakeInstaller.py "$TRAVIS_OS_NAME"
+  - python Scripts/SignCode.py "$TRAVIS_OS_NAME" "$CODE_SIGN_PSWD"
+  - export RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
+  - echo $RELEASE_NUMBER
+  - zip -j easyDiffraction-$TRAVIS_OS_NAME-v$RELEASE_NUMBER.zip dist/easyDiffractionInstaller*
+  #- coveralls
 
 #cache:
 #  directories:
@@ -95,7 +85,6 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "Travis Builder"
   - git config --local user.email "travis@travis-ci.org"
-  - export RELEASE_NUMBER=$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - export TRAVIS_TAG=v$RELEASE_NUMBER
   - '[ "$TRAVIS_BRANCH" == master ] || export TRAVIS_TAG=$TRAVIS_BRANCH-$TRAVIS_TAG'
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
