@@ -51,7 +51,7 @@ args = ['pyinstaller', '{0}/App/{1}.py'.format(project_dir_path, project_name),
         '--onedir',
         '--log-level', 'WARN',
         '--add-data', "{0}/cryspy/cryspy{1}cryspy".format(project_dir_path, separator[os_name]),
-        '--add-data', "{0}/App:.".format(project_dir_path),
+        '--add-data', "{0}/App{1}.".format(project_dir_path, separator[os_name]),
         '--icon', '{0}/App/QmlImports/{1}/Resources/Icons/App.{2}'.format(project_dir_path, project_name, icon_ext[os_name])
         ]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
