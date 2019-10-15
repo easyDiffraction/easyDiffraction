@@ -51,21 +51,27 @@ install:
   - pip install coveralls
 
 before_script:
-# Fix python packaging, becaues it sucks
+# Fix python packaging: Windows
+  # lib not found: shiboken2.abi3.dll dependency of c:\python37\lib\site-packages\PySide2\QtGui.pyd, etc.
+  # lib not found: MSVCP140.dll dependency of c:\python37\lib\site-packages\PySide2\libGLESv2.dll, etc.
+  # lib not found: api-ms-win-core-winrt-string-l1-1-0.dll dependency of c:\python37\lib\site-packages\PySide2\qt5bluetooth.dll
+  # lib not found: api-ms-win-core-winrt-l1-1-0.dll dependency of c:\python37\lib\site-packages\PySide2\qt5bluetooth.dll
   - if [ "$TRAVIS_OS_NAME" == windows ]; then cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/; fi
+  - if [ "$TRAVIS_OS_NAME" == windows ]; then cp C:/python37/lib/site-packages/shiboken2/MSVCP140.dll C:/python37/lib/site-packages/PySide2/; fi
+# Fix python packaging: macOS (not needed for xcode9.4)
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/; fi
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp "$(dirname "$0")"/.python-venv/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib "$(dirname "$0")"/.python-venv/lib/python3.7/site-packages/PySide2/; fi
-# Compile qrc (qt resource file) into python file
+# Compile qrc (qt resource file) into python file (temporarily work without resource file)
   #- pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress
-# Download cryspy
+# Download cryspy (need to manually set path to cryspy from pyinstaller, how to fix?)
   - git clone --single-branch --branch master https://github.com/ikibalin/cryspy
-# Make the app
+# Make the app (app bundle for macOS, dir with exe and libs for windows and linux)
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy;cryspy" --add-data "App;." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.ico; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.icns; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:."; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.png; fi
 # Add hidpi support for macOS
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then plutil -insert NSHighResolutionCapable -bool YES ./dist/easyDiffraction.app/Contents/Info.plist; fi
-  
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then plutil -insert NSHighResolutionCapable -bool YES dist/easyDiffraction.app/Contents/Info.plist; fi
+
 script:
   - pytest --version
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
