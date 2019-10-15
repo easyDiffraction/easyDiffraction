@@ -63,7 +63,9 @@ before_script:
   - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy;cryspy" --add-data "App;." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.ico; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.icns; fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:."; fi
-
+# Add hidpi support for macOS
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then plutil -insert NSHighResolutionCapable -bool YES ./dist/easyDiffraction.app/Contents/Info.plist; fi
+  
 script:
   - pytest --version
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
