@@ -33,11 +33,9 @@ matrix:
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
-
-jobs:
-  include:
     - if: NOT (branch = master)
       env: TRAVIS_TAG=$TRAVIS_BRANCH
+
 
 env:
   global:
