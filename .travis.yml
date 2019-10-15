@@ -66,11 +66,7 @@ before_script:
 # Download cryspy (need to manually set path to cryspy from pyinstaller, how to fix?)
   - git clone --single-branch --branch master https://github.com/ikibalin/cryspy
 # Make the app (app bundle for macOS, dir with exe and libs for windows and linux)
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy;cryspy" --add-data "App;." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.ico; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.icns; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.png; fi
-# Add hidpi support for macOS
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then plutil -insert NSHighResolutionCapable -bool YES dist/easyDiffraction.app/Contents/Info.plist; fi
+  - python Scripts/MakeDist.py "$TRAVIS_OS_NAME"
 
 script:
   - pytest --version
