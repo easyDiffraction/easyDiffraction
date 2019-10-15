@@ -42,7 +42,7 @@ env:
 install:
   # Vars
   - export RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
-  - if [ $TRAVIS_BRANCH == "master" ]; then export TRAVIS_TAG=v$RELEASE_NUMBER; else export TRAVIS_TAG=$TRAVIS_BRANCH-v$RELEASE_NUMBER; fi
+  - if [ $TRAVIS_BRANCH = "master" ]; then export TRAVIS_TAG=v$RELEASE_NUMBER; else export TRAVIS_TAG=$TRAVIS_BRANCH-v$RELEASE_NUMBER; fi
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
   - echo $RELEASE_NUMBER
   - echo $TRAVIS_TAG
