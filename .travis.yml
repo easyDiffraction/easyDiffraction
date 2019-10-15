@@ -51,15 +51,12 @@ install:
   - pip install coveralls
 
 before_script:
-  # Fix python packaging
+  - python Scripts/CompilePyResource.py
   - python Scripts/CopyMissingLibs.py "$TRAVIS_OS_NAME"
-  # Compile qrc (qt resource file) into python file (temporarily work without resource file)
-  #- pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress
-  # Make the app (app bundle for macOS, dir with exe and libs for windows and linux)
   - python Scripts/MakeDist.py "$TRAVIS_OS_NAME"
 
-script:
-  - pytest --version
+#script:
+  #- pytest --version
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
   #- if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
 
@@ -73,7 +70,7 @@ after_success:
 
 #cache:
 #  directories:
-#    - ~/easyDifraction
+#    - ~/easyDiffraction
 
 before_deploy:
   # Set up git user name and tag this commit
