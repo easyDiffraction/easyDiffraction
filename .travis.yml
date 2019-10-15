@@ -38,22 +38,22 @@ matrix:
 
 env:
   global:
-    - RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
-    - TRAVIS_TAG=$TRAVIS_TAG-v$RELEASE_NUMBER
-    - RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
+    #- RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
+    #- TRAVIS_TAG=$TRAVIS_TAG-v$RELEASE_NUMBER
+    #- RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
     - secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
     - secure: "PIjVWtpybl0XK5MfCkxoQqzNZ9clrPpsMMd+YSKpB7HltjJ00HKXzzgEWc/fTjObI3IXUtyTFYV0u8CU38Vaudz23gVlAzzTI4YeFeeFuovKdgFV3UvNVVq0yrtBBlDMGxA3fU7Dl9P3AcVGY4nzEQV/G76FTQfC+iEvuGlzBxWOVR8q7C2bgAH3l0n2TDXJmtICDgNjFpp41eJL0DebDyS3eCD8t6Cs9mjLYIcGEYBGqe0qhX+rZ2QJZZY1n0FRAobm2hSmNjuT5isj7HGTYkFuBJY5al20T2uEOKeeO4XYQa+/wx5XkTvYC3sj6uwsK5h/xQ4ba8t69i8xbGgpN2xA+VbDVMeTCKo/SGoJH/iNx8ppyJfIIH0EzJEqnbaKiTby+KkvBGuqQyd2yBLdYDYLa1drPDuaPMWx055ykqzDf7kyRGzjgnk5xTYaJ7AqfZ22/H0RYOuOq9SnjkmbsJ5KU3Q/z8Wim6c7UT5UdaKy5ETjnWUbpwZaqZakHNfepblKejvpAOBCzNF1MYfmivKID2dqljsTBUqycrjhvIY2KTv8tRuyH3Qr7qOzDmeupwAVSlQ2woaIKyT/f3lsR5tAiUscVYcaJ9yL91aZKPCGGUKuvSjMGcjsinSMNqF2JhTa6BlSmCPVJiH5ExOYxP3taJ6GDbNUDrQhVbqGFIU="
 
 before_install:
-  #- export RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
+  - export RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - echo $RELEASE_NUMBER
-  #- if [ $TRAVIS_BRANCH == "master" ]; then
-  #    export TRAVIS_TAG=v$RELEASE_NUMBER;
-  #  else
-  #    export TRAVIS_TAG=$TRAVIS_BRANCH-v$RELEASE_NUMBER;
-  #  fi
+  - if [ $TRAVIS_BRANCH == "master" ]; then
+      export TRAVIS_TAG=v$RELEASE_NUMBER;
+    else
+      export TRAVIS_TAG=$TRAVIS_BRANCH-v$RELEASE_NUMBER;
+    fi
   - echo $TRAVIS_TAG
-  #- export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
+  - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
   - echo $RELEASE_TITLE
 
 install:
