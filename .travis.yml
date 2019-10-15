@@ -47,8 +47,6 @@ install:
   - echo $RELEASE_NUMBER
   - echo $TRAVIS_TAG
   - echo $RELEASE_TITLE
-  - echo branch = master
-  - echo (branch = master)
   # Python
   - python --version
   # PIP
@@ -106,7 +104,7 @@ deploy:
     skip_cleanup: true
     draft: true # only repository collaborators can see
     overwrite: branch = master
-    file_glob: true
+    file_glob: true 
     file: easyDiffraction-*.zip
     on:
       all_branches: true
