@@ -2,7 +2,6 @@ language: python            # this works for Linux but is an error on macOS or W
 sudo: required
 cache: pip
 
-# OS
 matrix:
   include:
     # Linux
@@ -56,8 +55,8 @@ install:
 
 before_script:
   #- python Scripts/CompilePyResource.py
-  - python Scripts/CopyMissingLibs.py "$TRAVIS_OS_NAME"
-  - python Scripts/MakeDist.py "$TRAVIS_OS_NAME"
+  - python Scripts/CopyMissingLibs.py $TRAVIS_OS_NAME
+  - python Scripts/MakeDist.py $TRAVIS_OS_NAME
 
 #script:
   #- pytest --version
@@ -65,8 +64,8 @@ before_script:
   #- if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
 
 after_success:
-  - python Scripts/MakeInstaller.py "$TRAVIS_OS_NAME"
-  - python Scripts/SignCode.py "$TRAVIS_OS_NAME" "$CODE_SIGN_PSWD"
+  - python Scripts/MakeInstaller.py $TRAVIS_OS_NAME
+  - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD
   - export RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - echo $RELEASE_NUMBER
   - zip -j easyDiffraction-$TRAVIS_OS_NAME-v$RELEASE_NUMBER.zip dist/easyDiffractionInstaller*
