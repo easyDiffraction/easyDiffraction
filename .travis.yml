@@ -91,13 +91,6 @@ before_deploy:
   # This writes a changelog. If wanted
   #- '[ "$TRAVIS_BRANCH" != master ] || cd ../ && pip3 install gitchangelog pystache && echo "output_engine = mustache(\"markdown\")" > .gitchangelog.rc && gitchangelog ^$(git describe --abbrev=0 --tags) HEAD > CHANGELOG'
 
-notifications:
-  slack:
-    rooms:
-      - secure: "t0nR618a2fr2EDpyfKWBBkcf5MJ549P732EGvN9gwXVYvl4z977KSSH6uPEw7/KmMec9BhMg882hJidoeh1XgvUQOiVan4jrlvn16z2INPWh/dloXOZN5YWz87tSLR1jn1tDaKSK7gaOF5HAosPbQ2/UriUaAG9d9GHJKJzCogNDAFwFge3K/b4KJr1kYpwS5Vd5K99peWnsrNYBz1M4+Xjc49cd5t5FKULtFduX0Zb25t3dQ25u9LfGQ5lyH65UNSqcu9DP4RZmX00KLYNnIOYtzuyWvehPhisoBozA+Fpuly2IaFPVswtHqO/h9kziyYBBcnEAvG0U+KHmkJy21vDHN5+yPoHlcuAr0Q95C7GEpUT/JVAeNggxWWF4WLYrcTbZXWGt69pBhuFUAZRnbzSV+wBF5ZAOK/5W9TvxYMM1uS9AqdLEmUQdtIGrj2VIDS1na0dielNMnOhBc0Xgap2as/Kb1aEkPuSA6kENDOGXrw1Vs0VjFK3iWOlyzHbfHdHWM1/WZOO2sZRNjdTgWS5x5UXJbozTcM5mzcAkZ21vVpVG5h7LQI3cMPpD45Hmtmnko6S+7FlaknesIeXXhZPwILxN12LtbBo7AkUqtdi/w4Do7CAA++hNJRQx2txa9Mfi6R9XhNccc9+3Mto6lw5hW9mDmb2b1TlrLksW5Ew="
-    on_success: always
-    on_failure: always
-
 deploy:
   - provider: releases # GitHub repository
     name: $RELEASE_TITLE
@@ -105,7 +98,7 @@ deploy:
       secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
     skip_cleanup: true
     draft: $NOT_MASTER_BRANCH # true: only repository collaborators can see
-    overwrite: "$TRAVIS_BRANCH != 'master'"
+    overwrite: true
     file_glob: true
     file: easyDiffraction-*.zip
     on:
@@ -123,5 +116,12 @@ after_deploy:
         git commit -m 'Bumped release links [ci skip]'
         git push origin HEAD:master
      fi
+
+notifications:
+  slack:
+    rooms:
+      - secure: "t0nR618a2fr2EDpyfKWBBkcf5MJ549P732EGvN9gwXVYvl4z977KSSH6uPEw7/KmMec9BhMg882hJidoeh1XgvUQOiVan4jrlvn16z2INPWh/dloXOZN5YWz87tSLR1jn1tDaKSK7gaOF5HAosPbQ2/UriUaAG9d9GHJKJzCogNDAFwFge3K/b4KJr1kYpwS5Vd5K99peWnsrNYBz1M4+Xjc49cd5t5FKULtFduX0Zb25t3dQ25u9LfGQ5lyH65UNSqcu9DP4RZmX00KLYNnIOYtzuyWvehPhisoBozA+Fpuly2IaFPVswtHqO/h9kziyYBBcnEAvG0U+KHmkJy21vDHN5+yPoHlcuAr0Q95C7GEpUT/JVAeNggxWWF4WLYrcTbZXWGt69pBhuFUAZRnbzSV+wBF5ZAOK/5W9TvxYMM1uS9AqdLEmUQdtIGrj2VIDS1na0dielNMnOhBc0Xgap2as/Kb1aEkPuSA6kENDOGXrw1Vs0VjFK3iWOlyzHbfHdHWM1/WZOO2sZRNjdTgWS5x5UXJbozTcM5mzcAkZ21vVpVG5h7LQI3cMPpD45Hmtmnko6S+7FlaknesIeXXhZPwILxN12LtbBo7AkUqtdi/w4Do7CAA++hNJRQx2txa9Mfi6R9XhNccc9+3Mto6lw5hW9mDmb2b1TlrLksW5Ew="
+    on_success: always
+    on_failure: always
 
 #https://docs.travis-ci.com/user/job-lifecycle/
