@@ -47,7 +47,7 @@ install:
   - echo $RELEASE_NUMBER
   - echo $TRAVIS_TAG
   - echo $RELEASE_TITLE
-  - if [ $TRAVIS_BRANCH != "master" ]; then export NOT_MASTER_BRANCH=true; fi
+  - if [ $TRAVIS_BRANCH != "master" ]; then export NOT_MASTER_BRANCH=true; ; else export NOT_MASTER_BRANCH=false; fi
   - echo $NOT_MASTER_BRANCH
   # Python
   - python --version
@@ -104,8 +104,8 @@ deploy:
     api_key:
       secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
     skip_cleanup: true
-    draft: true # only repository collaborators can see
-    overwrite: $NOT_MASTER_BRANCH
+    draft: $NOT_MASTER_BRANCH # true: only repository collaborators can see
+    overwrite: "$TRAVIS_BRANCH != 'master'"
     file_glob: true
     file: easyDiffraction-*.zip
     on:
