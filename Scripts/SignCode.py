@@ -65,7 +65,7 @@ with zipfile.ZipFile(certificate_zip_path) as zf:
 
 # Sign code
 if (os_name == 'osx'):
-    keychain_name = 'build.keychain'
+    keychain_name = 'codesign.keychain'
     keychain_password = 'password'
     identity = 'Developer ID Application: European Spallation Source Eric (W2AG9MPZ43)'
 
@@ -75,7 +75,7 @@ if (os_name == 'osx'):
     print(result)
 
     print('***** Set it to be default keychain')
-    args = ['security', 'default-keychain', '-s', keychain_name] # security default-keychain -s build.keychain
+    args = ['security', 'default-keychain', '-s', keychain_name] # security default-keychain -s build.keychain # security default-keychain -s login.keychain
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
@@ -89,7 +89,7 @@ if (os_name == 'osx'):
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-    print('***** Import certificate to created keychain') # security import Certificates/ESS_cert_mac.p12 -k build.keychain -P '<certificate_password>' -A
+    print('***** Import certificate to created keychain') # security import Certificates/ESS_cert_mac.p12 -k build.keychain -P '<certificate_password>' -T /usr/bin/codesign
     args = ['security', 'import', certificate_file_path, '-k', keychain_name, '-P', certificate_password, '-T', '/usr/bin/codesign']
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
