@@ -78,6 +78,7 @@ before_script:
 
 after_success:
   ###- python Scripts/MakeInstaller.py $TRAVIS_OS_NAME
+  - echo $CODE_SIGN_PSWD_DICT
   - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT $CERTIFICATES_ZIP_PSWD
   - zip -j easyDiffraction-$TRAVIS_OS_NAME-v$RELEASE_NUMBER.zip dist/easyDiffractionInstaller*
   #- coveralls
