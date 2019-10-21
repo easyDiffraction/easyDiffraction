@@ -16,17 +16,10 @@ os_name = sys.argv[1] if len(sys.argv) > 1 else 'osx'
 print('os_name:', os_name)
 
 # Passwords
-print("sys.argv[2]", sys.argv[2])
-print("str", str(sys.argv[2]))
-print("dict", ast.literal_eval(sys.argv[2]))
-#exit()
-certificate_password_dict = ast.literal_eval(sys.argv[2]) if len(sys.argv) > 2 else {'linux': '', 'osx': '', 'windows': ''}
+certificate_password_dict = ast.literal_eval(sys.argv[2]) if len(sys.argv) > 2 else {'osx': '', 'windows': ''}
 certificate_password = certificate_password_dict[os_name]
-print("certificate_password_dict", certificate_password_dict)
-print('certificate_password', certificate_password)
-print('certificate_password', certificate_password.replace('\\', ''))
-exit()
 zip_password = sys.argv[3] if len(sys.argv) > 3 else ''
+print(zip_password)
 
 # Project
 product_name = 'easyDiffraction'
@@ -70,7 +63,7 @@ with zipfile.ZipFile(certificate_zip_path) as zf:
     zf.extractall(path=certificates_dir_path, pwd=bytes(zip_password, 'utf-8'))
 
 # Sign code
-if (os_name == 'osx!!!'):
+if (os_name == 'osx'):
     keychain = 'build.keychain'
     keychainpassword = 'password'
     identity = 'Developer ID Application: European Spallation Source Eric (W2AG9MPZ43)'
@@ -105,7 +98,7 @@ if (os_name == 'osx!!!'):
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-elif (os_name == 'windows!!!'):
+elif (os_name == 'windows'):
     print('\n***** Paths')
     signtool_exe_path = os.path.join('C:', os.sep, 'Program Files (x86)', 'Windows Kits', '10', 'bin', 'x86', 'signtool.exe')
     certificate_file_path = os.path.join(project_dir_path, 'Certificates', 'ESS_cert_win.pfx')
