@@ -20,7 +20,7 @@ print('os_name:', os_name)
 
 # Passwords
 passwords_dict = ast.literal_eval(sys.argv[2]) if len(sys.argv) > 2 else {'osx':'', 'windows':'', 'zip':''}
-certificate_password = passwords_dict[os_name]
+certificate_password = passwords_dict[os_name].replace('\\', '')
 print("test", certificate_password)
 zip_password = passwords_dict['zip']
 
