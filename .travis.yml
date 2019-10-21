@@ -68,7 +68,7 @@ install:
 before_script:
   #- python Scripts/CompilePyResource.py
   - python Scripts/CopyMissingLibs.py $TRAVIS_OS_NAME
-  - python Scripts/MakeDist.py $TRAVIS_OS_NAME
+  ###- python Scripts/MakeDist.py $TRAVIS_OS_NAME
 
 #script:
   #- pytest --version
@@ -76,7 +76,7 @@ before_script:
   #- if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
 
 after_success:
-  - python Scripts/MakeInstaller.py $TRAVIS_OS_NAME
+  ###- python Scripts/MakeInstaller.py $TRAVIS_OS_NAME
   - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT $CERTIFICATES_ZIP_PSWD
   - zip -j easyDiffraction-$TRAVIS_OS_NAME-v$RELEASE_NUMBER.zip dist/easyDiffractionInstaller*
   #- coveralls
