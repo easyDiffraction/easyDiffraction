@@ -5,6 +5,7 @@ import sys
 import requests
 import subprocess
 import shutil
+import zipfile
 
 # Start
 print()
@@ -28,9 +29,11 @@ print('product_url:', product_url)
 scripts_dir_path = os.path.dirname(os.path.realpath(__file__))
 project_dir_path = os.path.realpath(os.path.join(scripts_dir_path, '..'))
 dist_dir_path = os.path.join(project_dir_path, 'dist')
+certificates_dir_path = os.path.join(project_dir_path, 'Certificates')
 print('project_dir_path:', project_dir_path)
 print('scripts_dir_path:', scripts_dir_path)
 print('dist_dir_path:', dist_dir_path)
+print('certificates_dir_path:', certificates_dir_path)
 
 # Installer related paths
 installer_name = product_name + 'Installer'
@@ -42,6 +45,17 @@ installer_exe_ext = {
 installer_exe_path = os.path.join(dist_dir_path, installer_name + installer_exe_ext[os_name])
 print('installer_name:', installer_name)
 print('installer_exe_path:', installer_exe_path)
+
+# Certificate path
+certificate_file_name = {
+    'osx': 'ESS_cert_mac.p12',
+    'windows': 'ESS_cert_win.pfx',
+    }
+
+# Unzip certificates
+with zipfile.ZipFile(zip_file) as zf:
+  zf.extractall(pwd=bytes(password,'utf-8'))
+
 
 # Code signing
 if (os_name == 'windows'):
