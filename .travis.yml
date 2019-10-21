@@ -36,16 +36,13 @@ env:
     - secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
     # CODE_SIGN_PSWD_DICT
     - secure: "cdJnii2NKMYlaskFPY9WWzW3HPRq+KfWo0D6JrfAYNJMffWa5fBoTRWCFqS7cvUYGk6GBSrJKhfQznzDb/3ekVwmvr2pnZsC/zlobJko7JU58Ruegc33LIpZtqupL3Ip9BURT5v2KinkpJ1bYDnW3pTSo6ZqW2biwS5nQaaOKnusZBj7+84CUv1Xg5r7vKO3I5dBbprKhAMcJyEW59w77ni5zxH0olXQPq7X+wrkmZgntAZkTVYZjicYwax9nKmkn9OsE0OKkM/CEUn3dc+c3pmj9G/EegVRbmw+OwVrsMnugMbwEKGG1XO6xRIX0T6lbTeGF2tKU30mcqj3NXmqkxZREx6asEsTmRFfi9ODqa0C6jHDCT6eN+HqZV+g+apaXWSp1Ij/27nCqs6K9EtxrfNyYs4N/j1tuTt/CejDjJjQIOep67kbAvJ2E2wOHxsTXd9OuOE6sUZ4AjGOuLmS2kZELwrdOBbqcRkNs0YAkT0Yq1B42xtXAzt9xqdDaObFoYbRnGqV8Ydek2b8SnMino42A+2Ic1ZrktPlHQZZwpBEAZCTMww6v2u2FMctSqr9oigiA309J+f20Uu+eAWIUHU1Irh1d+cv5ntQfB+be2QvMqW6HZcoD0Mw2FLIF/UrYNQrHKuLyShvXzBCb3QRVrQIFaSCPxZ6XOeWFNe2GCs="
-    
+
 install:
   - python --version
   - python -m pip install --upgrade pip
   - pip --version
   - pip install cryspy==0.1.12
-  - pip install scipy==1.3.1 # installed by cryspy
-  - pip install numpy==1.17.3 # installed by cryspy
   - pip install PySide2==5.13.1
-  - pip install shiboken2==5.13.1 # installed by PySide2
   - pip install pyinstaller==3.5
   - pip install requests==2.22.0
   #- pip install pytest
