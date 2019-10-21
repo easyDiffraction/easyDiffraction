@@ -23,8 +23,8 @@ matrix:
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
       filter_secrets: false
-      ###before_install:
-        ###- choco install python --version=3.7.4 # 3.8 fails with cryspy
+      before_install:
+        - choco install python --version=3.7.4 # 3.8 fails with cryspy
         ###- choco install zip
         ###- choco install curl
         ###- choco install grep
@@ -49,7 +49,7 @@ env:
     - secure: "K2wJFLc1EROIcg50X9Yf7UKdC/h+ShBWU8YihnbomleqbDSX1HvtTz2l5WvfxhfvHpEviNIsyB8s8IakWHhCZ6lmCLHfSFQ2O8QSqnOCDhmYVHvgS5xe2JnCsx+7iNFjiuGXzWhX1ypmqSjs9Uu9xQJ5nIfkGKmDkdWdVfyy37ZMi87ggUXisLEHLTOvdbmXFb1vlY6O3bD8x9g06vaWGfaURL2aNEzVwiYQ1X7lTKvn23y3rJXiYN0ka1KIIReEP49uMy6YuBV/tlU1UcL8+fdSELjgbRWoPanjxKVBk5/mDlGejB60B61Jj01UZtRKa0l5MDN43YYMGr5qWNEotYd/MzuNan6ZMT+544WFg/3rM/rnO0QYSuFcKcfj6/w9ipgdxSsLv9fzjxp63A+vcykhsexdI+bBLGzV60RftAq8ha1fLA3fUi5agWoOvgn/DRejT+les/ko+vHvL4xyv+i/cNVSV3wVJXE49M4qoD6oqpSyTFxwV2pSTh13UEjwPaEeIQ3mXlkP+XrNmIkJW3poXdV5HozLk3krfXTvYFJc1PaQ41rSzdNcsq+9qR4N4+CIonVJ74wToP1fFSTgqj0D+mbvAU7o+F8O51FPz9Dn9qDDErUG372nzidu03K5z6AD4wvnYhUS+CWgHGkU30ImRnbLp8r1KkHODFPTGGg="
     - secure: "LukD6deupDgYLJRuYt1k9cvxwqgGwA86E0MYBBsMDjYtXiiH/rnmYdDgsVEs5cndTjysDjyHdCIokGdWtD0lyOGgObVvBQwGdEHSWdvJpL/zgn9XT9vRwngQpCTiiIdhSksYt3a6ytpqYYBWX9HVq3imAV7A3AaS//mJNuzWwHf1i8KWHRu30Yw4+YVMyyqW+qMy20CNFRKd5SiRnbyJAKc5Ng8HwLeOC/dVO8YvG2Mpegv1ZMe1Nuc9/4EvBBR5wfXK/kVHSI7r1FmX1+MlIhHSxtzwAWByQKPS4wGPHnHEoTl/d7o9xvkbaRMvMHzYbCpwoTQy5+DaOdbkvH/cZTADe2czbFOE0lje3XQbrrSrpbKtS484H6aqn5umMmip3TiBDFGcLntK6g8z8KNpTlkMlK+Bq/AKvARARkwpRAjpYMeo4zpTh9UZ+gHKrabjD91aOlRuHTsu0ZVG7M6s7khJW5POCeRdQSOrz+Ss44A4T10udEKifPnulLPPkCt+DxiLkEfOSMWrhqM3AEODT4FF08qt1nzGMZuSx+aB87xSvApshDmqQgpj6706/Qlj7u7mexzXgO38Zhqn+hgox8J7EChYagvds/SeUy6xojBz2JWJOqIbpS2D1I8zlvbE09F6B3g9ifIFS5CiQ+D9td51uxTQCtmYwMI0VSX+EfA="
     - secure: "RnwTEz65/fq4Pj3L9u5Gi7k3URn4TFw4pPLC3VVjnDLD0ZinGETQVfc642l3TJiyxG6QXcmW4thq+aNBRh+bbcSwqQJ+C2Fj0XLU1/TBLHvtcHXKknI3iJX2kRXm5IN43zuJvI9j2y5G76q5lOgwUjDEVPlpEgQm1lIYYbeayO3QHM4eTETSCZMuECFfCZpKf+jR50u4kdKxyuadF/QdNjdzj42LfzU6cqE/gwbHRXQ0t7OvWrP4uZeFOg5FB3KQD2IT+SnKkSDkxCxswjcg8wlt2PQA+/HJYvYELV6z//V2pth8DWkyVq67XIv7SJfqNlM+ocui9XNJFerDY55GdjpI+jwcYfWVSHGtdS7WONySksqG73Y0Q6PO8yEXYmXz+D29+JJbpmkzgUfaJrOVIV37gnQzcdc9cl5779xSUe6srmUNe+2cgHTz9pdTrEw6xhZF2sT9dwOeFrNfMrJL+h9sryG4PjL1Nw2txK8BvfHtRD7vi3Jg7RGRoqO8FV1+OJU9Fj+z/GWKiw+r36oy7nn77wzRFSZ8xjdqmWWEo/G675EKOiw+qQNddi6ubi+slZ8nKB2TRiSOZy5pIUpmyIeoecP9lTycqRJOPduB03UiHSKsVCVNlxHLjC7sNn+7wpWqHdBxqlscaI6lI+KpAWHGunkgBky3LFogtx6xKsY="
-    
+
 
 
 
@@ -67,6 +67,7 @@ install:
   - echo $CODE_SIGN_PSWD_DICT8
   - echo $CODE_SIGN_PSWD_DICT9
   - echo $CODE_SIGN_PSWD_DICT10
+  - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT10
   - djgnekrjbvkerjb
   - export RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - if [ $TRAVIS_BRANCH = "master" ]; then export TRAVIS_TAG=v$RELEASE_NUMBER; else export TRAVIS_TAG=$TRAVIS_BRANCH-v$RELEASE_NUMBER; fi
