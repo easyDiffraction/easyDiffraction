@@ -31,25 +31,28 @@ print('scripts_dir_path:', scripts_dir_path)
 print('dist_dir_path:', dist_dir_path)
 
 # Installer related paths
+installer_dir_path = dist_dir_path
 installer_name = product_name + 'Installer'
 installer_exe_ext = {
     'osx': '.app',
     'windows': '.exe',
     'linux': ''
     }
-installer_exe_path = os.path.join(dist_dir_path, installer_name + installer_exe_ext[os_name])
+installer_exe_name = installer_name + installer_exe_ext[os_name]
+print('installer_dir_path:', installer_dir_path)
 print('installer_name:', installer_name)
-print('installer_exe_path:', installer_exe_path)
+print('installer_exe_ext:', installer_exe_ext)
+print('installer_exe_name:', installer_exe_name)
 
 # Archive
-archive_name = '{0}-{1}-v{2}'.format(product_name, os_name, release_number)
-archive_path = os.path.join(project_dir_path, archive_name)
-print('archive_name:', installer_name)
-print('archive_path:', installer_exe_path)
+target_name = '{0}-{1}-v{2}'.format(product_name, os_name, release_number)
+target_path = os.path.join(project_dir_path, target_path)
+print('target_name:', target_name)
+print('target_path:', target_path)
 
 # Zip installer
 print('\n***** Zip installer')
-shutil.make_archive(archive_path, 'zip', installer_exe_path)
+shutil.make_archive(target_path, 'zip', installer_dir_path, installer_exe_name)
 
 # End
 print()
