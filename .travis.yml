@@ -56,18 +56,18 @@ install:
   - python -m pip install --upgrade pip
   - pip --version
   # Install
-  - pip install cryspy==0.1.12
-  - pip install PySide2==5.13.1
-  - pip install pyinstaller==3.5
-  - pip install pytest
-  - pip install pytest_mock
-  - pip install pytest-cov
-  - pip install pytest-qt
-  - pip install coveralls
+  ###- pip install cryspy==0.1.12
+  ###- pip install PySide2==5.13.1
+  ###- pip install pyinstaller==3.5
+  ###- pip install pytest
+  ###- pip install pytest_mock
+  ###- pip install pytest-cov
+  ###- pip install pytest-qt
+  ###- pip install coveralls
 
 before_script:
   #- python Scripts/CompilePyResource.py
-  - python Scripts/CopyMissingLibs.py $TRAVIS_OS_NAME
+  ###- python Scripts/CopyMissingLibs.py $TRAVIS_OS_NAME
   ###- python Scripts/MakeDist.py $TRAVIS_OS_NAME
 
 #script:
