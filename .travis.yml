@@ -23,13 +23,13 @@ matrix:
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
       filter_secrets: false
-      before_install:
-        - choco install python --version=3.7.4 # 3.8 fails with cryspy
-        - choco install zip
-        - choco install curl
-        - choco install grep
-        - choco install sed
-        - pip install pypiwin32
+      ###before_install:
+        ###- choco install python --version=3.7.4 # 3.8 fails with cryspy
+        ###- choco install zip
+        ###- choco install curl
+        ###- choco install grep
+        ###- choco install sed
+        ###- pip install pypiwin32
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
@@ -37,12 +37,15 @@ matrix:
 env:
   global:
     - secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
-    -  secure: "K3OWFAwugTPZ857BYGoe9W4BSNxS4zQiuDSSBHrwbijFgGxky2oj0KWPHX9G0gWofTYsmG+MuriGT/9CcA7EriCjWtp4jFODSBzQzQmIi+5ps+tqmeQh8ezs6Lwis/TAn9+TguNVEZNvtorxUV4NEJBNdFQMfhLFxuLvIpX5qwrAHMqsXZNai9lz8/y2DVeo0yoR8y8gmThhRw4jR90o4qpmQxtRhKm0DSOglUk5fHaXbPMeZeJ8PrnQvXpWpGA9+L19Fwug8bREsUf049jbtRrnY4KoJlFT/zW+RJoVZV6Bb01XdBgG1IAqtuCqGkh0bY7KY6c7WsmvWzVqtopNGFQy8xTA7obPs+BlPatKYx+Q2V38cV0M3Gkst5MgMQijbirO2Rn/v0cikkST53sCzkv+65+N1hRMjAJbyRWKia1GgRVWsic8n7SwdTo+G1QEfyNVWiv5asrmgVyLgSydQ6AkBijv3PDxlj96N/Rd9xLNdnBfZZPOOsplEVY8HtdA2BDI4OZ0wgJvPPD23fJqYl6rzpZK0drxTf+rNmd2M2CSOeGjzOWVVF2+YTIbMOgB7BGRw4gnzCu5vH9tWB0psqpu4srmOw1f6wz5SiO+fPVn1hBIfwbl1m8kTqYpU50mBPUrH25Rmg4dPN7XRjlbt1h5xqn/+jOTQP1gz9SLYfo="
+    - secure: "gpwW3DYatwCSW/AreaYU+GjxunNwTfOjApYv5l5fASCE57H82koAxiJUc1Od+W0lwy7Z/6c9gL7x0AoNOlKwYgISVBb9nJ4hZNqTveQKYEYIVYFqY7COkczIktj5500tMqVZxASrva6yNIMic81sJHMH6bn0BGHgJ3+mygNZkh6ufpTO21ro4DcPsXDmij+zeXdR7OWN1VYUFAu+XUXWQGvEcj2lV2H2J23ei7EowVKH7Kh66+a606Qz6bK7T8p0pHRtnoFSmKzmZP/0kyMDh8gHQR5Rc7VXsvbdxyIlhLp6VBPQeSODDQ8nUn7tmkOVdpivm73sESuN/KP49U4UI5IM1JlaLrMJTV4S9XvvPcZeuV3fwcBKZy6m9lTuu/MlW+mY/w5uYmyjOnGtt+u6HQRD7TduiDfVttxJl+eF7YYEjNy6b9X/pz7vJaYshJOtzikQlb3fxFhqm4ASdSCCwqGalIP6wGr2scF+7q0jscGhsagYiOgt3HgFFX5TDVspzS4d0V2EAspvOEWifXiyHiBU94i0An7cmHXHr4mp5Q7GGhINNVfp5qfDN45fkIst0/303zdxoh60ctHTCodPnVUCXKWqLe9F5IzxsnAxbE62RDiFo7Ie5vck/RJSHALq6PnVxrinrlpx7OO9ym+74GmrGYLd+FTOFQqxyNTsHXY="
     - secure: "Oe0a+jCSrdw3sqG3hpMu5DkrpLJD4upkW2krWdq11ereul5JdHLfkGRVGPnzS6riEoSee5pzhTQKFdFRYMCslOiXn+wuKu0izXQ2Ye27vjvFQSN1DQkPlasH6Z6q8ATic2m4aoUyXojy/kgRvr/DfsAF+Mzirg/N81HnXqAP/dZka8LRJCsytmuaHTWMrtubrQ/lBtSCeppuXEjR4dhXu4BUL3qX1s9eGQ6WhKbyK5pjXxeP08uHyWqUIr5Pse7FJnCw8ua8mIYRtm+Ew265I886cfl0tC3DcZy+Jmo2KFTRK/OjU+2v6rWETUrBZpdoBPHkMUfKklGKW09Js2O3HkxEr3L9nhYtbxttJVWOGpHIvrDUnlCo1O/Lgv92oV3/0FybSiNiC4t+zZPyPesxEKcegEG5r/v5BSEVHiREePgovwpZ0zhyP9KbcG9SmC2RLx1sgPpBoxIOJg/NrYi++uf2gH8iLfZwSm+/tS5kUC3M7joPGvs1yU5Q8rriUKRhp41oEvvU7ZPjlZM0CdgxwT+wo0qX87BjD68J6UPp/wC0UPgbkv78FX3SLDxwFoptDpn+Id2IlJ85O+ZO8aF9di30kLv/WGULlXbGup8ZdCN9vkUPrZ0HKUD9ebKNe0KH/SEkRO56qYiZGwtdZ0X4sLLR2ALBpuRclPJY7udOVAY="
 
 install:
   # Vars
   - echo $CODE_SIGN_PSWD_DICT
+  - export aaa=$CODE_SIGN_PSWD_DICT
+  - echo aaa
+  - djgnekrjbvkerjb
   - export RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - if [ $TRAVIS_BRANCH = "master" ]; then export TRAVIS_TAG=v$RELEASE_NUMBER; else export TRAVIS_TAG=$TRAVIS_BRANCH-v$RELEASE_NUMBER; fi
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
