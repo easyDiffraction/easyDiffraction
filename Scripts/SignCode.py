@@ -26,7 +26,7 @@ print("test", certificate_password)
 #s = str(sys.argv[3])
 #print("s", s)
 #print("type(s)", type(s))
-zip_password = sys.argv[3] if len(sys.argv) > 3 else ''
+zip_password = certificate_password_dict['zip']
 #print(zip_password)
 
 # Project
