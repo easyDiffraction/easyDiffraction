@@ -65,6 +65,9 @@ with zipfile.ZipFile(certificate_zip_path) as zf:
 
 # Sign code
 if (os_name == 'osx'):
+    # https://gist.github.com/curiousstranger/309035
+    # https://apple.stackexchange.com/questions/242795/command-line-keychain-access-not-showing-any-results
+    # https://stackoverflow.com/questions/39868578/security-codesign-in-sierra-keychain-ignores-access-control-settings-and-ui-p
     keychain_name = 'codesign.keychain'
     keychain_password = 'password'
     identity = 'Developer ID Application: European Spallation Source Eric (W2AG9MPZ43)'
