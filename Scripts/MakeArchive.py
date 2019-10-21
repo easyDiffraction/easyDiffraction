@@ -41,7 +41,7 @@ installer_exe_ext = {
 installer_exe_name = installer_name + installer_exe_ext[os_name]
 print('installer_dir_path:', installer_dir_path)
 print('installer_name:', installer_name)
-print('installer_exe_ext:', installer_exe_ext)
+print('installer_exe_ext:', installer_exe_ext[os_name])
 print('installer_exe_name:', installer_exe_name)
 
 # Archive
