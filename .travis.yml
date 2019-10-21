@@ -40,45 +40,39 @@ env:
     - secure: "MUGB3OUDTpB8ZN70aRBmsCEqeUXsxMgNR5aDrTzgaOR8UIrAhRs30GH8NnASe8VIO6L48SRqGoFeXA4ZZ9h8RFZxQBcPG88/bKzPvPni+WQC5QYF9zbK1mv5IzHfurK08eH05FVz9Mx1BA/L0gviwnP4S4+1ICou0EnnO+sxxGFcGw+ixUpDYPJ2A+R6Dz5OICd2yUVGj3tD2ZYUY+dfnWbTtysb29OMbSMLIMybJ0MOXJ1ozWJibWmyV1tqo4eJ6ZeZKEhH4vKnWtZAeZ6MHLzWLN++jAc3XqxZAJ2czMpsHMeGRx3rjnyGqTXoVFPdmDovRmFZdF7RLYOVWiOKqpc041OMouy2E/dEZ48qJTqkFWQnLqu5HTQCx98RAwIh2czJni0N9DAViv0W/Vj+20JL03hIKYDWXBbigPKFQMI04DobYakBGB/NR3iWhTU4jpG84ttWmtkRfvmPBgIP5zxpJf6xUK6IK02zlENVyzX/X4gZ0cNwGMA7qUpPeBKAVVf8XVf5rSrTPKmH87K1TTbuKn4yP/nx9XqpEcTbkF+LkoyAeCyPEwds3sG9he1uXUd9N+kK/tBC+g444bfHmPJy+6qLS3UK/egX1mweYNVZ6ljA5Aoy4kYlNOJc7XVamjF6aQtBx2yADx5jZJkIhK29Rfy28br4sMaaIDyOysM="
 
 install:
-  # Vars
-  - export RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
-  - if [ $TRAVIS_BRANCH = "master" ]; then export TRAVIS_TAG=v$RELEASE_NUMBER; else export TRAVIS_TAG=$TRAVIS_BRANCH-v$RELEASE_NUMBER; fi
-  - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
-  - echo $RELEASE_NUMBER
-  - echo $TRAVIS_TAG
-  - echo $RELEASE_TITLE
-  - if [ $TRAVIS_BRANCH != "master" ]; then export NOT_MASTER_BRANCH=true; else export NOT_MASTER_BRANCH=false; fi
-  - echo $NOT_MASTER_BRANCH
-  # Python
   - python --version
-  # PIP
   - python -m pip install --upgrade pip
   - pip --version
-  # Install
   - pip install cryspy==0.1.12
   - pip install PySide2==5.13.1
   - pip install pyinstaller==3.5
   - pip install requests
-  - pip install pytest
-  - pip install pytest_mock
-  - pip install pytest-cov
-  - pip install pytest-qt
-  - pip install coveralls
+  #- pip install pytest
+  #- pip install pytest_mock
+  #- pip install pytest-cov
+  #- pip install pytest-qt
+  #- pip install coveralls
 
 before_script:
   #- python Scripts/CompilePyResource.py
+  - export RELEASE_NUMBER=`python Scripts/GetReleaseNumber.py`
+  - export TRAVIS_TAG=`python Scripts/GetTravisTag.py $RELEASE_NUMBER $TRAVIS_BRANCH`
+  - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
+  - echo $RELEASE_NUMBER
+  - echo $TRAVIS_TAG
+  - echo $RELEASE_TITLE
+
+script:
   - python Scripts/CopyMissingLibs.py $TRAVIS_OS_NAME
   - python Scripts/MakeDist.py $TRAVIS_OS_NAME
-
-#script:
+  - python Scripts/MakeInstaller.py $TRAVIS_OS_NAME
+  - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT
+  - python Scripts/MakeArchive.py $TRAVIS_OS_NAME $RELEASE_NUMBER
   #- pytest --version
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
   #- if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
 
-after_success:
-  - python Scripts/MakeInstaller.py $TRAVIS_OS_NAME
-  - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT
-  - python Scripts/MakeArchive.py $TRAVIS_OS_NAME $RELEASE_NUMBER
+#after_success:
   #- coveralls
 
 #cache:
