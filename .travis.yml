@@ -25,11 +25,11 @@ matrix:
       filter_secrets: false
       before_install:
         - choco install python --version=3.7.4 # 3.8 fails with cryspy
-        ##- choco install zip
-        ##- choco install curl
-        ##- choco install grep
-        ##- choco install sed
-        ##- pip install pypiwin32
+        - choco install zip
+        - choco install curl
+        - choco install grep
+        - choco install sed
+        - pip install pypiwin32
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
@@ -39,14 +39,10 @@ env:
     # GH_TOKEN
     - secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
     # CODE_SIGN_PSWD_DICT
-    #- secure: "MUGB3OUDTpB8ZN70aRBmsCEqeUXsxMgNR5aDrTzgaOR8UIrAhRs30GH8NnASe8VIO6L48SRqGoFeXA4ZZ9h8RFZxQBcPG88/bKzPvPni+WQC5QYF9zbK1mv5IzHfurK08eH05FVz9Mx1BA/L0gviwnP4S4+1ICou0EnnO+sxxGFcGw+ixUpDYPJ2A+R6Dz5OICd2yUVGj3tD2ZYUY+dfnWbTtysb29OMbSMLIMybJ0MOXJ1ozWJibWmyV1tqo4eJ6ZeZKEhH4vKnWtZAeZ6MHLzWLN++jAc3XqxZAJ2czMpsHMeGRx3rjnyGqTXoVFPdmDovRmFZdF7RLYOVWiOKqpc041OMouy2E/dEZ48qJTqkFWQnLqu5HTQCx98RAwIh2czJni0N9DAViv0W/Vj+20JL03hIKYDWXBbigPKFQMI04DobYakBGB/NR3iWhTU4jpG84ttWmtkRfvmPBgIP5zxpJf6xUK6IK02zlENVyzX/X4gZ0cNwGMA7qUpPeBKAVVf8XVf5rSrTPKmH87K1TTbuKn4yP/nx9XqpEcTbkF+LkoyAeCyPEwds3sG9he1uXUd9N+kK/tBC+g444bfHmPJy+6qLS3UK/egX1mweYNVZ6ljA5Aoy4kYlNOJc7XVamjF6aQtBx2yADx5jZJkIhK29Rfy28br4sMaaIDyOysM="
-    - secure: "MBeK6pZ5uQ242Xkk2nEea8JL4Ug/bKVUa55fh9yQAK7mJZrwSkFVbz2Z9LBVZpBC5DEeFmN5vm3jNV4z74PonClS4Nl2BJyAnLicW0wOe4jvDsQqADHHYlDZHeEBPY9fyZGYtgpN1nE5TdniDabGjQpTDZWqLTYyENl5pV21IhqiIu1sibw0+Hta6mqrrgwczyfBwohyuU7GZLCcg4b9Q5Jz/PvWqryfteK+7aRuDTaRgK2vetAnQHo/PfJvdlt/vt5njYmx1bJu/cKJ5wFvho4J4sAqfD/uspqeu560RDW66Y+LQ0jy27yW3+y/5l2MgUVbnT4A4lWIa7IaPW2dH94EiuuJTOtss6T5XqvmQSetiLh3C1I6f3HTlfelFs27m9srJ1M3IEnS7KYTs9pRTlIe+4GfClWZUl7D3xoOykXqzqnS8QRjSvsKHdlhWglJXcib+CdOuyp4+yCmA32K0gJl7CwFhyt015d9JPbJ1ALQ5Av2VBEFKcLwY2EdYJnEMeuzX3UGDBLDnkbooGs5gwKcXj/sr9O9r7rj0uga28Zem420/L7jgevFLa9UR90uD5u3CeB4wGhxS4ArKKzr4Ewwl6aB24xukULKyXUOwu+cS5iVIaQ3d2OCEVTi+jCszLZRwCNYVohRgHqna0N2om1ZDbkR7PpjWkPdJc+Tnv4="
+    - secure: "MUGB3OUDTpB8ZN70aRBmsCEqeUXsxMgNR5aDrTzgaOR8UIrAhRs30GH8NnASe8VIO6L48SRqGoFeXA4ZZ9h8RFZxQBcPG88/bKzPvPni+WQC5QYF9zbK1mv5IzHfurK08eH05FVz9Mx1BA/L0gviwnP4S4+1ICou0EnnO+sxxGFcGw+ixUpDYPJ2A+R6Dz5OICd2yUVGj3tD2ZYUY+dfnWbTtysb29OMbSMLIMybJ0MOXJ1ozWJibWmyV1tqo4eJ6ZeZKEhH4vKnWtZAeZ6MHLzWLN++jAc3XqxZAJ2czMpsHMeGRx3rjnyGqTXoVFPdmDovRmFZdF7RLYOVWiOKqpc041OMouy2E/dEZ48qJTqkFWQnLqu5HTQCx98RAwIh2czJni0N9DAViv0W/Vj+20JL03hIKYDWXBbigPKFQMI04DobYakBGB/NR3iWhTU4jpG84ttWmtkRfvmPBgIP5zxpJf6xUK6IK02zlENVyzX/X4gZ0cNwGMA7qUpPeBKAVVf8XVf5rSrTPKmH87K1TTbuKn4yP/nx9XqpEcTbkF+LkoyAeCyPEwds3sG9he1uXUd9N+kK/tBC+g444bfHmPJy+6qLS3UK/egX1mweYNVZ6ljA5Aoy4kYlNOJc7XVamjF6aQtBx2yADx5jZJkIhK29Rfy28br4sMaaIDyOysM="
 
 install:
   # Vars
-  - pip install requests
-  - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT
-  - djgnekrjbvkerjb
   - export RELEASE_NUMBER=$(cat App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
   - if [ $TRAVIS_BRANCH = "master" ]; then export TRAVIS_TAG=v$RELEASE_NUMBER; else export TRAVIS_TAG=$TRAVIS_BRANCH-v$RELEASE_NUMBER; fi
   - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
@@ -61,10 +57,10 @@ install:
   - python -m pip install --upgrade pip
   - pip --version
   # Install
-  - pip install requests
   - pip install cryspy==0.1.12
   - pip install PySide2==5.13.1
   - pip install pyinstaller==3.5
+  - pip install requests
   - pip install pytest
   - pip install pytest_mock
   - pip install pytest-cov
@@ -83,7 +79,7 @@ before_script:
 
 after_success:
   - python Scripts/MakeInstaller.py $TRAVIS_OS_NAME
-  - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT $CERTIFICATES_ZIP_PSWD
+  - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT
   - zip -j easyDiffraction-$TRAVIS_OS_NAME-v$RELEASE_NUMBER.zip dist/easyDiffractionInstaller*
   #- coveralls
 
