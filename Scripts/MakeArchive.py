@@ -46,7 +46,7 @@ print('installer_exe_name:', installer_exe_name)
 
 # Archive
 target_name = '{0}-{1}-v{2}'.format(product_name, os_name, release_number)
-target_path = os.path.join(project_dir_path, target_path)
+target_path = os.path.join(project_dir_path, target_name)
 print('target_name:', target_name)
 print('target_path:', target_path)
 
