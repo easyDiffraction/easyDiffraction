@@ -65,7 +65,7 @@ with zipfile.ZipFile(certificate_zip_path) as zf:
     zf.extractall(path=certificates_dir_path, pwd=bytes(zip_password, 'utf-8'))
 
 # Sign code
-if (os_name == 'osx'):
+if (os_name == 'osx!!!'):
     keychain = 'build.keychain'
     keychainpassword = 'password'
     identity = 'Developer ID Application: European Spallation Source Eric (W2AG9MPZ43)'
@@ -100,7 +100,7 @@ if (os_name == 'osx'):
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-elif (os_name == 'windows'):
+elif (os_name == 'windows!!!'):
     print('\n***** Paths')
     signtool_exe_path = os.path.join('C:', os.sep, 'Program Files (x86)', 'Windows Kits', '10', 'bin', 'x86', 'signtool.exe')
     certificate_file_path = os.path.join(project_dir_path, 'Certificates', 'ESS_cert_win.pfx')
