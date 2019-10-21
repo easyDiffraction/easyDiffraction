@@ -25,8 +25,6 @@ matrix:
       filter_secrets: false
       before_install:
         - choco install python --version=3.7.4 # 3.8 fails with cryspy
-        - choco install grep
-        - choco install sed
         - pip install pypiwin32
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
