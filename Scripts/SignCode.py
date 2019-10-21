@@ -19,15 +19,10 @@ print('os_name:', os_name)
 #    print(arg)
 
 # Passwords
-certificate_password_dict = ast.literal_eval(sys.argv[2]) if len(sys.argv) > 2 else {'osx':'', 'windows':'', 'zip':''}
-certificate_password = certificate_password_dict[os_name]
+passwords_dict = ast.literal_eval(sys.argv[2]) if len(sys.argv) > 2 else {'osx':'', 'windows':'', 'zip':''}
+certificate_password = passwords_dict[os_name]
 print("test", certificate_password)
-#print("sys.argv[3]", sys.argv[3])
-#s = str(sys.argv[3])
-#print("s", s)
-#print("type(s)", type(s))
-zip_password = certificate_password_dict['zip']
-#print(zip_password)
+zip_password = passwords_dict['zip']
 
 # Project
 product_name = 'easyDiffraction'
