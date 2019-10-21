@@ -42,9 +42,12 @@ install:
   - python -m pip install --upgrade pip
   - pip --version
   - pip install cryspy==0.1.12
+  - pip install scipy==1.3.1 # installed by cryspy
+  - pip install numpy==1.17.3 # installed by cryspy
   - pip install PySide2==5.13.1
+  - pip install shiboken2==5.13.1 # installed by PySide2
   - pip install pyinstaller==3.5
-  - pip install requests
+  - pip install requests==2.22.0
   #- pip install pytest
   #- pip install pytest_mock
   #- pip install pytest-cov
