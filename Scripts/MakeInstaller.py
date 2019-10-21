@@ -93,84 +93,44 @@ print('qtifw_binarycreator:', qtifw_binarycreator)
 print('qtifw_installerbase:', qtifw_installerbase)
 
 # Download QtInstallerFramework DMG
-print()
-print('***** Download QtInstallerFramework installer')
+print('\n***** Download QtInstallerFramework installer')
 qtifw_installer = requests.get(qtifw_url, allow_redirects=True)
 open(qtifw_setup_path, 'wb').write(qtifw_installer.content)
 
-# Attach QtInstallerFramework DMG
+# OS specific settings
 if (os_name == 'osx'):
-    print()
-    print('***** Attach QtInstallerFramework DMG')
+    print('\n***** Attach QtInstallerFramework DMG')
     args = ['hdiutil', 'attach', qtifw_setup_path]
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
-
-# Fix permissions
-if (os_name == 'linux'):
-    print()
-    print('***** Fix permissions')
+elif (os_name == 'linux'):
+    print('\n***** Fix permissions')
     args = ['chmod', 'a+x', qtifw_setup_exe_path[os_name]]
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
-
-# export QT_QPA_PLATFORM=minimal
-if (os_name == 'linux'):
-    print()
-    print('***** export QT_QPA_PLATFORM=minimal')
+    print('\n***** export QT_QPA_PLATFORM=minimal')
     os.environ["QT_QPA_PLATFORM"] = "minimal"
 
 # Install QtInstallerFramework
-print()
-print('***** Install QtInstallerFramework silently')
+print('\n***** Install QtInstallerFramework silently')
 args = [qtifw_setup_exe_path[os_name], '--script', silent_install_script_path, '--no-force-installations']
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
 
 # Move files/dirs needed for creating installer (freezed app after PyInstaller, Examples folder, etc.)
-print()
-print('***** Move files/dirs needed for creating installer')
+print('\n***** Move files/dirs needed for creating installer')
 os.makedirs(data_dir_path)
 shutil.move(examples_dir_path, data_dir_path)
 shutil.move(freezed_app_path, data_dir_path)
 
 # Create installer from copied files
-print()
-print('***** Create installer from moved files/dirs')
-print()
-args = [qtifw_binarycreator,
-        '--verbose',
-        '--offline-only',
-        '-c', config_xml_path,
-        '-p', packages_dir_path,
-        '-t', qtifw_installerbase,
+print('\n***** Create installer from moved files/dirs')
+args = [qtifw_binarycreator, '--verbose', '--offline-only',
+        '-c', config_xml_path, '-p', packages_dir_path, '-t', qtifw_installerbase,
         installer_exe_path
         ]
 result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
 print(result)
-
-# Create DMG from installer
-if (os_name == 'osx'):
-    print()
-    print('***** Create DMG from installer')
-    print()
-    args = ['hdiutil',
-            'create',
-            '-volname', project_name,
-            '-srcfolder', installer_exe_path,
-            '-ov', installer_exe_path.replace('.app', '.dmg')
-            ]
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
-    print()
-    print('***** Remove installer app')
-    print()
-    args = ['rm',
-            '-rf',
-            installer_exe_path,
-            ]
-    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(result)
 
 # End
 print()
