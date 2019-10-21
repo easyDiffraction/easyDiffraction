@@ -43,7 +43,6 @@ env:
 
 install:
   # Vars
-  - echo $TEST_PSWD2
   - pip install requests
   - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT
   - djgnekrjbvkerjb
