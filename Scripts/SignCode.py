@@ -9,14 +9,11 @@ import shutil
 import zipfile
 
 # Start
-print('\n***** Variables\n')
+print('\n***** Variables')
 
 # Os
 os_name = sys.argv[1] if len(sys.argv) > 1 else 'osx'
 print('os_name:', os_name)
-
-#for arg in sys.argv:
-#    print(arg)
 
 # Passwords
 passwords_dict = ast.literal_eval(sys.argv[2]) if len(sys.argv) > 2 else {'osx':'', 'windows':'', 'zip':''}
@@ -61,42 +58,54 @@ print('certificate_zip_path:', certificate_zip_path)
 print('certificate_file_path:', certificate_file_path)
 
 # Unzip certificates
+print('\n***** Unzip certificates')
+print('certificate_zip_path:', certificate_zip_path)
 with zipfile.ZipFile(certificate_zip_path) as zf:
     zf.extractall(path=certificates_dir_path, pwd=bytes(zip_password, 'utf-8'))
 
 # Sign code
 if (os_name == 'osx'):
-    keychain = 'build.keychain'
-    keychainpassword = 'password'
+    keychain_name = 'build.keychain'
+    keychain_password = 'password'
     identity = 'Developer ID Application: European Spallation Source Eric (W2AG9MPZ43)'
 
-    print('\n***** Create keychain')
-    args = ['security', 'create-keychain', '-p', keychainpassword, keychain]
+    print('\n***** Create keychain') # security create-keychain -p 'password' build.keychain # security delete-keychain build.keychain
+    args = ['security', 'create-keychain', '-p', keychain_password, keychain_name]
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-    print('\n***** Set it to be default keychain')
-    args = ['security', 'default-keychain', '-s', keychain]
+    print('***** Set it to be default keychain')
+    args = ['security', 'default-keychain', '-s', keychain_name] # security default-keychain -s build.keychain
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-    print('\n***** Unlock created keychain')
-    args = ['security', 'unlock-keychain', '-p', keychainpassword, keychain]
+    print('***** List keychains') # security list-keychains
+    args = ['security', 'list-keychains']
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-    print('\n***** Import certificate to created keychain')
-    args = ['security', 'import', certificate_file_path, '-k', keychain, '-P', certificate_password, '-T', '/usr/bin/codesign']
+    print('***** Unlock created keychain') # security unlock-keychain -p 'password' build.keychain
+    args = ['security', 'unlock-keychain', '-p', keychain_password, keychain_name]
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-    print('\n***** Show certificates')
-    args = ['security', 'find-identity', '-v']
+    print('***** Import certificate to created keychain') # security import Certificates/ESS_cert_mac.p12 -k build.keychain -P '<certificate_password>' -A
+    args = ['security', 'import', certificate_file_path, '-k', keychain_name, '-P', certificate_password, '-T', '/usr/bin/codesign']
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-    print('\n***** Sign code with imported certificate')
-    args = ['codesign', '--deep', '--force', '--verbose', '--sign', identity, installer_exe_path]
+    print('***** Show certificates')
+    args = ['security', 'find-identity', '-v'] # security find-identity -v
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
+    print('***** Allow codesign to access certificate key from keychain') # security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k 'password'
+    args = ['security', 'set-key-partition-list', '-S', 'apple-tool:,apple:,codesign:', '-s', '-k', keychain_password]
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
+    print('***** Sign code with imported certificate') # codesign --deep --force --verbose --sign 'Developer ID Application: European Spallation Source Eric (W2AG9MPZ43)' dist/easyDiffractionInstaller.app
+    args = ['codesign', '--deep', '--force', '--verbose', '--sign', identity, installer_exe_path] # --timestamp URL
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
