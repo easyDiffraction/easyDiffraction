@@ -2,22 +2,23 @@
 
 import os
 import sys
+import ast
 import requests
 import subprocess
 import shutil
 import zipfile
 
 # Start
-print()
-print('***** Variables')
-print()
+print('\n***** Variables\n')
 
 # Os
 os_name = sys.argv[1] if len(sys.argv) > 1 else 'osx'
 print('os_name:', os_name)
 
-# Password
-certificate_password = sys.argv[2] if len(sys.argv) > 2 else ''
+# Passwords
+certificate_password_dict = ast.literal_eval(sys.argv[2]) if len(sys.argv) > 2 else {'osx': '', 'windows': ''}
+certificate_password = certificate_password_dict[os_name]
+zip_password = sys.argv[3] if len(sys.argv) > 3 else ''
 
 # Project
 product_name = 'easyDiffraction'
@@ -38,7 +39,7 @@ print('certificates_dir_path:', certificates_dir_path)
 # Installer related paths
 installer_name = product_name + 'Installer'
 installer_exe_ext = {
-    'osx': '.dmg',
+    'osx': '.app',
     'windows': '.exe',
     'linux': ''
     }
@@ -46,30 +47,64 @@ installer_exe_path = os.path.join(dist_dir_path, installer_name + installer_exe_
 print('installer_name:', installer_name)
 print('installer_exe_path:', installer_exe_path)
 
-# Certificate path
+# Certificates related data
+certificate_zip_path = os.path.join(certificates_dir_path, 'codesigning.zip')
 certificate_file_name = {
     'osx': 'ESS_cert_mac.p12',
     'windows': 'ESS_cert_win.pfx',
     }
+certificate_file_path = os.path.join(certificates_dir_path, certificate_file_name[os_name])
+print('certificate_zip_path:', certificate_zip_path)
+print('certificate_file_path:', certificate_file_path)
 
 # Unzip certificates
-with zipfile.ZipFile(zip_file) as zf:
-  zf.extractall(pwd=bytes(password,'utf-8'))
+with zipfile.ZipFile(certificate_zip_path) as zf:
+    zf.extractall(path=certificates_dir_path, pwd=bytes(zip_password, 'utf-8'))
 
+# Sign code
+if (os_name == 'osx'):
+    keychain = 'build.keychain'
+    keychainpassword = 'password'
+    identity = 'Developer ID Application: European Spallation Source Eric (W2AG9MPZ43)'
 
-# Code signing
-if (os_name == 'windows'):
-    # Signing data
-    print()
-    print('***** Signing data')
+    print('\n***** Create keychain')
+    args = ['security', 'create-keychain', '-p', keychainpassword, keychain]
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
+    print('\n***** Set it to be default keychain')
+    args = ['security', 'default-keychain', '-s', keychain]
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
+    print('\n***** Unlock created keychain')
+    args = ['security', 'unlock-keychain', '-p', keychainpassword, keychain]
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
+    print('\n***** Import certificate to created keychain')
+    args = ['security', 'import', certificate_file_path, '-k', keychain, '-P', certificate_password, '-T', '/usr/bin/codesign']
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
+    print('\n***** Show certificates')
+    args = ['security', 'find-identity', '-v']
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
+    print('\n***** Sign code with imported certificate')
+    args = ['codesign', '--deep', '--force', '--verbose', '--sign', identity, installer_exe_path]
+    result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
+
+elif (os_name == 'windows'):
+    print('\n***** Paths')
     signtool_exe_path = os.path.join('C:', os.sep, 'Program Files (x86)', 'Windows Kits', '10', 'bin', 'x86', 'signtool.exe')
     certificate_file_path = os.path.join(project_dir_path, 'Certificates', 'ESS_cert_win.pfx')
     print('signtool_exe_path:', signtool_exe_path)
     print('certificate_file_path:', certificate_file_path)
 
-    # Import certificate
-    print()
-    print('***** Import certificate')
+    print('\n***** Import certificate')
     args = ['certutil.exe',
             #'-user', # "Current User" Personal store.
             '-p', certificate_password, # the password for the .pfx file
@@ -78,9 +113,7 @@ if (os_name == 'windows'):
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
 
-    # Code signing
-    print()
-    print('***** Code signing')
+    print('\n***** Sign code with imported certificate')
     args = [signtool_exe_path, 'sign', # info - https://msdn.microsoft.com/en-us/data/ff551778(v=vs.71)
             #'/f', certificate_file_path, # signing certificate in a file
             #'/p', certificate_password, # password to use when opening a PFX file
