@@ -20,7 +20,7 @@ print("sys.argv[2]", sys.argv[2])
 print("str", str(sys.argv[2]))
 print("dict", ast.literal_eval(sys.argv[2]))
 #exit()
-certificate_password_dict = ast.literal_eval(sys.argv[2]) if len(sys.argv) > 2 else {'linux': '', 'osx': '', 'windows': ''}
+certificate_password_dict = ast.literal_eval(sys.argv[2]) if len(sys.argv) > 2 else {'osx': '', 'windows': '', 'linux': ''}
 certificate_password = certificate_password_dict[os_name]
 print("certificate_password_dict", certificate_password_dict)
 print('certificate_password', certificate_password)
