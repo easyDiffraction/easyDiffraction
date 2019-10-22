@@ -33,22 +33,16 @@ class CryspyCalculator(QObject):
         """Temporary solution to create cryspy object from separate rcif files"""
         self._main_rcif = pycifstar.read_star_file(self._main_rcif_path)
         #
-        phases_rcif_path = self._main_rcif_path.replace("main.rcif", self._main_rcif["_phases_file"].value)
-        instruments_rcif_path = self._main_rcif_path.replace("main.rcif", self._main_rcif["_instruments_file"].value)
-        measurements_rcif_path = self._main_rcif_path.replace("main.rcif", self._main_rcif["_measurements_file"].value)
+        phases_rcif_path = self._main_rcif_path.replace("main.cif", self._main_rcif["_phases"].value)
+        experiments_rcif_path = self._main_rcif_path.replace("main.cif", self._main_rcif["_experiments"].value)
         #
         with open(phases_rcif_path, 'r') as f:
-            phases_and_instruments_rcif = f.read()
-        with open(instruments_rcif_path, 'r') as f:
-            phases_and_instruments_rcif += f.read()
-        with open(measurements_rcif_path, 'r') as f:
-            experiments_rcif = f.read()
+            phases_rcif_content = f.read()
+        with open(experiments_rcif_path, 'r') as f:
+            experiments_rcif_content = f.read()
         #
         rho_chi = cryspy.RhoChi()
-        rho_chi.from_cif(phases_and_instruments_rcif)
-        for experiment in rho_chi.experiments:
-            experiment.from_cif(experiments_rcif)
-        #
+        rho_chi.from_cif(phases_rcif_content + experiments_rcif_content)
         return rho_chi
 
     def setAppDict(self):
