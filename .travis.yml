@@ -41,7 +41,7 @@ install:
   - python --version
   - python -m pip install --upgrade pip
   - pip --version
-  - pip install cryspy==0.1.12
+  - pip install cryspy==0.1.13
   - pip install PySide2==5.13.1
   - pip install pyinstaller==3.5
   - pip install requests==2.22.0
