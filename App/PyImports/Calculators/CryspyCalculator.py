@@ -6,6 +6,7 @@ from functools import reduce
 from datetime import datetime
 import numpy as np
 import cryspy
+import pycifstar
 
 from PySide2.QtCore import QObject, Signal
 
@@ -22,16 +23,33 @@ class CryspyCalculator(QObject):
         self._calculations_dict = {}
         # cryspy
         self._main_rcif_path = main_rcif_path
-        self._cryspy_obj = cryspy.rhochi_read_file(self._main_rcif_path)
+        self._main_rcif = None
+        self._cryspy_obj = self._createCryspyObj() #cryspy.rhochi_read_file(self._main_rcif_path)
         # project dict
         self._project_dict = {}
         self.setProjectDictFromCryspyObj()
+
+    def _createCryspyObj(self):
+        """Temporary solution to create cryspy object from separate rcif files"""
+        self._main_rcif = pycifstar.read_star_file(self._main_rcif_path)
+        #
+        phases_rcif_path = self._main_rcif_path.replace("main.cif", self._main_rcif["_phases"].value)
+        experiments_rcif_path = self._main_rcif_path.replace("main.cif", self._main_rcif["_experiments"].value)
+        #
+        with open(phases_rcif_path, 'r') as f:
+            phases_rcif_content = f.read()
+        with open(experiments_rcif_path, 'r') as f:
+            experiments_rcif_content = f.read()
+        #
+        rho_chi = cryspy.RhoChi()
+        rho_chi.from_cif(phases_rcif_content + experiments_rcif_content)
+        return rho_chi
 
     def setAppDict(self):
         """Set application state"""
         self._app_dict = {
             'name': 'easyDiffraction',
-            'version': '0.3.3',
+            'version': '0.3.4',
             'url': 'http://easydiffraction.github.io'
         }
 
@@ -46,8 +64,8 @@ class CryspyCalculator(QObject):
     def setInfoDict(self):
         """Set additional project info"""
         self._info_dict = {
-            'name': '',
-            'keywords': ['neutron diffraction', 'powder', '1d'],
+            'name': self._main_rcif["_name"].value,
+            'keywords': self._main_rcif["_keywords"].value.split(', '),
             'phase_ids': [],
             'experiment_ids': [],
             'created_datetime': '',
@@ -658,7 +676,6 @@ class CryspyCalculator(QObject):
         self.setPhasesDictFromCryspyObj()
         self.setExperimentsDictFromCryspyObj()
         self.setCalculationsDictFromCryspyObj()
-        self._info_dict['name'] = list(self._phases_dict.keys())[0]
         self._info_dict['phase_ids'] = list(self._phases_dict.keys())
         self._info_dict['experiment_ids'] = list(self._experiments_dict.keys())
         self._info_dict['modified_datetime'] = datetime.fromtimestamp(os.path.getmtime(self._main_rcif_path)).strftime('%d %b %Y, %H:%M:%S')
@@ -784,11 +801,12 @@ class CryspyCalculator(QObject):
         """Get a value in a nested object in root by key sequence."""
         self.getByPath(keys[:-1])[keys[-1]] = value
         self.setCryspyObjFromProjectDict() # updates value in cryspy obj (actually all values, which is too expensive...)
-        if not isinstance(value, bool):
-            #self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
-            self.setProjectDictFromCryspyObj()
-            #print(self._project_dict["info"])
-            self.projectDictChanged.emit()
+        logging.info(value)
+        # Temporarly disable this check below and update model even if just 'fit' checkbox is changed.
+        #if not isinstance(value, bool):
+        #self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
+        self.setProjectDictFromCryspyObj()
+        self.projectDictChanged.emit()
 
     def phasesCount(self):
         """Returns number of phases in the project."""
@@ -822,7 +840,7 @@ class CryspyCalculator(QObject):
         calculations = {}
         phases = {}
         if len(self._cryspy_obj.experiments) > 0:
-            experiments = "data_" + self._cryspy_obj.experiments[0].label + "\n" + self._cryspy_obj.experiments[0].params_to_cif + "\n" + self._cryspy_obj.experiments[0].data_to_cif, # maybe meas_to_cif
+            experiments = "data_" + self._cryspy_obj.experiments[0].label + "\n" + self._cryspy_obj.experiments[0].params_to_cif + "\n" + self._cryspy_obj.experiments[0].data_to_cif # maybe meas_to_cif
             calculations = self._cryspy_obj.experiments[0].calc_to_cif
         if len(self._cryspy_obj.crystals) > 0:
             phases = self._cryspy_obj.crystals[0].to_cif

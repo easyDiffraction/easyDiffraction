@@ -288,15 +288,15 @@ class Proxy(QObject):
         full_filename = os.path.join(self.get_project_dir_absolute_path(), full_filename)
 
         if not self.report_html:
-            print("No report to save")
+            logging.info("No report to save")
             return
 
         # HTML can contain non-ascii, so need to open with right encoding
         with open(full_filename, 'w', encoding='utf-8') as report_file:
             report_file.write(self.report_html)
-            print("Report written")
+            logging.info("Report written")
 
         # Show the generated report in the default browser
-        url = 'file://' + os.path.realpath(full_filename)
+        url = os.path.realpath(full_filename)
         Helpers.open_url(url=url)
 
