@@ -39,16 +39,21 @@ env:
 
 install:
   - python --version
+  #
   - python -m pip install --upgrade pip
   - pip --version
+  #
   - pip install cryspy==0.1.13
   - pip install PySide2==5.13.1
   - pip install pyinstaller==3.5
   - pip install requests==2.22.0
-  #- pip install pytest
-  #- pip install pytest_mock
-  #- pip install pytest-cov
-  #- pip install pytest-qt
+  #
+  - pip install pytest
+  - pip install pytest_mock
+  - pip install pytest-cov
+  - pip install pytest-qt
+  - pytest --version
+  #
   #- pip install coveralls
 
 before_script:
@@ -63,14 +68,15 @@ before_script:
   - echo Scripts/PrintLog.py
 
 script:
+  # Compile qrc (qt resource file) into python file
+  #- pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress
   - python Scripts/CopyMissingLibs.py
   - python Scripts/MakeDist.py
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
   - python Scripts/MakeArchive.py $RELEASE_NUMBER
-  #- pytest --version
-  #- if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
-  #- if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
+  - if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
+  - if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
 
 #after_success:
   #- coveralls

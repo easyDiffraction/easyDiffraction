@@ -31,18 +31,21 @@ class CryspyCalculator(QObject):
 
     def _createCryspyObj(self):
         """Temporary solution to create cryspy object from separate rcif files"""
+        full_rcif_content = ''
+        rcif_dir_name = os.path.dirname(self._main_rcif_path)
         self._main_rcif = pycifstar.read_star_file(self._main_rcif_path)
-        #
-        phases_rcif_path = self._main_rcif_path.replace("main.cif", self._main_rcif["_phases"].value)
-        experiments_rcif_path = self._main_rcif_path.replace("main.cif", self._main_rcif["_experiments"].value)
-        #
-        with open(phases_rcif_path, 'r') as f:
-            phases_rcif_content = f.read()
-        with open(experiments_rcif_path, 'r') as f:
-            experiments_rcif_content = f.read()
-        #
+        if "_phases" in str(self._main_rcif):
+            phases_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_phases"].value)
+            with open(phases_rcif_path, 'r') as f:
+                phases_rcif_content = f.read()
+                full_rcif_content += phases_rcif_content
+        if "_experiments" in str(self._main_rcif):
+            experiments_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_experiments"].value)
+            with open(experiments_rcif_path, 'r') as f:
+                experiments_rcif_content = f.read()
+                full_rcif_content += experiments_rcif_content
         rho_chi = cryspy.RhoChi()
-        rho_chi.from_cif(phases_rcif_content + experiments_rcif_content)
+        rho_chi.from_cif(full_rcif_content)
         return rho_chi
 
     def setAppDict(self):
@@ -63,9 +66,11 @@ class CryspyCalculator(QObject):
 
     def setInfoDict(self):
         """Set additional project info"""
+        name = self._main_rcif["_name"].value if "_name" in str(self._main_rcif) else 'Unknown'
+        keywords = self._main_rcif["_keywords"].value.split(', ') if "_keywords" in str(self._main_rcif) else ['']
         self._info_dict = {
-            'name': self._main_rcif["_name"].value,
-            'keywords': self._main_rcif["_keywords"].value.split(', '),
+            'name': name,
+            'keywords': keywords,
             'phase_ids': [],
             'experiment_ids': [],
             'created_datetime': '',
