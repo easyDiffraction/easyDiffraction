@@ -60,13 +60,14 @@ before_script:
   - echo $RELEASE_NUMBER
   - echo $TRAVIS_TAG
   - echo $RELEASE_TITLE
+  - echo Scripts/PrintLog.py
 
 script:
-  - python Scripts/CopyMissingLibs.py $TRAVIS_OS_NAME
-  - python Scripts/MakeDist.py $TRAVIS_OS_NAME
-  - python Scripts/MakeInstaller.py $TRAVIS_OS_NAME
-  - python Scripts/SignCode.py $TRAVIS_OS_NAME $CODE_SIGN_PSWD_DICT
-  - python Scripts/MakeArchive.py $TRAVIS_OS_NAME $RELEASE_NUMBER
+  - python Scripts/CopyMissingLibs.py
+  - python Scripts/MakeDist.py
+  - python Scripts/MakeInstaller.py
+  - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
+  - python Scripts/MakeArchive.py $RELEASE_NUMBER
   #- pytest --version
   #- if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
   #- if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
