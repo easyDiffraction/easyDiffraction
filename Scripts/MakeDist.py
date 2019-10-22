@@ -10,11 +10,11 @@ var = Variables.VarsConfig()
 print('\n***** Create dist by pyinstaller')
 args = ['pyinstaller', '{0}/App/{1}.py'.format(var.project_dir_path, var.project_name),
         '--name', var.project_name, # Name to assign to the bundled app and spec file (default: first script’s basename)
-        '--noconfirm', # Replace output directory (default: SPECPATH/dist/SPECNAME) without asking for confirmation
-        '--clean', # Clean PyInstaller cache and remove temporary files before building.
-        '--windowed', # Windows and Mac OS X: do not provide a console window for standard i/o.
-        '--onedir', # Create a one-folder bundle containing an executable (default)
-        '--log-level', 'WARN', # LEVEL may be one of DEBUG, INFO, WARN, ERROR, CRITICAL (default: INFO).
+        '--noconfirm',              # Replace output directory (default: SPECPATH/dist/SPECNAME) without asking for confirmation
+        '--clean',                  # Clean PyInstaller cache and remove temporary files before building.
+        '--windowed',               # Windows and Mac OS X: do not provide a console window for standard i/o.
+        '--onedir',                 # Create a one-folder bundle containing an executable (default)
+        '--log-level', 'WARN',      # LEVEL may be one of DEBUG, INFO, WARN, ERROR, CRITICAL (default: INFO).
         '--add-data', "{0}{1}cryspy".format(var.cryspy_path, var.os_specific_separator[var.os_name]),
         '--add-data', "{0}/App{1}.".format(var.project_dir_path, var.os_specific_separator[var.os_name]),
         '--icon', '{0}/App/QmlImports/{1}/Resources/Icons/App.{2}'.format(var.project_dir_path, var.project_name, var.os_specific_icon_ext[var.os_name]),

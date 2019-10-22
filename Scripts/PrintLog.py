@@ -2,5 +2,5 @@
 
 import Variables
 
-var = Variables.VarsConfig()
-var.log()
+log = Variables.VarsLog()
+log.info()

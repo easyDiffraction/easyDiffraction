@@ -36,21 +36,9 @@ class VarsConfig:
         self.project_url = 'https://easydiffraction.github.io'
         self.installer_name = self.project_name + 'Installer'
         #
-        self.os_specific_separator = {
-            'osx': ':',
-            'windows': ';',
-            'linux': ':'
-            }
-        self.os_specific_icon_ext = {
-            'osx': 'icns',
-            'windows': 'ico',
-            'linux': 'png'
-            }
-        self.os_specific_exe_ext = {
-            'osx': '.app',
-            'windows': '.exe',
-            'linux': ''
-            }
+        self.os_specific_separator = {'osx': ':', 'windows': ';', 'linux': ':'}
+        self.os_specific_icon_ext = {'osx': 'icns', 'windows': 'ico', 'linux': 'png'}
+        self.os_specific_exe_ext = {'osx': '.app', 'windows': '.exe', 'linux': ''}
         self.os_specific_missing_libs = {
             'osx': ['libshiboken2.abi3.*.dylib'],
             'windows': ['shiboken2.abi3.dll', 'MSVCP140.dll'],
@@ -93,46 +81,51 @@ class VarsConfig:
         else:
             return ''
 
-    def log(self):
+class VarsLog:
+    def __init__(self):
+        self.var = VarsConfig()
+        self.qtifw = InstallerFrameworkConfig(self.var.os_name, self.var.scripts_dir_path, self.var.user_home_dir)
+
+    def info(self):
         print('\n***** Variables')
         print()
-        print('os_name:        ', var.os_name)
-        print('project_name:   ', var.project_name)
-        print('installer_name: ', var.installer_name)
+        print('os_name:        ', self.var.os_name)
+        print('project_name:   ', self.var.project_name)
+        print('installer_name: ', self.var.installer_name)
         print()
-        print('user_home_dir:            ', var.user_home_dir)
-        print('project_dir_path:         ', var.project_dir_path)
-        print('scripts_dir_path:         ', var.scripts_dir_path)
-        print('examples_dir_path:        ', var.examples_dir_path)
-        print('dist_dir_path:            ', var.dist_dir_path)
-        print('freezed_app_path:         ', var.freezed_app_path)
+        print('user_home_dir:            ', self.var.user_home_dir)
+        print('project_dir_path:         ', self.var.project_dir_path)
+        print('scripts_dir_path:         ', self.var.scripts_dir_path)
+        print('examples_dir_path:        ', self.var.examples_dir_path)
+        print('dist_dir_path:            ', self.var.dist_dir_path)
+        print('freezed_app_path:         ', self.var.freezed_app_path)
         print()
-        print('qtifw_version:                  ', qtifw.version)
-        print('qtifw_url:                      ', qtifw.url)
-        print('qtifw_setup_as_downloaded_path: ', qtifw.setup_as_downloaded_path)
-        print('qtifw_setup_exe_path:           ', qtifw.setup_exe_path[var.os_name])
-        print('qtifw_binarycreator_path:       ', qtifw.binarycreator_path)
-        print('qtifw_installerbase_path:       ', qtifw.installerbase_path)
+        print('qtifw_version:                  ', self.qtifw.version)
+        print('qtifw_url:                      ', self.qtifw.url)
+        print('qtifw_setup_as_downloaded_path: ', self.qtifw.setup_as_downloaded_path)
+        print('qtifw_setup_exe_path:           ', self.qtifw.setup_exe_path[self.var.os_name])
+        print('qtifw_binarycreator_path:       ', self.qtifw.binarycreator_path)
+        print('qtifw_installerbase_path:       ', self.qtifw.installerbase_path)
         print()
-        print('silent_install_script_path: ', var.silent_install_script_path)
-        print('installer_config_dir_path:  ', var.installer_config_dir_path)
-        print('installer_config_xml_path:  ', var.installer_config_xml_path)
-        print('installer_packages_dir_path:', var.installer_packages_dir_path)
-        print('installer_data_dir_path:    ', var.installer_data_dir_path)
-        print('installer_dir_path:         ', var.installer_dir_path)
-        print('installer_exe_name:         ', var.installer_exe_name)
-        print('installer_exe_path:         ', var.installer_exe_path)
+        print('silent_install_script_path: ', self.var.silent_install_script_path)
+        print('installer_config_dir_path:  ', self.var.installer_config_dir_path)
+        print('installer_config_xml_path:  ', self.var.installer_config_xml_path)
+        print('installer_packages_dir_path:', self.var.installer_packages_dir_path)
+        print('installer_data_dir_path:    ', self.var.installer_data_dir_path)
+        print('installer_dir_path:         ', self.var.installer_dir_path)
+        print('installer_exe_name:         ', self.var.installer_exe_name)
+        print('installer_exe_path:         ', self.var.installer_exe_path)
         print()
-        print('cryspy_path:   ', var.cryspy_path)
-        print('shiboken2_path:', var.shiboken2_path)
-        print('pyside2_path:  ', var.pyside2_path)
+        print('cryspy_path:   ', self.var.cryspy_path)
+        print('shiboken2_path:', self.var.shiboken2_path)
+        print('pyside2_path:  ', self.var.pyside2_path)
         print()
-        print('certificates_zip_path:', var.certificates_zip_path)
-        print('certificate_file_path:', var.certificate_file_path)
+        print('certificates_zip_path:', self.var.certificates_zip_path)
+        print('certificate_file_path:', self.var.certificate_file_path)
         print()
-        print('os_specific_separator:   ', var.os_specific_separator[var.os_name])
-        print('os_specific_icon_ext:    ', var.os_specific_icon_ext[var.os_name])
-        print('os_specific_missing_libs:', var.os_specific_missing_libs[var.os_name])
+        print('os_specific_separator:   ', self.var.os_specific_separator[self.var.os_name])
+        print('os_specific_icon_ext:    ', self.var.os_specific_icon_ext[self.var.os_name])
+        print('os_specific_missing_libs:', self.var.os_specific_missing_libs[self.var.os_name])
 
 # Windows
   # lib not found: shiboken2.abi3.dll dependency of c:\python37\lib\site-packages\PySide2\QtGui.pyd, etc.
