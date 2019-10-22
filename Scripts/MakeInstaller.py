@@ -18,7 +18,7 @@ if (var.os_name == 'osx'):
     args = ['hdiutil', 'attach', qtifw.setup_as_downloaded_path]
     result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
     print(result)
-elif (os_name == 'linux'):
+elif (var.os_name == 'linux'):
     print('\n***** export QT_QPA_PLATFORM=minimal')
     os.environ["QT_QPA_PLATFORM"] = "minimal"
     print('\n***** Fix permissions')
