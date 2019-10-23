@@ -7,7 +7,8 @@ import sys
 release_number = sys.argv[1] if len(sys.argv) > 2 else '0.0.1'
 branch = sys.argv[2] if len(sys.argv) > 2 else 'master'
 
-if branch == 'master':
+#if branch == 'master':
+if re.search('v\d+\.\d+\.\d+', branch) # if release
     travis_tag = 'v{0}'.format(release_number)
 else:
     travis_tag = '{0}-v{1}'.format(branch, release_number)
