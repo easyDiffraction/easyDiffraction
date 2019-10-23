@@ -1,6 +1,6 @@
 <Package>
   <DisplayName>easyDiffraction</DisplayName>
-  <Version>0.3.5</Version>
+  <Version>0.3.6</Version>
   <ReleaseDate>2019-10-23</ReleaseDate>
   <Description>A scientific software for modelling and analysis of the neutron diffraction data</Description>
   <Script>installscript.js</Script>
