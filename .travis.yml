@@ -49,10 +49,11 @@ install:
   - pip install requests==2.22.0
   #
   - pip install pytest
+  - pytest --version
+  #
   - pip install pytest_mock
   - pip install pytest-cov
   - pip install pytest-qt
-  - pytest --version
   #
   #- pip install coveralls
 
