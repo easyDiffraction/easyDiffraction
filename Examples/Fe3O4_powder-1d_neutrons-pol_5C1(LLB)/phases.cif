@@ -1,7 +1,7 @@
 data_Fe3O4
-_cell_length_a 8.57()
-_cell_length_b 8.57
-_cell_length_c 8.57
+_cell_length_a 8.55()
+_cell_length_b 8.55
+_cell_length_c 8.55
 _cell_angle_alpha 90.0
 _cell_angle_beta 90.0
 _cell_angle_gamma 90.0
