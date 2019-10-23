@@ -15,8 +15,8 @@ Please, visit [easydiffraction.github.io](http://easydiffraction.github.io) for 
 [27]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=linux&label=Ubuntu%20Linux%2016.04%20(Xenial)&branch=develop
 
 <!---GitHub Latest Release--->
-[30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.4
-[35]: https://img.shields.io/badge/Release-v0.3.4_(9_Oct_2019)-informational.svg?style=flat-square
+[30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.5
+[35]: https://img.shields.io/badge/Release-v0.3.5_(23_Oct_2019)-informational.svg?style=flat-square
 
 <!---User Manual--->
 [40]: https://easydiffraction.github.io/documentation.html
