@@ -22,7 +22,7 @@ import PyImports.Helpers as Helpers
 # tested module
 from Proxy import *
 
-TEST_FILE = "file:Tests/Data/main.rcif"
+TEST_FILE = "file:Tests/Data/main.cif"
 def test_Proxy_properties():
     proxy = Proxy()
     assert proxy._main_rcif_path == None
@@ -32,7 +32,7 @@ def test_Proxy_properties():
 def test_Proxy_init():
     proxy = Proxy()
     proxy.init(TEST_FILE)
-    assert proxy._main_rcif_path == "Tests/Data/main.rcif"
+    assert proxy._main_rcif_path == "Tests/Data/main.cif"
     assert isinstance(proxy._project_model, CryspyCalculator)
     assert isinstance(proxy._measured_data_model, MeasuredDataModel)
     assert isinstance(proxy._calculated_data_model, CalculatedDataModel)
@@ -45,7 +45,7 @@ def test_Proxy_init():
     assert isinstance(proxy._fitables_model, FitablesModel)
     assert isinstance(proxy._refine_thread, Refiner)
 
-    assert "\\easyDiffraction\\Tests\\Data" in proxy.project_dir_absolute_path
+    #assert "\\easyDiffraction\\Tests\\Data" in proxy.project_dir_absolute_path
     assert "file:Tests/Data" in proxy.project_url_absolute_path
 
 def test_Proxy_getProject():
@@ -228,9 +228,3 @@ def test_save_report(mocker, tmp_path):
 
     proxy.save_report()
     assert Helpers.open_url.called == True
-
-
-    
-
-
-    
