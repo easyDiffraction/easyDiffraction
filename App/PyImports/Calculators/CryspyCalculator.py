@@ -6,6 +6,7 @@ from functools import reduce
 from datetime import datetime
 import numpy as np
 import cryspy
+import pycifstar
 
 from PySide2.QtCore import QObject, Signal
 
@@ -22,16 +23,36 @@ class CryspyCalculator(QObject):
         self._calculations_dict = {}
         # cryspy
         self._main_rcif_path = main_rcif_path
-        self._cryspy_obj = cryspy.rhochi_read_file(self._main_rcif_path)
+        self._main_rcif = None
+        self._cryspy_obj = self._createCryspyObj() #cryspy.rhochi_read_file(self._main_rcif_path)
         # project dict
         self._project_dict = {}
         self.setProjectDictFromCryspyObj()
+
+    def _createCryspyObj(self):
+        """Temporary solution to create cryspy object from separate rcif files"""
+        full_rcif_content = ''
+        rcif_dir_name = os.path.dirname(self._main_rcif_path)
+        self._main_rcif = pycifstar.read_star_file(self._main_rcif_path)
+        if "_phases" in str(self._main_rcif):
+            phases_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_phases"].value)
+            with open(phases_rcif_path, 'r') as f:
+                phases_rcif_content = f.read()
+                full_rcif_content += phases_rcif_content
+        if "_experiments" in str(self._main_rcif):
+            experiments_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_experiments"].value)
+            with open(experiments_rcif_path, 'r') as f:
+                experiments_rcif_content = f.read()
+                full_rcif_content += experiments_rcif_content
+        rho_chi = cryspy.RhoChi()
+        rho_chi.from_cif(full_rcif_content)
+        return rho_chi
 
     def setAppDict(self):
         """Set application state"""
         self._app_dict = {
             'name': 'easyDiffraction',
-            'version': '0.3.3',
+            'version': '0.3.4',
             'url': 'http://easydiffraction.github.io'
         }
 
@@ -45,9 +66,11 @@ class CryspyCalculator(QObject):
 
     def setInfoDict(self):
         """Set additional project info"""
+        name = self._main_rcif["_name"].value if "_name" in str(self._main_rcif) else 'Unknown'
+        keywords = self._main_rcif["_keywords"].value.split(', ') if "_keywords" in str(self._main_rcif) else ['']
         self._info_dict = {
-            'name': '',
-            'keywords': ['neutron diffraction', 'powder', '1d'],
+            'name': name,
+            'keywords': keywords,
             'phase_ids': [],
             'experiment_ids': [],
             'created_datetime': '',
@@ -286,151 +309,153 @@ class CryspyCalculator(QObject):
                     'refine': b_iso.refinement }
 
             # Anisotropic ADP
-            for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
-                phase.atom_site_aniso.u_11, phase.atom_site_aniso.u_22, phase.atom_site_aniso.u_33,
-                phase.atom_site_aniso.u_12, phase.atom_site_aniso.u_13, phase.atom_site_aniso.u_23):
-                self._phases_dict[phase.label]['atom_site'][label]['u_11'] = {
-                    'header': 'U11',
-                    'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                    'value': u_11.value,
-                    'error': u_11.sigma,
-                    'min': u_11.value * 0.8,
-                    'max': u_11.value * 1.2,
-                    'constraint': u_11.constraint,
-                    'hide': u_11.constraint_flag,
-                    'refine': u_11.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['u_22'] = {
-                    'header': 'U22',
-                    'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                    'value': u_22.value,
-                    'error': u_22.sigma,
-                    'min': u_22.value * 0.8,
-                    'max': u_22.value * 1.2,
-                    'constraint': u_22.constraint,
-                    'hide': u_22.constraint_flag,
-                    'refine': u_22.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['u_33'] = {
-                    'header': 'U33',
-                    'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                    'value': u_33.value,
-                    'error': u_33.sigma,
-                    'min': u_33.value * 0.8,
-                    'max': u_33.value * 1.2,
-                    'constraint': u_33.constraint,
-                    'hide': u_33.constraint_flag,
-                    'refine': u_33.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['u_12'] = {
-                    'header': 'U12',
-                    'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                    'value': u_12.value,
-                    'error': u_12.sigma,
-                    'min': u_12.value * 0.8,
-                    'max': u_12.value * 1.2,
-                    'constraint': u_12.constraint,
-                    'hide': u_12.constraint_flag,
-                    'refine': u_12.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['u_13'] = {
-                    'header': 'U13',
-                    'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                    'value': u_13.value,
-                    'error': u_13.sigma,
-                    'min': u_13.value * 0.8,
-                    'max': u_13.value * 1.2,
-                    'constraint': u_13.constraint,
-                    'hide': u_13.constraint_flag,
-                    'refine': u_13.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['u_23'] = {
-                    'header': 'U23',
-                    'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                    'value': u_23.value,
-                    'error': u_23.sigma,
-                    'min': u_23.value * 0.8,
-                    'max': u_23.value * 1.2,
-                    'constraint': u_23.constraint,
-                    'hide': u_23.constraint_flag,
-                    'refine': u_23.refinement }
+            if phase.atom_site_aniso is not None:
+                for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
+                    phase.atom_site_aniso.u_11, phase.atom_site_aniso.u_22, phase.atom_site_aniso.u_33,
+                    phase.atom_site_aniso.u_12, phase.atom_site_aniso.u_13, phase.atom_site_aniso.u_23):
+                    self._phases_dict[phase.label]['atom_site'][label]['u_11'] = {
+                        'header': 'U11',
+                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
+                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
+                        'value': u_11.value,
+                        'error': u_11.sigma,
+                        'min': u_11.value * 0.8,
+                        'max': u_11.value * 1.2,
+                        'constraint': u_11.constraint,
+                        'hide': u_11.constraint_flag,
+                        'refine': u_11.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['u_22'] = {
+                        'header': 'U22',
+                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
+                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
+                        'value': u_22.value,
+                        'error': u_22.sigma,
+                        'min': u_22.value * 0.8,
+                        'max': u_22.value * 1.2,
+                        'constraint': u_22.constraint,
+                        'hide': u_22.constraint_flag,
+                        'refine': u_22.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['u_33'] = {
+                        'header': 'U33',
+                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
+                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
+                        'value': u_33.value,
+                        'error': u_33.sigma,
+                        'min': u_33.value * 0.8,
+                        'max': u_33.value * 1.2,
+                        'constraint': u_33.constraint,
+                        'hide': u_33.constraint_flag,
+                        'refine': u_33.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['u_12'] = {
+                        'header': 'U12',
+                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
+                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
+                        'value': u_12.value,
+                        'error': u_12.sigma,
+                        'min': u_12.value * 0.8,
+                        'max': u_12.value * 1.2,
+                        'constraint': u_12.constraint,
+                        'hide': u_12.constraint_flag,
+                        'refine': u_12.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['u_13'] = {
+                        'header': 'U13',
+                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
+                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
+                        'value': u_13.value,
+                        'error': u_13.sigma,
+                        'min': u_13.value * 0.8,
+                        'max': u_13.value * 1.2,
+                        'constraint': u_13.constraint,
+                        'hide': u_13.constraint_flag,
+                        'refine': u_13.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['u_23'] = {
+                        'header': 'U23',
+                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
+                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
+                        'value': u_23.value,
+                        'error': u_23.sigma,
+                        'min': u_23.value * 0.8,
+                        'max': u_23.value * 1.2,
+                        'constraint': u_23.constraint,
+                        'hide': u_23.constraint_flag,
+                        'refine': u_23.refinement }
 
             # Anisotropic MSP
-            for label, chi_type, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label, phase.atom_site_magnetism_aniso.chi_type,
-                phase.atom_site_magnetism_aniso.chi_11, phase.atom_site_magnetism_aniso.chi_22, phase.atom_site_magnetism_aniso.chi_33,
-                phase.atom_site_magnetism_aniso.chi_12, phase.atom_site_magnetism_aniso.chi_13, phase.atom_site_magnetism_aniso.chi_23):
-                self._phases_dict[phase.label]['atom_site'][label]['chi_type'] = {
-                   'header': 'Type',
-                   'tooltip': '',
-                   'url': '',
-                   'value': chi_type }
-                self._phases_dict[phase.label]['atom_site'][label]['chi_11'] = {
-                    'header': 'Chi11',
-                    'tooltip': '',
-                    'url': '',
-                    'value': chi_11.value,
-                    'error': chi_11.sigma,
-                    'min': chi_11.value * 0.8,
-                    'max': chi_11.value * 1.2,
-                    'constraint': chi_11.constraint,
-                    'hide': chi_11.constraint_flag,
-                    'refine': chi_11.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['chi_22'] = {
-                    'header': 'Chi22',
-                    'tooltip': '',
-                    'url': '',
-                    'value': chi_22.value,
-                    'error': chi_22.sigma,
-                    'min': chi_22.value * 0.8,
-                    'max': chi_22.value * 1.2,
-                    'constraint': chi_22.constraint,
-                    'hide': chi_22.constraint_flag,
-                    'refine': chi_22.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['chi_33'] = {
-                    'header': 'Chi33',
-                    'tooltip': '',
-                    'url': '',
-                    'value': chi_33.value,
-                    'error': chi_33.sigma,
-                    'min': chi_33.value * 0.8,
-                    'max': chi_33.value * 1.2,
-                    'constraint': chi_33.constraint,
-                    'hide': chi_33.constraint_flag,
-                    'refine': chi_33.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['chi_12'] = {
-                    'header': 'Chi12',
-                    'tooltip': '',
-                    'url': '',
-                    'value': chi_12.value,
-                    'error': chi_12.sigma,
-                    'min': chi_12.value * 0.8,
-                    'max': chi_12.value * 1.2,
-                    'constraint': chi_12.constraint,
-                    'hide': chi_12.constraint_flag,
-                    'refine': chi_12.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['chi_13'] = {
-                    'header': 'Chi13',
-                    'tooltip': '',
-                    'url': '',
-                    'value': chi_13.value,
-                    'error': chi_13.sigma,
-                    'min': chi_13.value * 0.8,
-                    'max': chi_13.value * 1.2,
-                    'constraint': chi_13.constraint,
-                    'hide': chi_13.constraint_flag,
-                    'refine': chi_13.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['chi_23'] = {
-                    'header': 'Chi23',
-                    'tooltip': '',
-                    'url': '',
-                    'value': chi_23.value,
-                    'error': chi_23.sigma,
-                    'min': chi_23.value * 0.8,
-                    'max': chi_23.value * 1.2,
-                    'constraint': chi_23.constraint,
-                    'hide': chi_23.constraint_flag,
-                    'refine': chi_23.refinement }
+            if phase.atom_site_magnetism_aniso is not None:
+                for label, chi_type, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label, phase.atom_site_magnetism_aniso.chi_type,
+                    phase.atom_site_magnetism_aniso.chi_11, phase.atom_site_magnetism_aniso.chi_22, phase.atom_site_magnetism_aniso.chi_33,
+                    phase.atom_site_magnetism_aniso.chi_12, phase.atom_site_magnetism_aniso.chi_13, phase.atom_site_magnetism_aniso.chi_23):
+                    self._phases_dict[phase.label]['atom_site'][label]['chi_type'] = {
+                       'header': 'Type',
+                       'tooltip': '',
+                       'url': '',
+                       'value': chi_type }
+                    self._phases_dict[phase.label]['atom_site'][label]['chi_11'] = {
+                        'header': 'Chi11',
+                        'tooltip': '',
+                        'url': '',
+                        'value': chi_11.value,
+                        'error': chi_11.sigma,
+                        'min': chi_11.value * 0.8,
+                        'max': chi_11.value * 1.2,
+                        'constraint': chi_11.constraint,
+                        'hide': chi_11.constraint_flag,
+                        'refine': chi_11.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['chi_22'] = {
+                        'header': 'Chi22',
+                        'tooltip': '',
+                        'url': '',
+                        'value': chi_22.value,
+                        'error': chi_22.sigma,
+                        'min': chi_22.value * 0.8,
+                        'max': chi_22.value * 1.2,
+                        'constraint': chi_22.constraint,
+                        'hide': chi_22.constraint_flag,
+                        'refine': chi_22.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['chi_33'] = {
+                        'header': 'Chi33',
+                        'tooltip': '',
+                        'url': '',
+                        'value': chi_33.value,
+                        'error': chi_33.sigma,
+                        'min': chi_33.value * 0.8,
+                        'max': chi_33.value * 1.2,
+                        'constraint': chi_33.constraint,
+                        'hide': chi_33.constraint_flag,
+                        'refine': chi_33.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['chi_12'] = {
+                        'header': 'Chi12',
+                        'tooltip': '',
+                        'url': '',
+                        'value': chi_12.value,
+                        'error': chi_12.sigma,
+                        'min': chi_12.value * 0.8,
+                        'max': chi_12.value * 1.2,
+                        'constraint': chi_12.constraint,
+                        'hide': chi_12.constraint_flag,
+                        'refine': chi_12.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['chi_13'] = {
+                        'header': 'Chi13',
+                        'tooltip': '',
+                        'url': '',
+                        'value': chi_13.value,
+                        'error': chi_13.sigma,
+                        'min': chi_13.value * 0.8,
+                        'max': chi_13.value * 1.2,
+                        'constraint': chi_13.constraint,
+                        'hide': chi_13.constraint_flag,
+                        'refine': chi_13.refinement }
+                    self._phases_dict[phase.label]['atom_site'][label]['chi_23'] = {
+                        'header': 'Chi23',
+                        'tooltip': '',
+                        'url': '',
+                        'value': chi_23.value,
+                        'error': chi_23.sigma,
+                        'min': chi_23.value * 0.8,
+                        'max': chi_23.value * 1.2,
+                        'constraint': chi_23.constraint,
+                        'hide': chi_23.constraint_flag,
+                        'refine': chi_23.refinement }
 
     def setExperimentsDictFromCryspyObj(self):
         """Set experiments (Experimental data tab in GUI)"""
@@ -658,7 +683,6 @@ class CryspyCalculator(QObject):
         self.setPhasesDictFromCryspyObj()
         self.setExperimentsDictFromCryspyObj()
         self.setCalculationsDictFromCryspyObj()
-        self._info_dict['name'] = list(self._phases_dict.keys())[0]
         self._info_dict['phase_ids'] = list(self._phases_dict.keys())
         self._info_dict['experiment_ids'] = list(self._experiments_dict.keys())
         self._info_dict['modified_datetime'] = datetime.fromtimestamp(os.path.getmtime(self._main_rcif_path)).strftime('%d %b %Y, %H:%M:%S')
@@ -705,38 +729,40 @@ class CryspyCalculator(QObject):
 
             #
             # Anisotropic ADP
-            for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
-                phase.atom_site_aniso.u_11, phase.atom_site_aniso.u_22, phase.atom_site_aniso.u_33,
-                phase.atom_site_aniso.u_12, phase.atom_site_aniso.u_13, phase.atom_site_aniso.u_23):
-                    u_11.value = self._phases_dict[phase.label]['atom_site'][label]['u_11']['value']
-                    u_22.value = self._phases_dict[phase.label]['atom_site'][label]['u_22']['value']
-                    u_33.value = self._phases_dict[phase.label]['atom_site'][label]['u_33']['value']
-                    u_12.value = self._phases_dict[phase.label]['atom_site'][label]['u_12']['value']
-                    u_13.value = self._phases_dict[phase.label]['atom_site'][label]['u_13']['value']
-                    u_23.value = self._phases_dict[phase.label]['atom_site'][label]['u_23']['value']
-                    u_11.refine = self._phases_dict[phase.label]['atom_site'][label]['u_11']['refine']
-                    u_22.refine = self._phases_dict[phase.label]['atom_site'][label]['u_22']['refine']
-                    u_33.refine = self._phases_dict[phase.label]['atom_site'][label]['u_33']['refine']
-                    u_12.refine = self._phases_dict[phase.label]['atom_site'][label]['u_12']['refine']
-                    u_13.refine = self._phases_dict[phase.label]['atom_site'][label]['u_13']['refine']
-                    u_23.refine = self._phases_dict[phase.label]['atom_site'][label]['u_23']['refine']
+            if phase.atom_site_aniso is not None:
+                for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
+                    phase.atom_site_aniso.u_11, phase.atom_site_aniso.u_22, phase.atom_site_aniso.u_33,
+                    phase.atom_site_aniso.u_12, phase.atom_site_aniso.u_13, phase.atom_site_aniso.u_23):
+                        u_11.value = self._phases_dict[phase.label]['atom_site'][label]['u_11']['value']
+                        u_22.value = self._phases_dict[phase.label]['atom_site'][label]['u_22']['value']
+                        u_33.value = self._phases_dict[phase.label]['atom_site'][label]['u_33']['value']
+                        u_12.value = self._phases_dict[phase.label]['atom_site'][label]['u_12']['value']
+                        u_13.value = self._phases_dict[phase.label]['atom_site'][label]['u_13']['value']
+                        u_23.value = self._phases_dict[phase.label]['atom_site'][label]['u_23']['value']
+                        u_11.refine = self._phases_dict[phase.label]['atom_site'][label]['u_11']['refine']
+                        u_22.refine = self._phases_dict[phase.label]['atom_site'][label]['u_22']['refine']
+                        u_33.refine = self._phases_dict[phase.label]['atom_site'][label]['u_33']['refine']
+                        u_12.refine = self._phases_dict[phase.label]['atom_site'][label]['u_12']['refine']
+                        u_13.refine = self._phases_dict[phase.label]['atom_site'][label]['u_13']['refine']
+                        u_23.refine = self._phases_dict[phase.label]['atom_site'][label]['u_23']['refine']
 
             # Anisotropic MSP
-            for label, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label,
-                phase.atom_site_magnetism_aniso.chi_11, phase.atom_site_magnetism_aniso.chi_22, phase.atom_site_magnetism_aniso.chi_33,
-                phase.atom_site_magnetism_aniso.chi_12, phase.atom_site_magnetism_aniso.chi_13, phase.atom_site_magnetism_aniso.chi_23):
-                    chi_11.value = self._phases_dict[phase.label]['atom_site'][label]['chi_11']['value']
-                    chi_22.value = self._phases_dict[phase.label]['atom_site'][label]['chi_22']['value']
-                    chi_33.value = self._phases_dict[phase.label]['atom_site'][label]['chi_33']['value']
-                    chi_12.value = self._phases_dict[phase.label]['atom_site'][label]['chi_12']['value']
-                    chi_13.value = self._phases_dict[phase.label]['atom_site'][label]['chi_13']['value']
-                    chi_23.value = self._phases_dict[phase.label]['atom_site'][label]['chi_23']['value']
-                    chi_11.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_11']['refine']
-                    chi_22.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_22']['refine']
-                    chi_33.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_33']['refine']
-                    chi_12.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_12']['refine']
-                    chi_13.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_13']['refine']
-                    chi_23.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_23']['refine']
+            if phase.atom_site_magnetism_aniso is not None:
+                for label, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label,
+                    phase.atom_site_magnetism_aniso.chi_11, phase.atom_site_magnetism_aniso.chi_22, phase.atom_site_magnetism_aniso.chi_33,
+                    phase.atom_site_magnetism_aniso.chi_12, phase.atom_site_magnetism_aniso.chi_13, phase.atom_site_magnetism_aniso.chi_23):
+                        chi_11.value = self._phases_dict[phase.label]['atom_site'][label]['chi_11']['value']
+                        chi_22.value = self._phases_dict[phase.label]['atom_site'][label]['chi_22']['value']
+                        chi_33.value = self._phases_dict[phase.label]['atom_site'][label]['chi_33']['value']
+                        chi_12.value = self._phases_dict[phase.label]['atom_site'][label]['chi_12']['value']
+                        chi_13.value = self._phases_dict[phase.label]['atom_site'][label]['chi_13']['value']
+                        chi_23.value = self._phases_dict[phase.label]['atom_site'][label]['chi_23']['value']
+                        chi_11.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_11']['refine']
+                        chi_22.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_22']['refine']
+                        chi_33.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_33']['refine']
+                        chi_12.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_12']['refine']
+                        chi_13.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_13']['refine']
+                        chi_23.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_23']['refine']
 
     def setCryspyObjFromExperiments(self):
         """Set experiments (Experimental data tab in GUI)"""
@@ -784,11 +810,12 @@ class CryspyCalculator(QObject):
         """Get a value in a nested object in root by key sequence."""
         self.getByPath(keys[:-1])[keys[-1]] = value
         self.setCryspyObjFromProjectDict() # updates value in cryspy obj (actually all values, which is too expensive...)
-        if not isinstance(value, bool):
-            #self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
-            self.setProjectDictFromCryspyObj()
-            #print(self._project_dict["info"])
-            self.projectDictChanged.emit()
+        logging.info(value)
+        # Temporarly disable this check below and update model even if just 'fit' checkbox is changed.
+        #if not isinstance(value, bool):
+        #self.setCalculationsDictFromCryspyObj() # updates back calculated curve, if something is changed but Fit checkBox
+        self.setProjectDictFromCryspyObj()
+        self.projectDictChanged.emit()
 
     def phasesCount(self):
         """Returns number of phases in the project."""
@@ -822,7 +849,7 @@ class CryspyCalculator(QObject):
         calculations = {}
         phases = {}
         if len(self._cryspy_obj.experiments) > 0:
-            experiments = "data_" + self._cryspy_obj.experiments[0].label + "\n" + self._cryspy_obj.experiments[0].params_to_cif + "\n" + self._cryspy_obj.experiments[0].data_to_cif, # maybe meas_to_cif
+            experiments = "data_" + self._cryspy_obj.experiments[0].label + "\n" + self._cryspy_obj.experiments[0].params_to_cif + "\n" + self._cryspy_obj.experiments[0].data_to_cif # maybe meas_to_cif
             calculations = self._cryspy_obj.experiments[0].calc_to_cif
         if len(self._cryspy_obj.crystals) > 0:
             phases = self._cryspy_obj.crystals[0].to_cif

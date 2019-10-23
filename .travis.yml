@@ -4,133 +4,107 @@ cache: pip
 
 matrix:
   include:
+    # Linux
     - name: "Python 3.7.1 on Ubuntu Linux 16.04 (Xenial)"
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       dist: xenial
       env: BADGE=linux
+    # macOS
     - name: "Python 3.7.0 on macOS 10.13 (High Sierra)"
       os: osx
-      osx_image: xcode10.1 # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
+      osx_image: xcode9.4   # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
-        - python3 -m venv "$(dirname "$0")"/.python-venv # create virtual environment
-        - source "$(dirname "$0")"/.python-venv/bin/activate
+        - python3 -m venv $TRAVIS_BUILD_DIR/.python-venv # create virtual environment for convenience
+        - source $TRAVIS_BUILD_DIR/.python-venv/bin/activate # activate virtual environment
       env: BADGE=osx
+    # Windows
     - name: "Python 3.7.4 on Windows 10.0"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
       filter_secrets: false
       before_install:
-        - choco install python
-        - choco install zip
-        - choco install curl
-        - choco install grep
-        - choco install sed
+        - choco install python --version=3.7.4 # 3.8 fails with cryspy
         - pip install pypiwin32
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
 
-## We can secure environmental vars
 env:
   global:
-    secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
+    # GH_TOKEN
+    - secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
+    # CODE_SIGN_PSWD_DICT
+    - secure: "MUGB3OUDTpB8ZN70aRBmsCEqeUXsxMgNR5aDrTzgaOR8UIrAhRs30GH8NnASe8VIO6L48SRqGoFeXA4ZZ9h8RFZxQBcPG88/bKzPvPni+WQC5QYF9zbK1mv5IzHfurK08eH05FVz9Mx1BA/L0gviwnP4S4+1ICou0EnnO+sxxGFcGw+ixUpDYPJ2A+R6Dz5OICd2yUVGj3tD2ZYUY+dfnWbTtysb29OMbSMLIMybJ0MOXJ1ozWJibWmyV1tqo4eJ6ZeZKEhH4vKnWtZAeZ6MHLzWLN++jAc3XqxZAJ2czMpsHMeGRx3rjnyGqTXoVFPdmDovRmFZdF7RLYOVWiOKqpc041OMouy2E/dEZ48qJTqkFWQnLqu5HTQCx98RAwIh2czJni0N9DAViv0W/Vj+20JL03hIKYDWXBbigPKFQMI04DobYakBGB/NR3iWhTU4jpG84ttWmtkRfvmPBgIP5zxpJf6xUK6IK02zlENVyzX/X4gZ0cNwGMA7qUpPeBKAVVf8XVf5rSrTPKmH87K1TTbuKn4yP/nx9XqpEcTbkF+LkoyAeCyPEwds3sG9he1uXUd9N+kK/tBC+g444bfHmPJy+6qLS3UK/egX1mweYNVZ6ljA5Aoy4kYlNOJc7XVamjF6aQtBx2yADx5jZJkIhK29Rfy28br4sMaaIDyOysM="
 
 install:
-  #- python3 --version || python --version
-  #- python3 -m pip install --upgrade pip || python -m pip install --upgrade pip #- python -m pip install --upgrade pip # 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
   - python --version
+  #
   - python -m pip install --upgrade pip
   - pip --version
-  - pip install cryspy
-  - pip install PySide2
-  - pip install pyinstaller #- pip install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
-  #- pip3 install scipy
-  #- pip3 install numpy==1.16.4
+  #
+  - pip install cryspy==0.1.13
+  - pip install PySide2==5.13.1
+  - pip install pyinstaller==3.5
+  - pip install requests==2.22.0
+  #
   - pip install pytest
+  - pytest --version
+  #
   - pip install pytest_mock
   - pip install pytest-cov
   - pip install pytest-qt
-  - pip install coveralls
+  #
+  #- pip install coveralls
 
 before_script:
-# Fix python packaging, becaues it sucks
-  - if [ "$TRAVIS_OS_NAME" == windows ]; then cp C:/python37/lib/site-packages/shiboken2/shiboken2.abi3.dll C:/python37/lib/site-packages/PySide2/; fi
-  #- if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp /usr/local/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib /usr/local/lib/python3.7/site-packages/PySide2/; fi
-  - if [ "$TRAVIS_OS_NAME" == osx ]; then sudo cp "$(dirname "$0")"/.python-venv/lib/python3.7/site-packages/shiboken2/libshiboken2.abi3.*.dylib "$(dirname "$0")"/.python-venv/lib/python3.7/site-packages/PySide2/; fi
-# Compile qrc (qt resource file) into python file
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress; fi
-# Download cryspy
-  - git clone --single-branch --branch master https://github.com/ikibalin/cryspy
-# Make the app
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy;cryspy" --add-data "App;." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.ico; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then pyinstaller App/easyDiffraction.py --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:." --icon App/QmlImports/easyDiffraction/Resources/Icons/App.icns; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then pyinstaller App/easyDiffraction.py --noupx --noconfirm --clean --windowed --onedir --log-level WARN --add-data "cryspy/cryspy:cryspy" --add-data "App:."; fi
+  #- python Scripts/CompilePyResource.py
+  - export RELEASE_NUMBER=`python Scripts/GetReleaseNumber.py`
+  - export TRAVIS_TAG=`python Scripts/GetTravisTag.py $RELEASE_NUMBER $TRAVIS_BRANCH`
+  - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
+  - echo $TRAVIS_BRANCH
+  - echo $RELEASE_NUMBER
+  - echo $TRAVIS_TAG
+  - echo $RELEASE_TITLE
+  - echo Scripts/PrintLog.py
 
 script:
-  - pytest --version
+  # Compile qrc (qt resource file) into python file
+  #- pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress
+  - python Scripts/CopyMissingLibs.py
+  - python Scripts/MakeDist.py
+  - python Scripts/MakeInstaller.py
+  - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
+  - python Scripts/MakeArchive.py $RELEASE_NUMBER
   - if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
   - if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
 
-after_success:
-  - coveralls
-  - cd dist
-  - export TRAVIS_N=easyDiffraction-$TRAVIS_OS_NAME-v$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/').zip
-  - python ../Scripts/MakeInstaller.py "$TRAVIS_OS_NAME"
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.dmg; fi
-  - if [ "$TRAVIS_OS_NAME" == "windows" ]; then zip -r $TRAVIS_N easyDiffractionInstaller.exe; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then zip -r $TRAVIS_N easyDiffractionInstaller; fi
-  - cp $TRAVIS_N ../
+#after_success:
+  #- coveralls
 
 #cache:
 #  directories:
-#    - ~/easyDifraction
+#    - ~/easyDiffraction
 
 before_deploy:
   # Set up git user name and tag this commit
-  - git config --local user.name "Travis Builder"
+  - git config --local user.name "Travis CI"
   - git config --local user.email "travis@travis-ci.org"
-  - export RELEASE_NUMBER=$(cat ../App/QmlImports/easyDiffraction/Settings.qml | grep 'appVersion' | sed 's/.*"\(.*\)"[^"]*$/\1/')
-  - export TRAVIS_TAG=v$RELEASE_NUMBER
-  - '[ "$TRAVIS_BRANCH" == master ] || export TRAVIS_TAG=$TRAVIS_BRANCH-$TRAVIS_TAG'
-  - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
   # This writes a changelog. If wanted
   #- '[ "$TRAVIS_BRANCH" != master ] || cd ../ && pip3 install gitchangelog pystache && echo "output_engine = mustache(\"markdown\")" > .gitchangelog.rc && gitchangelog ^$(git describe --abbrev=0 --tags) HEAD > CHANGELOG'
 
-notifications:
-  slack:
-    rooms:
-      - secure: "t0nR618a2fr2EDpyfKWBBkcf5MJ549P732EGvN9gwXVYvl4z977KSSH6uPEw7/KmMec9BhMg882hJidoeh1XgvUQOiVan4jrlvn16z2INPWh/dloXOZN5YWz87tSLR1jn1tDaKSK7gaOF5HAosPbQ2/UriUaAG9d9GHJKJzCogNDAFwFge3K/b4KJr1kYpwS5Vd5K99peWnsrNYBz1M4+Xjc49cd5t5FKULtFduX0Zb25t3dQ25u9LfGQ5lyH65UNSqcu9DP4RZmX00KLYNnIOYtzuyWvehPhisoBozA+Fpuly2IaFPVswtHqO/h9kziyYBBcnEAvG0U+KHmkJy21vDHN5+yPoHlcuAr0Q95C7GEpUT/JVAeNggxWWF4WLYrcTbZXWGt69pBhuFUAZRnbzSV+wBF5ZAOK/5W9TvxYMM1uS9AqdLEmUQdtIGrj2VIDS1na0dielNMnOhBc0Xgap2as/Kb1aEkPuSA6kENDOGXrw1Vs0VjFK3iWOlyzHbfHdHWM1/WZOO2sZRNjdTgWS5x5UXJbozTcM5mzcAkZ21vVpVG5h7LQI3cMPpD45Hmtmnko6S+7FlaknesIeXXhZPwILxN12LtbBo7AkUqtdi/w4Do7CAA++hNJRQx2txa9Mfi6R9XhNccc9+3Mto6lw5hW9mDmb2b1TlrLksW5Ew="
-    on_success: always
-    on_failure: always
-
 deploy:
-  # This is where I deploy the results to github
-  - provider: releases
+  - provider: releases # GitHub repository
     name: $RELEASE_TITLE
     api_key:
       secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
     skip_cleanup: true
-    draft: false
-    overwrite: true
-    file_glob: true
-    file: easyDiffraction-*.zip
-    on:
-      branch: master
-  - provider: releases
-    name: $RELEASE_TITLE
-    api_key:
-      secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
-    skip_cleanup: true
-    draft: true
+    draft: true #$NOT_MASTER_BRANCH # true: only repository collaborators can see
     overwrite: true
     file_glob: true
     file: easyDiffraction-*.zip
     on:
       all_branches: true
-      condition: "$TRAVIS_BRANCH != 'master'"
 
 after_deploy:
   -  |
@@ -144,3 +118,12 @@ after_deploy:
         git commit -m 'Bumped release links [ci skip]'
         git push origin HEAD:master
      fi
+
+notifications:
+  slack:
+    rooms:
+      - secure: "t0nR618a2fr2EDpyfKWBBkcf5MJ549P732EGvN9gwXVYvl4z977KSSH6uPEw7/KmMec9BhMg882hJidoeh1XgvUQOiVan4jrlvn16z2INPWh/dloXOZN5YWz87tSLR1jn1tDaKSK7gaOF5HAosPbQ2/UriUaAG9d9GHJKJzCogNDAFwFge3K/b4KJr1kYpwS5Vd5K99peWnsrNYBz1M4+Xjc49cd5t5FKULtFduX0Zb25t3dQ25u9LfGQ5lyH65UNSqcu9DP4RZmX00KLYNnIOYtzuyWvehPhisoBozA+Fpuly2IaFPVswtHqO/h9kziyYBBcnEAvG0U+KHmkJy21vDHN5+yPoHlcuAr0Q95C7GEpUT/JVAeNggxWWF4WLYrcTbZXWGt69pBhuFUAZRnbzSV+wBF5ZAOK/5W9TvxYMM1uS9AqdLEmUQdtIGrj2VIDS1na0dielNMnOhBc0Xgap2as/Kb1aEkPuSA6kENDOGXrw1Vs0VjFK3iWOlyzHbfHdHWM1/WZOO2sZRNjdTgWS5x5UXJbozTcM5mzcAkZ21vVpVG5h7LQI3cMPpD45Hmtmnko6S+7FlaknesIeXXhZPwILxN12LtbBo7AkUqtdi/w4Do7CAA++hNJRQx2txa9Mfi6R9XhNccc9+3Mto6lw5hW9mDmb2b1TlrLksW5Ew="
+    on_success: always
+    on_failure: always
+
+#https://docs.travis-ci.com/user/job-lifecycle/

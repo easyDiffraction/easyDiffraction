@@ -8,7 +8,7 @@ import cryspy
 # module for testing
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
-TEST_FILE = "file:Tests/Data/main.rcif"
+TEST_FILE = "file:Tests/Data/main.cif"
 
 @pytest.fixture
 def cal():
@@ -251,7 +251,7 @@ def test_asCifDict(cal):
 
     assert isinstance(d, dict)
     assert 'data_Fe3O4' in d['phases']
-    assert 'data_pnd' in d['experiments'][0]
+    assert 'data_pnd' in d['experiments']
     assert '_refln_index_h' in d['calculations']
 
 def test_refine(cal, mocker):
@@ -274,5 +274,3 @@ def test_refine(cal, mocker):
     assert ret['refinement_message'] == "test1"
     assert ret['njev'] == 42
     assert ret['nit'] == 2
-
-
