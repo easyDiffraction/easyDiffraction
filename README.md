@@ -10,9 +10,9 @@ Please, visit [easydiffraction.github.io](http://easydiffraction.github.io) for 
 
 <!---Travis CI Build Status--->
 [20]: https://travis-ci.org/easyDiffraction/easyDiffraction
-[25]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=win&label=Windows%2010.0&branch=develop
-[26]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=osx&label=macOS%2010.13%20(High%20Sierra)&branch=develop
-[27]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=linux&label=Ubuntu%20Linux%2016.04%20(Xenial)&branch=develop
+[25]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=win&label=Windows%2010.0&branch=master
+[26]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=osx&label=macOS%2010.13%20(High%20Sierra)&branch=master
+[27]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=linux&label=Ubuntu%20Linux%2016.04%20(Xenial)&branch=master
 
 <!---GitHub Latest Release--->
 [30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.5
