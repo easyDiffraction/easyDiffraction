@@ -106,18 +106,18 @@ deploy:
     on:
       all_branches: true
 
-after_deploy:
-  -  |
-     if [ $TRAVIS_BRANCH = "master" ]; then
-        cd ~/
-        git clone https://github.com/easyDiffraction/easyDiffraction.github.io.git
-        cd easyDiffraction.github.io
-        git remote set-url origin https://$GH_TOKEN@github.com/easyDiffraction/easyDiffraction.github.io.git
-        cat index_template.html | awk '{gsub(/RELEASE_V/,"'$TRAVIS_TAG'")}1' | awk '{gsub(/RELEASE_N/,"'$RELEASE_NUMBER'")}1' | awk '{gsub(/RELEASE_D/,"'$(date +'%d %b %Y')'")}1' > index.html
-        git add index.html
-        git commit -m 'Bumped release links [ci skip]'
-        git push origin HEAD:master
-     fi
+#after_deploy:
+#  -  |
+#     if [ $TRAVIS_BRANCH = "master" ]; then
+#        cd ~/
+#        git clone https://github.com/easyDiffraction/easyDiffraction.github.io.git
+#        cd easyDiffraction.github.io
+#        git remote set-url origin https://$GH_TOKEN@github.com/easyDiffraction/easyDiffraction.github.io.git
+#        cat index_template.html | awk '{gsub(/RELEASE_V/,"'$TRAVIS_TAG'")}1' | awk '{gsub(/RELEASE_N/,"'$RELEASE_NUMBER'")}1' | awk '{gsub(/RELEASE_D/,"'$(date +'%d %b %Y')'")}1' > index.html
+#        git add index.html
+#        git commit -m 'Bumped release links [ci skip]'
+#        git push origin HEAD:master
+#     fi
 
 notifications:
   slack:
