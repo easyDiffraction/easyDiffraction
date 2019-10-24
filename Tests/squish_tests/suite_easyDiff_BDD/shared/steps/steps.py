@@ -59,18 +59,18 @@ def step(context):
     test.compare(waitForObjectExists(names.easyDiffraction_Button_2).visible, True)
 
 
-@Given("File is loaded")
+@When("A test file is loaded")
 def step(context):
     mouseClick(waitForObject(names.easyDiffraction_Text_7))
     mouseClick(waitForObject(names.easyDiffraction_Open_another_project_Button), 129, 26, Qt.LeftButton)
     # Workaround for Windows not having the right winhook.dll
-    snooze(5) 
-    nativeType("main.rcif")
+    snooze(2) 
+    nativeType("main.cif")
     snooze(1)
     nativeType("<Return>")
     snooze(1)
     # end of workaround    
-    test.compare(str(waitForObjectExists(names.easyDiffraction_Fe3O4_Text).text), "Fe3O4")
+    #test.compare(str(waitForObjectExists(names.easyDiffraction_Fe3O4_Text).text), "Fe3O4")
 
 @When("Structure tab open")
 def step(context):
@@ -78,21 +78,11 @@ def step(context):
     mouseClick(waitForObject(names.easyDiffraction_Text_3))    
     mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_5))
 
-@Then("Structure should be visible")
-def step(context):
-    test.vp("VP1")
-
-
 @When("Chart tab open")
 def step(context):
     mouseClick(waitForObject(names.tabBar_Home_Button), 147, 20, Qt.LeftButton)
     mouseClick(waitForObject(names.easyDiffraction_Text_3))    
     #mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_6))
-
-@Then("Chart should be visible")
-def step(context):
-    test.vp("VP2")
-
 
 @When("Fitting tab open")
 def step(context):
@@ -108,3 +98,91 @@ def step(context):
 def step(context):
     test.compare(waitForObjectExists(names.easyDiffraction_Start_fitting_Button).enabled, True)
     test.compare(str(waitForObjectExists(names.easyDiffraction_Start_fitting_Button).text), "Start fitting")
+
+"""
+@When("Program Preferences opened")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_Program_Preferences_Button), 7, 25, Qt.LeftButton)
+
+@Then("Two options are visible")
+def step(context):
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_Animated_Intro_CheckBox).visible, True)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_Show_Animated_Intro_CheckBox).text), "Show Animated Intro")
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_User_Guides_CheckBox).visible, True)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_Show_User_Guides_CheckBox).text), "Show User Guides")
+
+@Then("user can select Show Animated Intro")
+def step(context):
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_Animated_Intro_CheckBox).checkable, True)
+
+@Then("user can select Show User Guides")
+def step(context):
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_User_Guides_CheckBox).checkable, True)
+"""
+
+@Then("Home page has textual information")
+def step(context):
+    test.compare(waitForObjectExists(names.easyDiffraction_Fe3O4_Text).visible, True)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_Fe3O4_Text).text), "Fe3O4")
+    test.compare(waitForObjectExists(names.easyDiffraction_Text_7).visible, True)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_Text_7).text), "Keywords: neutron diffraction, powder, 1d\nPhases: Fe3O4\nExperiments: pnd\nInstrument: 6T2 at LLB\nModified: 23 Oct 2019, 13:37:24")
+
+@When("Selected Experimental Data tab")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_6))
+
+@Then("Chart should be active")
+def step(context):
+    test.compare(waitForObjectExists(names.tabBar_Experimental_Data_Button).checked, True)
+    test.compare(waitForObjectExists(names.tabBar_Experimental_Data_Button).enabled, True)
+
+
+@Then("Chart should be visible")
+def step(context):
+    test.vp("VP1")
+
+@Then("Chart Table View should be present")
+def step(context):
+    mouseClick(waitForObject(names.tabBar_label_MnemonicLabel))
+    test.compare(str(waitForObjectExists(names.headerTableView_x_Text).text), "x")
+    test.compare(waitForObjectExists(names.headerTableView_x_Text).visible, True)
+    test.compare(waitForObjectExists(names.headerTableView_y_obs_up_Text).visible, True)
+    test.compare(str(waitForObjectExists(names.headerTableView_y_obs_up_Text).text), "y_obs_up")
+    test.compare(str(waitForObjectExists(names.headerTableView_sy_obs_up_Text).text), "sy_obs_up")
+    test.compare(waitForObjectExists(names.headerTableView_sy_obs_up_Text).visible, True)
+    test.compare(str(waitForObjectExists(names.contentTableView_TextInput).text), "585.0554")
+    test.compare(waitForObjectExists(names.contentTableView_TextInput).visible, True)
+
+@Then("Chart Text View should be present")
+def step(context):
+    test.compare(str(waitForObjectExists(names.tabBar_Text_View_TabButton).text), "Text View")
+    test.compare(waitForObjectExists(names.tabBar_Text_View_TabButton).visible, True)
+
+@When("Selected Sample Model tab")
+def step(context):
+    mouseClick(waitForObject(names.tabBar_Home_Button), 214, 27, Qt.LeftButton)
+    mouseClick(waitForObject(names.easyDiffraction_Text_3))
+    mouseClick(waitForObject(names.tabBar_Plot_View_TabButton), 157, 9, Qt.LeftButton)
+    mouseClick(waitForObject(names.easyDiffraction_Text_8))
+
+@Then("Structure should be active")
+def step(context):
+    test.compare(str(waitForObjectExists(names.tabBar_Structure_View_TabButton).text), "Structure View")
+    test.compare(waitForObjectExists(names.tabBar_Structure_View_TabButton).visible, True)
+
+@Then("Structure should be visible")
+def step(context):
+    test.vp("VP2")
+
+@Then("Structure Text View should be present")
+def step(context):
+    mouseClick(waitForObject(names.tabBar_Text_View_TabButton), 95, 18, Qt.LeftButton)
+    test.compare(str(waitForObjectExists(names.tabBar_Text_View_TabButton).text), "Text View")
+    test.compare(waitForObjectExists(names.tabBar_Text_View_TabButton).visible, True)
+
+@Then("Analysis button enabled")
+def step(context):
+    mouseClick(waitForObject(names.tabBar_Structure_View_TabButton), 48, 20, Qt.LeftButton)
+    test.compare(waitForObjectExists(names.easyDiffraction_Button).enabled, True)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_Button).text), "Analysis")
+    test.compare(waitForObjectExists(names.easyDiffraction_Button).visible, True)
