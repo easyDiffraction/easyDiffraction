@@ -1,5 +1,7 @@
 import sys
 import os
+import webbrowser
+
 import pytest
 from pytest_mock import mocker
 from _pytest import monkeypatch
@@ -54,5 +56,25 @@ def no_test_find_in_obj():
     assert list(find_in_obj(obj, condition, path=path)) == ""
 
 def test_open_url(mocker):
-    url = ""
+    mocker.patch('logging.info')
+
+    # bad open
+    url = None
+    open_url(url)
+    bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not NoneType'
+    logging.info.assert_called_once_with(bad_msg)
+
+    url = {}
+    open_url(url)
+    bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not dict'
+    logging.info.assert_called_with(bad_msg)
+
+    mocker.patch('webbrowser.open')
+    # good open
+    url = "test.html"
+    open_url(url)
+
+    # can't test the string passed since it is strictly machine dependent
+    webbrowser.open.assert_called_once()
+
 
