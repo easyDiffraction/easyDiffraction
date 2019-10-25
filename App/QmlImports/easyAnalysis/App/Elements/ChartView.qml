@@ -14,7 +14,7 @@ ColumnLayout {
     property bool showInfo: true
 
     property int extraPadding: 12
-    property int boarderWidth: 2
+    property int borderWidth: 2
     property int infoPadding: 10
     property int xScaleZoom: 0
     property int yScaleZoom: 0
@@ -60,21 +60,21 @@ ColumnLayout {
 
             Rectangle {
                 id:plotInfoRec
-                width: plotInfo.paintedWidth + boarderWidth + extraPadding/2
-                height: plotInfo.paintedHeight + boarderWidth + extraPadding/2
+                width: plotInfo.paintedWidth + borderWidth + extraPadding/2
+                height: plotInfo.paintedHeight + borderWidth + extraPadding/2
                 color: Generic.Style.blueColor
                 opacity: 0.1
                 border.color: Qt.darker(Generic.Style.blueColor, 1.5)
-                border.width: boarderWidth
+                border.width: borderWidth
                 anchors.right: parent.right
                 anchors.top: parent.top
-                anchors.topMargin: 2*extraPadding + boarderWidth + infoPadding
-                anchors.rightMargin: 2*extraPadding - boarderWidth + infoPadding
+                anchors.topMargin: 2*extraPadding + borderWidth + infoPadding
+                anchors.rightMargin: 2*extraPadding - borderWidth + infoPadding
             }
             Label {
                 id: plotInfo
-                x: plotInfoRec.x + boarderWidth/2 + extraPadding/4
-                y: plotInfoRec.y + boarderWidth/2 + extraPadding/4
+                x: plotInfoRec.x + borderWidth/2 + extraPadding/4
+                y: plotInfoRec.y + borderWidth/2 + extraPadding/4
                 font.family: Generic.Style.introThinFontFamily
                 font.pointSize: Generic.Style.systemFontPointSize + 1
                 text:  {
