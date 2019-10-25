@@ -183,6 +183,14 @@ class Proxy(QObject):
         return self._atom_msps_model.asModel()
     atomMsps = Property('QVariant', getAtomMsps, notify=atomMspsChanged)
 
+    # Number of fitted parameters
+    def getNumFittedPars(self):
+        ##logging.info("")
+        if self._fitables_model is None:
+            return 0
+        return self._fitables_model.numFittedPars()
+    numFittedPars = Property(int, getNumFittedPars, notify=projectChanged)
+
     # Fitables model for QML
     fitablesChanged = Signal()
     def getFitables(self):

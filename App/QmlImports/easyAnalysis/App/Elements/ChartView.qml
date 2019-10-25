@@ -14,6 +14,8 @@ ColumnLayout {
     property bool showInfo: true
 
     property int extraPadding: 12
+    property int boarderWidth: 2
+    property int infoPadding: 10
     property int xScaleZoom: 0
     property int yScaleZoom: 0
 
@@ -55,6 +57,47 @@ ColumnLayout {
             Layout.fillHeight: true
             color: "transparent"
             clip: true
+
+            Rectangle {
+                id:plotInfoRec
+                width: plotInfo.paintedWidth + boarderWidth + extraPadding/2
+                height: plotInfo.paintedHeight + boarderWidth + extraPadding/2
+                color: Generic.Style.blueColor
+                opacity: 0.1
+                border.color: Qt.darker(Generic.Style.blueColor, 1.5)
+                border.width: boarderWidth
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.topMargin: 2*extraPadding + boarderWidth + infoPadding
+                anchors.rightMargin: 2*extraPadding - boarderWidth + infoPadding
+            }
+            Label {
+                id: plotInfo
+                x: plotInfoRec.x + boarderWidth/2 + extraPadding/4
+                y: plotInfoRec.y + boarderWidth/2 + extraPadding/4
+                font.family: Generic.Style.introThinFontFamily
+                font.pointSize: Generic.Style.systemFontPointSize + 1
+                text:  {
+                        const showPars = {
+                            'Final goodnes-of-fit (\u03c7\u00b2)': Generic.Variables.chiSquared,
+                            'Number of refined parameters': Generic.Variables.numRefinedPars
+                        }
+                        let out = ""
+                        for (let key in showPars) {
+                            if (showPars[key]) {
+                                out += "%1: %2\n".arg(key).arg(showPars[key])
+                            }
+                        }
+                        if (out){
+                            plotInfo.visible = true
+                            plotInfoRec.visible = true
+                        } else {
+                            plotInfo.visible = false
+                            plotInfoRec.visible = false
+                        }
+                        return out.slice(0, -1)
+                    }
+             }
 
             //////////////////////////
             // Top chart (Iobs, Icalc)

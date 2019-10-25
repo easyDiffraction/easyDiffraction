@@ -867,6 +867,7 @@ class CryspyCalculator(QObject):
         self.projectDictChanged.emit()
         try:
             return {
+                "num_refined_parameters": len(scipy_refinement_res.x),
                 "refinement_message":scipy_refinement_res.message,
                 "nfev":scipy_refinement_res.nfev,
                 "nit":scipy_refinement_res.nit,

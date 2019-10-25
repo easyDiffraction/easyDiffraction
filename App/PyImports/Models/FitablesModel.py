@@ -12,6 +12,7 @@ class FitablesModel(QObject):
         self._first_role = Qt.UserRole + 1
         self._edit_role_increment = 100
         self._edit_role_name_suffix = 'Edit'
+        # self._no_fitted_pars = 0
         # major properties
         self._calculator = calculator
         self._model = QStandardItemModel()
@@ -24,8 +25,8 @@ class FitablesModel(QObject):
         # set model
         self._setModelFromProject()
         # connect signals
-        self._model.dataChanged.connect(self.onModelChanged)
         self._calculator.projectDictChanged.connect(self.onProjectChanged)
+        self._model.dataChanged.connect(self.onModelChanged)
 
     def _setRolesListAndDict(self):
         """..."""
@@ -43,6 +44,7 @@ class FitablesModel(QObject):
         project_dict = self._calculator.asDict()
         # set column
         column = []
+        # self._no_fitted_pars = 0
         for path in Helpers.find_in_obj(project_dict, 'refine'):
             keys_list = path[:-1]
             hide = Helpers.nested_get(project_dict, keys_list + ['hide'])
@@ -59,6 +61,9 @@ class FitablesModel(QObject):
                     value = ' '.join(keys_list)
                 else:
                     value = Helpers.nested_get(project_dict, keys_list + [role_name])
+                # if role_name == 'refine':
+                #     if Helpers.nested_get(project_dict, keys_list + [role_name]) == 1:
+                #          self._no_fitted_pars = self._no_fitted_pars + 1
                 item.setData(value, role)
             column.append(item)
         # set model
@@ -75,6 +80,7 @@ class FitablesModel(QObject):
         display_value = self._model.data(index, display_role)
         if edit_value != display_value:
             self._calculator.setByPath(keys_list, edit_value)
+        ##self.modelChanged.emit()
 
     modelChanged = Signal()
 
@@ -96,3 +102,6 @@ class FitablesModel(QObject):
     def asModel(self):
         """Return model."""
         return self._model
+
+    # def numFittedPars(self):
+    #     return self._no_fitted_pars

@@ -134,6 +134,7 @@ ColumnLayout {
                     return ""
                 const res = proxy.refinementResult
                 Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
+                Generic.Variables.numRefinedPars = res.num_refined_parameters ? res.num_refined_parameters : Generic.Variables.numRefinedPars
                 let s = `${res.refinement_message}`
                 s += res.num_refined_parameters ? `\nNumber of refined parameters: ${res.num_refined_parameters}` : ""
                 s += res.nfev ? `\nNumber of evaluations of the objective functions: ${res.nfev}` : ""
