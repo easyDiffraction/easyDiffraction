@@ -262,6 +262,7 @@ def test_refine(cal, mocker):
         nit = 2
         njev = 42
         fun = 0.01
+        x = []
 
     mocker.patch.object(cal._cryspy_obj, 'refine', return_value=mocked_scipy_res(), autospec=True)
 
@@ -274,3 +275,4 @@ def test_refine(cal, mocker):
     assert ret['refinement_message'] == "test1"
     assert ret['njev'] == 42
     assert ret['nit'] == 2
+    assert ret['num_refined_parameters'] == 0
