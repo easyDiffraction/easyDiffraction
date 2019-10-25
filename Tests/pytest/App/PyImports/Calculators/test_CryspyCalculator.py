@@ -9,6 +9,7 @@ import cryspy
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
 TEST_FILE = "file:Tests/Data/main.cif"
+fitdata_data = [0, 2, 3, 5]
 
 @pytest.fixture
 def cal():
@@ -254,7 +255,8 @@ def test_asCifDict(cal):
     assert 'data_pnd' in d['experiments']
     assert '_refln_index_h' in d['calculations']
 
-def test_refine(cal, mocker):
+@pytest.mark.parametrize("fit_len", fitdata_data)
+def test_refine(cal, mocker, fit_len):
 
     class mocked_scipy_res():
         message = "test1"
@@ -262,7 +264,7 @@ def test_refine(cal, mocker):
         nit = 2
         njev = 42
         fun = 0.01
-        x = []
+        x = [y for y in range(fit_len)]
 
     mocker.patch.object(cal._cryspy_obj, 'refine', return_value=mocked_scipy_res(), autospec=True)
 
@@ -275,4 +277,4 @@ def test_refine(cal, mocker):
     assert ret['refinement_message'] == "test1"
     assert ret['njev'] == 42
     assert ret['nit'] == 2
-    assert ret['num_refined_parameters'] == 0
+    assert ret['num_refined_parameters'] == fit_len
