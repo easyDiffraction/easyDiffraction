@@ -128,6 +128,7 @@
         <file>QmlImports/easyAnalysis/App/Elements/qmldir</file>
         <file>QmlImports/easyAnalysis/App/Elements/RowLayout.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/SidebarStack.qml</file>
+        <file>QmlImports/easyAnalysis/App/Elements/StatusBar.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/StructureView.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/TextField.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/VerticalBorder.qml</file>

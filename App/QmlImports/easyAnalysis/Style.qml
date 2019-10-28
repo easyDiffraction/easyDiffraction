@@ -27,7 +27,8 @@ QtObject {
     readonly property string darkGreenColor: "#669431"
     readonly property var atomColorList: [redColor, greenColor, blueColor, "orange", "grey"]
 
-
+    // StatusBar
+    readonly property int statusBarHeight: 28
 
     // Sidebar
     readonly property int sidebarWidth: 605//554//518
