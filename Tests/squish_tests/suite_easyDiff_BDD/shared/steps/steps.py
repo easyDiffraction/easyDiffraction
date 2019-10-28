@@ -186,3 +186,54 @@ def step(context):
     test.compare(waitForObjectExists(names.easyDiffraction_Button).enabled, True)
     test.compare(str(waitForObjectExists(names.easyDiffraction_Button).text), "Analysis")
     test.compare(waitForObjectExists(names.easyDiffraction_Button).visible, True)
+
+
+@When("Structure is rotated")
+def step(context):
+    mouseDrag(waitForObject(names.easyDiffraction_chart_QtDataVisualization_DeclarativeScatter), 501, 277, 252, 406, Qt.NoModifier, Qt.RightButton)
+
+
+@When("Structure is reset")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_chart_QtDataVisualization_DeclarativeScatter), 494, 302, Qt.LeftButton)
+
+@Then("Structure looks the same")
+def step(context):
+    test.vp("VP2")
+
+@Then("Structure looks rotated")
+def step(context):
+    test.vp("VP1")
+
+@Then("Structure looks different than original")
+def step(context):
+    test.vp("VP3")  # same structure as VP2 but with eception selected
+
+
+@When("Structure is zoomed")
+def step(context):
+    mouseWheel(waitForObject(names.easyDiffraction_chart_QtDataVisualization_DeclarativeScatter), 494, 302, 250, 0, Qt.NoModifier)
+    
+
+
+@When("Program Preferences opened")
+def step(context):
+    moveWindow(waitForObject(names.easyDiffraction_QQuickApplicationWindow), 33, -226)
+    mouseClick(waitForObject(names.easyDiffraction_image_IconImage_6), 5, 10, Qt.LeftButton)
+
+@Then("user can select Show Animated Intro")
+def step(context):
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_Animated_Intro_CheckBox).checkable, True)
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_Animated_Intro_CheckBox).checked, False)
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_Animated_Intro_CheckBox).visible, True)
+
+@Then("user can select Show User Guides")
+def step(context):
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_User_Guides_CheckBox).checkable, True)
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_User_Guides_CheckBox).checked, False)
+    test.compare(waitForObjectExists(names.easyDiffraction_Show_User_Guides_CheckBox).visible, True)
+
+
+@Then("Two options are visible")
+def step(context):
+    test.compare(waitForObjectExists(names.easyDiffraction_ColumnLayout_2).implicitHeight, 66)
