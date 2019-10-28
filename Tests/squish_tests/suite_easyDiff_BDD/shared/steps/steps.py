@@ -212,7 +212,7 @@ def step(context):
 
 @When("Structure is zoomed")
 def step(context):
-    mouseWheel(waitForObject(names.easyDiffraction_chart_QtDataVisualization_DeclarativeScatter), 494, 302, 250, 0, Qt.NoModifier)
+    mouseWheel(waitForObject(names.easyDiffraction_chart_QtDataVisualization_DeclarativeScatter), 494, 302, 0, -100, Qt.NoModifier)
     
 
 
@@ -237,3 +237,8 @@ def step(context):
 @Then("Two options are visible")
 def step(context):
     test.compare(waitForObjectExists(names.easyDiffraction_ColumnLayout_2).implicitHeight, 66)
+
+
+@Then("Structure looks zoomed")
+def step(context):
+    test.vp("VP4")

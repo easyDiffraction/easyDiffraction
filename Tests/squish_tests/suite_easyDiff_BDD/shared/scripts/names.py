@@ -80,3 +80,5 @@ tabBar_Text_View_TabButton = {"checkable": True, "container": tabBar_tabBar_TabB
 tabBar_Plot_View_TabButton = {"checkable": True, "container": tabBar_tabBar_TabBar, "text": "Plot View", "type": "TabButton", "unnamed": 1, "visible": True}
 easyDiffraction_Text_8 = {"container": easyDiffraction_QQuickApplicationWindow, "occurrence": 35, "type": "Text", "unnamed": 1, "visible": True}
 tabBar_Structure_View_TabButton = {"checkable": True, "container": tabBar_tabBar_TabBar, "text": "Structure View", "type": "TabButton", "unnamed": 1, "visible": True}
+easyDiffraction_image_IconImage_6 = {"container": easyDiffraction_QQuickApplicationWindow, "objectName": "image", "occurrence": 3, "source": "C:/util/easyDiffraction/easyDiffraction/QmlImports/easyAnalysis/Resources/Icons/triangle-right.svg", "type": "IconImage", "visible": True}
+easyDiffraction_ColumnLayout_2 = {"container": easyDiffraction_QQuickApplicationWindow, "occurrence": 8, "type": "ColumnLayout", "unnamed": 1, "visible": True}
