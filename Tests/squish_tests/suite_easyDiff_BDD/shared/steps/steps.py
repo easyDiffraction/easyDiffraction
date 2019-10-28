@@ -242,3 +242,34 @@ def step(context):
 @Then("Structure looks zoomed")
 def step(context):
     test.vp("VP4")
+
+
+@When("Experimental Data tab open")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_Text_3))
+
+@Then("Chart looks like the default")
+def step(context):
+    test.vp("VP1")
+
+@When("A peak is clicked")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_topChart_QtCharts_DeclarativeChart), 482, 363, Qt.LeftButton)
+
+@Then("Coordinates are shown")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_topChart_QtCharts_DeclarativeChart), 483, 363, Qt.LeftButton)
+
+@When("Chart is zoomed in")
+def step(context):
+    mouseWheel(waitForObject(names.easyDiffraction_topChart_QtCharts_DeclarativeChart), 384, 297, 0, 135, Qt.NoModifier)
+    mouseClick(waitForObject(names.easyDiffraction_topChart_QtCharts_DeclarativeChart), 384, 297, Qt.LeftButton)
+    mouseDrag(waitForObject(names.easyDiffraction_topChart_QtCharts_DeclarativeChart), 156, 285, 389, 258, Qt.NoModifier, Qt.LeftButton)
+
+@Then("Chart looks different than original")
+def step(context):
+    test.vp("VP2")
+
+@When("Right button clicked")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_topChart_QtCharts_DeclarativeChart), 414, 287, Qt.RightButton)
