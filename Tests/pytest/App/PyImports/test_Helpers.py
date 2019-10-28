@@ -61,12 +61,19 @@ def test_open_url(mocker):
     # bad open
     url = None
     open_url(url)
-    bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not NoneType'
+    if  sys.platform.startswith('darwin'):
+        bad_msg = 'Report viewing failed: expected str, bytes or os.PathLike object, not NoneType'
+    else:
+        bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not NoneType'
     logging.info.assert_called_once_with(bad_msg)
 
     url = {}
     open_url(url)
-    bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not dict'
+    open_url(url)
+    if  sys.platform.startswith('darwin'):
+        bad_msg = 'Report viewing failed: expected str, bytes or os.PathLike object, not dict'
+    else:
+        bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not dict'
     logging.info.assert_called_with(bad_msg)
 
     mocker.patch('webbrowser.open')
