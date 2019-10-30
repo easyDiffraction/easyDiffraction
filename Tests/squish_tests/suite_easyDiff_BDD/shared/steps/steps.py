@@ -429,12 +429,13 @@ def step(context):
     test.compare(str(waitForObjectExists(names.contentRow_Text_5).text), "")
     test.compare(waitForObjectExists(names.contentRow_Text_5).visible, True)
 
-
+"""
 @When("Analysis tab is open")
 def step(context):
     mouseClick(waitForObject(names.easyDiffraction_Experimental_Data_Button), 318, 23, Qt.LeftButton)
     mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_5))
     mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_7))
+"""
 
 @Then("Fitting chart is visible")
 def step(context):
@@ -486,10 +487,109 @@ def step(context):
     mouseDrag(waitForObject(names.contentListView_Rectangle_2), 4, 71, 31, 153, Qt.NoModifier, Qt.LeftButton)       
     test.compare(waitForObjectExists(names.contentRow_CheckBox_3).checked, True)
     test.compare(waitForObjectExists(names.contentRow_CheckBox_4).checked, True)
-    
+
+@When("Default parameters are checked for fitting")
+def step(context):
+    test.compare(waitForObjectExists(names.contentRow_CheckBox).checked, True)
+    test.compare(waitForObjectExists(names.contentRow_CheckBox).enabled, True)
+    test.compare(waitForObjectExists(names.contentRow_CheckBox_2).checked, True)
+    mouseDrag(waitForObject(names.contentListView_Rectangle_2), 4, 71, 31, 153, Qt.NoModifier, Qt.LeftButton)       
+    test.compare(waitForObjectExists(names.contentRow_CheckBox_3).checked, True)
+    test.compare(waitForObjectExists(names.contentRow_CheckBox_4).checked, True)
+        
 @Then("Fitting can be performed")
 def step(context):
     test.compare(waitForObjectExists(names.easyDiffraction_Start_fitting_Button).enabled, True)
     test.compare(str(waitForObjectExists(names.easyDiffraction_Start_fitting_Button).text), "Start fitting")
     test.compare(waitForObjectExists(names.easyDiffraction_Start_fitting_Button).visible, True)
 
+@When("Fitting started")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_8))
+
+@Then("Wait for fitting finished")
+def step(context):
+    test.compare(waitForObjectExists(names.o_Rectangle, 5000).visible, True)
+
+@When("Fitting finished")
+def step(context):
+    test.compare(waitForObjectExists(names.o_Rectangle, 5000).visible, True)
+
+@Then("Fitting details are shown")
+def step(context):
+    test.compare(waitForObjectExists(names.optimization_terminated_successfully_Number_of_evaluations_of_the_objective_functions_120_Number_of_iterations_performed_by_the_optimizer_15_Final_goodnes_of_fit_3_00_Label).visible, True)
+    test.compare(str(waitForObjectExists(names.optimization_terminated_successfully_Number_of_evaluations_of_the_objective_functions_120_Number_of_iterations_performed_by_the_optimizer_15_Final_goodnes_of_fit_3_00_Label).text), "Optimization terminated successfully.\nNumber of evaluations of the objective functions: 120\nNumber of iterations performed by the optimizer: 15\nFinal goodnes-of-fit (χ²): 3.00")
+    mouseClick(waitForObject(names.o_Rectangle_2), 932, 306, Qt.LeftButton)
+
+@Then("Optimized parameters are displayed")
+def step(context):
+    test.compare(waitForObjectExists(names.contentRow_qwe_TextInput).visible, True)
+    test.compare(str(waitForObjectExists(names.contentRow_qwe_TextInput).text), "8.5626")
+    test.compare(waitForObjectExists(names.contentRow_qwe_TextInput_2).visible, True)
+    test.compare(str(waitForObjectExists(names.contentRow_qwe_TextInput_2).text), "-3.4751")
+
+@Then("Error for optimized parameters is displayed")
+def step(context):
+    test.compare(str(waitForObjectExists(names.contentRow_0_0008_Text).text), "0.0008")
+    test.compare(waitForObjectExists(names.contentRow_0_0008_Text).visible, True)
+    test.compare(str(waitForObjectExists(names.contentRow_Text_7).text), "0.0551")
+    test.compare(waitForObjectExists(names.contentRow_Text_7).visible, True)
+
+
+@When("Summary tab is open")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_Text_9))
+
+@Then("Text report is available")
+def step(context):
+    test.compare(waitForObjectExists(names.tabBar_Report_TabButton).enabled, True)
+    test.compare(waitForObjectExists(names.tabBar_Report_TabButton).visible, True)
+    test.compare(str(waitForObjectExists(names.tabBar_Report_TabButton).text), "Report")
+    test.compare(waitForObjectExists(names.easyDiffraction_textArea_TextArea).visible, True)
+
+@Then("Export report is available")
+def step(context):
+    test.compare(waitForObjectExists(names.easyDiffraction_Export_as_GroupBox).collapsed, False)
+    test.compare(waitForObjectExists(names.easyDiffraction_Export_as_GroupBox).visible, True)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_Export_as_GroupBox).title), "Export as...")
+    test.compare(waitForObjectExists(names.easyDiffraction_TextField).enabled, True)
+    test.compare(waitForObjectExists(names.easyDiffraction_TextField).visible, True)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_TextField).placeholderText), "Report File Name")
+    test.compare(waitForObjectExists(names.easyDiffraction_exportFileExt_ComboBox).currentIndex, 0)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_exportFileExt_ComboBox).currentText), ".HTML")
+    test.compare(waitForObjectExists(names.easyDiffraction_exportFileExt_ComboBox).visible, True)
+    test.compare(waitForObjectExists(names.easyDiffraction_Export_Button).enabled, True)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_Export_Button).text), "Export")
+    test.compare(waitForObjectExists(names.easyDiffraction_Export_Button).visible, True)
+
+'''
+@When("Analysis tab is open")
+def step(context):
+    mouseClick(waitForObject(names.tabBar_Home_Button), 99, 32, Qt.LeftButton)
+    mouseClick(waitForObject(names.easyDiffraction_Experimental_Data_Button), 315, 19, Qt.LeftButton)
+    mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_5))
+    mouseClick(waitForObject(names.easyDiffraction_image_IconImage_11), 15, 12, Qt.LeftButton)
+'''
+    
+@When("Analysis tab is open")
+def step(context):
+    mouseClick(waitForObject(names.tabBar_label_MnemonicLabel_2))
+    mouseClick(waitForObject(names.easyDiffraction_Experimental_Data_Button), 308, 18, Qt.LeftButton)
+    mouseClick(waitForObject(names.easyDiffraction_Text_8))
+    mouseClick(waitForObject(names.easyDiffraction_Text_10))
+
+@When("All parameters are deselected")
+def step(context):
+    mouseClick(waitForObject(names.contentRow_ColorImage), 16, 18, Qt.LeftButton)
+    mouseClick(waitForObject(names.contentRow_ColorImage_2), 12, 15, Qt.LeftButton)
+    mouseDrag(waitForObject(names.contentListView_Rectangle_2), 4, 62, 3, 159, Qt.NoModifier, Qt.LeftButton)
+    mouseClick(waitForObject(names.contentRow_ColorImage_3), 11, 16, Qt.LeftButton)
+    mouseClick(waitForObject(names.contentRow_ColorImage_4), 13, 12, Qt.LeftButton)
+
+@Then("Wait for bad fitting finished")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_8))
+    test.compare(waitForObjectExists(names.o_Rectangle).enabled, True)
+    test.compare(waitForObjectExists(names.o_Rectangle).visible, True)
+    test.compare(waitForObjectExists(names.unknow_problems_during_refinement_Label).visible, True)
+    test.compare(str(waitForObjectExists(names.unknow_problems_during_refinement_Label).text), "Unknow problems during refinement")
