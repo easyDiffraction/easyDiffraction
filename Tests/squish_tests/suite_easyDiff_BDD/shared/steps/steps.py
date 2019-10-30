@@ -476,3 +476,20 @@ def step(context):
 @Then("The fitting chart looks different 2")
 def step(context):
     test.vp("VP4")
+
+
+@Then("Default parameters are checked for fitting")
+def step(context):
+    test.compare(waitForObjectExists(names.contentRow_CheckBox).checked, True)
+    test.compare(waitForObjectExists(names.contentRow_CheckBox).enabled, True)
+    test.compare(waitForObjectExists(names.contentRow_CheckBox_2).checked, True)
+    mouseDrag(waitForObject(names.contentListView_Rectangle_2), 4, 71, 31, 153, Qt.NoModifier, Qt.LeftButton)       
+    test.compare(waitForObjectExists(names.contentRow_CheckBox_3).checked, True)
+    test.compare(waitForObjectExists(names.contentRow_CheckBox_4).checked, True)
+    
+@Then("Fitting can be performed")
+def step(context):
+    test.compare(waitForObjectExists(names.easyDiffraction_Start_fitting_Button).enabled, True)
+    test.compare(str(waitForObjectExists(names.easyDiffraction_Start_fitting_Button).text), "Start fitting")
+    test.compare(waitForObjectExists(names.easyDiffraction_Start_fitting_Button).visible, True)
+
