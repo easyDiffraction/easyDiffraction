@@ -29,7 +29,7 @@
 # to True.
 
 import names
-
+import time
 
 @Given("Application is open")
 def step(context):
@@ -428,3 +428,51 @@ def step(context):
     test.compare(waitForObjectExists(names.contentRow_Text_5).enabled, True)
     test.compare(str(waitForObjectExists(names.contentRow_Text_5).text), "")
     test.compare(waitForObjectExists(names.contentRow_Text_5).visible, True)
+
+
+@When("Analysis tab is open")
+def step(context):
+    mouseClick(waitForObject(names.easyDiffraction_Experimental_Data_Button), 318, 23, Qt.LeftButton)
+    mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_5))
+    mouseClick(waitForObject(names.easyDiffraction_label_MnemonicLabel_7))
+
+@Then("Fitting chart is visible")
+def step(context):
+    test.vp("VP1")
+
+@Then("Difference chart is visible")
+def step(context):
+    test.vp("VP2")
+
+@When("Parameter 1 value is changed")
+def step(context):
+    mouseClick(waitForObject(names.contentRow_qwe_TextInput), 35, 19, Qt.LeftButton)
+    type(waitForObject(names.contentRow_qwe_TextInput), "<Backspace>")
+    type(waitForObject(names.contentRow_qwe_TextInput), "11")
+    type(waitForObject(names.contentRow_qwe_TextInput), "<Return>")
+
+@Then("Its shown value is changed")
+def step(context):
+    test.compare(str(waitForObjectExists(names.contentRow_qwe_TextInput).text), "11.5500")
+
+@Then("The fitting chart looks different")
+def step(context):
+    test.vp("VP3")
+
+@When("Parameter value slider is moved")
+def step(context):
+    longMouseDrag(waitForObject(names.easyDiffraction_sliderHandle_Rectangle), 8, 15, -9, 1, Qt.NoModifier, Qt.LeftButton)
+    time.sleep(2.0)
+    #if waitFor("names.contentRow_qwe_TextInput.text == 8.7176", 2000):
+    #    test.passes("Property had the expected value")
+    #else:
+    #    test.fail("Property did not have the expected value")
+
+@Then("Parameter value is changed")
+def step(context):
+    test.compare(str(waitForObjectExists(names.contentRow_qwe_TextInput).text), "10.0205")
+
+
+@Then("The fitting chart looks different 2")
+def step(context):
+    test.vp("VP4")
