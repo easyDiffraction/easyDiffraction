@@ -609,12 +609,12 @@ class CryspyCalculator(QObject):
             logging.info("calc_chi_sq end") # profiling
 
             # Main parameters
-            self._calculations_dict[experiment.label]['chi_squared'] = {
+            self._info_dict['chi_squared'] = {
                 'header': '',
                 'tooltip': '',
                 'url': '',
                 'value': float(chi_sq) }
-            self._calculations_dict[experiment.label]['n_res'] = {
+            self._info_dict['n_res'] = {
                 'header': '',
                 'tooltip': '',
                 'url': '',

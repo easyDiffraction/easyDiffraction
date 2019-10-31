@@ -14,6 +14,7 @@ from PyImports.Models.AtomSitesModel import AtomSitesModel
 from PyImports.Models.AtomAdpsModel import AtomAdpsModel
 from PyImports.Models.AtomMspsModel import AtomMspsModel
 from PyImports.Models.FitablesModel import FitablesModel
+from PyImports.Models.StatusModel import StatusModel
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
 
@@ -33,6 +34,7 @@ class Proxy(QObject):
         self._atom_adps_model = None
         self._atom_msps_model = None
         self._fitables_model = None
+        self._status_model = None
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
@@ -55,6 +57,7 @@ class Proxy(QObject):
         self._atom_adps_model = AtomAdpsModel(self._project_model)
         self._atom_msps_model = AtomMspsModel(self._project_model)
         self._fitables_model = FitablesModel(self._project_model)
+        self._status_model = StatusModel(self._project_model)
         self._refine_thread = Refiner(self._project_model, 'refine')
         #self._fitables_model.modelChanged.connect(self.projectChanged)
         self.projectChanged.emit()
@@ -199,6 +202,15 @@ class Proxy(QObject):
             return QStandardItemModel()
         return self._fitables_model.asModel()
     fitables = Property('QVariant', getFitables, notify=fitablesChanged)
+
+    # Fitables model for QML
+    dummyChanged = Signal()
+    def getStatusInfo(self):
+        ##logging.info("")
+        if self._status_model is None:
+            return QStandardItemModel()
+        return self._status_model.asModel()
+    statusInfo = Property('QVariant', getStatusInfo, notify=dummyChanged)
 
     # Time stamp of changes
     #timeStamp = Property(str, lambda self: str(np.datetime64('now')), notify=projectChanged)
