@@ -40,7 +40,6 @@ def step(context):
 
 @Then("User can open a new project")
 def step(context):
-    moveWindow(waitForObject(names.easyDiffraction_QQuickApplicationWindow), -380, -188)
     test.compare(waitForObjectExists(names.easyDiffraction_Open_another_project_Button).visible, True)
     test.compare(waitForObjectExists(names.easyDiffraction_Open_another_project_Button).enabled, True)
 
@@ -149,7 +148,7 @@ def step(context):
     test.compare(str(waitForObjectExists(names.headerTableView_y_obs_up_Text).text), "y_obs_up")
     test.compare(str(waitForObjectExists(names.headerTableView_sy_obs_up_Text).text), "sy_obs_up")
     test.compare(waitForObjectExists(names.headerTableView_sy_obs_up_Text).visible, True)
-    test.compare(str(waitForObjectExists(names.contentTableView_TextInput).text), "585.0554")
+    test.compare(str(waitForObjectExists(names.contentTableView_TextInput).text), "4.4000")
     test.compare(waitForObjectExists(names.contentTableView_TextInput).visible, True)
 
 @Then("Chart Text View should be present")

@@ -1,25 +1,16 @@
-Feature: easyDiffraction set of BDD tests. part 1
+# This is a sample .feature file
+# Squish feature files use the Gherkin language for describing features, a short example
+# is given below. You can find a more extensive introduction to the Gherkin format at
+# https://github.com/cucumber/cucumber/wiki/Gherkin
+Feature: Check of the initial state
 
-    1. File load
-    2. Structure visibility
-    3. Chart visibility
-    4. Fit button enabled
+On start, the application should open the main window
 
-    Scenario: Structure/chart visibility
+    Scenario: Open application and make sure all elements are present
+
         Given Application is open
-          And File is loaded
+         Then User can open a new project
+          And User can open help file
+          And User can report a bug
 
-         When Structure tab open
-         Then Structure should be visible
 
-
-         When Chart tab open
-         Then Chart should be visible
-
-    Scenario: Parameters should be fittable
-        Given Application is open
-          And File is loaded
-
-         When Fitting tab open
-         And First parameter checked
-         Then Fit button enabled
