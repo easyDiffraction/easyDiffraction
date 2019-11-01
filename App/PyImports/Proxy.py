@@ -61,21 +61,11 @@ class Proxy(QObject):
         self._refine_thread = Refiner(self._project_model, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
         #self._fitables_model.modelChanged.connect(self.projectChanged)
-        self.projectChanged.emit()
-        self.measuredDataHeaderChanged.emit()
-        self.measuredDataChanged.emit()
-        self.calculatedDataHeaderChanged.emit()
-        self.calculatedDataChanged.emit()
-        self.braggPeaksChanged.emit()
-        self.cellParametersChanged.emit()
-        self.cellBoxChanged.emit()
-        self.atomSitesChanged.emit()
-        self.atomAdpsChanged.emit()
-        self.atomMspsChanged.emit()
-        self.fitablesChanged.emit()
+
+    projectChanged = Signal()
+    dummySignal = Signal()
 
     # Project model for QML
-    projectChanged = Signal()
     def getProject(self):
         logging.info("")
         if self._project_model is None:
@@ -92,43 +82,38 @@ class Proxy(QObject):
     cif = Property('QVariant', getCif, notify=projectChanged)
 
     # Measured data header model for QML
-    measuredDataHeaderChanged = Signal()
     def getMeasuredDataHeader(self):
         logging.info("")
         if self._measured_data_model is None:
             return QStandardItemModel()
         return self._measured_data_model.asHeadersModel()
-    measuredDataHeader = Property('QVariant', getMeasuredDataHeader, notify=measuredDataHeaderChanged)
+    measuredDataHeader = Property('QVariant', getMeasuredDataHeader, notify=dummySignal)
 
     # Measured data model for QML
-    measuredDataChanged = Signal()
     def getMeasuredData(self):
         logging.info("")
         if self._measured_data_model is None:
             return QStandardItemModel()
         return self._measured_data_model.asDataModel()
-    measuredData = Property('QVariant', getMeasuredData, notify=measuredDataChanged)
+    measuredData = Property('QVariant', getMeasuredData, notify=dummySignal)
 
     # Calculated data header model for QML
-    calculatedDataHeaderChanged = Signal()
     def getCalculatedDataHeader(self):
         logging.info("")
         if self._calculated_data_model is None:
             return QStandardItemModel()
         return self._calculated_data_model.asHeadersModel()
-    calculatedDataHeader = Property('QVariant', getCalculatedDataHeader, notify=calculatedDataHeaderChanged)
+    calculatedDataHeader = Property('QVariant', getCalculatedDataHeader, notify=dummySignal)
 
     # Calculated data model for QML
-    calculatedDataChanged = Signal()
     def getCalculatedData(self):
         logging.info("")
         if self._calculated_data_model is None:
             return QStandardItemModel()
         return self._calculated_data_model.asDataModel()
-    calculatedData = Property('QVariant', getCalculatedData, notify=calculatedDataChanged)
+    calculatedData = Property('QVariant', getCalculatedData, notify=dummySignal)
 
     # Bragg peaks model for QML
-    braggPeaksChanged = Signal()
     def getBraggPeaks(self):
         logging.info("")
         if self._bragg_peaks_model is None:
@@ -139,62 +124,56 @@ class Proxy(QObject):
         if self._bragg_peaks_model is None:
             return QStandardItemModel()
         return self._bragg_peaks_model.asTickModel()
-    braggPeaks = Property('QVariant', getBraggPeaks, notify=braggPeaksChanged)
-    braggPeaksTicks = Property('QVariant', getBraggPeaksTicks, notify=braggPeaksChanged)
+    braggPeaks = Property('QVariant', getBraggPeaks, notify=dummySignal)
+    braggPeaksTicks = Property('QVariant', getBraggPeaksTicks, notify=dummySignal)
 
     # Cell parameters model for QML
-    cellParametersChanged = Signal()
     def getCellParameters(self):
         logging.info("")
         if self._cell_parameters_model is None:
             return QStandardItemModel()
         return self._cell_parameters_model.asModel()
-    cellParameters = Property('QVariant', getCellParameters, notify=cellParametersChanged)
+    cellParameters = Property('QVariant', getCellParameters, notify=dummySignal)
 
     # Cell box model for QML
-    cellBoxChanged = Signal()
     def getCellBox(self):
         logging.info("")
         if self._cell_box_model is None:
             return QStandardItemModel()
         return self._cell_box_model.asModel()
-    cellBox = Property('QVariant', getCellBox, notify=cellBoxChanged)
+    cellBox = Property('QVariant', getCellBox, notify=dummySignal)
 
     # Atom sites model for QML
-    atomSitesChanged = Signal()
     def getAtomSites(self):
         logging.info("")
         if self._atom_sites_model is None:
             return QStandardItemModel()
         return self._atom_sites_model.asModel()
-    atomSites = Property('QVariant', getAtomSites, notify=atomSitesChanged)
+    atomSites = Property('QVariant', getAtomSites, notify=dummySignal)
 
     # Atom ADPs model for QML
-    atomAdpsChanged = Signal()
     def getAtomAdps(self):
         logging.info("")
         if self._atom_adps_model is None:
             return QStandardItemModel()
         return self._atom_adps_model.asModel()
-    atomAdps = Property('QVariant', getAtomAdps, notify=atomAdpsChanged)
+    atomAdps = Property('QVariant', getAtomAdps, notify=dummySignal)
 
     # Atom MSPs model for QML
-    atomMspsChanged = Signal()
     def getAtomMsps(self):
         logging.info("")
         if self._atom_msps_model is None:
             return QStandardItemModel()
         return self._atom_msps_model.asModel()
-    atomMsps = Property('QVariant', getAtomMsps, notify=atomMspsChanged)
+    atomMsps = Property('QVariant', getAtomMsps, notify=dummySignal)
 
     # Fitables model for QML
-    fitablesChanged = Signal()
     def getFitables(self):
         ##logging.info("")
         if self._fitables_model is None:
             return QStandardItemModel()
         return self._fitables_model.asModel()
-    fitables = Property('QVariant', getFitables, notify=fitablesChanged)
+    fitables = Property('QVariant', getFitables, notify=dummySignal)
 
     # Status model for QML
     dummyChanged = Signal()

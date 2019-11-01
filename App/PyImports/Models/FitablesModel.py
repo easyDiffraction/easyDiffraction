@@ -79,7 +79,6 @@ class FitablesModel(QObject):
             self._calculator.setByPath(keys_list, edit_value)
         ##self.modelChanged.emit()
 
-
     def onProjectChanged(self):
         """Define what to do if project dict is changed, e.g. by external library object."""
         self._setModelFromProject()
