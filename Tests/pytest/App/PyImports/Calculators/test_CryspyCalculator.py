@@ -21,7 +21,7 @@ def test_init(cal):
     # initial state of the object
     assert len(cal._app_dict) == 3
     assert len(cal._calculations_dict) == 1
-    assert len(cal._info_dict) == 7
+    assert len(cal._info_dict) == 9
     assert len(cal._phases_dict) == 1
     assert len(cal._experiments_dict) == 1
     assert len(cal._calculations_dict) == 1
@@ -46,7 +46,7 @@ def test_setCalculatorDict(cal):
 
 def test_setInfoDict(cal):
 
-    assert len(cal._info_dict) == 7
+    assert len(cal._info_dict) == 9
     assert 'name' in cal._info_dict.keys()
     assert cal._info_dict['name'] == 'Fe3O4'
     assert 'refinement_datetime' in cal._info_dict.keys()
@@ -179,15 +179,7 @@ def test_setCalculationsDictFromCryspyObj(cal):
 
     assert len(cal._calculations_dict) == 1
 
-    assert len(cal._calculations_dict['pnd']) == 5
-    # chi^2
-    assert len(cal._calculations_dict['pnd']['chi_squared']) == 4
-    assert cal._calculations_dict['pnd']['chi_squared']['value'] == pytest.approx(27413.09694)
-    assert cal._calculations_dict['pnd']['chi_squared']['url'] == ''
-    # n_res
-    assert len(cal._calculations_dict['pnd']['n_res']) == 4
-    assert cal._calculations_dict['pnd']['n_res']['value'] == 381
-    assert cal._calculations_dict['pnd']['n_res']['tooltip'] == ''
+    assert len(cal._calculations_dict['pnd']) == 3
     # bragg_peaks
     assert len(cal._calculations_dict['pnd']['bragg_peaks']) == 1
     assert sum(cal._calculations_dict['pnd']['bragg_peaks']['Fe3O4']['h']) == 748
@@ -214,10 +206,19 @@ def test_setProjectDictFromCryspyObj(cal):
 
     cal.setProjectDictFromCryspyObj()
 
-    assert len(cal._info_dict) == 7
+    assert len(cal._info_dict) == 9
     assert cal._info_dict['name'] == 'Fe3O4'
     assert cal._info_dict['phase_ids'] == ['Fe3O4']
     assert cal._info_dict['experiment_ids'] == ['pnd']
+
+    # chi^2
+    assert len(cal._info_dict['chi_squared']) == 4
+    assert cal._info_dict['chi_squared']['value'] == pytest.approx(27413.09694)
+    assert cal._info_dict['chi_squared']['url'] == ''
+    # n_res
+    assert len(cal._info_dict['n_res']) == 4
+    assert cal._info_dict['n_res']['value'] == 381
+    assert cal._info_dict['n_res']['tooltip'] == ''
 
     assert len(cal._project_dict) == 6
     assert isinstance(cal._project_dict['app'], dict)
