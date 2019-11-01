@@ -38,7 +38,7 @@ class StatusList(collections.MutableSet):
             raise KeyError
         item.value = value
 
-    def getItemValue(self, itemName, previous=False):
+    def getItemValue(self, itemName):
         item = self.getItem(itemName)
         if item is None:
             raise KeyError
