@@ -11,7 +11,7 @@ ColumnLayout {
     GenericAppElements.HorizontalBorder {}
 
     ListView {
-        height: Generic.Style.statusBarHeight - Generic.Style.appBorderThickness
+        height: Generic.Style.statusBarHeight
         Layout.fillWidth: true
         Layout.leftMargin: Generic.Style.toolbarSpacing
         Layout.rightMargin: Generic.Style.toolbarSpacing
