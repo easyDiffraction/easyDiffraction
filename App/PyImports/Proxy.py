@@ -44,10 +44,10 @@ class Proxy(QObject):
         logging.info("")
         self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
         self._project_model = CryspyCalculator(self._main_rcif_path)
-        ##print(self._project_model.asDict())
+        self._project_model.projectDictChanged.connect(self.projectChanged)
+        #
         self._measured_data_model = MeasuredDataModel(self._project_model)
         self._calculated_data_model = CalculatedDataModel(self._project_model)
-        self._calculated_data_model.modelChanged.connect(self.projectChanged)
         self._bragg_peaks_model = BraggPeaksModel(self._project_model)
         self._cell_parameters_model = CellParametersModel(self._project_model)
         self._cell_box_model = CellBoxModel(self._project_model)
@@ -56,7 +56,6 @@ class Proxy(QObject):
         self._atom_msps_model = AtomMspsModel(self._project_model)
         self._fitables_model = FitablesModel(self._project_model)
         self._refine_thread = Refiner(self._project_model, 'refine')
-        #self._fitables_model.modelChanged.connect(self.projectChanged)
 
     projectChanged = Signal()
     dummySignal = Signal()
