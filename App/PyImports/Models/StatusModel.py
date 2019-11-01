@@ -20,10 +20,10 @@ class StatusModel(QObject):
             'previous': None
         }
 
+        # minor properties
         self._first_role = Qt.UserRole + 1
-        # self._edit_role_increment = 100
-        # self._edit_role_name_suffix = 'Edit'
-
+        # major properties
+        self._calculator = calculator
         self._model = QStandardItemModel()
         # set role names
         self._role_names_list= ['label', 'value']
@@ -31,9 +31,8 @@ class StatusModel(QObject):
         self._roles_dict = {}
         self._setRolesListAndDict()
         self._model.setItemRoleNames(self._roles_dict)
-
-        self._calculator = calculator
-
+        # set model
+        self._setModelFromProject() # !!!!!!!!
         # connect signals
         self._calculator.projectDictChanged.connect(self.onProjectChanged)
 
