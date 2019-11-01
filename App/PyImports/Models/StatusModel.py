@@ -4,26 +4,140 @@ from PySide2.QtCore import Qt, QObject, Signal
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 import PyImports.Helpers as Helpers
+import collections
+
+class StatusList(collections.MutableSet):
+    def __init__(self, list=None):
+        if list is None:
+            self._store = []
+        else:
+            self._store = list
+
+    def __contains__(self, item):
+        return item in self._store
+
+    def __iter__(self):
+        return iter(self._store)
+
+    def __len__(self):
+        return len(self._store)
+
+    def add(self, item):
+        if item not in self._store:
+            self._store.append(item)
+
+    def discard(self, item):
+        try:
+            self._store.remove(item)
+        except ValueError:
+            pass
+
+    def getItem(self, itemName):
+        for item in self._store:
+            if item.name == itemName:
+                return item
+        return None
+
+    def setItemValue(self, itemName, value):
+        item = self.getItem(itemName)
+        if item is None:
+            raise KeyError
+        item.value = value
+
+    def getItemValue(self, itemName, previous=False):
+        item = self.getItem(itemName)
+        if item is None:
+            raise KeyError
+        return item.value
+
+    def getItems(self):
+        return self._store
+
+
+class StatusItem():
+    def __init__(self, name, value=None, title=None):
+        self._name = name
+        self._value = value
+        self._previous = None
+        self._title = title
+        self._previousTitle = None
+        self._returnPrevious = False
+    @property
+    def name(self):
+        if self._returnPrevious & self.hasPrevious:
+            return self._name + '_previous'
+        return self._name
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+    @property
+    def value(self):
+        if self._returnPrevious & self.hasPrevious:
+            if self._previous == self._value:
+                return None
+            return self._previous
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._previous = self._value
+        self._value = value
+
+    @property
+    def previous(self):
+        return self._previous
+
+    @property
+    def title(self):
+        if self._returnPrevious & self.hasPrevious:
+            return self._previousTitle
+        if self._title is None:
+            return self._name
+        return self._title
+
+    @title.setter
+    def title(self, value):
+        if self._returnPrevious:
+            self._previousTitle = value
+        else:
+            self._title = value
+
+    @property
+    def hasPrevious(self):
+        if self._previousTitle is None:
+            return False
+        else:
+            return True
+
+    def setReturn(self, value):
+        self._returnPrevious = value
+
+    def copy(self):
+        return StatusItem(self._name, self._value, self._title)
 
 class StatusModel(QObject):
     def __init__(self, calculator, parent=None):
         super().__init__(parent)
 
-        self._interestedDict = {
-            'base': {
-                'chiSq': None,
-                'numPars': None,
-                'numPhases': None,
-                'numData': None
-            },
-            'current': None,
-            'previous': None
-        }
+        # major properties
+        self._calculator = calculator
+
+        chiItem = StatusItem('chiSq', title='Goodnes-of-fit (\u03c7\u00b2)')
+        chiItem.setReturn(True)
+        chiItem.title = 'Previous goodnes-of-fit (\u03c7\u00b2)'
+        chiItem.setReturn(False)
+        self._interestedList = StatusList([
+            chiItem,
+            StatusItem('numPars', title='Number of parameters'),
+            StatusItem('numPhases', title='Number of phases'),
+            StatusItem('numData', title='Number of data files')
+        ])
+        self._updateStatusList()
 
         # minor properties
         self._first_role = Qt.UserRole + 1
-        # major properties
-        self._calculator = calculator
+
         self._model = QStandardItemModel()
         # set role names
         self._role_names_list= ['label', 'value']
@@ -50,24 +164,31 @@ class StatusModel(QObject):
     def _setModelFromProject(self):
         """Create the initial data list with structure for GUI fitables table."""
         self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
-        thisDict = self._makeMyDict()
         column = []
 
-        for interest in thisDict.items():
-            if interest[1] is None:
-                continue
+        self._updateStatusList()
+
+        def makeItem(thisInterest):
             item = QStandardItem()
             for role, role_name_bytes in self._roles_dict.items():
                 role_name = role_name_bytes.decode()
                 if role_name == 'label':
-                    value = interest[0]
+                    value = thisInterest.title
                 elif role_name == 'value':
-                    value = interest[1]
+                    value = thisInterest.value
                 else:
                     continue
                 item.setData(value, role)
-            column.append(item)
-            
+            return item
+
+        for interest in self._interestedList:
+            column.append(makeItem(interest))
+            if interest.hasPrevious:
+                interest.setReturn(True)
+                if interest.value is not None:
+                    column.append(makeItem(interest))
+                interest.setReturn(False)
+
         # set model
         self._model.appendColumn(column) # dataChanged is not emited. why?
 
@@ -75,34 +196,25 @@ class StatusModel(QObject):
         self._model.dataChanged.emit(self._model.index(0, 0), self._model.index(self._model.rowCount()-1, self._model.columnCount()-1), self._roles_list)
 
 
-    def _makeMyDict(self):
+    def _updateStatusList(self):
         project_dict = self._calculator.asDict()
-        if self._interestedDict['current'] is None:
-            self._interestedDict['current'] = self._interestedDict['base']
-        else:
-            self._interestedDict['previous'] = self._interestedDict['current'].copy()
 
         # Set chi squared
-        self._interestedDict['current']['chiSq'] = project_dict['info']['chi_squared']['value']
+        self._interestedList.setItemValue('chiSq', round(project_dict['info']['chi_squared']['value'], 2))
+
         # Set number of parameters
         numPars = 0
         for path in Helpers.find_in_obj(project_dict, 'refine'):
             keys_list = path[:-1]
-            # hide = Helpers.nested_get(project_dict, keys_list + ['hide'])
-            # if hide:
-            #     continue
-            for role, role_name_bytes in self._roles_dict.items():
-                role_name = role_name_bytes.decode()
-                if role_name == 'refine':
-                    if Helpers.nested_get(project_dict, keys_list + [role_name]) == 1:
-                         numPars = numPars + 1
-        self._interestedDict['current']['numPars'] = numPars
+            hide = Helpers.nested_get(project_dict, keys_list + ['hide'])
+            if hide:
+                continue
+            if Helpers.nested_get(project_dict, keys_list + ['refine']):
+                numPars = numPars+1
 
-        thisDict = self._interestedDict['current'].copy()
-        if self._interestedDict['previous'] is not None:
-            if self._interestedDict['previous']['chiSq'] != self._interestedDict['current']['chiSq']:
-                thisDict['oldChiSq'] = self._interestedDict['previous']['chiSq']
-        return thisDict
+        self._interestedList.setItemValue('numPars', numPars)
+        self._interestedList.setItemValue('numPhases', len(project_dict['phases']))
+        self._interestedList.setItemValue('numData', len(project_dict['experiments']))
 
     modelChanged = Signal()
 

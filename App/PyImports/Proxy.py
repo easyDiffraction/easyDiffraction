@@ -203,7 +203,7 @@ class Proxy(QObject):
         return self._fitables_model.asModel()
     fitables = Property('QVariant', getFitables, notify=fitablesChanged)
 
-    # Fitables model for QML
+    # Status model for QML
     dummyChanged = Signal()
     def getStatusInfo(self):
         ##logging.info("")

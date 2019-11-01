@@ -61,9 +61,6 @@ class FitablesModel(QObject):
                     value = ' '.join(keys_list)
                 else:
                     value = Helpers.nested_get(project_dict, keys_list + [role_name])
-                # if role_name == 'refine':
-                #     if Helpers.nested_get(project_dict, keys_list + [role_name]) == 1:
-                #          self._no_fitted_pars = self._no_fitted_pars + 1
                 item.setData(value, role)
             column.append(item)
         # set model
