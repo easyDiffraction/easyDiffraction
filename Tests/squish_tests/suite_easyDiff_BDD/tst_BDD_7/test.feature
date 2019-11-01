@@ -13,9 +13,9 @@ Feature: DAS-169
          Then Fitting chart is visible
          And Difference chart is visible
 
-         When Parameter 1 value is changed
-         Then Its shown value is changed
-         And The fitting chart looks different
+         #When Parameter 1 value is changed
+         #Then Its shown value is changed
+         #And The fitting chart looks different
 
          When Parameter value slider is moved
          Then Parameter value is changed
