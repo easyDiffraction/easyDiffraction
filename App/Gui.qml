@@ -40,7 +40,7 @@ ApplicationWindow {
         spacing: 0
         GenericAppToolbar.Toolbar {}
         GenericAppContentArea.ContentArea {}
-        GenericAppElements.StatusBar{model: proxy.statusInfo}
+        GenericAppElements.StatusBar{}
     }
 
     // Set paths related to the current file

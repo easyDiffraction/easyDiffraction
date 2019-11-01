@@ -3,70 +3,63 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
+import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
-    property alias model: contentStatusListView.model
+//    property alias model: contentStatusListView.model
 
     width: parent.width
-    height: 100 // Generic.Style.statusBarHeight
+    height: Generic.Style.statusBarHeight
     GenericAppElements.HorizontalBorder {}
-//    Rectangle {
-//        Layout.fillWidth: true
-//        height: Generic.Style.statusBarHeight
-//        color: Generic.Style.appBkgColor
-//        RowLayout {
-//            anchors.fill: parent
-//            anchors.leftMargin: Generic.Style.toolbarSpacing
-//            anchors.rightMargin: Generic.Style.toolbarSpacing
-//            anchors.bottomMargin: 4
-//            Rectangle {
-//                Layout.fillWidth: true
-//                height: parent.height
-//                color:  Generic.Style.appBkgColor
-//                Text {
-//                    id: statusBarText
-//                    height: parent.height
-//                    color: Generic.Style.sidebarGroupTitleDisabledColor
-//                    text: "Placeholder Text"
-//                    verticalAlignment: Text.AlignVCenter
-//                }
-            // Main content
+
     ListView {
         id: contentStatusListView
 
-//            anchors.fill: parent
-//            anchors.leftMargin: Generic.Style.toolbarSpacing
-//            anchors.rightMargin: Generic.Style.toolbarSpacing
-//            anchors.bottomMargin: 4
-        width: 300
-        height: 50
+        Layout.fillWidth: true
+        height: Generic.Style.statusBarHeight - Generic.Style.appBorderThickness
+        Layout.leftMargin: Generic.Style.toolbarSpacing
+        Layout.rightMargin: Generic.Style.toolbarSpacing
+        Layout.bottomMargin: 4
+
+        model: Specific.Variables.projectOpened ? proxy.statusInfo : null
+        orientation: ListView.Horizontal
 
         // Content row
         delegate: Rectangle {
             id: contentRow
-            width: parent.width
-            height: 50 //cellHeight
-            color: 'blue'
+            width: 400 //childrenRect.width
+            height: Generic.Style.statusBarHeight - Generic.Style.appBorderThickness - 4
+            color: 'white'
 
-            //Row {
-            //    anchors.fill: parent
+            Row {
+                width: 200 //childrenRect.width
+                height: Generic.Style.statusBarHeight - Generic.Style.appBorderThickness - 4
 
                 Text {
-                    width: 150 //cellWidthProvider(1)
+                    //width: 150 //cellWidthProvider(1)
+                    width: 100
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignRight
+                    ///horizontalAlignment: Text.AlignRight
 //                            leftPadding: font.pixelSize
 //                            rightPadding: leftPadding
                     text: {
-                        print(label, value)
                         return label
-                        }
-                    Component.onCompleted: {
-                        print('Boo - Text')
                     }
                 }
-            //}
+                Text {
+                 width: 100
+                    //width: 150 //cellWidthProvider(1)
+                    height: parent.height
+                    verticalAlignment: Text.AlignVCenter
+                    //horizontalAlignment: Text.AlignRight
+//                            leftPadding: font.pixelSize
+//                            rightPadding: leftPadding
+                    text: {
+                        return value
+                        }
+                }
+            }
 
             Component.onCompleted: {
                 print('Boo - Rectangle')

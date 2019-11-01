@@ -10,12 +10,13 @@ class StatusModel(QObject):
         super().__init__(parent)
 
         self._interestedDict = {
-            'current': {
+            'base': {
                 'chiSq': None,
                 'numPars': None,
                 'numPhases': None,
                 'numData': None
             },
+            'current': None,
             'previous': None
         }
 
@@ -50,10 +51,12 @@ class StatusModel(QObject):
     def _setModelFromProject(self):
         """Create the initial data list with structure for GUI fitables table."""
         self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
-        self._makeMyDict()
+        thisDict = self._makeMyDict()
         column = []
 
-        for interest in self._interestedDict['current'].items():
+        for interest in thisDict.items():
+            if interest[1] is None:
+                continue
             item = QStandardItem()
             for role, role_name_bytes in self._roles_dict.items():
                 role_name = role_name_bytes.decode()
@@ -75,23 +78,32 @@ class StatusModel(QObject):
 
     def _makeMyDict(self):
         project_dict = self._calculator.asDict()
-        self._interestedDict['previous'] = self._interestedDict['current'].copy()
+        if self._interestedDict['current'] is None:
+            self._interestedDict['current'] = self._interestedDict['base']
+        else:
+            self._interestedDict['previous'] = self._interestedDict['current'].copy()
+
         # Set chi squared
         self._interestedDict['current']['chiSq'] = project_dict['info']['chi_squared']['value']
         # Set number of parameters
         numPars = 0
         for path in Helpers.find_in_obj(project_dict, 'refine'):
             keys_list = path[:-1]
-            hide = Helpers.nested_get(project_dict, keys_list + ['hide'])
-            if hide:
-                continue
-            item = QStandardItem()
+            # hide = Helpers.nested_get(project_dict, keys_list + ['hide'])
+            # if hide:
+            #     continue
             for role, role_name_bytes in self._roles_dict.items():
                 role_name = role_name_bytes.decode()
                 if role_name == 'refine':
                     if Helpers.nested_get(project_dict, keys_list + [role_name]) == 1:
                          numPars = numPars + 1
         self._interestedDict['current']['numPars'] = numPars
+
+        thisDict = self._interestedDict['current'].copy()
+        if self._interestedDict['previous'] is not None:
+            if self._interestedDict['previous']['chiSq'] != self._interestedDict['current']['chiSq']:
+                thisDict['oldChiSq'] = self._interestedDict['previous']['chiSq']
+        return thisDict
 
     modelChanged = Signal()
 
