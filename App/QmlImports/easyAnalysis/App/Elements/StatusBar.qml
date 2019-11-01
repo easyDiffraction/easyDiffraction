@@ -6,19 +6,15 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
-    width: parent.width
-    height: Generic.Style.statusBarHeight
+    spacing: 0
 
     GenericAppElements.HorizontalBorder {}
 
     ListView {
-        id: contentStatusListView
-
         height: Generic.Style.statusBarHeight - Generic.Style.appBorderThickness
         Layout.fillWidth: true
         Layout.leftMargin: Generic.Style.toolbarSpacing
         Layout.rightMargin: Generic.Style.toolbarSpacing
-        Layout.bottomMargin: 4
 
         orientation: ListView.Horizontal
         spacing: 20
@@ -26,7 +22,6 @@ ColumnLayout {
         model: Specific.Variables.projectOpened ? proxy.statusInfo : null
 
         delegate: Rectangle {
-            id: contentRow
             width: childrenRect.width
             height: parent.height
             color: 'transparent'
@@ -38,12 +33,16 @@ ColumnLayout {
                 Text {
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
+                    font.family: Generic.Style.fontFamily
+                    font.pointSize: Generic.Style.fontPointSize - 1
                     color: Generic.Style.buttonTextDisabledColor
                     text: label
                 }
                 Text {
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
+                    font.family: Generic.Style.fontFamily
+                    font.pointSize: Generic.Style.fontPointSize - 1
                     color: Generic.Style.buttonTextDisabledColor
                     text: value
                 }
