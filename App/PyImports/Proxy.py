@@ -27,8 +27,8 @@ class Proxy(QObject):
         self._calculator = None
         #
         self._measured_data_model = None
-        self._calculated_data_model = None #QStandardItemModel()
-        self._calculated_headers_model = None #QStandardItemModel()
+        self._calculated_data_model = None
+        self._calculated_headers_model = None
         self._bragg_peaks_model = None
         self._cell_parameters_model = None
         self._cell_box_model = None
@@ -42,9 +42,9 @@ class Proxy(QObject):
         self._refinement_done = False
         self._refinement_result = None
 
-    # Load rcif
+    # Load CIF method, accessible from QML
     @Slot(str)
-    def init(self, main_rcif_path):
+    def loadCif(self, main_rcif_path):
         logging.info("")
         #
         self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
@@ -53,7 +53,6 @@ class Proxy(QObject):
         #
         self._measured_data_model = MeasuredDataModel(self._calculator)
         self._calculated_data_model = CalculatedDataModel(self._calculator)
-        #self._calculated_headers_model = CalculatedDataModel(self._calculator).asHeadersModel()
         self._bragg_peaks_model = BraggPeaksModel(self._calculator)
         self._cell_parameters_model = CellParametersModel(self._calculator)
         self._cell_box_model = CellBoxModel(self._calculator)
@@ -63,6 +62,10 @@ class Proxy(QObject):
         self._fitables_model = FitablesModel(self._calculator)
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
+
+    # ##############
+    # QML Properties
+    # ##############
 
     projectChanged = Signal()
     project = Property('QVariant', lambda self: self._calculator.asDict(), notify=projectChanged)
@@ -81,9 +84,6 @@ class Proxy(QObject):
     atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), notify=dummySignal)
     atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), notify=dummySignal)
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), notify=dummySignal)
-
-    # Time stamp of changes
-    #timeStamp = Property(str, lambda self: str(np.datetime64('now')), notify=projectChanged)
 
     # ##########
     # REFINEMENT
