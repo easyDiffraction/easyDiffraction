@@ -37,6 +37,7 @@ class Proxy(QObject):
         self._atom_adps_model = None
         self._atom_msps_model = None
         self._fitables_model = None
+        self._status_model = None
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
@@ -60,6 +61,8 @@ class Proxy(QObject):
         self._atom_adps_model = AtomAdpsModel(self._calculator)
         self._atom_msps_model = AtomMspsModel(self._calculator)
         self._fitables_model = FitablesModel(self._calculator)
+        self._status_model = StatusModel(self._calculator)
+
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
@@ -85,23 +88,9 @@ class Proxy(QObject):
     atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), notify=dummySignal)
     atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), notify=dummySignal)
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), notify=dummySignal)
+    statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), notify=dummySignal)
+    chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), notify=dummySignal)
 
-    # Status model for QML
-    dummyChanged = Signal()
-    def getStatusBarInfo(self):
-        ##logging.info("")
-        if self._status_model is None:
-            return QStandardItemModel()
-        return self._status_model.returnStatusBarModel()
-
-    def getPlotStatusInfo(self):
-        ##logging.info("")
-        if self._status_model is None:
-            return QStandardItemModel()
-        return self._status_model.returnChartModel()
-
-    statusInfo = Property('QVariant', getStatusBarInfo, notify=dummyChanged)
-    chartInfo  = Property('QVariant', getPlotStatusInfo, notify=dummyChanged)
     # ##########
     # REFINEMENT
     # ##########
