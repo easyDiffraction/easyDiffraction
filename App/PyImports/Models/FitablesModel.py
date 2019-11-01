@@ -12,7 +12,6 @@ class FitablesModel(QObject):
         self._first_role = Qt.UserRole + 1
         self._edit_role_increment = 100
         self._edit_role_name_suffix = 'Edit'
-        # self._no_fitted_pars = 0
         # major properties
         self._calculator = calculator
         self._model = QStandardItemModel()
@@ -44,7 +43,6 @@ class FitablesModel(QObject):
         project_dict = self._calculator.asDict()
         # set column
         column = []
-        # self._no_fitted_pars = 0
         for path in Helpers.find_in_obj(project_dict, 'refine'):
             keys_list = path[:-1]
             hide = Helpers.nested_get(project_dict, keys_list + ['hide'])
@@ -77,7 +75,6 @@ class FitablesModel(QObject):
         display_value = self._model.data(index, display_role)
         if edit_value != display_value:
             self._calculator.setByPath(keys_list, edit_value)
-        ##self.modelChanged.emit()
 
     def onProjectChanged(self):
         """Define what to do if project dict is changed, e.g. by external library object."""
