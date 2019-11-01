@@ -59,6 +59,7 @@ class Proxy(QObject):
         self._fitables_model = FitablesModel(self._project_model)
         self._status_model = StatusModel(self._project_model)
         self._refine_thread = Refiner(self._project_model, 'refine')
+        self._refine_thread.finished.connect(self._status_model.onRefinementDone)
         #self._fitables_model.modelChanged.connect(self.projectChanged)
         self.projectChanged.emit()
         self.measuredDataHeaderChanged.emit()
@@ -186,14 +187,6 @@ class Proxy(QObject):
         return self._atom_msps_model.asModel()
     atomMsps = Property('QVariant', getAtomMsps, notify=atomMspsChanged)
 
-    # Number of fitted parameters
-    def getNumFittedPars(self):
-        ##logging.info("")
-        if self._fitables_model is None:
-            return 0
-        return self._fitables_model.numFittedPars()
-    numFittedPars = Property(int, getNumFittedPars, notify=projectChanged)
-
     # Fitables model for QML
     fitablesChanged = Signal()
     def getFitables(self):
@@ -205,12 +198,20 @@ class Proxy(QObject):
 
     # Status model for QML
     dummyChanged = Signal()
-    def getStatusInfo(self):
+    def getStatusBarInfo(self):
         ##logging.info("")
         if self._status_model is None:
             return QStandardItemModel()
-        return self._status_model.asModel()
-    statusInfo = Property('QVariant', getStatusInfo, notify=dummyChanged)
+        return self._status_model.returnStatusBarModel()
+
+    def getPlotStatusInfo(self):
+        ##logging.info("")
+        if self._status_model is None:
+            return QStandardItemModel()
+        return self._status_model.returnChartModel()
+
+    statusInfo = Property('QVariant', getStatusBarInfo, notify=dummyChanged)
+    chartInfo  = Property('QVariant', getPlotStatusInfo, notify=dummyChanged)
 
     # Time stamp of changes
     #timeStamp = Property(str, lambda self: str(np.datetime64('now')), notify=projectChanged)

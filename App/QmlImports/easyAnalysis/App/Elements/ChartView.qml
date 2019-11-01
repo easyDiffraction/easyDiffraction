@@ -50,7 +50,43 @@ ColumnLayout {
         //////////////////////
         // Top chart container
         //////////////////////
-
+//        ListView {
+//            id: plotInfo2
+//            x: 100
+//            y: 100
+//            width: 500
+//            height: 500
+//            spacing: 5
+//
+//            model: Specific.Variables.projectOpened ? proxy.chartInfo : null
+//
+//            delegate: Rectangle {
+//                width: 50
+//                height: parent.height
+//                color: 'transparent'
+//                Row {
+//                    height: parent.height
+//                    spacing: 5
+//
+//                    Text {
+//                        height: parent.height
+//                        verticalAlignment: Text.AlignVCenter
+//                        font.family: Generic.Style.fontFamily
+//                        font.pointSize: Generic.Style.fontPointSize - 1
+//                        color: Generic.Style.buttonTextDisabledColor
+//                        text: label
+//                    }
+//                    Text {
+//                        height: parent.height
+//                        verticalAlignment: Text.AlignVCenter
+//                        font.family: Generic.Style.fontFamily
+//                        font.pointSize: Generic.Style.fontPointSize - 1
+//                        color: Generic.Style.buttonTextDisabledColor
+//                        text: value
+//                    }
+//                }
+//            }
+//        }
         Rectangle {
             id: topChartContainer
             Layout.fillWidth: true
@@ -71,6 +107,7 @@ ColumnLayout {
                 anchors.topMargin: 2*extraPadding + borderWidth + infoPadding
                 anchors.rightMargin: 2*extraPadding - borderWidth + infoPadding
             }
+
             Label {
                 id: plotInfo
                 x: plotInfoRec.x + borderWidth/2 + extraPadding/4
