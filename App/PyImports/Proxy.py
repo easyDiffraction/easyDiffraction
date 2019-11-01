@@ -22,8 +22,10 @@ class Proxy(QObject):
     def __init__(self, parent=None):
         logging.info("")
         super().__init__(parent)
+        #
         self._main_rcif_path = None
-        self._project_model = None
+        self._calculator = None
+        #
         self._measured_data_model = None
         self._calculated_data_model = None
         self._bragg_peaks_model = None
@@ -33,6 +35,7 @@ class Proxy(QObject):
         self._atom_adps_model = None
         self._atom_msps_model = None
         self._fitables_model = None
+        #
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
@@ -42,20 +45,22 @@ class Proxy(QObject):
     @Slot(str)
     def init(self, main_rcif_path):
         logging.info("")
-        self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
-        self._project_model = CryspyCalculator(self._main_rcif_path)
-        self._project_model.projectDictChanged.connect(self.projectChanged)
         #
-        self._measured_data_model = MeasuredDataModel(self._project_model)
-        self._calculated_data_model = CalculatedDataModel(self._project_model)
-        self._bragg_peaks_model = BraggPeaksModel(self._project_model)
-        self._cell_parameters_model = CellParametersModel(self._project_model)
-        self._cell_box_model = CellBoxModel(self._project_model)
-        self._atom_sites_model = AtomSitesModel(self._project_model)
-        self._atom_adps_model = AtomAdpsModel(self._project_model)
-        self._atom_msps_model = AtomMspsModel(self._project_model)
-        self._fitables_model = FitablesModel(self._project_model)
-        self._refine_thread = Refiner(self._project_model, 'refine')
+        self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
+        self._calculator = CryspyCalculator(self._main_rcif_path)
+        self._calculator.projectDictChanged.connect(self.projectChanged)
+        #
+        self._measured_data_model = MeasuredDataModel(self._calculator)
+        self._calculated_data_model = CalculatedDataModel(self._calculator)
+        self._bragg_peaks_model = BraggPeaksModel(self._calculator)
+        self._cell_parameters_model = CellParametersModel(self._calculator)
+        self._cell_box_model = CellBoxModel(self._calculator)
+        self._atom_sites_model = AtomSitesModel(self._calculator)
+        self._atom_adps_model = AtomAdpsModel(self._calculator)
+        self._atom_msps_model = AtomMspsModel(self._calculator)
+        self._fitables_model = FitablesModel(self._calculator)
+        #
+        self._refine_thread = Refiner(self._calculator, 'refine')
 
     projectChanged = Signal()
     dummySignal = Signal()
@@ -63,17 +68,17 @@ class Proxy(QObject):
     # Project model for QML
     def getProject(self):
         logging.info("")
-        if self._project_model is None:
+        if self._calculator is None:
             return ""
-        return self._project_model.asDict()
+        return self._calculator.asDict()
     project = Property('QVariant', getProject, notify=projectChanged)
 
     # CIF model for QML
     def getCif(self):
         logging.info("")
-        if self._project_model is None:
+        if self._calculator is None:
             return ""
-        return self._project_model.asCifDict()
+        return self._calculator.asCifDict()
     cif = Property('QVariant', getCif, notify=projectChanged)
 
     # Measured data header model for QML
