@@ -24,7 +24,7 @@ class StatusList(collections.MutableSet):
         try:
             self._store.remove(item)
         except ValueError:
-            pass
+            raise KeyError
 
     def getItem(self, itemName):
         for item in self._store:
