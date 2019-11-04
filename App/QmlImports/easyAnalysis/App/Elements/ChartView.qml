@@ -116,7 +116,7 @@ ColumnLayout {
                 font.pointSize: Generic.Style.systemFontPointSize + 1
                 text:  {
                         const showPars = {
-                            'Final goodnes-of-fit (\u03c7\u00b2)': Generic.Variables.chiSquared,
+                            'Final goodness-of-fit (\u03c7\u00b2)': Generic.Variables.chiSquared,
                             'Number of refined parameters': Generic.Variables.numRefinedPars
                         }
                         let out = ""

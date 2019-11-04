@@ -12,9 +12,9 @@ class StatusModel(QObject):
         self._calculator = calculator
 
         # Create the status items
-        chiItem = StatusItem('chiSq', title='Goodnes-of-fit (\u03c7\u00b2)', additionalData=1)
+        chiItem = StatusItem('chiSq', title='Goodness-of-fit (\u03c7\u00b2)', additionalData=1)
         chiItem.setReturn(True)
-        chiItem.title = 'Previous goodnes-of-fit (\u03c7\u00b2)'
+        chiItem.title = 'Previous goodness-of-fit (\u03c7\u00b2)'
         chiItem.setReturn(False)
         self._interestedList = StatusList([
             chiItem,
@@ -53,48 +53,30 @@ class StatusModel(QObject):
 
     def _setModelFromProject(self):
         """Create the initial data list with structure for GUI fitables table."""
-        self._statusBarModel.removeColumns(0, self._statusBarModel.columnCount())
-        self._chartDisplayModel.removeColumns(0, self._chartDisplayModel.columnCount())
+        _ = self._statusBarModel.removeColumns(0, self._statusBarModel.columnCount())
+        _ = self._chartDisplayModel.removeColumns(0, self._chartDisplayModel.columnCount())
 
         columnStatusBar = []
         columnChartDisplay = []
 
         self._updateStatusList()
 
-        def makeItem(thisInterest, offset=0):
-            """Make an item. This can be a plot or status bar"""
-            if offset == 1:
-                theseItems = self._roles_dict['plot'].items()
-            else:
-                theseItems = self._roles_dict['status'].items()
-            item = QStandardItem()
-            for role, role_name_bytes in theseItems:
-                role_name = role_name_bytes.decode()
-                if role_name == 'label':
-                    value = thisInterest.title
-                elif role_name == 'value':
-                    value = thisInterest.value
-                else:
-                    continue
-                item.setData(value, role)
-            return item
-
         for interest in self._interestedList:
             # Add the status bar item
-            columnStatusBar.append(makeItem(interest))
+            columnStatusBar.append(self._makeItem(interest, self._roles_dict['status'].items()))
             # Does this need to added to the plot?
             if interest.additionalData == 1:
-                columnChartDisplay.append(makeItem(interest, offset=1))
+                columnChartDisplay.append(self._makeItem(interest, self._roles_dict['plot'].items()))
 
             # Does this item also have previous values which need to be shown?
             if interest.hasPrevious:
                 interest.setReturn(True)
                 if interest.value is not None:
-                    columnStatusBar.append(makeItem(interest))
+                    columnStatusBar.append(self._makeItem(interest, self._roles_dict['status'].items()))
                 interest.setReturn(False)
 
         # Set the models
-        self._statusBarModel.appendColumn(columnStatusBar) # dataChanged is not emited. why?
+        self._statusBarModel.appendColumn(columnStatusBar)
         self._chartDisplayModel.appendColumn(columnChartDisplay)
 
         self._statusBarModel.dataChanged.emit(self._statusBarModel.index(0, 0),
@@ -143,3 +125,18 @@ class StatusModel(QObject):
     def returnChartModel(self):
         """Return the chart model"""
         return self._chartDisplayModel
+
+    @staticmethod
+    def _makeItem(thisInterest, theseItems):
+        """Make an item. This can be a plot or status bar"""
+        item = QStandardItem()
+        for role, role_name_bytes in theseItems:
+            role_name = role_name_bytes.decode()
+            if role_name == 'label':
+                value = thisInterest.title
+            elif role_name == 'value':
+                value = thisInterest.value
+            else:
+                continue
+            item.setData(value, role)
+        return item

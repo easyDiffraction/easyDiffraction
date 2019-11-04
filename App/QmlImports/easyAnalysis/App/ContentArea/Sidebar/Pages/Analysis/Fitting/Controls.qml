@@ -139,8 +139,8 @@ ColumnLayout {
                 s += res.num_refined_parameters ? `\nNumber of refined parameters: ${res.num_refined_parameters}` : ""
                 s += res.nfev ? `\nNumber of evaluations of the objective functions: ${res.nfev}` : ""
                 s += res.nit ? `\nNumber of iterations performed by the optimizer: ${res.nit}` : ""
-                s += res.started_chi_sq ? `\nStarted goodnes-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(2)}` : ""
-                s += res.final_chi_sq ? `\nFinal goodnes-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
+                s += res.started_chi_sq ? `\nStarted goodness-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(2)}` : ""
+                s += res.final_chi_sq ? `\nFinal goodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
                 s += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
                 return s
             }
