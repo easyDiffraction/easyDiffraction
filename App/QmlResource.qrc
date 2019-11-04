@@ -256,8 +256,11 @@
         <file>PyImports/Models/CellBoxModel.py</file>
         <file>PyImports/Models/CellParametersModel.py</file>
         <file>PyImports/Models/FitablesModel.py</file>
+        <file>PyImports/Models/StatusModel.py</file>
         <file>PyImports/Models/MeasuredDataModel.py</file>
         <file>PyImports/Helpers.py</file>
         <file>PyImports/Proxy.py</file>
+        <file>PyImports/Refinement.py</file>
+        <file>PyImports/StatusObjects.py</file>
     </qresource>
 </RCC>
