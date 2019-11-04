@@ -273,7 +273,7 @@ def test_refine(cal, mocker, fit_len):
 
     cal._cryspy_obj.refine.assert_called_once()
 
-    assert ret['final_chi_sq'] == 0.01
+    assert pytest.approx(ret['final_chi_sq'], 27413.09694576759)
     assert ret['nfev'] == 1
     assert ret['refinement_message'] == "test1"
     assert ret['njev'] == 42

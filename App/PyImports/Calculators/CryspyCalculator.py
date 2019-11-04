@@ -24,6 +24,7 @@ class CryspyCalculator(QObject):
         # cryspy
         self._main_rcif_path = main_rcif_path
         self._main_rcif = None
+        self.final_chi_square = None
         self._cryspy_obj = self._createCryspyObj() #cryspy.rhochi_read_file(self._main_rcif_path)
         # project dict
         self._project_dict = {}
@@ -608,6 +609,8 @@ class CryspyCalculator(QObject):
             chi_sq, n_res = experiment.calc_chi_sq(self._cryspy_obj.crystals)
             logging.info("calc_chi_sq end") # profiling
 
+            self.final_chi_square = chi_sq
+
             # Main parameters
             self._info_dict['chi_squared'] = {
                 'header': '',
@@ -872,7 +875,8 @@ class CryspyCalculator(QObject):
                 "nfev":scipy_refinement_res.nfev,
                 "nit":scipy_refinement_res.nit,
                 "njev":scipy_refinement_res.njev,
-                "final_chi_sq":float(scipy_refinement_res.fun),
+                "final_chi_sq":float(self.final_chi_square),
+                #"final_chi_sq":float(scipy_refinement_res.fun),
             }
         except:
              return { "refinement_message":"Unknow problems during refinement" }
