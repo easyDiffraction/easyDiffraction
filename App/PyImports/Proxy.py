@@ -22,10 +22,13 @@ class Proxy(QObject):
     def __init__(self, parent=None):
         logging.info("")
         super().__init__(parent)
+        #
         self._main_rcif_path = None
-        self._project_model = None
+        self._calculator = None
+        #
         self._measured_data_model = None
         self._calculated_data_model = None
+        self._calculated_headers_model = None
         self._bragg_peaks_model = None
         self._cell_parameters_model = None
         self._cell_box_model = None
@@ -33,167 +36,54 @@ class Proxy(QObject):
         self._atom_adps_model = None
         self._atom_msps_model = None
         self._fitables_model = None
+        #
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
         self._refinement_result = None
 
-    # Load rcif
+    # Load CIF method, accessible from QML
     @Slot(str)
-    def init(self, main_rcif_path):
+    def loadCif(self, main_rcif_path):
         logging.info("")
+        #
         self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
-        self._project_model = CryspyCalculator(self._main_rcif_path)
-        ##print(self._project_model.asDict())
-        self._measured_data_model = MeasuredDataModel(self._project_model)
-        self._calculated_data_model = CalculatedDataModel(self._project_model)
-        self._calculated_data_model.modelChanged.connect(self.projectChanged)
-        self._bragg_peaks_model = BraggPeaksModel(self._project_model)
-        self._cell_parameters_model = CellParametersModel(self._project_model)
-        self._cell_box_model = CellBoxModel(self._project_model)
-        self._atom_sites_model = AtomSitesModel(self._project_model)
-        self._atom_adps_model = AtomAdpsModel(self._project_model)
-        self._atom_msps_model = AtomMspsModel(self._project_model)
-        self._fitables_model = FitablesModel(self._project_model)
-        self._refine_thread = Refiner(self._project_model, 'refine')
-        #self._fitables_model.modelChanged.connect(self.projectChanged)
-        self.projectChanged.emit()
-        self.measuredDataHeaderChanged.emit()
-        self.measuredDataChanged.emit()
-        self.calculatedDataHeaderChanged.emit()
-        self.calculatedDataChanged.emit()
-        self.braggPeaksChanged.emit()
-        self.cellParametersChanged.emit()
-        self.cellBoxChanged.emit()
-        self.atomSitesChanged.emit()
-        self.atomAdpsChanged.emit()
-        self.atomMspsChanged.emit()
-        self.fitablesChanged.emit()
+        self._calculator = CryspyCalculator(self._main_rcif_path)
+        self._calculator.projectDictChanged.connect(self.projectChanged)
+        #
+        self._measured_data_model = MeasuredDataModel(self._calculator)
+        self._calculated_data_model = CalculatedDataModel(self._calculator)
+        self._bragg_peaks_model = BraggPeaksModel(self._calculator)
+        self._cell_parameters_model = CellParametersModel(self._calculator)
+        self._cell_box_model = CellBoxModel(self._calculator)
+        self._atom_sites_model = AtomSitesModel(self._calculator)
+        self._atom_adps_model = AtomAdpsModel(self._calculator)
+        self._atom_msps_model = AtomMspsModel(self._calculator)
+        self._fitables_model = FitablesModel(self._calculator)
+        #
+        self._refine_thread = Refiner(self._calculator, 'refine')
 
-    # Project model for QML
+    # ##############
+    # QML Properties
+    # ##############
+
     projectChanged = Signal()
-    def getProject(self):
-        logging.info("")
-        if self._project_model is None:
-            return ""
-        return self._project_model.asDict()
-    project = Property('QVariant', getProject, notify=projectChanged)
+    project = Property('QVariant', lambda self: self._calculator.asDict(), notify=projectChanged)
+    cif = Property('QVariant', lambda self: self._calculator.asCifDict(), notify=projectChanged)
 
-    # CIF model for QML
-    def getCif(self):
-        logging.info("")
-        if self._project_model is None:
-            return ""
-        return self._project_model.asCifDict()
-    cif = Property('QVariant', getCif, notify=projectChanged)
-
-    # Measured data header model for QML
-    measuredDataHeaderChanged = Signal()
-    def getMeasuredDataHeader(self):
-        logging.info("")
-        if self._measured_data_model is None:
-            return QStandardItemModel()
-        return self._measured_data_model.asHeadersModel()
-    measuredDataHeader = Property('QVariant', getMeasuredDataHeader, notify=measuredDataHeaderChanged)
-
-    # Measured data model for QML
-    measuredDataChanged = Signal()
-    def getMeasuredData(self):
-        logging.info("")
-        if self._measured_data_model is None:
-            return QStandardItemModel()
-        return self._measured_data_model.asDataModel()
-    measuredData = Property('QVariant', getMeasuredData, notify=measuredDataChanged)
-
-    # Calculated data header model for QML
-    calculatedDataHeaderChanged = Signal()
-    def getCalculatedDataHeader(self):
-        logging.info("")
-        if self._calculated_data_model is None:
-            return QStandardItemModel()
-        return self._calculated_data_model.asHeadersModel()
-    calculatedDataHeader = Property('QVariant', getCalculatedDataHeader, notify=calculatedDataHeaderChanged)
-
-    # Calculated data model for QML
-    calculatedDataChanged = Signal()
-    def getCalculatedData(self):
-        logging.info("")
-        if self._calculated_data_model is None:
-            return QStandardItemModel()
-        return self._calculated_data_model.asDataModel()
-    calculatedData = Property('QVariant', getCalculatedData, notify=calculatedDataChanged)
-
-    # Bragg peaks model for QML
-    braggPeaksChanged = Signal()
-    def getBraggPeaks(self):
-        logging.info("")
-        if self._bragg_peaks_model is None:
-            return QStandardItemModel()
-        return self._bragg_peaks_model.asDataModel()
-    def getBraggPeaksTicks(self):
-        logging.info("")
-        if self._bragg_peaks_model is None:
-            return QStandardItemModel()
-        return self._bragg_peaks_model.asTickModel()
-    braggPeaks = Property('QVariant', getBraggPeaks, notify=braggPeaksChanged)
-    braggPeaksTicks = Property('QVariant', getBraggPeaksTicks, notify=braggPeaksChanged)
-
-    # Cell parameters model for QML
-    cellParametersChanged = Signal()
-    def getCellParameters(self):
-        logging.info("")
-        if self._cell_parameters_model is None:
-            return QStandardItemModel()
-        return self._cell_parameters_model.asModel()
-    cellParameters = Property('QVariant', getCellParameters, notify=cellParametersChanged)
-
-    # Cell box model for QML
-    cellBoxChanged = Signal()
-    def getCellBox(self):
-        logging.info("")
-        if self._cell_box_model is None:
-            return QStandardItemModel()
-        return self._cell_box_model.asModel()
-    cellBox = Property('QVariant', getCellBox, notify=cellBoxChanged)
-
-    # Atom sites model for QML
-    atomSitesChanged = Signal()
-    def getAtomSites(self):
-        logging.info("")
-        if self._atom_sites_model is None:
-            return QStandardItemModel()
-        return self._atom_sites_model.asModel()
-    atomSites = Property('QVariant', getAtomSites, notify=atomSitesChanged)
-
-    # Atom ADPs model for QML
-    atomAdpsChanged = Signal()
-    def getAtomAdps(self):
-        logging.info("")
-        if self._atom_adps_model is None:
-            return QStandardItemModel()
-        return self._atom_adps_model.asModel()
-    atomAdps = Property('QVariant', getAtomAdps, notify=atomAdpsChanged)
-
-    # Atom MSPs model for QML
-    atomMspsChanged = Signal()
-    def getAtomMsps(self):
-        logging.info("")
-        if self._atom_msps_model is None:
-            return QStandardItemModel()
-        return self._atom_msps_model.asModel()
-    atomMsps = Property('QVariant', getAtomMsps, notify=atomMspsChanged)
-
-    # Fitables model for QML
-    fitablesChanged = Signal()
-    def getFitables(self):
-        ##logging.info("")
-        if self._fitables_model is None:
-            return QStandardItemModel()
-        return self._fitables_model.asModel()
-    fitables = Property('QVariant', getFitables, notify=fitablesChanged)
-
-    # Time stamp of changes
-    #timeStamp = Property(str, lambda self: str(np.datetime64('now')), notify=projectChanged)
+    dummySignal = Signal()
+    measuredData = Property('QVariant', lambda self: self._measured_data_model.asDataModel(), notify=dummySignal)
+    measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), notify=dummySignal)
+    calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asDataModel(), notify=dummySignal)
+    calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(), notify=dummySignal)
+    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asDataModel(), notify=dummySignal)
+    braggPeaksTicks = Property('QVariant', lambda self: self._bragg_peaks_model.asTickModel(), notify=dummySignal)
+    cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), notify=dummySignal)
+    cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), notify=dummySignal)
+    atomSites = Property('QVariant', lambda self: self._atom_sites_model.asModel(), notify=dummySignal)
+    atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), notify=dummySignal)
+    atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), notify=dummySignal)
+    fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), notify=dummySignal)
 
     # ##########
     # REFINEMENT

@@ -76,12 +76,9 @@ class FitablesModel(QObject):
         if edit_value != display_value:
             self._calculator.setByPath(keys_list, edit_value)
 
-    modelChanged = Signal()
-
     def onProjectChanged(self):
         """Define what to do if project dict is changed, e.g. by external library object."""
         self._setModelFromProject()
-        self.modelChanged.emit()
 
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
         """Define what to do if model is changed, e.g. from GUI."""
@@ -91,7 +88,6 @@ class FitablesModel(QObject):
             index = top_left_index
             edit_role = role
             self._updateProjectByIndexAndRole(index, edit_role)
-        ##self.modelChanged.emit()
 
     def asModel(self):
         """Return model."""

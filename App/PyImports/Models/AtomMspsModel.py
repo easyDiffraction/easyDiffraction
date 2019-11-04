@@ -68,12 +68,9 @@ class AtomMspsModel(QObject):
             self._model.layoutChanged.emit()
         logging.info("+++++++++++++++++++++++++ setData end") # profiling
 
-    modelChanged = Signal()
-
     def onProjectChanged(self):
         """Define what to do if project dict is changed, e.g. by external library object."""
         self._setModelFromProject()
-        self.modelChanged.emit()
 
     def asModel(self):
         """Return model."""
