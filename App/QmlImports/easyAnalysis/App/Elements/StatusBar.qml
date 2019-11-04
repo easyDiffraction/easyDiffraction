@@ -15,6 +15,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: Generic.Style.toolbarSpacing
         Layout.rightMargin: Generic.Style.toolbarSpacing
+        interactive: false
 
         orientation: ListView.Horizontal
         spacing: 20
