@@ -64,7 +64,7 @@ def test_open_url(mocker):
     # bad open
     url = None
     open_url(url)
-    if sys.platform.startswith('darwin'):
+    if sys.platform.startswith('darwin') or sys.platform.startswith('linux'):
         bad_msg = 'Report viewing failed: expected str, bytes or os.PathLike object, not NoneType'
     else:
         bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not NoneType'
@@ -73,7 +73,7 @@ def test_open_url(mocker):
     url = {}
     open_url(url)
     open_url(url)
-    if sys.platform.startswith('darwin'):
+    if sys.platform.startswith('darwin') or sys.platform.startswith('linux'):
         bad_msg = 'Report viewing failed: expected str, bytes or os.PathLike object, not dict'
     else:
         bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not dict'
