@@ -2,6 +2,7 @@ import pytest
 
 from PyImports.StatusObjects import *
 
+
 ## TESTS FOR STATUSITEM
 
 def test_StatusItem_creation():
@@ -14,8 +15,8 @@ def test_StatusItem_creation():
     assert isinstance(StatusItem('test0', 0, 'Testing Object Number 0'), StatusItem)
     assert isinstance(StatusItem('test0', 0, 'Testing Object Number 0', 1), StatusItem)
 
-def test_StatusItem_getName():
 
+def test_StatusItem_getName():
     def getName(thisItem):
         return thisItem.name
 
@@ -59,7 +60,6 @@ def test_StatusItem_setName():
 
 
 def test_StatusItem_getValue():
-
     def getValue(thisItem):
         return thisItem.value
 
@@ -100,6 +100,7 @@ def test_StatusItem_setValue():
     item = StatusItem('test0', 0, 'Testing Object Number 0', 1)
     setValue(item, n)
     assert getValue(item) == (n + 2)
+
 
 def test_StatusItem_getPrevious():
     n = 2
@@ -148,8 +149,8 @@ def test_StatusItem_getPrevious():
     setValue(item, n)
     assert getPrevious(item) == 0
 
-def test_StatusItem_getTitle():
 
+def test_StatusItem_getTitle():
     def getTitle(thisItem):
         return thisItem.title
 
@@ -191,8 +192,8 @@ def test_StatusItem_setTitle():
     setTitle(item, n)
     assert getTitle(item) == 'Testing Object Number %i' % (n + 2)
 
-def test_StatusItem_hasPrevious():
 
+def test_StatusItem_hasPrevious():
     def getHasPrevious(thisItem):
         return thisItem.hasPrevious
 
@@ -209,7 +210,6 @@ def test_StatusItem_hasPrevious():
     item.setReturn(False)
     assert getHasPrevious(item) == True
 
-
     item = StatusItem('test0', 0)
     assert getHasPrevious(item) == False
     setValue(item, 1)
@@ -218,7 +218,6 @@ def test_StatusItem_hasPrevious():
     item.title = 'test0 Previous'
     item.setReturn(False)
     assert getHasPrevious(item) == True
-
 
     item = StatusItem('test0', 0, 'Testing Object Number 0')
     assert getHasPrevious(item) == False
@@ -238,8 +237,8 @@ def test_StatusItem_hasPrevious():
     item.setReturn(False)
     assert getHasPrevious(item) == True
 
-def test_StatusItem_previousTitle():
 
+def test_StatusItem_previousTitle():
     def setValue(thisItem, value):
         thisItem.value = value
 
@@ -277,6 +276,7 @@ def test_StatusItem_previousTitle():
     item.title = 'test0 Previous'
     assert getTitle(item) == 'test0 Previous'
     assert getValue(item) == 0
+
 
 def test_StatusItem_previousName():
 
@@ -318,19 +318,21 @@ def test_StatusItem_previousName():
     assert getName(item) == 'test0_previous'
     assert getValue(item) == 0
 
+
 ## TESTS FOR STATUSLIST
 def createStatusList(n):
     thisList = []
     for i in range(n):
-        thisList.append(StatusItem('test%i'%i, i, 'Testing Object Number %i' % i))
+        thisList.append(StatusItem('test%i' % i, i, 'Testing Object Number %i' % i))
     return StatusList(thisList), thisList
+
 
 def test_empty_StatusList_creation():
     thisList = StatusList()
     assert len(thisList) == 0
 
-def test_item_StatusList_creation():
 
+def test_item_StatusList_creation():
     item1 = StatusItem('test1', 1, 'Testing Object Number 1')
     item2 = StatusItem('test2', 2, 'Testing Object Number 2')
     item3 = StatusItem('test3', 3, 'Testing Object Number 3')
@@ -348,24 +350,24 @@ def test_item_StatusList_creation():
         assert item == oldList[i]
         i += 1
 
+
 @pytest.mark.parametrize("n", range(3))
 def test_StatusList_getItem(n):
-
     thisList, oldList = createStatusList(n)
     for i in range(n):
         item = thisList.getItem('test%i' % i)
         assert item == oldList[i]
 
-    assert thisList.getItem('test%i' % (n + 2)) == None
+    assert thisList.getItem('test%i' % (n + 2)) is None
 
 
 @pytest.mark.parametrize("n", range(4))
 def test_StatusList_getItemValue(n):
-
     thisList, oldList = createStatusList(n)
     for i in range(n):
         value = thisList.getItemValue('test%i' % i)
         assert value == i
+
 
 def test_StatusList_setItemValue():
     n = 4
@@ -378,19 +380,22 @@ def test_StatusList_setItemValue():
     with pytest.raises(KeyError):
         thisList.setItemValue('test%i' % (n + 1), n + 1)
 
+
 def test_StatusList_getItems():
     n = 4
     thisList, oldList = createStatusList(n)
     assert len(set(thisList.getItems()).intersection(set(oldList))) == n
 
+
 def test_StatusList_add():
     n = 3
     thisList, oldList = createStatusList(n)
     n_new = n + 1
-    newItem = StatusItem('test%i'%n_new, n_new, 'Testing Object Number %i' % n_new)
+    newItem = StatusItem('test%i' % n_new, n_new, 'Testing Object Number %i' % n_new)
     thisList.add(newItem)
 
     assert len(thisList) == n_new
+
 
 def test_StatusList_discard():
     n = 3

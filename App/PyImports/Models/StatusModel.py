@@ -92,15 +92,8 @@ class StatusModel(QObject):
         # Set chi squared
         self._interestedList.setItemValue('chiSq', round(project_dict['info']['chi_squared']['value'], 2))
 
-        # Set number of parameters
-        numPars = 0
-        for path in Helpers.find_in_obj(project_dict, 'refine'):
-            keys_list = path[:-1]
-            hide = Helpers.nested_get(project_dict, keys_list + ['hide'])
-            if hide:
-                continue
-            if Helpers.nested_get(project_dict, keys_list + ['refine']):
-                numPars = numPars+1
+        # Get number of parameters
+        numPars = Helpers.get_num_refine_pars(project_dict)
 
         # Set the other parameters.
         self._interestedList.setItemValue('numPars', numPars)

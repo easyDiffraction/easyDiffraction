@@ -11,14 +11,15 @@ from PySide2.QtCore import QObject, Signal, Slot, Property, QUrl
 # tested module
 from PyImports.Helpers import *
 
+
 def test_nested_get():
     dictionary = {}
     key_list = []
 
     assert nested_get(dictionary, key_list) == {}
 
-    dictionary = {1:'a', 2:'b'}
-    key_list = [1,2]
+    dictionary = {1: 'a', 2: 'b'}
+    key_list = [1, 2]
 
     assert nested_get(dictionary, key_list) == ""
 
@@ -31,10 +32,11 @@ def test_nested_set():
     with pytest.raises(IndexError):
         nested_set(dictionary, key_list, value)
 
-    dictionary = {1:'a', 2:'b', 3:'c'}
+    dictionary = {1: 'a', 2: 'b', 3: 'c'}
     key_list = [1]
 
     assert nested_get(dictionary, key_list) == "a"
+
 
 def no_test_find_in_obj():
     obj = QObject
@@ -49,11 +51,12 @@ def no_test_find_in_obj():
 
     assert list(find_in_obj(obj, condition, path=path)) == ""
 
-    obj = {1:'a', 2:'b', 3:'c'}
+    obj = {1: 'a', 2: 'b', 3: 'c'}
     condition = 1
     path = ""
 
     assert list(find_in_obj(obj, condition, path=path)) == ""
+
 
 def test_open_url(mocker):
     mocker.patch('logging.info')
@@ -61,7 +64,7 @@ def test_open_url(mocker):
     # bad open
     url = None
     open_url(url)
-    if  sys.platform.startswith('darwin'):
+    if sys.platform.startswith('darwin'):
         bad_msg = 'Report viewing failed: expected str, bytes or os.PathLike object, not NoneType'
     else:
         bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not NoneType'
@@ -70,7 +73,7 @@ def test_open_url(mocker):
     url = {}
     open_url(url)
     open_url(url)
-    if  sys.platform.startswith('darwin'):
+    if sys.platform.startswith('darwin'):
         bad_msg = 'Report viewing failed: expected str, bytes or os.PathLike object, not dict'
     else:
         bad_msg = 'Report viewing failed: _getfullpathname: path should be string, bytes or os.PathLike, not dict'
@@ -85,3 +88,25 @@ def test_open_url(mocker):
     webbrowser.open.assert_called_once()
 
 
+def test_get_num_refine_pars():
+    obj = {'a': {'b': 1,
+                 'refine': True,
+                 'hide': False
+                 },
+           'c': {'d': 3,
+                 'e': 4,
+                 'refine': False,
+                 'hide': False
+                 },
+           'f': {'g': 5,
+                 'refine': True,
+                 'hide': False
+                 },
+           'h': {'i': 6,
+                 'refine': True,
+                 'hide': True
+                 }
+           }
+    numPars = get_num_refine_pars(obj)
+    expectedPars = 2
+    assert numPars == expectedPars
