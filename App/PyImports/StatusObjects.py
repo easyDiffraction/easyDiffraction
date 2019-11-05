@@ -1,7 +1,7 @@
-import collections
+from collections.abc import MutableSet
 
 
-class StatusList(collections.MutableSet):
+class StatusList(MutableSet):
     """StatusList is a set container for StatusItems
 
     Note: This class inherits from MutableSet. This was chosen due to the `add` and `discard`
