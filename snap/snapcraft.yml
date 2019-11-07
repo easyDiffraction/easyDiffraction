@@ -1,0 +1,34 @@
+name: easydiffraction
+version: git
+summary: 'easyDiffraction - software for modelling and analysis of neutron diffraction data.'
+description: |
+  easyDiffraction is a scientific software for modelling and analysis of the neutron diffraction data.
+  http://easydiffraction.github.io/
+
+grade: devel # devel # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+base: core18
+
+apps:
+    easydiffraction:
+        command: desktop-launch python3 $SNAP/easydiffraction.py
+        plugs: [x11, unity7, pulseaudio, home, gsettings, network, desktop, desktop-legacy]
+        desktop: usr/share/applications/easyDiffraction.desktop
+
+parts:
+  copy-stuff:
+    plugin: dump
+    source: ./App
+  copy-desktop-icon-stuff:
+    plugin: dump
+    source: snap/gui
+    organize:
+      # this worked! without it the two files end up in /prime not /prime/usr/share/applications/
+      easyDiffraction.png: usr/share/applications/easyDiffraction.png
+      easyDiffraction.desktop: usr/share/applications/easyDiffraction.desktop
+  pynsource:
+    plugin: python
+    python-version: python3
+    source: ./App
+    requirements:
+        - /root/project/linux.txt
