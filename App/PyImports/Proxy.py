@@ -42,6 +42,7 @@ class Proxy(QObject):
         self._refinement_running = False
         self._refinement_done = False
         self._refinement_result = None
+        self._isValidCif = None
 
     # Load CIF method, accessible from QML
     @Slot(str)
@@ -51,6 +52,10 @@ class Proxy(QObject):
         self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
         self._calculator = CryspyCalculator(self._main_rcif_path)
         self._calculator.projectDictChanged.connect(self.projectChanged)
+        #
+        if not Helpers.check_project_dict(self._calculator.asCifDict()):
+            self._isValidCif = False
+            return
         #
         self._measured_data_model = MeasuredDataModel(self._calculator)
         self._calculated_data_model = CalculatedDataModel(self._calculator)
@@ -66,7 +71,7 @@ class Proxy(QObject):
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
-
+        self._isValidCif = True
     # ##############
     # QML Properties
     # ##############
@@ -89,6 +94,8 @@ class Proxy(QObject):
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
     statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
+
+    validCif = Property(bool, lambda self: self._isValidCif, constant=False)
 
     # ##########
     # REFINEMENT

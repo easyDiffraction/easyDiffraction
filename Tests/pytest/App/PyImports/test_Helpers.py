@@ -110,3 +110,23 @@ def test_get_num_refine_pars():
     numPars = get_num_refine_pars(obj)
     expectedPars = 2
     assert numPars == expectedPars
+
+
+def test_check_project_dict():
+    dict1 = {'a': 1,
+             'b': 2,
+             'phases': 3}
+    dict2 = {
+        'phases': [],
+        'experiments': [],
+        'calculations': []
+    }
+    dict3 = {
+        'phases': 1,
+        'experiments': 2,
+        'calculations': 3
+    }
+
+    assert check_project_dict(dict1) == False
+    assert check_project_dict(dict2) == False
+    assert check_project_dict(dict3) == True

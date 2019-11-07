@@ -67,7 +67,10 @@ class CryspyCalculator(QObject):
 
     def setInfoDict(self):
         """Set additional project info"""
+        # try:
         name = self._main_rcif["_name"].value if "_name" in str(self._main_rcif) else 'Unknown'
+        # except AttributeError:
+        #     return
         keywords = self._main_rcif["_keywords"].value.split(', ') if "_keywords" in str(self._main_rcif) else ['']
         self._info_dict = {
             'name': name,
