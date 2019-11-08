@@ -3,6 +3,8 @@ import operator
 import webbrowser
 import logging
 from functools import reduce
+import zipfile
+import tempfile
 
 
 def nested_get(dictionary, keys_list):
@@ -67,3 +69,30 @@ def check_project_dict(project_dict):
         if not project_dict[key]:
             isValid = False
     return isValid
+
+def check_if_zip(filename):
+    return zipfile.is_zipfile(filename)
+
+
+def check_project_file(filename):
+
+    isValid = True
+    mustContain = ['main.cif', 'phases.cif', 'experiments.cif']
+
+    if check_if_zip(filename):
+        with zipfile.ZipFile(filename, 'r') as zip:
+            listList = zip.namelist()
+            for file in mustContain:
+                if file not in listList:
+                    isValid = False
+    else:
+        raise TypeError
+
+    return isValid
+
+def temp_project_dir(filename):
+    # Assumme we're ok.....
+    targetdir = tempfile.TemporaryDirectory()
+    with zipfile.ZipFile(filename, 'r') as zip:
+        zip.extractall(targetdir.name)
+    return targetdir

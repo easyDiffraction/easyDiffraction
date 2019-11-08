@@ -53,6 +53,12 @@ class Proxy(QObject):
         self._calculator = CryspyCalculator(self._main_rcif_path)
         self._calculator.projectDictChanged.connect(self.projectChanged)
         #
+        if Helpers.check_if_zip(self._main_rcif_path):
+            if Helpers.check_project_file(self._main_rcif_path):
+                self._tempFolder = Helpers.temp_project_dir(self._main_rcif_path)
+                self._main_rcif_path = os.path.join(self._tempFolder.name, 'main.cif')
+
+        #
         if not Helpers.check_project_dict(self._calculator.asCifDict()):
             self._isValidCif = False
             return
@@ -67,7 +73,6 @@ class Proxy(QObject):
         self._atom_msps_model = AtomMspsModel(self._calculator)
         self._fitables_model = FitablesModel(self._calculator)
         self._status_model = StatusModel(self._calculator)
-
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
