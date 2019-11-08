@@ -17,10 +17,10 @@ class StatusModel(QObject):
         chiItem.title = 'Previous \u03c7\u00b2'
         chiItem.setReturn(False)
         self._interestedList = StatusList([
-            StatusItem('numData', title='Experiments', additionalData=0),
-            StatusItem('numPhases', title='Phases', additionalData=0),
+            chiItem,
             StatusItem('numPars', title='Fit parameters', additionalData=1),
-            chiItem
+            StatusItem('numData', title='Experiments', additionalData=0),
+            StatusItem('numPhases', title='Phases', additionalData=0)
         ])
         self._updateStatusList()
 
@@ -99,7 +99,6 @@ class StatusModel(QObject):
         self._interestedList.setItemValue('numPars', numPars)
         self._interestedList.setItemValue('numPhases', len(project_dict['phases']))
         self._interestedList.setItemValue('numData', len(project_dict['experiments']))
-
 
     def onProjectChanged(self):
         """Define what to do if project dict is changed, e.g. by external library object."""
