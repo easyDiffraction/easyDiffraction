@@ -4,15 +4,18 @@
 
 Please, visit [easydiffraction.github.io](http://easydiffraction.github.io) for more details.
 
-[![][25]][20] [![][26]][20] [![][27]][20]
+[![][25]][20] [![][26]][20] [![][27]][20]  [![][28]][21]
 
 [![][35]][30] [![][45]][40] [![][55]][50]
 
 <!---Travis CI Build Status--->
 [20]: https://travis-ci.org/easyDiffraction/easyDiffraction
+[21]: https://codecov.io/gh/easyDiffraction/easyDiffraction
+
 [25]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=win&label=Windows%2010.0&branch=master
 [26]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=osx&label=macOS%2010.13%20(High%20Sierra)&branch=master
 [27]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=linux&label=Ubuntu%20Linux%2016.04%20(Xenial)&branch=master
+[28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/develop/graph/badge.svg
 
 <!---GitHub Latest Release--->
 [30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.5
