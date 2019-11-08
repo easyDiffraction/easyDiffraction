@@ -489,7 +489,7 @@ def step(context):
 @Then("Fitting details are shown")
 def step(context):
     test.compare(waitForObjectExists(names.optimization_terminated_successfully_Number_of_evaluations_of_the_objective_functions_120_Number_of_iterations_performed_by_the_optimizer_15_Final_goodnes_of_fit_3_00_Label).visible, True)
-    test.compare(str(waitForObjectExists(names.optimization_terminated_successfully_Number_of_evaluations_of_the_objective_functions_120_Number_of_iterations_performed_by_the_optimizer_15_Final_goodnes_of_fit_3_00_Label).text), "Optimization terminated successfully.\nNumber of evaluations of the objective functions: 120\nNumber of iterations performed by the optimizer: 15\nFinal goodnes-of-fit (χ²): 3.00")
+    test.compare(str(waitForObjectExists(names.optimization_terminated_successfully_Number_of_evaluations_of_the_objective_functions_120_Number_of_iterations_performed_by_the_optimizer_15_Final_goodnes_of_fit_3_00_Label).text), "Optimization terminated successfully.\nNumber of evaluations of the objective functions: 120\nNumber of iterations performed by the optimizer: 15\nFinal goodness-of-fit (χ²): 3.00")
     mouseClick(waitForObject(names.o_Rectangle_2), 932, 306, Qt.LeftButton)
 
 @Then("Optimized parameters are displayed")

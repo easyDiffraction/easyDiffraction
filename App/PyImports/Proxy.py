@@ -14,6 +14,7 @@ from PyImports.Models.AtomSitesModel import AtomSitesModel
 from PyImports.Models.AtomAdpsModel import AtomAdpsModel
 from PyImports.Models.AtomMspsModel import AtomMspsModel
 from PyImports.Models.FitablesModel import FitablesModel
+from PyImports.Models.StatusModel import StatusModel
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
 
@@ -36,11 +37,12 @@ class Proxy(QObject):
         self._atom_adps_model = None
         self._atom_msps_model = None
         self._fitables_model = None
-        #
+        self._status_model = None
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
         self._refinement_result = None
+        self._isValidCif = None
 
     # Load CIF method, accessible from QML
     @Slot(str)
@@ -51,6 +53,10 @@ class Proxy(QObject):
         self._calculator = CryspyCalculator(self._main_rcif_path)
         self._calculator.projectDictChanged.connect(self.projectChanged)
         #
+        if not Helpers.check_project_dict(self._calculator.asCifDict()):
+            self._isValidCif = False
+            return
+        #
         self._measured_data_model = MeasuredDataModel(self._calculator)
         self._calculated_data_model = CalculatedDataModel(self._calculator)
         self._bragg_peaks_model = BraggPeaksModel(self._calculator)
@@ -60,9 +66,12 @@ class Proxy(QObject):
         self._atom_adps_model = AtomAdpsModel(self._calculator)
         self._atom_msps_model = AtomMspsModel(self._calculator)
         self._fitables_model = FitablesModel(self._calculator)
+        self._status_model = StatusModel(self._calculator)
+
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
-
+        self._refine_thread.finished.connect(self._status_model.onRefinementDone)
+        self._isValidCif = True
     # ##############
     # QML Properties
     # ##############
@@ -87,6 +96,10 @@ class Proxy(QObject):
     atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), constant=True)
     atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), constant=True)
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
+    statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
+    chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
+
+    validCif = Property(bool, lambda self: self._isValidCif, constant=False)
 
     # ##########
     # REFINEMENT
