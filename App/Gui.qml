@@ -22,8 +22,6 @@ ApplicationWindow {
 
     minimumWidth: Generic.Variables.appMinWindowWidth
     minimumHeight: Generic.Variables.appMinWindowHeight
-    ///x: Generic.Variables.appWindowX
-    ///y: Generic.Variables.appWindowY
 
     font.family: Generic.Style.fontFamily
     font.pointSize: Generic.Style.fontPointSize
@@ -40,21 +38,6 @@ ApplicationWindow {
         spacing: 0
         GenericAppToolbar.Toolbar {}
         GenericAppContentArea.ContentArea {}
-    }
-
-    // Set paths related to the current file
-    Image {
-        visible: false
-        source: Generic.Style.dummyIconPath
-        onSourceChanged: {
-            const currentFilePath = GenericLogic.Misc.dirFromPath(source.toString())
-            Specific.Variables.resourcesPath = currentFilePath + "QmlImports/easyDiffraction/Resources/"
-            Generic.Variables.resourcesPath = currentFilePath + "QmlImports/easyAnalysis/Resources/"
-            //Generic.Variables.thirdPartyIconsPath = Generic.Variables.resourcesPath + "Icons/"
-            Generic.Variables.originalIconsPath = Generic.Variables.resourcesPath + "Icons/"
-            Generic.Variables.thirdPartyIconsPath = Generic.Variables.resourcesPath + "Fonts/Awesome/svgs/"
-            Generic.Variables.qmlElementsPath = currentFilePath + "QmlImports/easyAnalysis/App/Elements/"
-        }
     }
 
     // Persistent settings

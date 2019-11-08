@@ -40,7 +40,7 @@ Dialog {
             height: width
             //antialiasing: true
             //fillMode: Image.PreserveAspectFit
-            source: Specific.Variables.resourcesPath + "Icons/App.svg"
+            source: Specific.Settings.appIconPath
             sourceSize: Qt.size( img.sourceSize.width, img.sourceSize.height )
             Image {
                 id: img

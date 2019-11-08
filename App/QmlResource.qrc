@@ -128,7 +128,6 @@
         <file>QmlImports/easyAnalysis/App/Elements/qmldir</file>
         <file>QmlImports/easyAnalysis/App/Elements/RowLayout.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/SidebarStack.qml</file>
-        <file>QmlImports/easyAnalysis/App/Elements/StatusBar.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/StructureView.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/TextField.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/VerticalBorder.qml</file>
@@ -256,11 +255,8 @@
         <file>PyImports/Models/CellBoxModel.py</file>
         <file>PyImports/Models/CellParametersModel.py</file>
         <file>PyImports/Models/FitablesModel.py</file>
-        <file>PyImports/Models/StatusModel.py</file>
         <file>PyImports/Models/MeasuredDataModel.py</file>
         <file>PyImports/Helpers.py</file>
         <file>PyImports/Proxy.py</file>
-        <file>PyImports/Refinement.py</file>
-        <file>PyImports/StatusObjects.py</file>
     </qresource>
 </RCC>
