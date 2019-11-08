@@ -26,6 +26,7 @@ class Proxy(QObject):
         #
         self._main_rcif_path = None
         self._calculator = None
+        self._tempFolder = None
         #
         self._measured_data_model = None
         self._calculated_data_model = None
@@ -50,14 +51,15 @@ class Proxy(QObject):
         logging.info("")
         #
         self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
-        self._calculator = CryspyCalculator(self._main_rcif_path)
-        self._calculator.projectDictChanged.connect(self.projectChanged)
         #
         if Helpers.check_if_zip(self._main_rcif_path):
             if Helpers.check_project_file(self._main_rcif_path):
                 self._tempFolder = Helpers.temp_project_dir(self._main_rcif_path)
                 self._main_rcif_path = os.path.join(self._tempFolder.name, 'main.cif')
-
+                # TODO close self._tempFolder using self._tempFolder.cleanup() on exit.
+        #
+        self._calculator = CryspyCalculator(self._main_rcif_path)
+        self._calculator.projectDictChanged.connect(self.projectChanged)
         #
         if not Helpers.check_project_dict(self._calculator.asCifDict()):
             self._isValidCif = False
@@ -77,6 +79,11 @@ class Proxy(QObject):
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
         self._isValidCif = True
+
+    @slot(str)
+    def saveCif(self, saveDir):
+        return saveDir
+
     # ##############
     # QML Properties
     # ##############
