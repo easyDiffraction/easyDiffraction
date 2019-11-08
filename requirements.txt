@@ -1,3 +1,2 @@
 cryspy==0.1.13
-PySide2==5.13.1
-pyinstaller==3.5
+pyside2

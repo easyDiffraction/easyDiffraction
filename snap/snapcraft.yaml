@@ -1,0 +1,94 @@
+name: easydiffraction
+version: git
+summary: 'easyDiffraction - modelling and analysis of neutron diffraction data.'
+description: |
+  easyDiffraction is a scientific software for modelling and analysis of the neutron diffraction data.
+  http://easydiffraction.github.io/
+
+grade: devel # devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+base: core18
+
+architectures:
+  - build-on: amd64
+
+apps:
+#    easydiffraction:
+#        command: desktop-launch python3 $SNAP/easyDiffraction.py
+#        plugs: [x11, wayland, home, gsettings, network, network-bind, desktop, desktop-legacy, opengl]
+#        desktop: usr/share/applications/easyDiffraction.desktop
+
+    easydiffraction:
+        command: python3 $SNAP/easyDiffraction.py
+        plugs:
+          - opengl
+          - desktop
+          - wayland
+          - x11
+
+parts:
+#  desktop-gtk3:
+#    build-packages:
+#      - build-essential
+#      - libgtk-3-dev
+#    make-parameters:
+#      - FLAVOR=gtk3
+#    plugin: make
+#    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+#    source-subdir: gtk
+#    stage-packages:
+#      - libxkbcommon0
+#      - ttf-ubuntu-font-family
+#      - dmz-cursor-theme
+#      - light-themes
+#      - adwaita-icon-theme
+#      - gnome-themes-standard
+#      - shared-mime-info
+#      - libgtk-3-0
+#      - libgdk-pixbuf2.0-0
+#      - libglib2.0-bin
+#      - libgtk-3-bin
+#      - libappindicator3-1
+#      - locales-all
+#      - xdg-user-dirs
+#      - ibus-gtk3
+#      - libibus-1.0-5
+#      - fcitx-frontend-gtk3
+
+  copy-stuff:
+    plugin: dump
+    source: ./App
+
+  copy-desktop-icon-stuff:
+    plugin: dump
+    source: snap/gui
+    organize:
+      easyDiffraction.png: usr/share/applications/easyDiffraction.png
+      easyDiffraction.desktop: usr/share/applications/easyDiffraction.desktop
+
+  easydiffraction:
+    plugin: python
+    python-version: python3
+    source: ./App
+    stage-packages:
+      - libnss3
+      - libxcomposite1
+      - libxcursor1
+      - libxtst6
+      - libxrandr2
+      - libasound2
+      - libglu1-mesa
+      - libgles2-mesa
+      - fontconfig
+      - libxkbcommon0
+      - libxkbcommon-x11-0
+      - libxi6
+      - libegl1
+      - shared-mime-info
+      - libgdk-pixbuf2.0-0
+      - locales-all
+      - libxslt1.1
+      - xfonts-base
+      - xfonts-scalable
+    requirements:
+      - /root/project/requirements.txt
