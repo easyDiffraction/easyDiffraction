@@ -16,7 +16,7 @@ sys.path.append('.')
 # automatically discover and run all tests under ./Tests
 # files with names starting with `test_` are considered valid test files
 
-args = ['Tests']
+args = ['--cov=App', 'Tests']
 
 # add potential arguments like -k or -m
 if len(sys.argv) > 1:
