@@ -95,29 +95,36 @@ ColumnLayout {
             clip: true
 
             Rectangle {
-                id:plotInfoRec
-                width: plotInfo.paintedWidth + borderWidth + extraPadding/2
-                height: plotInfo.paintedHeight + borderWidth + extraPadding/2
-                color: Generic.Style.blueColor
-                opacity: 0.1
-                border.color: Qt.darker(Generic.Style.blueColor, 1.5)
-                border.width: borderWidth
-                anchors.right: parent.right
-                anchors.top: parent.top
-                anchors.topMargin: 2*extraPadding + borderWidth + infoPadding
-                anchors.rightMargin: 2*extraPadding - borderWidth + infoPadding
-            }
+                id: plotInfoRect
+                z: 100
 
-            Label {
-                id: plotInfo
-                x: plotInfoRec.x + borderWidth/2 + extraPadding/4
-                y: plotInfoRec.y + borderWidth/2 + extraPadding/4
-                font.family: Generic.Style.introThinFontFamily
-                font.pointSize: Generic.Style.systemFontPointSize + 1
-                text:  {
+                anchors.top: topChart.top
+                anchors.right: topChart.right
+                anchors.topMargin: extraPadding + infoPadding + 30
+                anchors.rightMargin: extraPadding + infoPadding + 30
+
+                width: childrenRect.width
+                height: childrenRect.height
+
+                color: Generic.Style.buttonBkgFinishedColor
+                border.color: Generic.Style.buttonBorderFinishedColor
+                border.width: 1
+
+                Label {
+                    id: plotInfo
+                    topPadding: infoPadding/2
+                    bottomPadding: topPadding
+                    leftPadding: topPadding + font.pixelSize/4
+                    rightPadding: leftPadding
+
+                    font.family: Generic.Style.fontFamily
+                    font.pointSize: Generic.Style.fontPointSize
+                    color: Generic.Style.buttonTextFinishedColor
+
+                    text: {
                         const showPars = {
-                            'Final goodness-of-fit (\u03c7\u00b2)': Generic.Variables.chiSquared,
-                            'Number of refined parameters': Generic.Variables.numRefinedPars
+                            'Goodness-of-fit (\u03c7\u00b2)': Generic.Variables.chiSquared,
+                            'Num. refined parameters': Generic.Variables.numRefinedPars
                         }
                         let out = ""
                         for (let key in showPars) {
@@ -125,16 +132,15 @@ ColumnLayout {
                                 out += "%1: %2\n".arg(key).arg(showPars[key])
                             }
                         }
-                        if (out){
-                            plotInfo.visible = true
-                            plotInfoRec.visible = true
+                        if (out) {
+                            plotInfoRect.visible = true
                         } else {
-                            plotInfo.visible = false
-                            plotInfoRec.visible = false
+                            plotInfoRect.visible = false
                         }
                         return out.slice(0, -1)
                     }
-             }
+                }
+            }
 
             //////////////////////////
             // Top chart (Iobs, Icalc)
@@ -540,7 +546,7 @@ ColumnLayout {
         id: infoAreaContainer
         visible: showInfo
         Layout.fillWidth: true
-        height: Generic.Style.buttonHeight + Generic.Style.sidebarGroupInnerSpacing + 2*Generic.Style.appBorderThickness
+        height: Generic.Style.buttonHeight + 3
         color: "transparent"
 
         Label {
@@ -643,6 +649,11 @@ ColumnLayout {
             bottomChart.anchors.leftMargin = -extraPadding
         }
         middleChart.anchors.leftMargin = leftBraggMargin - extraPadding + textHeight
+
+        //print(topChart.x, topChart.y, topChart.width, topChart.height)
+
+        //plotInfoRec.anchors.right = topChart.right
+        //plotInfoRec.anchors.top = topChart.top
     }
 
 }

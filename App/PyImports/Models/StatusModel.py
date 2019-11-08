@@ -12,15 +12,15 @@ class StatusModel(QObject):
         self._calculator = calculator
 
         # Create the status items
-        chiItem = StatusItem('chiSq', title='Goodness-of-fit (\u03c7\u00b2)', additionalData=1)
+        chiItem = StatusItem('chiSq', title='Current \u03c7\u00b2', additionalData=1)
         chiItem.setReturn(True)
-        chiItem.title = 'Previous goodness-of-fit (\u03c7\u00b2)'
+        chiItem.title = 'Previous \u03c7\u00b2'
         chiItem.setReturn(False)
         self._interestedList = StatusList([
-            chiItem,
-            StatusItem('numPars', title='Number of parameters', additionalData=1),
-            StatusItem('numPhases', title='Number of phases', additionalData=0),
-            StatusItem('numData', title='Number of data files', additionalData=0)
+            StatusItem('numData', title='Experiments', additionalData=0),
+            StatusItem('numPhases', title='Phases', additionalData=0),
+            StatusItem('numPars', title='Fit parameters', additionalData=1),
+            chiItem
         ])
         self._updateStatusList()
 
