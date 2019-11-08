@@ -90,9 +90,14 @@ def check_project_file(filename):
 
     return isValid
 
+
 def temp_project_dir(filename):
     # Assumme we're ok.....
     targetdir = tempfile.TemporaryDirectory()
     with zipfile.ZipFile(filename, 'r') as zip:
         zip.extractall(targetdir.name)
     return targetdir
+
+
+def create_project_zip(saveName):
+    raise NotImplemented

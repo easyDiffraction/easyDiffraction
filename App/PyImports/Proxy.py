@@ -80,9 +80,9 @@ class Proxy(QObject):
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
         self._isValidCif = True
 
-    @slot(str)
-    def saveCif(self, saveDir):
-        return saveDir
+    @Slot(str)
+    def saveCif(self, saveName):
+        file = Helpers.create_project_zip(saveName)
 
     # ##############
     # QML Properties
@@ -112,6 +112,14 @@ class Proxy(QObject):
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
 
     validCif = Property(bool, lambda self: self._isValidCif, constant=False)
+    working_dir = Property(str, lambda self: self._get_working_dir, constant=False)
+
+    def _get_working_dir(self):
+        if self._tempFolder is None:
+            [working_dir, _] = os.path.split(self._main_rcif_path)
+        else:
+            working_dir = self._tempFolder.name
+        return working_dir
 
     # ##########
     # REFINEMENT
