@@ -10,14 +10,6 @@ ColumnLayout {
 
     GenericAppElements.HorizontalBorder {}
 
-    ListModel {
-        id: tempListModel
-        ListElement {
-            label: "Status"
-            value: "Ready"
-        }
-    }
-
     ListView {
         height: Generic.Style.statusBarHeight
         Layout.fillWidth: true
@@ -28,7 +20,9 @@ ColumnLayout {
         orientation: ListView.Horizontal
         spacing: 20
 
-        model: Specific.Variables.projectOpened ? proxy.statusInfo : tempListModel
+        model: Specific.Variables.projectOpened ? proxy.statusInfo : null
+
+        visible: model !== null
 
         delegate: Rectangle {
             width: childrenRect.width
