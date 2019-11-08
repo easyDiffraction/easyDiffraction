@@ -82,7 +82,10 @@ class Proxy(QObject):
 
     @Slot(str)
     def saveCif(self, saveName):
-        file = Helpers.create_project_zip(saveName)
+        data_dir = self._get_working_dir()
+        allOK = Helpers.create_project_zip(data_dir, saveName)
+        if not allOK:
+            raise FileNotFoundError
 
     # ##############
     # QML Properties
@@ -112,7 +115,6 @@ class Proxy(QObject):
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
 
     validCif = Property(bool, lambda self: self._isValidCif, constant=False)
-    working_dir = Property(str, lambda self: self._get_working_dir, constant=False)
 
     def _get_working_dir(self):
         if self._tempFolder is None:

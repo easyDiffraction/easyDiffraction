@@ -59,8 +59,20 @@ ColumnLayout {
             }
 
             GenericAppContentAreaButtons.Save {
+                id: saveButton
                 enabled: false
                 text: qsTr("Save project as...")
+
+                onClicked: fileDialog2.open()
+
+                GenericAppElements.GuideWindow {
+                    message: "Click here to save a project."
+                    position: "left"
+                    guideCurrentIndex: 0
+                    toolbarCurrentIndex: Generic.Variables.HomeIndex
+                    guidesCount: Generic.Variables.HomeGuidesCount
+                }
+
             }
 
             // Persistent settings
@@ -83,6 +95,7 @@ ColumnLayout {
                         Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                        saveButton.enabled = true
                     } else {
                         failOpenDialog.visible = true
                         Specific.Variables.projectOpened = false
@@ -94,6 +107,17 @@ ColumnLayout {
                     }
                 }
             }
+
+            Dialogs1.FileDialog{
+                id: fileDialog2
+                selectExisting: false
+                nameFilters: ["Project files (*.zip)"]
+                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                onAccepted: {
+                    proxy.saveCif(fileUrl)
+                }
+            }
+
             Dialog {
                 id: failOpenDialog
                 parent: Overlay.overlay
