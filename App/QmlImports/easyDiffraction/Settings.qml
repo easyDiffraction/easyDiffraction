@@ -8,8 +8,8 @@ QtObject {
     readonly property string appRightName: "Diffraction"
     readonly property string appName: appLeftName + appRightName
     readonly property string appVersion: "0.3.6"
-    readonly property string appDate: "23 Oct 2019"
-    readonly property string appUrl: "https://easydiffraction.github.io"
+    readonly property string appDate: "13 Nov 2019"
+    readonly property string appUrl: "https://easydiffraction.org"
     readonly property string appIconPath: qmlImportsDir + "/easyDiffraction/Resources/Icons/App.svg"
 
 }
