@@ -4,7 +4,7 @@
 
 Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for more details.
 
-[![][25]][20] [![][26]][20] [![][27]][20]  [![][28]][21]
+[![][25]][20] [![][26]][20] [![][27]][20]
 
 [![][35]][30] [![][45]][40] [![][55]][50]
 
