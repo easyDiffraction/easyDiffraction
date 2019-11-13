@@ -612,14 +612,14 @@ class CryspyCalculator(QObject):
             chi_sq, n_res = experiment.calc_chi_sq(self._cryspy_obj.crystals)
             logging.info("calc_chi_sq end") # profiling
 
-            self.final_chi_square = chi_sq
+            self.final_chi_square = chi_sq / n_res
 
             # Main parameters
             self._info_dict['chi_squared'] = {
                 'header': '',
                 'tooltip': '',
                 'url': '',
-                'value': float(chi_sq) }
+                'value': float(self.final_chi_square) }
             self._info_dict['n_res'] = {
                 'header': '',
                 'tooltip': '',
