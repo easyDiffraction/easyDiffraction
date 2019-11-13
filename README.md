@@ -2,7 +2,7 @@
 
 **easyDiffraction** is a scientific software for modelling and analysis of the neutron diffraction data.
 
-Please, visit [easydiffraction.org](https://easydiffraction.org) for more details.
+Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for more details.
 
 [![][25]][20] [![][26]][20] [![][27]][20]
 
