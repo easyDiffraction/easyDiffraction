@@ -154,7 +154,7 @@ Rectangle {
         visible: showInfo
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: font.pointSize
+        anchors.bottomMargin: font.pointSize * 0.5
         leftPadding: font.pointSize * lineHeight * 0.5
         rightPadding: font.pointSize * lineHeight * 0.5
         lineHeight: 1.5

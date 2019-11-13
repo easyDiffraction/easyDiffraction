@@ -14,6 +14,8 @@ ColumnLayout {
     property bool showInfo: true
 
     property int extraPadding: 12
+    property int borderWidth: 2
+    property int infoPadding: 10
     property int xScaleZoom: 0
     property int yScaleZoom: 0
 
@@ -48,13 +50,97 @@ ColumnLayout {
         //////////////////////
         // Top chart container
         //////////////////////
-
+//        ListView {
+//            id: plotInfo2
+//            x: 100
+//            y: 100
+//            width: 500
+//            height: 500
+//            spacing: 5
+//
+//            model: Specific.Variables.projectOpened ? proxy.chartInfo : null
+//
+//            delegate: Rectangle {
+//                width: 50
+//                height: parent.height
+//                color: 'transparent'
+//                Row {
+//                    height: parent.height
+//                    spacing: 5
+//
+//                    Text {
+//                        height: parent.height
+//                        verticalAlignment: Text.AlignVCenter
+//                        font.family: Generic.Style.fontFamily
+//                        font.pointSize: Generic.Style.fontPointSize - 1
+//                        color: Generic.Style.buttonTextDisabledColor
+//                        text: label
+//                    }
+//                    Text {
+//                        height: parent.height
+//                        verticalAlignment: Text.AlignVCenter
+//                        font.family: Generic.Style.fontFamily
+//                        font.pointSize: Generic.Style.fontPointSize - 1
+//                        color: Generic.Style.buttonTextDisabledColor
+//                        text: value
+//                    }
+//                }
+//            }
+//        }
         Rectangle {
             id: topChartContainer
             Layout.fillWidth: true
             Layout.fillHeight: true
             color: "transparent"
             clip: true
+
+            Rectangle {
+                id: plotInfoRect
+                z: 100
+
+                anchors.top: topChart.top
+                anchors.right: topChart.right
+                anchors.topMargin: extraPadding + infoPadding + 30
+                anchors.rightMargin: extraPadding + infoPadding + 30
+
+                width: childrenRect.width
+                height: childrenRect.height
+
+                color: Generic.Style.buttonBkgFinishedColor
+                border.color: Generic.Style.buttonBorderFinishedColor
+                border.width: 1
+
+                Label {
+                    id: plotInfo
+                    topPadding: infoPadding/2
+                    bottomPadding: topPadding
+                    leftPadding: topPadding + font.pixelSize/4
+                    rightPadding: leftPadding
+
+                    font.family: Generic.Style.fontFamily
+                    font.pointSize: Generic.Style.fontPointSize
+                    color: Generic.Style.buttonTextFinishedColor
+
+                    text: {
+                        const showPars = {
+                            'Goodness-of-fit (\u03c7\u00b2)': Generic.Variables.chiSquared,
+                            'Num. refined parameters': Generic.Variables.numRefinedPars
+                        }
+                        let out = ""
+                        for (let key in showPars) {
+                            if (showPars[key]) {
+                                out += "%1: %2\n".arg(key).arg(showPars[key])
+                            }
+                        }
+                        if (out) {
+                            plotInfoRect.visible = true
+                        } else {
+                            plotInfoRect.visible = false
+                        }
+                        return out.slice(0, -1)
+                    }
+                }
+            }
 
             //////////////////////////
             // Top chart (Iobs, Icalc)
@@ -460,7 +546,7 @@ ColumnLayout {
         id: infoAreaContainer
         visible: showInfo
         Layout.fillWidth: true
-        height: Generic.Style.buttonHeight + Generic.Style.sidebarGroupInnerSpacing + 2*Generic.Style.appBorderThickness
+        height: Generic.Style.buttonHeight + 3
         color: "transparent"
 
         Label {
@@ -563,6 +649,11 @@ ColumnLayout {
             bottomChart.anchors.leftMargin = -extraPadding
         }
         middleChart.anchors.leftMargin = leftBraggMargin - extraPadding + textHeight
+
+        //print(topChart.x, topChart.y, topChart.width, topChart.height)
+
+        //plotInfoRec.anchors.right = topChart.right
+        //plotInfoRec.anchors.top = topChart.top
     }
 
 }

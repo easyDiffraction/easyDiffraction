@@ -42,6 +42,8 @@ RowLayout {
             }
         }
 
+        // Status bar
+        GenericAppElements.StatusBar{}
     }
 
     // ContentArea right border

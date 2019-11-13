@@ -24,8 +24,8 @@ class FitablesModel(QObject):
         # set model
         self._setModelFromProject()
         # connect signals
-        self._model.dataChanged.connect(self.onModelChanged)
         self._calculator.projectDictChanged.connect(self.onProjectChanged)
+        self._model.dataChanged.connect(self.onModelChanged)
 
     def _setRolesListAndDict(self):
         """..."""
