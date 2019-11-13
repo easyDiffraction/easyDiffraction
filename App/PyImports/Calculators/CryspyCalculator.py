@@ -24,6 +24,7 @@ class CryspyCalculator(QObject):
         # cryspy
         self._main_rcif_path = main_rcif_path
         self._main_rcif = None
+        self.final_chi_square = None
         self._cryspy_obj = self._createCryspyObj() #cryspy.rhochi_read_file(self._main_rcif_path)
         # project dict
         self._project_dict = {}
@@ -52,7 +53,7 @@ class CryspyCalculator(QObject):
         """Set application state"""
         self._app_dict = {
             'name': 'easyDiffraction',
-            'version': '0.3.5',
+            'version': '0.3.6',
             'url': 'http://easydiffraction.github.io'
         }
 
@@ -66,7 +67,10 @@ class CryspyCalculator(QObject):
 
     def setInfoDict(self):
         """Set additional project info"""
+        # try:
         name = self._main_rcif["_name"].value if "_name" in str(self._main_rcif) else 'Unknown'
+        # except AttributeError:
+        #     return
         keywords = self._main_rcif["_keywords"].value.split(', ') if "_keywords" in str(self._main_rcif) else ['']
         self._info_dict = {
             'name': name,
@@ -608,13 +612,15 @@ class CryspyCalculator(QObject):
             chi_sq, n_res = experiment.calc_chi_sq(self._cryspy_obj.crystals)
             logging.info("calc_chi_sq end") # profiling
 
+            self.final_chi_square = chi_sq / n_res
+
             # Main parameters
-            self._calculations_dict[experiment.label]['chi_squared'] = {
+            self._info_dict['chi_squared'] = {
                 'header': '',
                 'tooltip': '',
                 'url': '',
-                'value': float(chi_sq) }
-            self._calculations_dict[experiment.label]['n_res'] = {
+                'value': float(self.final_chi_square) }
+            self._info_dict['n_res'] = {
                 'header': '',
                 'tooltip': '',
                 'url': '',
@@ -867,11 +873,13 @@ class CryspyCalculator(QObject):
         self.projectDictChanged.emit()
         try:
             return {
+                "num_refined_parameters": len(scipy_refinement_res.x),
                 "refinement_message":scipy_refinement_res.message,
                 "nfev":scipy_refinement_res.nfev,
                 "nit":scipy_refinement_res.nit,
                 "njev":scipy_refinement_res.njev,
-                "final_chi_sq":float(scipy_refinement_res.fun),
+                "final_chi_sq":float(self.final_chi_square),
+                #"final_chi_sq":float(scipy_refinement_res.fun),
             }
         except:
              return { "refinement_message":"Unknow problems during refinement" }

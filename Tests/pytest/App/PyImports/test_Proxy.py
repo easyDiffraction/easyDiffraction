@@ -29,11 +29,11 @@ def test_Proxy_properties():
     assert proxy._refinement_running == False
     assert proxy._refinement_done == False
 
-def test_Proxy_init():
+def test_Proxy_loadCif():
     proxy = Proxy()
-    proxy.init(TEST_FILE)
+    proxy.loadCif(TEST_FILE)
     assert proxy._main_rcif_path == "Tests/Data/main.cif"
-    assert isinstance(proxy._project_model, CryspyCalculator)
+    assert isinstance(proxy._calculator, CryspyCalculator)
     assert isinstance(proxy._measured_data_model, MeasuredDataModel)
     assert isinstance(proxy._calculated_data_model, CalculatedDataModel)
     assert isinstance(proxy._bragg_peaks_model, BraggPeaksModel)
@@ -48,129 +48,9 @@ def test_Proxy_init():
     #assert "\\easyDiffraction\\Tests\\Data" in proxy.project_dir_absolute_path
     assert "file:Tests/Data" in proxy.project_url_absolute_path
 
-def test_Proxy_getProject():
-    proxy = Proxy()
-    assert proxy.getProject() == ""
-    proxy.init(TEST_FILE)
-    assert isinstance(proxy.getProject(), dict)
-
-def test_Proxy_getCif():
-    proxy = Proxy()
-    assert proxy.getCif() == ""
-    proxy.init(TEST_FILE)
-    assert isinstance(proxy.getCif(), dict)
-
-def test_Proxy_getMeasuredDataHeader():
-    proxy = Proxy()
-    assert isinstance(proxy.getMeasuredDataHeader(), QStandardItemModel)
-    assert proxy.getMeasuredDataHeader().rowCount() == 0
-    assert proxy.getMeasuredDataHeader().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getMeasuredDataHeader().rowCount() == 1
-    assert proxy.getMeasuredDataHeader().columnCount() == 7
-
-def test_Proxy_getMeasuredData():
-    proxy = Proxy()
-    assert isinstance(proxy.getMeasuredData(), QStandardItemModel)
-    assert proxy.getMeasuredData().rowCount() == 0
-    assert proxy.getMeasuredData().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getMeasuredData().rowCount() == 381
-    assert proxy.getMeasuredData().columnCount() == 7
-
-def test_Proxy_getCalculatedDataHeader():
-    proxy = Proxy()
-    assert isinstance(proxy.getCalculatedDataHeader(), QStandardItemModel)
-    assert proxy.getCalculatedDataHeader().rowCount() == 0
-    assert proxy.getCalculatedDataHeader().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getCalculatedDataHeader().rowCount() == 0
-    assert proxy.getCalculatedDataHeader().columnCount() == 0
-
-def test_Proxy_getCalculatedData():
-    proxy = Proxy()
-    assert isinstance(proxy.getCalculatedData(), QStandardItemModel)
-    assert proxy.getCalculatedData().rowCount() == 0
-    assert proxy.getCalculatedData().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getCalculatedData().rowCount() == 381
-    assert proxy.getCalculatedData().columnCount() == 4
-
-def test_Proxy_getBraggPeaks():
-    proxy = Proxy()
-    assert isinstance(proxy.getBraggPeaks(), QStandardItemModel)
-    assert proxy.getBraggPeaks().rowCount() == 0
-    assert proxy.getBraggPeaks().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getBraggPeaks().rowCount() == 95
-    assert proxy.getBraggPeaks().columnCount() == 4
-
-def test_Proxy_getBraggPeaksTicks():
-    proxy = Proxy()
-    assert isinstance(proxy.getBraggPeaksTicks(), QStandardItemModel)
-    assert proxy.getBraggPeaksTicks().rowCount() == 0
-    assert proxy.getBraggPeaksTicks().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getBraggPeaksTicks().rowCount() == 665
-    assert proxy.getBraggPeaksTicks().columnCount() == 2
-
-def test_Proxy_getCellParameters():
-    proxy = Proxy()
-    assert isinstance(proxy.getCellParameters(), QStandardItemModel)
-    assert proxy.getCellParameters().rowCount() == 0
-    assert proxy.getCellParameters().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getCellParameters().rowCount() == 1
-    assert proxy.getCellParameters().columnCount() == 1
-
-def test_Proxy_getCellBox():
-    proxy = Proxy()
-    assert isinstance(proxy.getCellBox(), QStandardItemModel)
-    assert proxy.getCellBox().rowCount() == 0
-    assert proxy.getCellBox().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getCellBox().rowCount() == 3084
-    assert proxy.getCellBox().columnCount() == 1
-
-def test_Proxy_getAtomSites():
-    proxy = Proxy()
-    assert isinstance(proxy.getAtomSites(), QStandardItemModel)
-    assert proxy.getAtomSites().rowCount() == 0
-    assert proxy.getAtomSites().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getAtomSites().rowCount() == 3
-    assert proxy.getAtomSites().columnCount() == 1
-
-def test_Proxy_getAtomAdps():
-    proxy = Proxy()
-    assert isinstance(proxy.getAtomAdps(), QStandardItemModel)
-    assert proxy.getAtomAdps().rowCount() == 0
-    assert proxy.getAtomAdps().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getAtomAdps().rowCount() == 3
-    assert proxy.getAtomAdps().columnCount() == 1
-
-def test_Proxy_getAtomMsps():
-    proxy = Proxy()
-    assert isinstance(proxy.getAtomMsps(), QStandardItemModel)
-    assert proxy.getAtomMsps().rowCount() == 0
-    assert proxy.getAtomMsps().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getAtomMsps().rowCount() == 3
-    assert proxy.getAtomMsps().columnCount() == 1
-
-def test_Proxy_getFitables():
-    proxy = Proxy()
-    assert isinstance(proxy.getFitables(), QStandardItemModel)
-    assert proxy.getFitables().rowCount() == 0
-    assert proxy.getFitables().columnCount() == 0
-    proxy.init(TEST_FILE)
-    assert proxy.getFitables().rowCount() == 34
-    assert proxy.getFitables().columnCount() == 1
-
 def no_test_refine(qtbot, capsys):  # to be modified with AS's changes
     proxy = Proxy()
-    proxy.init(TEST_FILE)
+    proxy.loadCif(TEST_FILE)
 
     assert proxy._refinement_running == False
     captured = capsys.readouterr()
@@ -191,7 +71,7 @@ def no_test_refine(qtbot, capsys):  # to be modified with AS's changes
 
 def test_get_project_dir_absolute_path():
     proxy = Proxy()
-    proxy.init(TEST_FILE)
+    proxy.loadCif(TEST_FILE)
 
     path = os.path.join('easyDiffraction', 'Tests', 'Data')
     assert path in proxy.get_project_dir_absolute_path()
@@ -206,12 +86,12 @@ def test_store_report():
 
 def test_save_report(mocker, tmp_path):
     proxy = Proxy()
-    proxy.init(TEST_FILE)
+    proxy.loadCif(TEST_FILE)
     mocker.patch.object(Helpers, 'open_url', autospec=True)
 
     # no html
     proxy = Proxy()
-    proxy.init(TEST_FILE)
+    proxy.loadCif(TEST_FILE)
     proxy.store_report("")
 
     proxy.save_report()

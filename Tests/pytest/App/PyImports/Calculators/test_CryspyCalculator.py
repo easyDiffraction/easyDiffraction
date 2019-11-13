@@ -9,6 +9,7 @@ import cryspy
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
 TEST_FILE = "file:Tests/Data/main.cif"
+fitdata_data = [0, 2, 3, 5]
 
 @pytest.fixture
 def cal():
@@ -20,7 +21,7 @@ def test_init(cal):
     # initial state of the object
     assert len(cal._app_dict) == 3
     assert len(cal._calculations_dict) == 1
-    assert len(cal._info_dict) == 7
+    assert len(cal._info_dict) == 9
     assert len(cal._phases_dict) == 1
     assert len(cal._experiments_dict) == 1
     assert len(cal._calculations_dict) == 1
@@ -45,7 +46,7 @@ def test_setCalculatorDict(cal):
 
 def test_setInfoDict(cal):
 
-    assert len(cal._info_dict) == 7
+    assert len(cal._info_dict) == 9
     assert 'name' in cal._info_dict.keys()
     assert cal._info_dict['name'] == 'Fe3O4'
     assert 'refinement_datetime' in cal._info_dict.keys()
@@ -178,15 +179,7 @@ def test_setCalculationsDictFromCryspyObj(cal):
 
     assert len(cal._calculations_dict) == 1
 
-    assert len(cal._calculations_dict['pnd']) == 5
-    # chi^2
-    assert len(cal._calculations_dict['pnd']['chi_squared']) == 4
-    assert cal._calculations_dict['pnd']['chi_squared']['value'] == pytest.approx(27413.09694)
-    assert cal._calculations_dict['pnd']['chi_squared']['url'] == ''
-    # n_res
-    assert len(cal._calculations_dict['pnd']['n_res']) == 4
-    assert cal._calculations_dict['pnd']['n_res']['value'] == 381
-    assert cal._calculations_dict['pnd']['n_res']['tooltip'] == ''
+    assert len(cal._calculations_dict['pnd']) == 3
     # bragg_peaks
     assert len(cal._calculations_dict['pnd']['bragg_peaks']) == 1
     assert sum(cal._calculations_dict['pnd']['bragg_peaks']['Fe3O4']['h']) == 748
@@ -213,10 +206,19 @@ def test_setProjectDictFromCryspyObj(cal):
 
     cal.setProjectDictFromCryspyObj()
 
-    assert len(cal._info_dict) == 7
+    assert len(cal._info_dict) == 9
     assert cal._info_dict['name'] == 'Fe3O4'
     assert cal._info_dict['phase_ids'] == ['Fe3O4']
     assert cal._info_dict['experiment_ids'] == ['pnd']
+
+    # chi^2
+    assert len(cal._info_dict['chi_squared']) == 4
+    assert cal._info_dict['chi_squared']['value'] == pytest.approx(71.95038568442936)
+    assert cal._info_dict['chi_squared']['url'] == ''
+    # n_res
+    assert len(cal._info_dict['n_res']) == 4
+    assert cal._info_dict['n_res']['value'] == 381
+    assert cal._info_dict['n_res']['tooltip'] == ''
 
     assert len(cal._project_dict) == 6
     assert isinstance(cal._project_dict['app'], dict)
@@ -254,7 +256,8 @@ def test_asCifDict(cal):
     assert 'data_pnd' in d['experiments']
     assert '_refln_index_h' in d['calculations']
 
-def test_refine(cal, mocker):
+@pytest.mark.parametrize("fit_len", fitdata_data)
+def test_refine(cal, mocker, fit_len):
 
     class mocked_scipy_res():
         message = "test1"
@@ -262,6 +265,7 @@ def test_refine(cal, mocker):
         nit = 2
         njev = 42
         fun = 0.01
+        x = [y for y in range(fit_len)]
 
     mocker.patch.object(cal._cryspy_obj, 'refine', return_value=mocked_scipy_res(), autospec=True)
 
@@ -269,8 +273,9 @@ def test_refine(cal, mocker):
 
     cal._cryspy_obj.refine.assert_called_once()
 
-    assert ret['final_chi_sq'] == 0.01
+    assert pytest.approx(ret['final_chi_sq'], 71.95038568442936)
     assert ret['nfev'] == 1
     assert ret['refinement_message'] == "test1"
     assert ret['njev'] == 42
     assert ret['nit'] == 2
+    assert ret['num_refined_parameters'] == fit_len

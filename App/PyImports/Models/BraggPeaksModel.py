@@ -48,12 +48,9 @@ class BraggPeaksModel(QObject):
                 self._tick_model.layoutChanged.emit()
         logging.info("+++++++++++++++++++++++++ setData end") # profiling
 
-    modelChanged = Signal()
-
     def onProjectChanged(self):
         """..."""
         self._setModelsFromProjectDict()
-        self.modelChanged.emit()
 
     def asTickModel(self):
         """..."""

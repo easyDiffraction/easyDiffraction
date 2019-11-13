@@ -50,10 +50,15 @@ def test_CellBoxModel_bad_calculator():
     with pytest.raises(AttributeError):
         m = Model.CellBoxModel(calculator)
 
-    # empty file
-    #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()
-    #with pytest.raises(IndexError):
-    #    calculator = CryspyCalculator(file_path)
+    # null file
+    file_path = None
+    with pytest.raises(TypeError):
+        calculator = CryspyCalculator(file_path)
+
+    # epty file
+    file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()
+    # apparently it is fine now - no exception raised
+    calculator = CryspyCalculator(file_path)
 
     # old style rcif
     file_path = QUrl("file:Tests/Data/full.rcif").toLocalFile()

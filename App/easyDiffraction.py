@@ -42,16 +42,16 @@ if __name__ == '__main__':
 
     proxy = Proxy()
 
-    examples_dir = str(QUrl.fromLocalFile(os.path.join(installationPath(), 'Examples')).toString())
-
-    qml_gui_path = os.path.join(current_dir, "Gui.qml")
-    imports_path = os.path.join(current_dir, "QmlImports")
+    examples_dir_path = str(QUrl.fromLocalFile(os.path.join(installationPath(), 'Examples')).toString())
+    qml_imports_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir, "QmlImports")).toString())
+    qnl_gui_file_path = os.path.join(current_dir, "Gui.qml")
 
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("proxy", proxy)
-    engine.rootContext().setContextProperty("examplesDir", examples_dir)
-    engine.addImportPath(imports_path)
-    engine.load(qml_gui_path)
+    engine.rootContext().setContextProperty("examplesDir", examples_dir_path)
+    engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)
+    engine.addImportPath(qml_imports_dir_path)
+    engine.load(qnl_gui_file_path)
     #engine.addImportPath(":/QmlImports")
     #engine.load(":/Gui.qml")
 

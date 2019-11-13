@@ -22,13 +22,13 @@ QtObject {
     property int introAnimationDuration: 1000
 
     // Reliability factors
-    property string chiSquared: "not calculated yet"
+    property string chiSquared: ""
+    property int numRefinedPars: 0
 
     // Paths
-    property string resourcesPath: ""
-    property string originalIconsPath: ""
-    property string thirdPartyIconsPath: ""
-    property string qmlElementsPath: ""
+    readonly property string originalIconsPath: qmlImportsDir + "/easyAnalysis/Resources/Icons/"
+    readonly property string thirdPartyIconsPath: qmlImportsDir + "/easyAnalysis/Resources/Fonts/Awesome/svgs/"
+    readonly property string qmlElementsPath: qmlImportsDir + "/easyAnalysis/App/Elements/"
 
     // Content area
     property int toolbarCurrentIndex: -1

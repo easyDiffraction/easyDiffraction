@@ -37,12 +37,9 @@ class CalculatedDataModel(QObject):
             self._headers_model.layoutChanged.emit()
         logging.info("+++++++++++++++++++++++++ setData end") # profiling
 
-    modelChanged = Signal()
-
     def onProjectChanged(self):
         """Set headers and data models from project dictionary"""
         self._setModelsFromProjectDict()
-        self.modelChanged.emit()
 
     def asHeadersModel(self):
         """Return headers model."""

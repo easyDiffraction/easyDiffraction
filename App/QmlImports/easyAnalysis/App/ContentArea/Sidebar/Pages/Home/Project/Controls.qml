@@ -74,14 +74,40 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    proxy.init(fileUrl)
+                    proxy.loadCif(fileUrl)
                     fileDialog.close()
-                    Specific.Variables.projectOpened = true
-                    Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
-                    Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
-                    Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
-                    Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
-                    Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                    if (proxy.validCif == true) {
+                        Specific.Variables.projectOpened = true
+                        Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                    } else {
+                        failOpenDialog.visible = true
+                        Specific.Variables.projectOpened = false
+                        Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                    }
+                }
+            }
+            Dialog {
+                id: failOpenDialog
+                parent: Overlay.overlay
+                anchors.centerIn: parent
+                modal: true
+                opacity: 0.9
+                visible: false
+                Label {
+                    id: infoLabel
+                    anchors.centerIn: parent
+                    text: 'Warning: File was not a valid main `rcif` file.'
+                    color: "black"
+                    font.family: Generic.Style.introThinFontFamily
+                    font.pointSize: Generic.Style.systemFontPointSize + 1
                 }
             }
         }

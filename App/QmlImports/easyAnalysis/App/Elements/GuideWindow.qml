@@ -58,10 +58,12 @@ Dialog {
              Generic.Variables.toolbarCurrentIndex === toolbarCurrentIndex &&
              Generic.Variables.guideCurrentIndex === guideCurrentIndex ? true : false
 
-    closePolicy: Popup.NoAutoClose
+    //closePolicy: Popup.NoAutoClose
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
     modal: true
     background: Rectangle { color: "transparent" }
-    Overlay.modal: Rectangle { color: Color.transparent("black", 0.2) }
+    Overlay.modal: Rectangle { color: Color.transparent("white", 0.4) }
 
     // Animation on dialog window
     enter: Transition {
