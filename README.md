@@ -2,11 +2,13 @@
 
 **easyDiffraction** is a scientific software for modelling and analysis of the neutron diffraction data.
 
-Please, visit [easydiffraction.github.io](http://easydiffraction.github.io) for more details.
+Please, visit [easydiffraction.org](https://easydiffraction.org) for more details.
 
 [![][25]][20] [![][26]][20] [![][27]][20]
 
 [![][35]][30] [![][45]][40] [![][55]][50]
+
+[![][28]][21]
 
 <!---Travis CI Build Status--->
 [20]: https://travis-ci.org/easyDiffraction/easyDiffraction
@@ -16,12 +18,16 @@ Please, visit [easydiffraction.github.io](http://easydiffraction.github.io) for 
 
 <!---GitHub Latest Release--->
 [30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.5
-[35]: https://img.shields.io/badge/Release-v0.3.5_(23_Oct_2019)-informational.svg?style=flat-square
+[35]: https://img.shields.io/badge/Release-v0.3.6_(13_Nov_2019)-informational.svg?style=flat-square
 
 <!---User Manual--->
 [40]: https://easydiffraction.github.io/documentation.html
-[45]: https://img.shields.io/badge/User_Manual-v0.0.3_(9_Oct_2019)-informational.svg?style=flat-square
+[45]: https://img.shields.io/badge/User_Manual-13_Nov_2019-informational.svg?style=flat-square
 
 <!---License--->
 [50]: https://github.com/easyDiffraction/easyDiffraction/blob/master/LICENSE
 [55]: https://img.shields.io/badge/License-GNU_GPL_v3.0-informational.svg?style=flat-square
+
+<!---Code coverage--->
+[21]: https://codecov.io/gh/easyDiffraction/easyDiffraction
+[28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/develop/graph/badge.svg
