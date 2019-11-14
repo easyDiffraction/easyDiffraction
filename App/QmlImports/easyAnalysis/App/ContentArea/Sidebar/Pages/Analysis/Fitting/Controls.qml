@@ -109,10 +109,10 @@ ColumnLayout {
                 checked: true
             }
             GenericAppContentAreaButtons.Help {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/documentation_use.html#3.2.4.-analysis")
+                onClicked: Qt.openUrlExternally("https://easydiffraction.org/umanual_use.html#3.2.5.-analysis")
             }
             GenericAppContentAreaButtons.Bug {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/contact.html")
+                onClicked: Qt.openUrlExternally("https://easydiffraction.org/contact.html")
             }
         }
     }
@@ -136,12 +136,12 @@ ColumnLayout {
                 Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
                 Generic.Variables.numRefinedPars = res.num_refined_parameters ? res.num_refined_parameters : Generic.Variables.numRefinedPars
                 let s = `${res.refinement_message}`
-                s += res.num_refined_parameters ? `\nNumber of refined parameters: ${res.num_refined_parameters}` : ""
-                s += res.nfev ? `\nNumber of evaluations of the objective functions: ${res.nfev}` : ""
-                s += res.nit ? `\nNumber of iterations performed by the optimizer: ${res.nit}` : ""
-                s += res.started_chi_sq ? `\nStarted goodness-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(2)}` : ""
-                s += res.final_chi_sq ? `\nFinal goodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
-                s += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
+                s += res.final_chi_sq ? `\n\nGoodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
+                s += res.num_refined_parameters ? `\nNum. refined parameters: ${res.num_refined_parameters}` : ""
+                //s += res.nfev ? `\nNumber of evaluations of the objective functions: ${res.nfev}` : ""
+                //s += res.nit ? `\nNumber of iterations performed by the optimizer: ${res.nit}` : ""
+                //s += res.started_chi_sq ? `\nStarted goodness-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(2)}` : ""
+                //s += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
                 return s
             }
         }

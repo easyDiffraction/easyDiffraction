@@ -130,6 +130,44 @@ Dialog {
                 }
             }
         }
+
+        // Documentation
+        Row {
+            id: documentation
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 0
+            opacity: 0
+
+            Text {
+                width: modellingButton.width
+                font.pointSize: Generic.Style.fontPointSize - 1
+                font.family: Generic.Style.fontFamily
+                horizontalAlignment: Text.AlignHCenter
+                color: Generic.Style.blueColor
+                text: "Online Documentation"
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/documentation.html")
+                }
+            }
+
+            Text {
+                width: analysisButton.width
+                font.pointSize: Generic.Style.fontPointSize - 1
+                font.family: Generic.Style.fontFamily
+                horizontalAlignment: Text.AlignHCenter
+                color: Generic.Style.blueColor
+                text: "Get Started Video Tutorial"
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/tutorials_start.html")
+                }
+            }
+        }
     }
 
     // Buttons at the bottom
@@ -220,6 +258,10 @@ Dialog {
 
         appIcon.opacity = 0
         appVersion.opacity = 0
+        documentation.opacity = 0
+
+        disableButton.opacity = 1
+        skipButton.opacity = 1
     }
 
     ////////////
@@ -269,6 +311,10 @@ Dialog {
             //PropertyAnimation { target: analysisButton;  property: "width"; to: 150; duration: animationDuration*0.3 } //animationDuration }
             PropertyAnimation { easing.type: Easing.InExpo; target: modellingButton; property: "opacity"; to: 1; duration: animationDuration }
             PropertyAnimation { easing.type: Easing.InExpo; target: analysisButton; property: "opacity"; to: 1; duration: animationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: documentation; property: "opacity"; to: 1; duration: animationDuration }
+
+            PropertyAnimation { easing.type: Easing.InExpo; target: disableButton; property: "opacity"; to: 0; duration: animationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: skipButton; property: "opacity"; to: 0; duration: animationDuration }
         }
     }
 

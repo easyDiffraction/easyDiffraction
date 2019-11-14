@@ -186,10 +186,10 @@ ColumnLayout {
             GenericAppContentAreaButtons.SaveState {
             }
             GenericAppContentAreaButtons.Help {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/documentation_use.html#3.2.2.-experimental-data")
+                onClicked: Qt.openUrlExternally("https://easydiffraction.org/umanual_use.html#3.2.3.-experimental-data")
             }
             GenericAppContentAreaButtons.Bug {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/contact.html")
+                onClicked: Qt.openUrlExternally("https://easydiffraction.org/contact.html")
             }
         }
     }

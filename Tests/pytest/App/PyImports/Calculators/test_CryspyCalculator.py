@@ -213,7 +213,7 @@ def test_setProjectDictFromCryspyObj(cal):
 
     # chi^2
     assert len(cal._info_dict['chi_squared']) == 4
-    assert cal._info_dict['chi_squared']['value'] == pytest.approx(27413.09694)
+    assert cal._info_dict['chi_squared']['value'] == pytest.approx(71.95038568442936)
     assert cal._info_dict['chi_squared']['url'] == ''
     # n_res
     assert len(cal._info_dict['n_res']) == 4
@@ -273,7 +273,7 @@ def test_refine(cal, mocker, fit_len):
 
     cal._cryspy_obj.refine.assert_called_once()
 
-    assert pytest.approx(ret['final_chi_sq'], 27413.09694576759)
+    assert pytest.approx(ret['final_chi_sq'], 71.95038568442936)
     assert ret['nfev'] == 1
     assert ret['refinement_message'] == "test1"
     assert ret['njev'] == 42
