@@ -20,7 +20,7 @@ from PyImports.Refinement import *
 import PyImports.Helpers as Helpers
 
 # tested module
-from Proxy import *
+from PyImports.Proxy import *
 
 TEST_FILE = "file:Tests/Data/main.cif"
 def test_Proxy_properties():
@@ -108,3 +108,11 @@ def test_save_report(mocker, tmp_path):
 
     proxy.save_report()
     assert Helpers.open_url.called == True
+
+def test_saveCif():
+    proxy = Proxy()
+    proxy.loadCif(TEST_FILE)
+    thisZIP = os.path.join(os.getcwd(), 'Tests', 'Data', 'test.zip')
+    proxy.saveCif(thisZIP)
+    assert os.path.isfile(thisZIP) == True
+    os.remove(thisZIP)
