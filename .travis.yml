@@ -48,6 +48,8 @@ install:
   - pip install pyinstaller==3.5
   - pip install requests==2.22.0
   #
+  - pip install uritemplate
+  #
   - pip install pytest
   - pytest --version
   #
