@@ -19,12 +19,12 @@ matrix:
         - source $TRAVIS_BUILD_DIR/.python-venv/bin/activate # activate virtual environment
       env: BADGE=osx
     # Windows
-    - name: "Python 3.7.4 on Windows 10.0"
+    - name: "Python 3.7.0 on Windows 10.0"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
       filter_secrets: false
       before_install:
-        - choco install python --version=3.7.4 # 3.8 fails with cryspy
+        - choco install python --version=3.7.0 # 3.8 fails with cryspy
         - pip install pypiwin32
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
@@ -47,8 +47,7 @@ install:
   - pip install PySide2==5.13.1
   - pip install pyinstaller==3.5
   - pip install requests==2.22.0
-  #
-  - pip install uritemplate
+  - pip install uritemplate==3.0.0
   #
   - pip install pytest
   - pytest --version
@@ -98,6 +97,7 @@ before_deploy:
 deploy:
   provider: script
   script: python Scripts/UploadArtifacts.py $GITHUB_TOKEN
+  skip_cleanup: true
   on:
     all_branches: true
 
