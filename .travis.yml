@@ -96,6 +96,8 @@ before_deploy:
 deploy:
   provider: script
   script: python Scripts/UploadArtifacts.py $GITHUB_TOKEN
+  on:
+    all_branches: true
 
 #  - provider: releases # GitHub repository
 #    name: $RELEASE_TITLE
@@ -108,6 +110,8 @@ deploy:
 #    file: easyDiffraction-*.zip
 #    on:
 #      all_branches: true
+
+
 
 #after_deploy:
 #  -  |
