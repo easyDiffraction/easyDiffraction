@@ -96,7 +96,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: python Scripts/UploadArtifacts.py $GITHUB_TOKEN
+  script: python Scripts/UploadArtifacts.py #$GITHUB_TOKEN
   skip_cleanup: true
   on:
     all_branches: true

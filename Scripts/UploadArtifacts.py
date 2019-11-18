@@ -17,7 +17,6 @@ import Variables
 var = Variables.VarsConfig()
 
 # BRANCH NAME
-os.environ['TRAVIS_BRANCH'] = 'upload-artifacts'
 branch_name = os.environ['TRAVIS_BRANCH']
 if branch_name != '':
     print("Branch name: '{0}'".format(branch_name))
@@ -124,7 +123,7 @@ for asset in release_assets_dict:
 
 # Upload asset and show info message
 asset_upload_url = URITemplate(release_upload_url).expand(name=upload_file_name) # rename file to be uploaded, if needed
-print("asset_upload_url '{0}'".format(asset_upload_url))
+#print("asset_upload_url '{0}'".format(asset_upload_url))
 
 response = requests.post(asset_upload_url, headers={**authorization_info, **content_type_info}, data=open(upload_file_path, 'rb').read()) # use local file
 if response:
