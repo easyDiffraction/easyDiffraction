@@ -86,6 +86,16 @@ class VarsConfig:
         else:
             return ''
 
+    #def setReleaseVersion(self):
+        # Settings file
+        #settings_file_path = os.path.join(project_dir_path, 'App', 'QmlImports', 'easyDiffraction', 'Settings.qml')
+        # Find application version
+        #release_version = ''
+        #with open(settings_file_path, 'r') as f:
+            #file_content = f.read()
+            #release_version = re.findall('\d+.\d+.\d+', file_content)[0]
+            #print("Release version: '{0}'".format(release_version))
+
 class VarsLog:
     def __init__(self):
         self.var = VarsConfig()

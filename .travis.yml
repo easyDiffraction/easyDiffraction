@@ -61,12 +61,13 @@ install:
 before_script:
   #- python Scripts/CompilePyResource.py
   - export RELEASE_NUMBER=`python Scripts/GetReleaseNumber.py`
-  - export TRAVIS_TAG=`python Scripts/GetTravisTag.py $RELEASE_NUMBER $TRAVIS_BRANCH`
-  - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
+  #- export TRAVIS_TAG=`python Scripts/GetTravisTag.py $RELEASE_NUMBER $TRAVIS_BRANCH`
+  #- export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
+  - echo $TRAVIS_OS_NAME
   - echo $TRAVIS_BRANCH
   - echo $RELEASE_NUMBER
-  - echo $TRAVIS_TAG
-  - echo $RELEASE_TITLE
+  #- echo $TRAVIS_TAG
+  #- echo $RELEASE_TITLE
   - echo Scripts/PrintLog.py
 
 script:

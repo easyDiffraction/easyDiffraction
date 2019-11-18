@@ -64,6 +64,14 @@ upload_file_path = os.path.join(var.installer_dir_path, upload_file_name)
 print("Upload file name: '{0}'".format(upload_file_name))
 print("Upload file path: '{0}'".format(upload_file_path))
 
+################
+# CREATE RELEASE
+################
+
+# if it doesn't exist yet
+#https://developer.github.com/v3/repos/releases/#create-a-release
+#https://stackoverflow.com/questions/5207269/how-to-release-a-build-artifact-asset-on-github-with-a-script
+
 ##################
 # UPLOAD ARTIFACTS
 ##################
@@ -134,3 +142,9 @@ else:
 
 # Check
 #https://github.com/smarie/python-mini-lambda/blob/master/ci_tools/github_release.py
+#https://docs.travis-ci.com/user/deployment/pages/#setting-the-github-token
+#https://developer.github.com/v3/repos/
+
+
+# Pre-commit: Referencing current branch in github readme.md
+#https://stackoverflow.com/questions/18673694/referencing-current-branch-in-github-readme-md/35368808#35368808

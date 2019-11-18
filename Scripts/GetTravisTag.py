@@ -12,5 +12,4 @@ if re.search('v\d+\.\d+\.\d+', branch): # if release with tag of 'v1.0.12' forma
 else:
     travis_tag = '{0}-v{1}'.format(branch, release_number)
 
-print("TRAVIS_BRANCH: ", os.environ['TRAVIS_BRANCH'])
 print(travis_tag)
