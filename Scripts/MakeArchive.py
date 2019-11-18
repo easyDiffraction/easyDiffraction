@@ -11,7 +11,7 @@ release_number = sys.argv[1] if len(sys.argv) > 1 else ''
 print('release_number:', release_number)
 
 # Archive
-target_name = '{0}-{1}-v{2}'.format(var.project_name, var.os_name, release_number)
+target_name = '{0}_{1}_v{2}'.format(var.project_name, var.os_name, release_number)
 target_path = os.path.join(var.project_dir_path, target_name)
 print('target_name:', target_name)
 print('target_path:', target_path)

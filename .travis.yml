@@ -32,8 +32,8 @@ matrix:
 
 env:
   global:
-    # GH_TOKEN
-    - secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
+    # GITHUB_TOKEN
+    - secure: "LI9IABXWOgFnaPDbgL28ufJsGYPC6X6Zkh9bTH3FZ/Id5JzuvI+R+Vs4kHKAyOa6EFaDHhwATznVCykeu2Y++DLh7YkNOvpE7ELA+ouFZSEWaNZaDd8AJgBN/QEjG1Zy7GUrYJBEzJv4C9tf0cDfGO7Bx0HlLJIySjF6zMPgixG8XWB0VxzxofBs+UJ03HWyHgfVUyqpDWZ+KBnWT3Co0ReHjLHAh5LquSqK5N6HAd8PgTRzZCgV0VAjc1ssfoT1OGLInWq6ZZHl2x/brgjLdk3nSmVm8Qm2IApDgQye602moM8MQITnvT3YtOKX38UE3uBdTmcp59EfofzF2fU5rBI4xjABSx6pABVzU1CPZRuyMyEvnFPp2O0xTKl/T2FuyLp7rLAHFDJ2Uh8phJrQgpeqn6mh+PjsbVFWwLZ4Ze6ZFll57ZVgQpLEp1+pThoX7lDzMH3z2tYbqI0l7ctpTd0lG34GQppAb5RZbH8HSvY+d6lh3ZWfc+aaMmtMScWolvNLukgwNOmcrehNtENV2cHctRau58m2ylum+Ww2vplDyAdJd9tPiBPUSjrsCEVzhIDYqBceIPcqGSZROV969NdjnDc9bdO08i8oSJhIAyLivbyXVR1Yuf42ahtRNAs/9K9jNP5mY1gMmpARBMMsl4xynaPslWf32EpymOPotm4="
     # CODE_SIGN_PSWD_DICT
     - secure: "MUGB3OUDTpB8ZN70aRBmsCEqeUXsxMgNR5aDrTzgaOR8UIrAhRs30GH8NnASe8VIO6L48SRqGoFeXA4ZZ9h8RFZxQBcPG88/bKzPvPni+WQC5QYF9zbK1mv5IzHfurK08eH05FVz9Mx1BA/L0gviwnP4S4+1ICou0EnnO+sxxGFcGw+ixUpDYPJ2A+R6Dz5OICd2yUVGj3tD2ZYUY+dfnWbTtysb29OMbSMLIMybJ0MOXJ1ozWJibWmyV1tqo4eJ6ZeZKEhH4vKnWtZAeZ6MHLzWLN++jAc3XqxZAJ2czMpsHMeGRx3rjnyGqTXoVFPdmDovRmFZdF7RLYOVWiOKqpc041OMouy2E/dEZ48qJTqkFWQnLqu5HTQCx98RAwIh2czJni0N9DAViv0W/Vj+20JL03hIKYDWXBbigPKFQMI04DobYakBGB/NR3iWhTU4jpG84ttWmtkRfvmPBgIP5zxpJf6xUK6IK02zlENVyzX/X4gZ0cNwGMA7qUpPeBKAVVf8XVf5rSrTPKmH87K1TTbuKn4yP/nx9XqpEcTbkF+LkoyAeCyPEwds3sG9he1uXUd9N+kK/tBC+g444bfHmPJy+6qLS3UK/egX1mweYNVZ6ljA5Aoy4kYlNOJc7XVamjF6aQtBx2yADx5jZJkIhK29Rfy28br4sMaaIDyOysM="
 
@@ -94,17 +94,20 @@ before_deploy:
   #- '[ "$TRAVIS_BRANCH" != master ] || cd ../ && pip3 install gitchangelog pystache && echo "output_engine = mustache(\"markdown\")" > .gitchangelog.rc && gitchangelog ^$(git describe --abbrev=0 --tags) HEAD > CHANGELOG'
 
 deploy:
-  - provider: releases # GitHub repository
-    name: $RELEASE_TITLE
-    api_key:
-      secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
-    skip_cleanup: true
-    draft: true
-    overwrite: true
-    file_glob: true
-    file: easyDiffraction-*.zip
-    on:
-      all_branches: true
+  provider: script
+  script: python Scripts/UploadArtifacts.py $GITHUB_TOKEN
+
+#  - provider: releases # GitHub repository
+#    name: $RELEASE_TITLE
+#    api_key:
+#      secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
+#    skip_cleanup: true
+#    draft: true
+#    overwrite: true
+#    file_glob: true
+#    file: easyDiffraction-*.zip
+#    on:
+#      all_branches: true
 
 #after_deploy:
 #  -  |

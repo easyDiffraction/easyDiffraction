@@ -32,13 +32,15 @@ class VarsConfig:
     def __init__(self):
         self.os_name = self.setOsName()
         #
+        self.organization_name = 'easyDiffraction'
         self.project_name = 'easyDiffraction'
         self.project_url = 'https://easydiffraction.github.io'
         self.installer_name = self.project_name + 'Installer'
         #
         self.os_specific_separator = {'osx': ':', 'windows': ';', 'linux': ':'}
         self.os_specific_icon_ext = {'osx': 'icns', 'windows': 'ico', 'linux': 'png'}
-        self.os_specific_exe_ext = {'osx': '.app', 'windows': '.exe', 'linux': ''}
+        self.os_specific_gui_exe_ext = {'osx': '.app', 'windows': '.exe', 'linux': ''}
+        self.os_specific_cli_exe_ext = {'osx': '', 'windows': '.exe', 'linux': ''}
         self.os_specific_missing_libs = {
             'osx': ['libshiboken2.abi3.*.dylib'],
             'windows': ['shiboken2.abi3.dll', 'MSVCP140.dll'],
@@ -59,7 +61,7 @@ class VarsConfig:
         self.installer_packages_dir_path = os.path.join(self.installer_config_dir_path, 'packages')
         self.installer_data_dir_path = os.path.join(self.installer_packages_dir_path, 'io.github.easydiffraction', 'data')
         self.installer_dir_path = self.dist_dir_path
-        self.installer_exe_name = self.installer_name + self.os_specific_exe_ext[self.os_name]
+        self.installer_exe_name = self.installer_name + self.os_specific_gui_exe_ext[self.os_name]
         self.installer_exe_path = os.path.join(self.installer_dir_path, self.installer_exe_name)
         #
         self.certificates_dir_path = os.path.join(self.project_dir_path, 'Certificates')
@@ -70,6 +72,9 @@ class VarsConfig:
         self.cryspy_path = cryspy.__path__[0]
         self.shiboken2_path = shiboken2.__path__[0]
         self.pyside2_path = PySide2.__path__[0]
+        #
+        self.github_release_exe_name = 'github-release' + self.os_specific_cli_exe_ext[self.os_name]
+        self.github_release_exe_path = os.path.join(self.scripts_dir_path, self.github_release_exe_name)
 
     def setOsName(self):
         if sys.platform.startswith('darwin'):
@@ -89,9 +94,10 @@ class VarsLog:
     def info(self):
         print('\n***** Variables')
         print()
-        print('os_name:        ', self.var.os_name)
-        print('project_name:   ', self.var.project_name)
-        print('installer_name: ', self.var.installer_name)
+        print('os_name:           ', self.var.os_name)
+        print('organization_name: ', self.var.organization_name)
+        print('project_name:      ', self.var.project_name)
+        print('installer_name:    ', self.var.installer_name)
         print()
         print('user_home_dir:            ', self.var.user_home_dir)
         print('project_dir_path:         ', self.var.project_dir_path)
@@ -126,6 +132,9 @@ class VarsLog:
         print('os_specific_separator:   ', self.var.os_specific_separator[self.var.os_name])
         print('os_specific_icon_ext:    ', self.var.os_specific_icon_ext[self.var.os_name])
         print('os_specific_missing_libs:', self.var.os_specific_missing_libs[self.var.os_name])
+        print()
+        print('github_release_exe_name:', self.github_release_exe_name)
+        print('github_release_exe_path:', self.github_release_exe_path)
 
 # Windows
   # lib not found: shiboken2.abi3.dll dependency of c:\python37\lib\site-packages\PySide2\QtGui.pyd, etc.
