@@ -91,16 +91,19 @@ def check_project_file(filename):
 
     return isValid
 
+def make_temp_dir():
+    return tempfile.TemporaryDirectory()
+
 
 def temp_project_dir(filename):
     # Assume we're ok.....
-    targetdir = tempfile.TemporaryDirectory()
+    targetdir = make_temp_dir()
     with zipfile.ZipFile(filename, 'r') as zip:
         zip.extractall(targetdir.name)
     return targetdir
 
 
-def create_project_zip(project_dir, saveName):
+def create_project_zip(data_dir, saveName):
 
     mustContain = ['main.cif',
                    'phases.cif',
@@ -113,13 +116,13 @@ def create_project_zip(project_dir, saveName):
     with zipfile.ZipFile(saveName, 'w') as zip:
 
         for file in mustContain:
-            fullFile = os.path.join(project_dir, file)
+            fullFile = os.path.join(data_dir, file)
             if os.path.isfile(fullFile):
-                zip.write(os.path.join(project_dir, file), file)
+                zip.write(os.path.join(data_dir, file), file)
             else:
                 raise FileNotFoundError
         for file in canContain:
-            fullFile = os.path.join(project_dir, file)
+            fullFile = os.path.join(data_dir, file)
             if os.path.isfile(fullFile):
                 zip.write(fullFile, file)
 
