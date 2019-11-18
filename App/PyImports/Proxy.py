@@ -17,6 +17,7 @@ from PyImports.Models.FitablesModel import FitablesModel
 from PyImports.Models.StatusModel import StatusModel
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
+import PyImports.ProjectIO as ProjectIO
 
 class Proxy(QObject):
 
@@ -52,16 +53,16 @@ class Proxy(QObject):
         #
         self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
         #
-        if Helpers.check_if_zip(self._main_rcif_path):
-            if Helpers.check_project_file(self._main_rcif_path):
-                self._tempFolder = Helpers.temp_project_dir(self._main_rcif_path)
+        if ProjectIO.check_if_zip(self._main_rcif_path):
+            if ProjectIO.check_project_file(self._main_rcif_path):
+                self._tempFolder = ProjectIO.temp_project_dir(self._main_rcif_path)
                 self._main_rcif_path = os.path.join(self._tempFolder.name, 'main.cif')
                 # TODO close self._tempFolder using self._tempFolder.cleanup() on exit.
         #
         self._calculator = CryspyCalculator(self._main_rcif_path)
         self._calculator.projectDictChanged.connect(self.projectChanged)
         #
-        if not Helpers.check_project_dict(self._calculator.asCifDict()):
+        if not ProjectIO.check_project_dict(self._calculator.asCifDict()):
             self._isValidCif = False
             return
         #
@@ -82,13 +83,9 @@ class Proxy(QObject):
 
     @Slot(str)
     def saveCif(self, saveName):
-        data_dir = Helpers.make_temp_dir()
+        data_dir = ProjectIO.make_temp_dir()
         self._calculator.saveCifs(data_dir.name)
-        filenames = {
-            'original': ['main.rcif', 'pnd_calc.rcif', 'pnd_data.rcif'],
-            'new':      ['main.cif', 'phases.cif', 'experiments.cif']
-        }
-        allOK = Helpers.create_project_zip(data_dir.name, saveName)
+        allOK = ProjectIO.create_project_zip(data_dir.name, saveName)
         data_dir.cleanup()
         if not allOK:
             raise FileNotFoundError
@@ -194,6 +191,8 @@ class Proxy(QObject):
         if self._main_rcif_path:
             return os.path.dirname(os.path.abspath(self._main_rcif_path))
         return ""
+
+
     def get_project_url_absolute_path(self):
         if self._main_rcif_path:
             return str(QUrl.fromLocalFile(os.path.dirname(self._main_rcif_path)).toString())
