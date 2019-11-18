@@ -57,12 +57,13 @@ release_name = 'easydiffraction-' + release_tag
 print("Release name: '{0}'".format(release_name))
 
 # ACCESS TOKEN
-#os.environ['GITHUB_TOKEN'] = '...'
 access_token = os.environ['GITHUB_TOKEN']
 
 # FILE TO UPLOAD
 upload_file_name = '{0}_{1}_v{2}.zip'.format(var.project_name, var.os_name, release_version)
-print("Asset name: '{0}'".format(upload_file_name))
+upload_file_path = os.path.join(var.installer_dir_path, upload_file_name)
+print("Upload file name: '{0}'".format(upload_file_name))
+print("Upload file path: '{0}'".format(upload_file_path))
 
 ##################
 # UPLOAD ARTIFACTS
@@ -125,9 +126,12 @@ for asset in release_assets_dict:
 asset_upload_url = URITemplate(release_upload_url).expand(name=upload_file_name) # rename file to be uploaded, if needed
 print("asset_upload_url '{0}'".format(asset_upload_url))
 
-response = requests.post(asset_upload_url, headers={**authorization_info, **content_type_info}, data=open(upload_file_name, 'rb').read()) # use local file
+response = requests.post(asset_upload_url, headers={**authorization_info, **content_type_info}, data=open(upload_file_path, 'rb').read()) # use local file
 if response:
     print("File '{0}' is successfully uploaded.".format(upload_file_name))
 else:
     print("Failed to upload '{0}' file.".format(upload_file_name))
     exit()
+
+# Check
+#https://github.com/smarie/python-mini-lambda/blob/master/ci_tools/github_release.py
