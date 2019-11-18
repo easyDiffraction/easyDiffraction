@@ -82,8 +82,14 @@ class Proxy(QObject):
 
     @Slot(str)
     def saveCif(self, saveName):
-        data_dir = self._get_working_dir()
-        allOK = Helpers.create_project_zip(data_dir, saveName)
+        data_dir = Helpers.make_temp_dir()
+        self._calculator.saveCifs(data_dir.name)
+        filenames = {
+            'original': ['main.rcif', 'pnd_calc.rcif', 'pnd_data.rcif'],
+            'new':      ['main.cif', 'phases.cif', 'experiments.cif']
+        }
+        allOK = Helpers.create_project_zip(data_dir.name, saveName)
+        data_dir.cleanup()
         if not allOK:
             raise FileNotFoundError
 

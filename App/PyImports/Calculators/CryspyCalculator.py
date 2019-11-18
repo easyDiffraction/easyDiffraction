@@ -49,6 +49,10 @@ class CryspyCalculator(QObject):
         rho_chi.from_cif(full_rcif_content)
         return rho_chi
 
+    def saveCifs(self, dir):
+        self._cryspy_obj.file_input = dir
+        self._cryspy_obj.save_to_files()
+
     def setAppDict(self):
         """Set application state"""
         self._app_dict = {
