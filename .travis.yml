@@ -68,11 +68,11 @@ script:
   - python Scripts/CreateProjectConfig.py
   - python Scripts/CopyMissingLibs.py
   #- python Scripts/CompilePyResource.py
+  - python Scripts/RunTests.py
   - python Scripts/MakeDist.py
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
   - python Scripts/MakeArchive.py #$RELEASE_NUMBER
-  - python Scripts/RunTests.py
   - python Scripts/UploadArtifacts.py #$GITHUB_TOKEN
 
 after_success:
