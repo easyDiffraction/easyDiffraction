@@ -72,5 +72,5 @@ dist
 # Misc
 ..*
 *.log
-
+Auth.yml
 .idea/
