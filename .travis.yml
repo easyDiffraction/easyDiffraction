@@ -1,6 +1,9 @@
 language: python            # this works for Linux but is an error on macOS or Windows
 sudo: required
 cache: pip
+#cache:
+#  directories:
+#    - ~/easyDiffraction
 
 env:
   global:
@@ -74,39 +77,10 @@ script:
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
   - python Scripts/MakeArchive.py #$RELEASE_NUMBER
   - python Scripts/UploadArtifacts.py #$GITHUB_TOKEN
+  #- python Scripts/UpdateWebPage.py
 
 after_success:
   - codecov
-
-#cache:
-#  directories:
-#    - ~/easyDiffraction
-
-#before_deploy:
-#  # Set up git user name and tag this commit
-#  - git config --local user.name "Travis CI"
-#  - git config --local user.email "travis@travis-ci.org"
-#  # This writes a changelog. If wanted
-#  #- '[ "$TRAVIS_BRANCH" != master ] || cd ../ && pip3 install gitchangelog pystache && echo "output_engine = mustache(\"markdown\")" > .gitchangelog.rc && gitchangelog ^$(git describe --abbrev=0 --tags) HEAD > CHANGELOG'
-
-#deploy:
-#  provider: script
-#  script: python Scripts/UploadArtifacts.py #$GITHUB_TOKEN
-#  skip_cleanup: true
-#  on:
-#    all_branches: true
-
-#  - provider: releases # GitHub repository
-#    name: $RELEASE_TITLE
-#    api_key:
-#      secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
-#    skip_cleanup: true
-#    draft: true
-#    overwrite: true
-#    file_glob: true
-#    file: easyDiffraction-*.zip
-#    on:
-#      all_branches: true
 
 #after_deploy:
 #  -  |

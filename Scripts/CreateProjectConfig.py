@@ -48,7 +48,8 @@ def isPrerelease(version):
 
 def isDraftRelease(branch):
     # not draft if branch name is of 'v1.0.12' format
-    if config['ci']['branch'] == 'master': #re.search('v\d+\.\d+\.\d+', branch):
+    branch = environmentVariable('TRAVIS_BRANCH')
+    if branch == 'v{0}'.format(config['release']['version']): #re.search('v\d+\.\d+\.\d+', branch)
         return False
     return True
 
@@ -64,6 +65,8 @@ def releaseTag(config):
 
 def releaseDescription(config):
     description = ''
+    if config['release']['draft']:
+        return description
     for item in config['release']['changes']:
         description += '* {0}{1}'.format(item, os.linesep)
     return description
