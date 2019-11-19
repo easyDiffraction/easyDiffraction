@@ -72,9 +72,6 @@ class VarsConfig:
         self.cryspy_path = cryspy.__path__[0]
         self.shiboken2_path = shiboken2.__path__[0]
         self.pyside2_path = PySide2.__path__[0]
-        #
-        self.github_release_exe_name = 'github-release' + self.os_specific_cli_exe_ext[self.os_name]
-        self.github_release_exe_path = os.path.join(self.scripts_dir_path, self.github_release_exe_name)
 
     def setOsName(self):
         if sys.platform.startswith('darwin'):
@@ -142,9 +139,6 @@ class VarsLog:
         print('os_specific_separator:   ', self.var.os_specific_separator[self.var.os_name])
         print('os_specific_icon_ext:    ', self.var.os_specific_icon_ext[self.var.os_name])
         print('os_specific_missing_libs:', self.var.os_specific_missing_libs[self.var.os_name])
-        print()
-        print('github_release_exe_name:', self.github_release_exe_name)
-        print('github_release_exe_path:', self.github_release_exe_path)
 
 # Windows
   # lib not found: shiboken2.abi3.dll dependency of c:\python37\lib\site-packages\PySide2\QtGui.pyd, etc.
