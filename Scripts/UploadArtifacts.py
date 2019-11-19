@@ -19,9 +19,9 @@ with open(config_file_path, 'r') as file:
 response = requests.get(config['github']['releases_url'], headers=config['github']['auth_header'])
 releases_list = response.json()
 if response:
-    print("Succeeded to get list of all releases for '{0}'".format(config['github']['api_base_url']))
+    print("Succeeded to get list of all releases for '{0}'".format(config['github']['releases_url']))
 else:
-    print("Failed to get list of all releases for '{0}'".format(config['github']['api_base_url']))
+    print("Failed to get list of all releases for '{0}'".format(config['github']['releases_url']))
     print("Status code: '{0}'".format(response.status_code))
     print("Status info: '{0}'".format(response.text))
     sys.exit()
@@ -42,7 +42,7 @@ else:
     print("Release '{0}' doesn't exist, creating".format(config['ci']['branch'])) # release_tag
     release_description = {
       "tag_name": config['release']['tag'],
-      "target_commitish": config['ci']['branch'],
+      "target_commitish": config['ci']['branch'], # need to check if branch exists
       "name": config['release']['name'],
       "draft": config['release']['draft'],
       "prerelease": config['release']['prerelease']

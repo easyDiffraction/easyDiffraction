@@ -75,7 +75,7 @@ if __name__ == '__main__':
     config['github']['releases_url'] = '{0}/releases'.format(config['github']['api_base_url'])
 
     config['ci']['os'] = osName()
-    config['ci']['branch'] = environmentVariable('TRAVIS_BRANCH', default='as-test')
+    config['ci']['branch'] = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
 
     config['release']['draft'] = isDraftRelease(config['ci']['branch'])
     config['release']['prerelease'] = isPrerelease(config['release']['version'])
