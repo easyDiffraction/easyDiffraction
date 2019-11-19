@@ -1,0 +1,37 @@
+app:
+  name: easyDiffraction
+  organization: easyDiffraction
+  url: https://easydiffraction.org
+structure:
+  distribution: /Users/andrewsazonov/Development/Projects/easyDiffraction/easyDiffraction/dist
+  installer: /Users/andrewsazonov/Development/Projects/easyDiffraction/easyDiffraction/dist
+  configs: /Users/andrewsazonov/Development/Projects/easyDiffraction/easyDiffraction/Configs
+  scripts: /Users/andrewsazonov/Development/Projects/easyDiffraction/easyDiffraction/Scripts
+  certificates: /Users/andrewsazonov/Development/Projects/easyDiffraction/easyDiffraction/Certificates
+  examples: /Users/andrewsazonov/Development/Projects/easyDiffraction/easyDiffraction/Examples
+github:
+  owner: easydiffraction
+  repo: easydiffraction
+  token: c4072a92bb5868d7fa2db937674ed9f1add54acc
+  auth_header:
+    Authorization: Token c4072a92bb5868d7fa2db937674ed9f1add54acc
+  upload_zip_header:
+    Content-Type: application/zip
+    Authorization: Token c4072a92bb5868d7fa2db937674ed9f1add54acc
+  api_base_url: https://api.github.com/repos/easydiffraction/easydiffraction
+  releases_url: https://api.github.com/repos/easydiffraction/easydiffraction/releases
+ci:
+  os: osx
+  branch: upload-artifacts
+release:
+  tag: upload-artifacts
+  name: upload-artifacts
+  prerelease: true
+  draft: true
+  file_name: easyDiffraction_osx_upload-artifacts.zip
+  file_path: /Users/andrewsazonov/Development/Projects/easyDiffraction/easyDiffraction/dist/easyDiffraction_osx_upload-artifacts.zip
+  version: 0.3.6
+  date: 13 Nov 2019
+  changes:
+  - Add Status Bar
+  - Minor Changes

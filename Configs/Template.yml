@@ -1,0 +1,34 @@
+app:
+  name: easyDiffraction
+  organization: easyDiffraction
+  url: https://easydiffraction.org
+structure:
+  distribution: dist
+  installer: null
+  configs: Configs
+  scripts: Scripts
+  certificates: Certificates
+  examples: Examples
+github:
+  owner: easydiffraction
+  repo: easydiffraction
+  token: null
+  auth_header: null
+  upload_zip_header: null
+  api_base_url: null
+  releases_url: null
+ci:
+  os: null
+  branch: null
+release:
+  tag: null
+  name: null
+  prerelease: null
+  draft: null
+  file_name: null
+  file_path: null
+  version: 0.3.6
+  date: 13 Nov 2019
+  changes:
+  - Add Status Bar
+  - Minor Changes
