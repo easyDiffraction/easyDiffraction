@@ -6,10 +6,9 @@ from PySide2.QtGui import QStandardItem, QStandardItemModel
 import PyImports.Helpers as Helpers
 
 class AtomMspsModel(QObject):
-    def __init__(self, calculator, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._project_dict = calculator.asDict()
+        self._project_dict = None
         self._model = QStandardItemModel()
         # set roles
         self._label_role = Qt.UserRole + 1
@@ -32,8 +31,6 @@ class AtomMspsModel(QObject):
             self._chi13_role: b'chi13',
             self._chi23_role: b'chi23'
             })
-        # set model
-        self._setModelFromProject()
 
     def _setModelFromProject(self):
         """Create the model needed for GUI ..."""
@@ -75,3 +72,8 @@ class AtomMspsModel(QObject):
     def asModel(self):
         """Return model."""
         return self._model
+
+    def setCalculator(self, calculator):
+        calculator.projectDictChanged.connect(self.onProjectChanged)
+        self._project_dict = calculator.asDict()
+        self._setModelFromProject()

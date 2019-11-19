@@ -14,7 +14,8 @@ def test_AtomSitesModel():
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
 
-    m = Model.AtomSitesModel(calculator)
+    m = Model.AtomSitesModel()
+    m.setCalculator(calculator)
 
     assert isinstance(m._model, QStandardItemModel)
     assert isinstance(m._project_dict, dict)
@@ -61,7 +62,8 @@ def test_AtomSitesModel_bad_calculator():
 
     # null calculator
     with pytest.raises(AttributeError):
-        m = Model.AtomSitesModel(calculator)
+        m = Model.AtomSitesModel()
+        m.setCalculator(calculator)
 
     # empty file
     #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()

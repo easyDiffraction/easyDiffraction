@@ -4,17 +4,15 @@ from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 class MeasuredDataModel(QObject):
-    def __init__(self, calculator, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        self._project_dict = calculator.asDict()
         self._headers_model = QStandardItemModel()
         self._data_model = QStandardItemModel()
-        self._setModelsFromProjectDict()
 
-    def _setModelsFromProjectDict(self):
+    def _setModelsFromProjectDict(self, project_dict):
         """Create the model needed for GUI measured data table and chart."""
         logging.info("+++++++++++++++++++++++++ setData start") # profiling
-        for experiment_id, experiment_dict in self._project_dict['experiments'].items():
+        for experiment_id, experiment_dict in project_dict['experiments'].items():
             self._data_model.blockSignals(True)
             self._headers_model.blockSignals(True)
             #
@@ -46,3 +44,6 @@ class MeasuredDataModel(QObject):
     def asDataModel(self):
         """Return data model."""
         return self._data_model
+
+    def setCalculator(self, calculator):
+        self._setModelsFromProjectDict(calculator.asDict())

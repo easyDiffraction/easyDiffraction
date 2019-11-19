@@ -6,14 +6,14 @@ from PySide2.QtGui import QStandardItem, QStandardItemModel
 import PyImports.Helpers as Helpers
 
 class FitablesModel(QObject):
-    def __init__(self, calculator, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         # minor properties
         self._first_role = Qt.UserRole + 1
         self._edit_role_increment = 100
         self._edit_role_name_suffix = 'Edit'
         # major properties
-        self._calculator = calculator
+        self._calculator = None
         self._model = QStandardItemModel()
         # set role names
         self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine']
@@ -21,10 +21,7 @@ class FitablesModel(QObject):
         self._roles_dict = {}
         self._setRolesListAndDict()
         self._model.setItemRoleNames(self._roles_dict)
-        # set model
-        self._setModelFromProject()
         # connect signals
-        self._calculator.projectDictChanged.connect(self.onProjectChanged)
         self._model.dataChanged.connect(self.onModelChanged)
 
     def _setRolesListAndDict(self):
@@ -92,3 +89,8 @@ class FitablesModel(QObject):
     def asModel(self):
         """Return model."""
         return self._model
+
+    def setCalculator(self, calculator):
+        calculator.projectDictChanged.connect(self.onProjectChanged)
+        self._calculator = calculator
+        self._setModelFromProject()

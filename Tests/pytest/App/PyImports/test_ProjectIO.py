@@ -66,14 +66,19 @@ def test_create_project_zip():
 
     temp1 = make_temp_dir()
     saveName1 = os.path.join(temp1.name, 'aa.zip')
-    assert create_project_zip(data_dir, saveName1) == True
+    isSaved, saveName2 = create_project_zip(data_dir, saveName1)
+    assert isSaved == True
+    assert saveName1 == str(saveName2)
     assert os.path.isfile(saveName1) == True
     temp1.cleanup()
 
     temp1 = make_temp_dir()
     saveName1 = os.path.join(temp1.name, 'aa')
-    assert create_project_zip(data_dir, saveName1) == True
-    assert os.path.isfile(saveName1 + '.zip') == True
+    saveName3 = saveName1 + '.zip'
+    isSaved, saveName2 = create_project_zip(data_dir, saveName1)
+    assert isSaved == True
+    assert str(saveName2) == saveName3
+    assert os.path.isfile(saveName3) == True
     temp1.cleanup()
 
     temp1 = make_temp_dir()

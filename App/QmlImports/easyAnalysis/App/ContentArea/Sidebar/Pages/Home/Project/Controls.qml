@@ -25,11 +25,13 @@ ColumnLayout {
 
             // Buttons
             GenericAppContentAreaButtons.Create {
-                enabled: false
+                enabled: true
                 text: qsTr("Create a new project")
 
+                onClicked: fileDialogCreateProject.open()
+
                 GenericAppElements.GuideWindow {
-                    message: "Disables buttons are not implemented yet."
+                    message: "Create a new project."
                     position: "left"
                     guideCurrentIndex: 2
                     toolbarCurrentIndex: Generic.Variables.HomeIndex
@@ -42,7 +44,7 @@ ColumnLayout {
                 text: qsTr("Open another project")
                 enabled: !proxy.refinementRunning
 
-                onClicked: fileDialog.open()
+                onClicked: fileDialogLoadProject.open()
 
                 GenericAppElements.GuideWindow {
                     message: "Click here to open existing project."
@@ -63,7 +65,7 @@ ColumnLayout {
                 enabled: false
                 text: qsTr("Save project as...")
 
-                onClicked: fileDialog2.open()
+                onClicked: fileDialogSaveProject.open()
 
                 GenericAppElements.GuideWindow {
                     message: "Click here to save a project."
@@ -81,14 +83,15 @@ ColumnLayout {
 
             // Open project dialog
             Dialogs1.FileDialog{
-                id: fileDialog
+                id: fileDialogLoadProject
                 nameFilters: [ "CIF files (*.cif)", "Project files (*.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    proxy.loadCif(fileUrl)
-                    fileDialog.close()
+                    projectControl.loadProject(fileUrl)
+                    fileDialogLoadProject.close()
                     if (proxy.validCif == true) {
+                        proxy.initialize()
                         Specific.Variables.projectOpened = true
                         Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
@@ -109,12 +112,30 @@ ColumnLayout {
             }
 
             Dialogs1.FileDialog{
-                id: fileDialog2
+                id: fileDialogSaveProject
                 selectExisting: false
                 nameFilters: ["Project files (*.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
-                    proxy.saveCif(fileUrl)
+                    proxy.saveProject(fileUrl)
+                    fileDialogSaveProject.close()
+                    if (proxy.savedProject == false) {
+                        failSaveDialog.visible = true
+                    } else {
+                        saveStateButton.enabled = true
+                    }
+                }
+            }
+
+            Dialogs1.FileDialog{
+                id: fileDialogCreateProject
+                selectExisting: false
+                nameFilters: ["Project files (*.zip)"]
+                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                onAccepted: {
+                    fileDialogCreateProject.close()
+                    projectControl.createProject(fileUrl)
+                    getProjectInfoDialog.visible = true
                 }
             }
 
@@ -128,12 +149,69 @@ ColumnLayout {
                 Label {
                     id: infoLabel
                     anchors.centerIn: parent
-                    text: 'Warning: File was not a valid main `rcif` file.'
+                    text: 'Warning: File was not a valid main `cif` file.'
                     color: "black"
                     font.family: Generic.Style.introThinFontFamily
                     font.pointSize: Generic.Style.systemFontPointSize + 1
                 }
             }
+
+             Dialog {
+                id: failSaveDialog
+                parent: Overlay.overlay
+                anchors.centerIn: parent
+                modal: true
+                opacity: 0.9
+                visible: false
+                Label {
+                    id: infoLabel2
+                    anchors.centerIn: parent
+                    text: 'Error: The project file was not saved.'
+                    color: "black"
+                    font.family: Generic.Style.introThinFontFamily
+                    font.pointSize: Generic.Style.systemFontPointSize + 1
+                }
+            }
+
+            Dialog {
+                id: getProjectInfoDialog
+                visible: false
+                parent: Overlay.overlay
+                anchors.centerIn: parent
+                modal: true
+                title: "Project description"
+                GenericAppElements.ColumnLayout {
+                    GenericAppElements.RowLayout {
+                        Label {
+                            text: "Project Title:"
+                        }
+                        TextInput {
+                            id: titleInput
+                            text: "Undefined"
+                            cursorVisible: true
+                        }
+                    }
+                    GenericAppElements.RowLayout {
+                        Label {
+                            text: "Project keywords:"
+                        }
+                        TextInput {
+                            id: keywordsInput
+                            text: "\'neutron diffraction, powder, 1d\'"
+                            cursorVisible: true
+                        }
+                    }
+                }
+                standardButtons: Dialog.Ok
+                onAccepted: {
+                    projectControl.writeMain(titleInput.text, keywordsInput.text)
+                    proxy.initialize()
+                    saveStateButton.enabled = true
+                    Specific.Variables.projectOpened = true
+                    saveButton.enabled = true
+                }
+            }
+
         }
     }
 
@@ -254,6 +332,8 @@ ColumnLayout {
                 }
             }
             GenericAppContentAreaButtons.SaveState {
+                id: saveStateButton
+                onClicked: proxy.updateProjectSave()
             }
             GenericAppContentAreaButtons.Help {
                 onClicked: Qt.openUrlExternally("https://easydiffraction.org/umanual_use.html#3.2.2.-project")

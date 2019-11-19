@@ -42,9 +42,10 @@ def make_temp_dir():
     return tempfile.TemporaryDirectory()
 
 
-def temp_project_dir(filename):
+def temp_project_dir(filename, targetdir=None):
     # Assume we're ok.....
-    targetdir = make_temp_dir()
+    if targetdir is None:
+        targetdir = make_temp_dir()
     with zipfile.ZipFile(filename, 'r') as zip:
         zip.extractall(targetdir.name)
     return targetdir
@@ -78,7 +79,7 @@ def create_project_zip(data_dir, saveName):
             if os.path.isfile(fullFile):
                 zip.write(fullFile, file)
 
-    return check_project_file(saveName)
+    return check_project_file(saveName), saveName
 
 
 def file_uri_to_path(file_uri, path_class=pathlib.PurePath):
