@@ -91,7 +91,7 @@ printAsYaml(config)
 # private parameters
 auth = getConfig(os.path.join('Configs', 'Auth.yml'))
 
-config['github']['token'] = environmentVariable('GITHUB_TOKEN', default=auth['github_token'])
+config['github']['token'] = environmentVariable('GITHUB_TOKEN', default=auth.get('github_token'))
 config['github']['auth_header'] = {'Authorization': 'Token {0}'.format(config['github']['token'])}
 config['github']['upload_zip_header'] = {'Content-Type': 'application/zip', **config['github']['auth_header']}
 
