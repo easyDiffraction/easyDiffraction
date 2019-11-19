@@ -12,25 +12,9 @@ class ProjectModel(QObject):
         self._saveSuccess = False
         self._projectFile = None
         self._isValidCif = None
-        self._model = QStandardItemModel()
         self.main_rcif_path = None
         self.name = None
         self.keywords = None
-    #     self._role_names_list = ['name', 'keywords', 'phases', 'experiments']
-    #     self._roles_list = []
-    #     self._roles_dict = {}
-    #     self._setRolesListAndDict()
-    #
-    #
-    # def _setRolesListAndDict(self):
-    #     """..."""
-    #     for i, role_name in enumerate(self._role_names_list):
-    #         display_role = self._first_role + i
-    #         edit_role = display_role + self._edit_role_increment
-    #         self._roles_dict[display_role] = role_name.encode()
-    #         self._roles_dict[edit_role] = '{}{}'.format(role_name, self._edit_role_name_suffix).encode()
-    #         self._roles_list.append(display_role)
-    #         self._roles_list.append(edit_role)
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
@@ -60,13 +44,14 @@ class ProjectModel(QObject):
         with open(os.path.join(self.tempDir.name, 'main.cif'), 'w') as f:
             f.write('_name %s\n' % name)
             f.write('_keywords %s\n' % keywords)
-            f.write('_phases \n')
+            f.write('_phases\n')
             f.write('_experiments\n')
         self.main_rcif_path = os.path.join(self.tempDir.name, 'main.cif')
 
     @Slot(str)
     def createProject(self, dataDir):
         extension = dataDir[-4:]
+        saveName = dataDir
         if extension != '.zip':
             saveName = dataDir + '.zip'
         self._projectFile = saveName
