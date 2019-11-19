@@ -15,4 +15,8 @@ with open(config_file_path, 'r') as file:
 
 # Zip installer
 print('\n***** Zip installer')
-shutil.make_archive(config['release']['file_path'], 'zip', config['structure']['installer'], var.installer_exe_name)
+format = 'zip'
+input_dir = config['structure']['installer']
+input_name = var.installer_exe_name
+output_path = config['release']['file_path'].replace('.zip', '')
+shutil.make_archive(output_path, format, input_dir, input_name)
