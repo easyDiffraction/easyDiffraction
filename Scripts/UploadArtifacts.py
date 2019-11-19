@@ -44,6 +44,7 @@ else:
       "tag_name": config['release']['tag'],
       "target_commitish": config['ci']['branch'], # need to check if branch exists
       "name": config['release']['name'],
+      "body": config['release']['description'],
       "draft": config['release']['draft'],
       "prerelease": config['release']['prerelease']
     }
@@ -84,10 +85,7 @@ release_assets_dict = response.json()
 if response:
     print("Succeeded to get list of assets")
 else:
-    print("Failed to get list of assets for release")
-    print("Status code: '{0}'".format(response.status_code))
-    print("Status info: '{0}'".format(response.text))
-    sys.exit()
+    print("No assets are found")
 
 # Delete existing asset (if any) and show info message
 for asset in release_assets_dict:

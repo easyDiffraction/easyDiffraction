@@ -27,8 +27,9 @@ release:
   draft: null
   file_name: null
   file_path: null
-  version: 0.3.6
-  date: 13 Nov 2019
+  description: null
+  version: 0.3.7
+  date: 19 Nov 2019
   changes:
-  - Add Status Bar
-  - Minor Changes
+  - Minor Changes 1
+  - Minor Changes 2

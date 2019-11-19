@@ -48,9 +48,25 @@ def isPrerelease(version):
 
 def isDraftRelease(branch):
     # not draft if branch name is of 'v1.0.12' format
-    if re.search('v\d+\.\d+\.\d+', branch):
+    if config['ci']['branch'] == 'master': #re.search('v\d+\.\d+\.\d+', branch):
         return False
     return True
+
+def releaseName(config):
+    if config['release']['draft']:
+        return config['ci']['branch']
+    return 'Version {0} ({1})'.format(config['release']['version'], config['release']['date'])
+
+def releaseTag(config):
+    if config['release']['draft']:
+        return config['ci']['branch']
+    return 'v{0}'.format(config['release']['version'])
+
+def releaseDescription(config):
+    description = ''
+    for item in config['release']['changes']:
+        description += '* {0}{1}'.format(item, os.linesep)
+    return description
 
 def printAsYaml(py_dict):
     yml = yaml.dump(py_dict, sort_keys=False, indent=2, allow_unicode=True)
@@ -76,12 +92,13 @@ config['github']['api_base_url'] = 'https://api.github.com/repos/{0}/{1}'.format
 config['github']['releases_url'] = '{0}/releases'.format(config['github']['api_base_url'])
 
 config['ci']['os'] = osName()
-config['ci']['branch'] = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
+config['ci']['branch'] = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts') # upload-artifacts
 
 config['release']['draft'] = isDraftRelease(config['ci']['branch'])
 config['release']['prerelease'] = isPrerelease(config['release']['version'])
-config['release']['name'] = config['ci']['branch']
-config['release']['tag'] = config['ci']['branch']
+config['release']['tag'] = releaseTag(config)
+config['release']['name'] = releaseName(config)
+config['release']['description'] = releaseDescription(config)
 config['release']['file_name'] = '{0}_{1}_{2}.zip'.format(config['app']['name'], config['ci']['os'], config['release']['tag'])
 config['release']['file_path'] = os.path.join(config['structure']['installer'], config['release']['file_name'])
 
