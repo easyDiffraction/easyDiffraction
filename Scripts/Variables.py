@@ -32,13 +32,15 @@ class VarsConfig:
     def __init__(self):
         self.os_name = self.setOsName()
         #
+        self.organization_name = 'easyDiffraction'
         self.project_name = 'easyDiffraction'
         self.project_url = 'https://easydiffraction.github.io'
         self.installer_name = self.project_name + 'Installer'
         #
         self.os_specific_separator = {'osx': ':', 'windows': ';', 'linux': ':'}
         self.os_specific_icon_ext = {'osx': 'icns', 'windows': 'ico', 'linux': 'png'}
-        self.os_specific_exe_ext = {'osx': '.app', 'windows': '.exe', 'linux': ''}
+        self.os_specific_gui_exe_ext = {'osx': '.app', 'windows': '.exe', 'linux': ''}
+        self.os_specific_cli_exe_ext = {'osx': '', 'windows': '.exe', 'linux': ''}
         self.os_specific_missing_libs = {
             'osx': ['libshiboken2.abi3.*.dylib'],
             'windows': ['shiboken2.abi3.dll', 'MSVCP140.dll'],
@@ -59,7 +61,7 @@ class VarsConfig:
         self.installer_packages_dir_path = os.path.join(self.installer_config_dir_path, 'packages')
         self.installer_data_dir_path = os.path.join(self.installer_packages_dir_path, 'io.github.easydiffraction', 'data')
         self.installer_dir_path = self.dist_dir_path
-        self.installer_exe_name = self.installer_name + self.os_specific_exe_ext[self.os_name]
+        self.installer_exe_name = self.installer_name + self.os_specific_gui_exe_ext[self.os_name]
         self.installer_exe_path = os.path.join(self.installer_dir_path, self.installer_exe_name)
         #
         self.certificates_dir_path = os.path.join(self.project_dir_path, 'Certificates')
@@ -81,6 +83,16 @@ class VarsConfig:
         else:
             return ''
 
+    #def setReleaseVersion(self):
+        # Settings file
+        #settings_file_path = os.path.join(project_dir_path, 'App', 'QmlImports', 'easyDiffraction', 'Settings.qml')
+        # Find application version
+        #release_version = ''
+        #with open(settings_file_path, 'r') as f:
+            #file_content = f.read()
+            #release_version = re.findall('\d+.\d+.\d+', file_content)[0]
+            #print("Release version: '{0}'".format(release_version))
+
 class VarsLog:
     def __init__(self):
         self.var = VarsConfig()
@@ -89,9 +101,10 @@ class VarsLog:
     def info(self):
         print('\n***** Variables')
         print()
-        print('os_name:        ', self.var.os_name)
-        print('project_name:   ', self.var.project_name)
-        print('installer_name: ', self.var.installer_name)
+        print('os_name:           ', self.var.os_name)
+        print('organization_name: ', self.var.organization_name)
+        print('project_name:      ', self.var.project_name)
+        print('installer_name:    ', self.var.installer_name)
         print()
         print('user_home_dir:            ', self.var.user_home_dir)
         print('project_dir_path:         ', self.var.project_dir_path)
