@@ -114,7 +114,6 @@ else:
     print("Status info: '{0}'".format(response.text))
     sys.exit()
 
-
 # Check
 #https://github.com/smarie/python-mini-lambda/blob/master/ci_tools/github_release.py
 #https://docs.travis-ci.com/user/deployment/pages/#setting-the-github-token

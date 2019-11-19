@@ -48,7 +48,7 @@ install:
   - pip install pyinstaller==3.5
   - pip install requests==2.22.0
   - pip install uritemplate==3.0.0
-  - pip install pyyaml
+  - pip install pyyaml=5.1.2
   #
   - pip install pytest
   - pytest --version
@@ -61,7 +61,7 @@ install:
 
 before_script:
   #- python Scripts/CompilePyResource.py
-  - export RELEASE_NUMBER=`python Scripts/GetReleaseNumber.py`
+  #- export RELEASE_NUMBER=`python Scripts/GetReleaseNumber.py`
   #- export TRAVIS_TAG=`python Scripts/GetTravisTag.py $RELEASE_NUMBER $TRAVIS_BRANCH`
   #- export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
   - echo $TRAVIS_OS_NAME
@@ -79,7 +79,7 @@ script:
   - python Scripts/MakeDist.py
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
-  - python Scripts/MakeArchive.py $RELEASE_NUMBER
+  - python Scripts/MakeArchive.py #$RELEASE_NUMBER
   - if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
   - if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
   - python Scripts/UploadArtifacts.py #$GITHUB_TOKEN

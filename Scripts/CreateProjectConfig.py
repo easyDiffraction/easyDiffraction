@@ -60,39 +60,40 @@ def writeProjectConfig(py_dict, file_path):
     with open(file_path, 'w') as out_file:
         yaml.dump(py_dict, out_file, sort_keys=False, indent=2, allow_unicode=True)
 
-if __name__ == '__main__':
-    # public parameters
-    config = getConfig(os.path.join('Configs', 'Template.yml'))
+# MAIN
 
-    config['structure']['distribution'] = absolutePath(config['structure']['distribution'])
-    config['structure']['installer'] = absolutePath(config['structure']['distribution'])
-    config['structure']['configs'] = absolutePath(config['structure']['configs'])
-    config['structure']['scripts'] = absolutePath(config['structure']['scripts'])
-    config['structure']['certificates'] = absolutePath(config['structure']['certificates'])
-    config['structure']['examples'] = absolutePath(config['structure']['examples'])
+# public parameters
+config = getConfig(os.path.join('Configs', 'Template.yml'))
 
-    config['github']['api_base_url'] = 'https://api.github.com/repos/{0}/{1}'.format(config['github']['owner'], config['github']['repo'])
-    config['github']['releases_url'] = '{0}/releases'.format(config['github']['api_base_url'])
+config['structure']['distribution'] = absolutePath(config['structure']['distribution'])
+config['structure']['installer'] = absolutePath(config['structure']['distribution'])
+config['structure']['configs'] = absolutePath(config['structure']['configs'])
+config['structure']['scripts'] = absolutePath(config['structure']['scripts'])
+config['structure']['certificates'] = absolutePath(config['structure']['certificates'])
+config['structure']['examples'] = absolutePath(config['structure']['examples'])
 
-    config['ci']['os'] = osName()
-    config['ci']['branch'] = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
+config['github']['api_base_url'] = 'https://api.github.com/repos/{0}/{1}'.format(config['github']['owner'], config['github']['repo'])
+config['github']['releases_url'] = '{0}/releases'.format(config['github']['api_base_url'])
 
-    config['release']['draft'] = isDraftRelease(config['ci']['branch'])
-    config['release']['prerelease'] = isPrerelease(config['release']['version'])
-    config['release']['name'] = config['ci']['branch']
-    config['release']['tag'] = config['ci']['branch']
-    config['release']['file_name'] = '{0}_{1}_{2}.zip'.format(config['app']['name'], config['ci']['os'], config['release']['tag'])
-    config['release']['file_path'] = os.path.join(config['structure']['installer'], config['release']['file_name'])
+config['ci']['os'] = osName()
+config['ci']['branch'] = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
 
-    # print config
-    printAsYaml(config)
+config['release']['draft'] = isDraftRelease(config['ci']['branch'])
+config['release']['prerelease'] = isPrerelease(config['release']['version'])
+config['release']['name'] = config['ci']['branch']
+config['release']['tag'] = config['ci']['branch']
+config['release']['file_name'] = '{0}_{1}_{2}.zip'.format(config['app']['name'], config['ci']['os'], config['release']['tag'])
+config['release']['file_path'] = os.path.join(config['structure']['installer'], config['release']['file_name'])
 
-    # private parameters
-    auth = getConfig(os.path.join('Configs', 'Auth.yml'))
+# print config
+printAsYaml(config)
 
-    config['github']['token'] = environmentVariable('GITHUB_TOKEN', default=auth['github_token'])
-    config['github']['auth_header'] = {'Authorization': 'Token {0}'.format(config['github']['token'])}
-    config['github']['upload_zip_header'] = {'Content-Type': 'application/zip', **config['github']['auth_header']}
+# private parameters
+auth = getConfig(os.path.join('Configs', 'Auth.yml'))
 
-    # save config to file
-    writeProjectConfig(config, os.path.join(config['structure']['configs'], 'Project.yml'))
+config['github']['token'] = environmentVariable('GITHUB_TOKEN', default=auth['github_token'])
+config['github']['auth_header'] = {'Authorization': 'Token {0}'.format(config['github']['token'])}
+config['github']['upload_zip_header'] = {'Content-Type': 'application/zip', **config['github']['auth_header']}
+
+# save config to file
+writeProjectConfig(config, os.path.join(config['structure']['configs'], 'Project.yml'))
