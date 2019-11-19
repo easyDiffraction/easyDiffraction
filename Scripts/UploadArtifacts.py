@@ -22,7 +22,9 @@ if response:
     print("Succeeded to get list of all releases for '{0}'".format(config['github']['api_base_url']))
 else:
     print("Failed to get list of all releases for '{0}'".format(config['github']['api_base_url']))
-    exit()
+    print("Status code: '{0}'".format(response.status_code))
+    print("Status info: '{0}'".format(response.text))
+    sys.exit()
 
 # Get id of the specific release, if release is already exist
 release_exist = False
@@ -50,9 +52,10 @@ else:
         print("Release '{0}' is successfully created".format(release_description['name']))
     else:
         print("Failed to create release '{0}'".format(release_description['name']))
-        #print(response.status_code)
-        #print(response.text)
-        exit()
+        print("Status code: '{0}'".format(response.status_code))
+        print("Status info: '{0}'".format(response.text))
+        sys.exit()
+
     # Reread list list of all the releases (including draft ones)
     response = requests.get(config['github']['releases_url'], headers=config['github']['auth_header'])
     releases_list = response.json()
@@ -60,7 +63,9 @@ else:
         print("Succeeded to get list of all releases for '{0}'".format(config['github']['api_base_url']))
     else:
         print("Failed to get list of all releases for '{0}'".format(config['github']['api_base_url']))
-        exit()
+        print("Status code: '{0}'".format(response.status_code))
+        print("Status info: '{0}'".format(response.text))
+        sys.exit()
 
 # Get id and upload_url of the specific release, if release is already exist
 release_id = ''
@@ -80,9 +85,9 @@ if response:
     print("Succeeded to get list of assets")
 else:
     print("Failed to get list of assets for release")
-    print(response.status_code)
-    print(response.text)
-    exit()
+    print("Status code: '{0}'".format(response.status_code))
+    print("Status info: '{0}'".format(response.text))
+    sys.exit()
 
 # Delete existing asset (if any) and show info message
 for asset in release_assets_dict:
@@ -94,7 +99,9 @@ for asset in release_assets_dict:
             print("Succeeded to delete asset '{0}'".format(config['release']['file_name']))
         else:
             print("Failed to delete asset '{0}'".format(config['release']['file_name']))
-            exit()
+            print("Status code: '{0}'".format(response.status_code))
+            print("Status info: '{0}'".format(response.text))
+            sys.exit()
 
 # Upload asset and show info message
 asset_upload_url = URITemplate(release_upload_url).expand(name=config['release']['file_name']) # rename file to be uploaded, if needed
@@ -103,9 +110,9 @@ if response:
     print("File '{0}' is successfully uploaded.".format(config['release']['file_name']))
 else:
     print("Failed to upload '{0}' file.".format(config['release']['file_name']))
-    exit()
-
-
+    print("Status code: '{0}'".format(response.status_code))
+    print("Status info: '{0}'".format(response.text))
+    sys.exit()
 
 
 # Check
