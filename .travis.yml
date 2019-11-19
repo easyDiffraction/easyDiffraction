@@ -60,28 +60,19 @@ install:
   - pip install codecov
 
 before_script:
-  #- export RELEASE_NUMBER=`python Scripts/GetReleaseNumber.py`
-  #- export TRAVIS_TAG=`python Scripts/GetTravisTag.py $RELEASE_NUMBER $TRAVIS_BRANCH`
-  #- export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
   - echo $TRAVIS_OS_NAME
   - echo $TRAVIS_BRANCH
-  #- echo $RELEASE_NUMBER
-  #- echo $TRAVIS_TAG
-  #- echo $RELEASE_TITLE
-  #- python Scripts/CompilePyResource.py
-  - python Scripts/PrintLog.py
-  - python Scripts/CreateProjectConfig.py
 
 script:
-  # Compile qrc (qt resource file) into python file
-  #- pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress
+  - python Scripts/PrintLog.py
+  - python Scripts/CreateProjectConfig.py
   - python Scripts/CopyMissingLibs.py
+  #- python Scripts/CompilePyResource.py
   - python Scripts/MakeDist.py
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
   - python Scripts/MakeArchive.py #$RELEASE_NUMBER
-  - if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
-  - if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
+  - python Scripts/RunTests.py
   - python Scripts/UploadArtifacts.py #$GITHUB_TOKEN
 
 after_success:
