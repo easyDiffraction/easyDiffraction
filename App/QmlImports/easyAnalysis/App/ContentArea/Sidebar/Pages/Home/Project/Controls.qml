@@ -92,6 +92,11 @@ ColumnLayout {
                     fileDialogLoadProject.close()
                     if (proxy.validCif == true) {
                         proxy.initialize()
+//                        if (proxy.validPojectZip) {
+//                            saveStateButton.enabled = true
+//                        } else {
+//                            saveStateButton.enabled = false
+//                        }
                         Specific.Variables.projectOpened = true
                         Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
@@ -310,39 +315,25 @@ ColumnLayout {
 
     // Groupbox
 
-    GenericAppElements.GroupBox {
-        collapsible: false
-        showBorder: false
-        content: GenericAppElements.RowLayout {
-            GenericAppContentAreaButtons.GoNext {
-                text: "Experimental Data"
-                ToolTip.text: qsTr("Go to the next step: Experimental data")
-                enabled: Specific.Variables.projectOpened
-                highlighted: Specific.Variables.projectOpened
-                onClicked: {
-                    Generic.Variables.homePageFinished = true
-                    Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
-                }
-                GenericAppElements.GuideWindow {
-                    message: "Click here to go to the next step: Experimental data."
-                    position: "top"
-                    guideCurrentIndex: 5
-                    toolbarCurrentIndex: Generic.Variables.HomeIndex
-                    guidesCount: Generic.Variables.HomeGuidesCount
-                }
+    GenericAppElements.FlowButtons {
+        property url currentUrl: "https://easydiffraction.org/umanual_use.html#3.2.2.-project"
+        property Item contentsNext: GenericAppContentAreaButtons.GoNext {
+            text: "Experimental Data"
+            ToolTip.text: qsTr("Go to the next step: Experimental data")
+            enabled: Specific.Variables.projectOpened
+            highlighted: Specific.Variables.projectOpened
+            onClicked: {
+                Generic.Variables.homePageFinished = true
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
             }
-            GenericAppContentAreaButtons.SaveState {
-                id: saveStateButton
-                onClicked: proxy.updateProjectSave()
-            }
-            GenericAppContentAreaButtons.Help {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.org/umanual_use.html#3.2.2.-project")
-            }
-            GenericAppContentAreaButtons.Bug {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.org/contact.html")
+            GenericAppElements.GuideWindow {
+                message: "Click here to go to the next step: Experimental data."
+                position: "top"
+                guideCurrentIndex: 5
+                toolbarCurrentIndex: Generic.Variables.HomeIndex
+                guidesCount: Generic.Variables.HomeGuidesCount
             }
         }
     }
-
 }
 

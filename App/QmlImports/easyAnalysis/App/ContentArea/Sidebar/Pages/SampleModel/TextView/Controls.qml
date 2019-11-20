@@ -23,4 +23,40 @@ ColumnLayout {
         }
     }
 
+    Item { Layout.fillHeight: true }
+
+    // Groupbox
+
+    GenericAppElements.FlowButtons {
+        property url currentUrl: "https://easydiffraction.org/umanual_use.html#3.2.4.-sample-model"
+        property Item contentsPrevious: GenericAppContentAreaButtons.GoPrevious {
+            text: "Experimental Data"
+            ToolTip.text: qsTr("Go to the previous step: Experimental data")
+            onClicked: {
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+            }
+            GenericAppElements.GuideWindow {
+                message: "Click here to go to the previous step: Experimental data.\n\nAlternatively, you can click on the 'Experimental data' button in toolbar."
+                position: "top"
+                guideCurrentIndex: 4
+                toolbarCurrentIndex: Generic.Variables.SampleModelIndex
+                guidesCount: Generic.Variables.SampleModelGuidesCount
+            }
+        }
+        property Item contentsNext: GenericAppContentAreaButtons.GoNext {
+            text: "Analysis"
+            ToolTip.text: qsTr("Go to the next step: Analysis")
+            onClicked: {
+                Generic.Variables.samplePageFinished = true
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
+            }
+            GenericAppElements.GuideWindow {
+                message: "Click here to go to the next step: Structure refinement."
+                position: "top"
+                guideCurrentIndex: 5
+                toolbarCurrentIndex: Generic.Variables.SampleModelIndex
+                guidesCount: Generic.Variables.SampleModelGuidesCount
+            }
+        }
+    }
 }

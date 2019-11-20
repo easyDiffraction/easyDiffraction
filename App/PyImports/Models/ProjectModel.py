@@ -1,14 +1,18 @@
 import PyImports.ProjectIO as ProjectIO
 import os
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, QUrl
-from PySide2.QtGui import QStandardItem, QStandardItemModel
+from PySide2.QtCore import QObject, Slot, QUrl, Signal, Property
 
 class ProjectModel(QObject):
 
-    def __init__(self, parent=None):
+    def __init__(self, projectManager=None, parent=None):
         super().__init__(parent)
+
+        if projectManager is None:
+            projectManager = ProjectManager()
+
         self.tempDir = ProjectIO.make_temp_dir()
+        self.manager = projectManager
         self._saveSuccess = False
         self._projectFile = None
         self._isValidCif = None
@@ -18,11 +22,14 @@ class ProjectModel(QObject):
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
-        self.main_rcif_path = QUrl(main_rcif_path).toLocalFile()
+        #
+        self.setMain_rcif_path(main_rcif_path)
         #
         if ProjectIO.check_if_zip(self.main_rcif_path):
             if ProjectIO.check_project_file(self.main_rcif_path):
                 _ = ProjectIO.temp_project_dir(self.main_rcif_path, self.tempDir)
+                self._projectFile = self.main_rcif_path
+                self.manager.set_isValidSaveState(True)
                 self.main_rcif_path = os.path.join(self.tempDir.name, 'main.cif')
         self._isValidCif = True
 
@@ -55,6 +62,40 @@ class ProjectModel(QObject):
         if extension != '.zip':
             saveName = dataDir + '.zip'
         self._projectFile = saveName
+        self.manager.validSaveState = True
+
+    def setMain_rcif_path(self, rcifPath):
+        self._resetOnInitialize()
+        self.main_rcif_path = QUrl(rcifPath).toLocalFile()
+
+    def _resetOnInitialize(self):
+        # At this point we have an object which needs to be reset.
+        self.tempDir.cleanup()
+        self.tempDir = ProjectIO.make_temp_dir()
+        self.manager.validSaveState = False
+        self._saveSuccess = False
+        self._projectFile = None
+        self._isValidCif = None
+        self.main_rcif_path = None
+        self.name = None
+        self.keywords = None
 
     def __exit__(self, exc, value, tb):
         self.tempDir.cleanup()
+
+class ProjectManager(QObject):
+    projectSaveChange = Signal(bool)
+
+    def __init__(self, parent=None):
+        super(ProjectManager, self).__init__(parent)
+        self._projectSaveBool = False
+
+    def get_isValidSaveState(self):
+        return self._projectSaveBool
+
+    def set_isValidSaveState(self, value):
+        if self._projectSaveBool != value:
+            self._projectSaveBool = value
+            self.projectSaveChange.emit(value)
+
+    validSaveState = Property(bool, get_isValidSaveState, set_isValidSaveState, notify=projectSaveChange)

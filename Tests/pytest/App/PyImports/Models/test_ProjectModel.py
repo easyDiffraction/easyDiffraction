@@ -49,7 +49,7 @@ def test_ProjectModel_loadProject_zip():
 
     assert model.name == 'Fe3O4 \n'
     assert model.keywords == '\'neutron diffraction, powder, 1d\' \n'
-    assert model._projectFile is None
+    assert model._projectFile == TEST_ZIP
     assert model._isValidCif is True
     assert model.main_rcif_path == os.path.join(model.tempDir.name, 'main.cif')
 

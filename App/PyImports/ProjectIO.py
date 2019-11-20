@@ -82,6 +82,14 @@ def create_project_zip(data_dir, saveName):
     return check_project_file(saveName), saveName
 
 
+def writeProject(projectModel, saveName):
+    allOK, saveName = create_project_zip(projectModel.tempDir.name, saveName)
+    projectModel._saveSuccess = True
+    projectModel._projectFile = saveName
+    if not allOK:
+        raise FileNotFoundError
+
+
 def file_uri_to_path(file_uri, path_class=pathlib.PurePath):
     """
     This function returns a pathlib.PurePath object for the supplied file URI.

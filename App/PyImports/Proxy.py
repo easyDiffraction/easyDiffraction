@@ -14,14 +14,14 @@ from PyImports.Models.AtomAdpsModel import AtomAdpsModel
 from PyImports.Models.AtomMspsModel import AtomMspsModel
 from PyImports.Models.FitablesModel import FitablesModel
 from PyImports.Models.StatusModel import StatusModel
-from PyImports.Models.ProjectModel import ProjectModel
+from PyImports.Models.ProjectModel import ProjectModel, ProjectManager
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
 import PyImports.ProjectIO as ProjectIO
 
 class Proxy(QObject):
 
-    def __init__(self, parent=None):
+    def __init__(self, projectManager, parent=None):
         logging.info("")
         super().__init__(parent)
         #
@@ -29,7 +29,7 @@ class Proxy(QObject):
         self._calculator = None
         self._tempFolder = None
         #
-        self._project_model = ProjectModel()
+        self._project_model = ProjectModel(projectManager)
         self._measured_data_model = MeasuredDataModel()
         self._calculated_data_model = CalculatedDataModel()
         self._bragg_peaks_model = BraggPeaksModel()
@@ -40,6 +40,7 @@ class Proxy(QObject):
         self._atom_msps_model = AtomMspsModel()
         self._fitables_model = FitablesModel()
         self._status_model = StatusModel()
+        self.projectManager = ProjectManager()
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
@@ -77,15 +78,11 @@ class Proxy(QObject):
     @Slot(str)
     def saveProject(self, saveName):
         self._calculator.saveCifs(self._project_model.tempDir.name)
-        allOK, saveName = ProjectIO.create_project_zip(self._project_model.tempDir.name, saveName)
-        self._project_model._saveSuccess = True
-        self._project_model._projectFile = saveName
-        if not allOK:
-            raise FileNotFoundError
+        ProjectIO.writeProject(self._project_model, saveName)
 
     @Slot()
     def updateProjectSave(self):
-        self.saveProject(self._project_model._projectFile)
+        self.saveProject(self._project_model._projectFile.name)
 
     # ##############
     # QML Properties
@@ -116,7 +113,6 @@ class Proxy(QObject):
 
     validCif = Property(bool, lambda self: self._project_model._isValidCif, constant=False)
     savedProject = Property(bool, lambda self: self._project_model._saveSuccess, constant=False)
-    projectZip = Property(str, lambda self: self._project_model._projectFile, constant=False)
 
     # ##########
     # REFINEMENT

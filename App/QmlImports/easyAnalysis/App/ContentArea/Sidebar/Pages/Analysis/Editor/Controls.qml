@@ -55,29 +55,43 @@ ColumnLayout {
 
     Item { Layout.fillHeight: true }
 
-    ///////////
     // Groupbox
-    ///////////
-    /*
-    GenericAppElements.GroupBox {
-        collapsible: false
-        showBorder: false
-        content: GenericAppElements.RowLayout {
-            GenericAppContentAreaButtons.GoNext {
-                text: "Next step: Summary"
-                ToolTip.text: qsTr("Go to the next step: Summary")
-                onClicked: {
-                    Generic.Variables.analysisPageFinished = true
-                    Generic.Variables.summaryPageFinished = true
-                    Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
-                }
+
+    GenericAppElements.FlowButtons {
+        property url currentUrl: "https://easydiffraction.org/umanual_use.html#3.2.5.-analysis"
+        property Item contentsPrevious: GenericAppContentAreaButtons.GoPrevious {
+            text: "Sample Model"
+            ToolTip.text: qsTr("Go to the previous step: Sample model")
+            onClicked: {
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
             }
-            GenericAppContentAreaButtons.SaveState { checked: true }
-            GenericAppContentAreaButtons.Help {}
-            GenericAppContentAreaButtons.Bug {}
+            GenericAppElements.GuideWindow {
+                message: "Click here to go to the previous step: Sample Model.\n\nAlternatively, you can click on the 'Sample Model' button in toolbar."
+                position: "top"
+                guideCurrentIndex: 4
+                toolbarCurrentIndex: Generic.Variables.AnalysisIndex
+                guidesCount: Generic.Variables.AnalysisGuidesCount
+            }
+        }
+        property Item contentsNext: GenericAppContentAreaButtons.GoNext {
+            text: "Summary"
+            enabled: proxy.refinementDone
+            highlighted: proxy.refinementDone
+            ToolTip.text: qsTr("Go to the next step: Summary")
+            onClicked: {
+                Generic.Variables.analysisPageFinished = true
+                Generic.Variables.summaryPageFinished = true
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
+            }
+            GenericAppElements.GuideWindow {
+                message: "Click here to go to the next step: Summary.\n\nThis button will be enabled after fitting is done."
+                position: "top"
+                guideCurrentIndex: 5
+                toolbarCurrentIndex: Generic.Variables.AnalysisIndex
+                guidesCount: Generic.Variables.AnalysisGuidesCount
+            }
         }
     }
-    */
 
 }
 
