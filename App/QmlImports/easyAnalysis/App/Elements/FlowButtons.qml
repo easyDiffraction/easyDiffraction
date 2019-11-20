@@ -8,44 +8,49 @@ import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 import easyDiffraction 1.0 as Specific
 
 GenericAppElements.GroupBox {
+    property string documentationUrl: "https://easydiffraction.org/umanual_use.html"
+    property string contactlUrl: "https://easydiffraction.org/contact.html"
+
+    property alias goPreviousButton: goPreviousButtonContainer.children
+    property alias goNextButton: goNextButtonContainer.children
+
     collapsible: false
     showBorder: false
-    content: GenericAppElements.RowLayout {
 
-        GenericAppElements.RowLayout {
-            id: container
-            Layout.fillWidth: true
-            height: helpButton.height
+    content: GenericAppElements.RowLayout {
+        Layout.fillWidth: true
+
+        // go previous button
+        RowLayout {
+            id: goPreviousButtonContainer
+            visible: children.length
+            spacing: 0
         }
 
+        // go next button
+        RowLayout {
+            id: goNextButtonContainer
+            visible: children.length
+            spacing: 0
+        }
+
+        // save state button
         GenericAppContentAreaButtons.SaveState {
-            id: saveStateButton
             onClicked: proxy.updateProjectSave()
             enabled: projectManager.validSaveState
         }
+
+        // help button
         GenericAppContentAreaButtons.Help {
-            id: helpButton
-            onClicked: Qt.openUrlExternally(currentUrl)
+            onClicked: Qt.openUrlExternally(documentationUrl)
         }
+
+        // contact button
         GenericAppContentAreaButtons.Bug {
-            onClicked: Qt.openUrlExternally("https://easydiffraction.org/contact.html")
+            onClicked: Qt.openUrlExternally(contactlUrl)
         }
+
     }
 
-     //"__" means private by QML convention
-    function __insertContents() {
-        // move the contents into the placeholder...
-        if (typeof contentsPrevious != "undefined") {
-            contentsPrevious.parent = container
-            contentsPrevious.Layout.alignment.fill = container
-        }
-        if (typeof contentsNext != "undefined") {
-            contentsNext.parent = container
-            contentsNext.Layout.alignment.fill = container
-        }
-    }
-
-    Component.onCompleted: {
-        __insertContents()
-    }
 }
+

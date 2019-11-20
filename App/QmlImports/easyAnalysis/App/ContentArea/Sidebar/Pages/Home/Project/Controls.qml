@@ -316,8 +316,8 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.FlowButtons {
-        property url currentUrl: "https://easydiffraction.org/umanual_use.html#3.2.2.-project"
-        property Item contentsNext: GenericAppContentAreaButtons.GoNext {
+        documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.2.-project"
+        goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Experimental Data"
             ToolTip.text: qsTr("Go to the next step: Experimental data")
             enabled: Specific.Variables.projectOpened
@@ -335,5 +335,6 @@ ColumnLayout {
             }
         }
     }
+
 }
 

@@ -58,8 +58,8 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.FlowButtons {
-        property url currentUrl: "https://easydiffraction.org/umanual_use.html#3.2.5.-analysis"
-        property Item contentsPrevious: GenericAppContentAreaButtons.GoPrevious {
+        documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.5.-analysis"
+        goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
             text: "Sample Model"
             ToolTip.text: qsTr("Go to the previous step: Sample model")
             onClicked: {
@@ -73,7 +73,7 @@ ColumnLayout {
                 guidesCount: Generic.Variables.AnalysisGuidesCount
             }
         }
-        property Item contentsNext: GenericAppContentAreaButtons.GoNext {
+        goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Summary"
             enabled: proxy.refinementDone
             highlighted: proxy.refinementDone
