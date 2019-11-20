@@ -19,7 +19,7 @@ class ProjectConfig:
 
     def _loadConfig(self, file_path):
         if not os.path.isfile(file_path):
-            print("   Failed to find config '{0}'".format(file_path))
+            print("----- Failed to find config '{0}'".format(file_path))
             sys.exit()
         with open(file_path, 'r') as file:
             file_content = yaml.load(file, Loader=yaml.FullLoader)
@@ -34,7 +34,7 @@ class ProjectConfig:
         elif platform.startswith('win'):
             return 'windows'
         else:
-            print("Unsupported platform '{0}'".format(platform))
+            print("***** Unsupported platform '{0}'".format(platform))
             return None
 
     def getVal(self, *keys):
@@ -82,26 +82,26 @@ class GithubAgent: # Agent, Communicator, Connector?
         #self._asset_file_name = None
 
     def _printRequestStatus(self, response):
-        print("Status code: '{0}'".format(response.status_code))
-        print("Status info: '{0}'".format(response.text))
+        print("***** Status code: '{0}'".format(response.status_code))
+        print("***** Status info: '{0}'".format(response.text))
 
     def _checkUrlAccessible(self, url, headers=None):
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, headers=self._auth_header)
         if response:
-            print("Succeeded to access '{0}'".format(url))
+            print("***** Succeeded to access '{0}'".format(url))
         else:
-            print("   Failed to access '{0}'".format(url))
+            print("----- Failed to access '{0}'".format(url))
             self._printRequestStatus(response)
             sys.exit()
 
     # Get list of all the releases (including draft ones)
     def _requestReleases(self, url, headers=None):
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, headers=self._auth_header)
         if response:
-            print("Succeeded to get list of releases from '{0}'".format(url))
+            print("+++++ Succeeded to get list of releases from '{0}'".format(url))
             return response.json()
         else:
-            print("   Failed to get list of releases from '{0}'".format(url))
+            print("----- Failed to get list of releases from '{0}'".format(url))
             self._printRequestStatus(response)
             return []
 
@@ -110,10 +110,10 @@ class GithubAgent: # Agent, Communicator, Connector?
         branch_url = '{0}/{1}'.format(self._branches_url, name)
         response = requests.get(branch_url, headers=self._auth_header)
         if response:
-            print("Succeeded to find branch '{0}'".format(name))
+            print("+++++ Succeeded to find branch '{0}'".format(name))
             return True
         else:
-            print("   Failed to find branch '{0}'".format(name))
+            print("----- Failed to find branch '{0}'".format(name))
             self._printRequestStatus(response)
             return False
 
@@ -126,9 +126,9 @@ class GithubAgent: # Agent, Communicator, Connector?
     def releaseExistByTagName(self, tag_name):
         for release in self._releases_list:
             if release.get('tag_name') == tag_name:
-                print("Succeeded to find release '{0}' in previously downloaded list".format(tag_name))
+                print("+++++ Succeeded to find release '{0}' in previously downloaded list".format(tag_name))
                 return True
-        print("   Failed to find release '{0}' in previously downloaded list".format(tag_name))
+        print("----- Failed to find release '{0}' in previously downloaded list".format(tag_name))
         return False
 
     def selectReleaseByTagName(self, tag_name):
@@ -163,37 +163,37 @@ class GithubAgent: # Agent, Communicator, Connector?
         output_path = asset_file_path_without_ext
         shutil.make_archive(output_path, output_format, input_dir, input_name)
         if os.path.isfile(asset_file_path):
-            print("Succeeded to find local asset file '{0}'".format(asset_file_path))
+            print("+++++ Succeeded to find local asset file '{0}'".format(asset_file_path))
         else:
-            print("   Failed to find local asset file '{0}'".format(asset_file_path))
+            print("----- Failed to find local asset file '{0}'".format(asset_file_path))
             sys.exit()
         # Get list of assets for the desired release
         self._selected_release_assets_url = '{0}/{1}/assets'.format(self._releases_url, self._selected_release_id)
         response = requests.get(self._selected_release_assets_url, headers=self._auth_header)
         if response:
-            print("Succeeded to find remote assets for release '{0}'".format(self._selected_release_tag_name))
+            print("+++++ Succeeded to find remote assets for release '{0}'".format(self._selected_release_tag_name))
             self._selected_release_assets_dict = response.json()
         else:
-            print("   Failed to find remote assets for release '{0}'".format(self._selected_release_tag_name))
+            print("----- Failed to find remote assets for release '{0}'".format(self._selected_release_tag_name))
         # Delete existing asset (if any)
         for asset in self._selected_release_assets_dict:
             if asset['name'] == asset_file_name:
-                print("Succeeded to find remote asset '{0}'".format(asset_file_name))
+                print("+++++ Succeeded to find remote asset '{0}'".format(asset_file_name))
                 asset_url = '{0}/{1}'.format(self._assets_url, asset['id'])
                 response = requests.delete(asset_url, headers=self._auth_header)
                 if response:
-                    print("Succeeded to delete remote asset '{0}'".format(asset_file_name))
+                    print("+++++ Succeeded to delete remote asset '{0}'".format(asset_file_name))
                 else:
-                    print("   Failed to delete remote asset '{0}'".format(asset_file_name))
+                    print("----- Failed to delete remote asset '{0}'".format(asset_file_name))
                     self._printRequestStatus(response)
                     sys.exit()
         # Upload asset
         asset_upload_url = URITemplate(self._selected_release_upload_url).expand(name=asset_file_name)
         response = requests.post(asset_upload_url, headers=self._upload_zip_header, data=open(asset_file_path, 'rb').read())
         if response:
-            print("Succeeded to upload local asset file '{0}'".format(asset_file_name))
+            print("+++++ Succeeded to upload local asset file '{0}'".format(asset_file_name))
         else:
-            print("   Failed to upload local asset file '{0}'".format(asset_file_name))
+            print("----- Failed to upload local asset file '{0}'".format(asset_file_name))
             self._printRequestStatus(response)
             sys.exit()
 
@@ -201,9 +201,9 @@ class GithubAgent: # Agent, Communicator, Connector?
         release_name = config['name']
         response = requests.post(self._releases_url, headers=self._auth_header, json=config)
         if response:
-            print("Succeeded to create release '{0}'".format(release_name))
+            print("+++++ Succeeded to create release '{0}'".format(release_name))
         else:
-            print("   Failed to create release '{0}'".format(release_name))
+            print("----- Failed to create release '{0}'".format(release_name))
             self._printRequestStatus(response)
             sys.exit()
 
@@ -270,7 +270,7 @@ def environmentVariable(name, default=None):
     if value is not None:
         return value
     else:
-        print("   Failed to find environment variable '{0}', using default value '{1}'".format(name, default))
+        print("----- Failed to find environment variable '{0}', using default value '{1}'".format(name, default))
         return default
 
 # MAIN
