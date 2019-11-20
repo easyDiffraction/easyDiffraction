@@ -218,15 +218,15 @@ class ReleaseConfig:
         self._body = self._releaseBody(version=version, branch=branch, changes=changes)
         self._target_commitish = self._targetCommitish(version=version, branch=branch)
 
-    def _isFinal(self, version, branch):
-        if branch == 'v{0}'.format(version): #re.search('v\d+\.\d+\.\d+', branch)
-            return True
-        return False
-
     # try https://codereview.stackexchange.com/questions/124688/regex-to-extract-version-info
     def _isPrerelease(self, version):
         major = int(version.split('.')[0])
         if major == 0:
+            return True
+        return False
+
+    def _isFinal(self, version, branch):
+        if branch == 'v{0}'.format(version): #re.search('v\d+\.\d+\.\d+', branch)
             return True
         return False
 
@@ -277,20 +277,22 @@ def environmentVariable(name, default=None):
 
 if __name__ == "__main__":
     # Read configs
-    auth = ProjectConfig('Configs', 'Auth.yml')
+    #auth = ProjectConfig('Configs', 'Auth.yml')
     project = ProjectConfig('Configs', 'Project.yml')
 
     # Init github communication
     owner = project.getVal('github', 'owner')
     repo = project.getVal('github', 'repo')
-    token = environmentVariable('GITHUB_TOKEN', default=auth.getVal('github_token'))
+    #token = environmentVariable('GITHUB_TOKEN', default=auth.getVal('github_token'))
+    token = environmentVariable('GITHUB_TOKEN')
     github = GithubAgent(owner=owner, repo=repo, token=token)
 
     # Create release config
     version = project.getVal('release', 'version')
     date = project.getVal('release', 'date')
     changes = project.getVal('release', 'changes')
-    branch = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
+    #branch = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
+    branch = environmentVariable('TRAVIS_BRANCH')
     release = ReleaseConfig(version=version, branch=branch, date=date, changes=changes)
 
     # Select desired branch
