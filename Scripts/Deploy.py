@@ -70,8 +70,8 @@ class GithubAgent: # Agent, Communicator, Connector?
         self._selected_branch_name = None
         # releases
         self._releases_url = '{0}/releases'.format(self._repo_url)
-        self._checkUrlAccessible(self._releases_url, headers=self._auth_header)
-        self._releases_list = self._requestReleases(self._releases_url, headers=self._auth_header)
+        self._checkUrlAccessible(self._releases_url)
+        self._releases_list = self._requestReleases(self._releases_url)
         self._selected_release_tag_name = None
         self._selected_release_id = None
         self._selected_release_upload_url = None
@@ -85,8 +85,8 @@ class GithubAgent: # Agent, Communicator, Connector?
         print("***** Status code: '{0}'".format(response.status_code))
         print("***** Status info: '{0}'".format(response.text))
 
-    def _checkUrlAccessible(self, url, headers=None):
-        response = requests.get(url, headers=headers, headers=self._auth_header)
+    def _checkUrlAccessible(self, url):
+        response = requests.get(url, headers=self._auth_header)
         if response:
             print("***** Succeeded to access '{0}'".format(url))
         else:
@@ -95,8 +95,8 @@ class GithubAgent: # Agent, Communicator, Connector?
             sys.exit()
 
     # Get list of all the releases (including draft ones)
-    def _requestReleases(self, url, headers=None):
-        response = requests.get(url, headers=headers, headers=self._auth_header)
+    def _requestReleases(self, url):
+        response = requests.get(url, headers=self._auth_header)
         if response:
             print("+++++ Succeeded to get list of releases from '{0}'".format(url))
             return response.json()
@@ -134,7 +134,7 @@ class GithubAgent: # Agent, Communicator, Connector?
     def selectReleaseByTagName(self, tag_name):
         # Update list of releases if needed
         if not self.releaseExistByTagName(tag_name):
-            self._releases_list = self._requestReleases(self._releases_url, headers=self._auth_header)
+            self._releases_list = self._requestReleases(self._releases_url)
         # Exit, if release is still not found
         if not self.releaseExistByTagName(tag_name):
             sys.exit()
