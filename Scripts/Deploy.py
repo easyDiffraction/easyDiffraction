@@ -61,9 +61,9 @@ class GithubAgent: # Agent, Communicator, Connector?
         self._repo = repo
         self._token = token
         self._repo_url = 'https://api.github.com/repos/{0}/{1}'.format(self._owner, self._repo)
-        self._checkUrlAccessible(self._repo_url)
         self._auth_header = {'Authorization': 'Token {0}'.format(self._token)}
         self._upload_zip_header = {**self._auth_header, 'Content-Type': 'application/zip'}
+        self._checkUrlAccessible(self._repo_url)
         # branches
         self._branches_url = '{0}/branches'.format(self._repo_url)
         self._checkUrlAccessible(self._branches_url)
