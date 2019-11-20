@@ -73,5 +73,4 @@ dist
 ..*
 *.log
 Auth.yml
-Project.yml
 .idea/
