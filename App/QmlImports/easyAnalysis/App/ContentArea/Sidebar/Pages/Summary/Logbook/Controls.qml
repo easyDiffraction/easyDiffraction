@@ -76,8 +76,8 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.FlowButtons {
-        property url currentUrl: "https://easydiffraction.org/umanual_use.html#3.2.6.-summary"
-        property Item contentsPrevious: GenericAppContentAreaButtons.GoPrevious {
+        documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.6.-summary"
+        goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
             text: "Analysis"
             ToolTip.text: qsTr("Go to the previous step: Analysis")
             onClicked: {

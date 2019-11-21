@@ -21,6 +21,7 @@ args = ['--cov=App', 'Tests']
 # add potential arguments like -k or -m
 if len(sys.argv) > 1:
     args += sys.argv[1:]
-print (args)
-pytest.main(args)
+print(args)
 
+errno = pytest.main(args)
+sys.exit(errno)
