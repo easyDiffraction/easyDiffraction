@@ -56,11 +56,11 @@ os:
   gui_exe_ext:
     osx: .app
     windows: .exe
-    linux': ''
+    linux: ''
   cli_exe_ext:
     osx: ''
     windows: .exe
-    linux': ''
+    linux: ''
 # user
 user:
   home_dir: null
