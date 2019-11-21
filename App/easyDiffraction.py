@@ -40,8 +40,7 @@ if __name__ == '__main__':
     app.setOrganizationDomain("easyDiffraction.org")
     app.setApplicationName("easyDiffraction")
 
-    manager = ProjectManager()
-    proxy = Proxy(manager)
+    proxy = Proxy()
 
     examples_dir_path = str(QUrl.fromLocalFile(os.path.join(installationPath(), 'Examples')).toString())
     qml_imports_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir, "QmlImports")).toString())
@@ -50,7 +49,7 @@ if __name__ == '__main__':
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("proxy", proxy)
     engine.rootContext().setContextProperty("projectControl", proxy._project_model)
-    engine.rootContext().setContextProperty("projectManager", manager)
+    engine.rootContext().setContextProperty("projectManager", proxy._project_model.manager)
     engine.rootContext().setContextProperty("examplesDir", examples_dir_path)
     engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)
     engine.addImportPath(qml_imports_dir_path)

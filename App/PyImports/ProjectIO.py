@@ -4,6 +4,7 @@ import zipfile
 import tempfile
 from urllib.parse import urlparse
 
+
 def check_project_dict(project_dict):
     isValid = True
     keys = ['phases', 'experiments', 'calculations']
@@ -21,7 +22,6 @@ def check_if_zip(filename):
 
 
 def check_project_file(filename):
-
     isValid = True
     mustContain = ['main.cif', 'phases.cif', 'experiments.cif']
 
@@ -51,7 +51,6 @@ def temp_project_dir(filename, targetdir=None):
 
 
 def create_project_zip(data_dir, saveName):
-
     extension = saveName[-4:]
     if extension != '.zip':
         saveName = saveName + '.zip'

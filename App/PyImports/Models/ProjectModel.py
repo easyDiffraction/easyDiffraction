@@ -10,11 +10,8 @@ class ProjectModel(QObject):
     def __init__(self, projectManager=None, parent=None):
         super().__init__(parent)
 
-        if projectManager is None:
-            projectManager = ProjectManager()
-
         self.tempDir = ProjectIO.make_temp_dir()
-        self.manager = projectManager
+        self.manager = ProjectManager()
         self._saveSuccess = False
         self._projectFile = None
         self._isValidCif = None
@@ -24,6 +21,11 @@ class ProjectModel(QObject):
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
+        """
+        Load a project from a file. The main_rcif_path variable can be a URI to main.cif or a project zip file
+        :param main_rcif_path: URI to main.rcif or project.zip
+        :return:
+        """
         #
         self.setMain_rcif_path(main_rcif_path)
         #
@@ -50,6 +52,12 @@ class ProjectModel(QObject):
 
     @Slot(str, str)
     def writeMain(self, name='Undefined', keywords='\'neutron diffraction, powder, 1d\''):
+        """
+        Writes a main.cif file in the temp file location.
+        :param string name: What is the project name
+        :param string keywords: Keywords associated withe the project for easy finding
+        :return:
+        """
         with open(os.path.join(self.tempDir.name, 'main.cif'), 'w') as f:
             f.write('_name %s\n' % name)
             f.write('_keywords %s\n' % keywords)
@@ -59,6 +67,11 @@ class ProjectModel(QObject):
 
     @Slot(str)
     def createProject(self, dataDir):
+        '''
+        Set a project name so that when saving, a project can be created/updated
+        :param string dataDir: String corresponding to a save file with full path
+        :return:
+        '''
         extension = dataDir[-4:]
         saveName = dataDir
         if extension != '.zip':
@@ -67,6 +80,11 @@ class ProjectModel(QObject):
         self.manager.validSaveState = True
 
     def setMain_rcif_path(self, rcifPath):
+        """
+        Set the main rcif file path. This is where the project is read from
+        :param URI rcifPath: URI to the main.cif file
+        :return:
+        """
         self._resetOnInitialize()
         FILE = urlparse(rcifPath).path
         if sys.platform.startswith("win"):
@@ -75,6 +93,10 @@ class ProjectModel(QObject):
         self.main_rcif_path = FILE
 
     def _resetOnInitialize(self):
+        """
+        When a new project is loaded, information of the previous is lost and the Project is reset
+        :return:
+        """
         # At this point we have an object which needs to be reset.
         self.tempDir.cleanup()
         self.tempDir = ProjectIO.make_temp_dir()
@@ -88,6 +110,10 @@ class ProjectModel(QObject):
 
     def __exit__(self, exc, value, tb):
         self.tempDir.cleanup()
+
+    validCif = Property(bool, lambda self: self._isValidCif, constant=False)
+    savedProject = Property(bool, lambda self: self._saveSuccess, constant=False)
+
 
 class ProjectManager(QObject):
     projectSaveChange = Signal(bool)

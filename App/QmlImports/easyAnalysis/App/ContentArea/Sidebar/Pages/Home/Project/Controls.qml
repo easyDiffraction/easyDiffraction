@@ -90,7 +90,7 @@ ColumnLayout {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     projectControl.loadProject(fileUrl)
                     fileDialogLoadProject.close()
-                    if (proxy.validCif == true) {
+                    if (projectControl.validCif == true) {
                         proxy.initialize()
 //                        if (proxy.validPojectZip) {
 //                            saveStateButton.enabled = true
@@ -124,7 +124,7 @@ ColumnLayout {
                 onAccepted: {
                     proxy.saveProject(fileUrl)
                     fileDialogSaveProject.close()
-                    if (proxy.savedProject == false) {
+                    if (projectControl.savedProject == false) {
                         failSaveDialog.visible = true
                     } else {
                         saveStateButton.enabled = true

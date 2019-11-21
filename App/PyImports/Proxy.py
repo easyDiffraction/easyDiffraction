@@ -21,7 +21,7 @@ import PyImports.ProjectIO as ProjectIO
 
 class Proxy(QObject):
 
-    def __init__(self, projectManager, parent=None):
+    def __init__(self, parent=None):
         logging.info("")
         super().__init__(parent)
         #
@@ -29,7 +29,7 @@ class Proxy(QObject):
         self._calculator = None
         self._tempFolder = None
         #
-        self._project_model = ProjectModel(projectManager)
+        self._project_model = ProjectModel()
         self._measured_data_model = MeasuredDataModel()
         self._calculated_data_model = CalculatedDataModel()
         self._bragg_peaks_model = BraggPeaksModel()
@@ -40,7 +40,7 @@ class Proxy(QObject):
         self._atom_msps_model = AtomMspsModel()
         self._fitables_model = FitablesModel()
         self._status_model = StatusModel()
-        self.projectManager = ProjectManager()
+
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
@@ -111,9 +111,6 @@ class Proxy(QObject):
     statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
 
-    validCif = Property(bool, lambda self: self._project_model._isValidCif, constant=False)
-    savedProject = Property(bool, lambda self: self._project_model._saveSuccess, constant=False)
-
     # ##########
     # REFINEMENT
     # ##########
@@ -180,11 +177,11 @@ class Proxy(QObject):
             return os.path.dirname(os.path.abspath(self._main_rcif_path))
         return ""
 
-
     def get_project_url_absolute_path(self):
         if self._main_rcif_path:
             return str(QUrl.fromLocalFile(os.path.dirname(self._main_rcif_path)).toString())
         return ""
+
     project_dir_absolute_path = Property(str, get_project_dir_absolute_path, notify=projectChanged)
     project_url_absolute_path = Property(str, get_project_url_absolute_path, notify=projectChanged)
 
@@ -220,4 +217,3 @@ class Proxy(QObject):
         # Show the generated report in the default browser
         url = os.path.realpath(full_filename)
         Helpers.open_url(url=url)
-
