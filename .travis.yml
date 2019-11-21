@@ -65,7 +65,7 @@ install:
 before_script:
   - echo $TRAVIS_OS_NAME
   - echo $TRAVIS_BRANCH
-  - python Scripts/Project.py # print config
+  #- python Scripts/Project.py # print config
 
 script:
   - python Scripts/CopyMissingLibs.py
