@@ -1,8 +1,7 @@
 import os
+import sys
 import zipfile
 import tempfile
-import urllib
-import pathlib
 from urllib.parse import urlparse
 
 def check_project_dict(project_dict):
@@ -65,6 +64,9 @@ def create_project_zip(data_dir, saveName):
                   'saved_refinement.png']
 
     saveName = urlparse(saveName).path
+    if sys.platform.startswith("win"):
+        if saveName[0] == '/':
+            saveName = saveName[1:].replace('/', os.path.sep)
 
     with zipfile.ZipFile(saveName, 'w') as zip:
 

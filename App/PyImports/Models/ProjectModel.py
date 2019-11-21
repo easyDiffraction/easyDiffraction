@@ -1,5 +1,7 @@
 import PyImports.ProjectIO as ProjectIO
 import os
+import sys
+from urllib.parse import urlparse
 
 from PySide2.QtCore import QObject, Slot, QUrl, Signal, Property
 
@@ -66,7 +68,11 @@ class ProjectModel(QObject):
 
     def setMain_rcif_path(self, rcifPath):
         self._resetOnInitialize()
-        self.main_rcif_path = QUrl(rcifPath).toLocalFile()
+        FILE = urlparse(rcifPath).path
+        if sys.platform.startswith("win"):
+            if FILE[0] == '/':
+                FILE = FILE[1:].replace('/', os.path.sep)
+        self.main_rcif_path = FILE
 
     def _resetOnInitialize(self):
         # At this point we have an object which needs to be reset.

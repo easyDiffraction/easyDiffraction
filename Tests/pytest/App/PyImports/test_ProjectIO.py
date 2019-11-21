@@ -1,7 +1,9 @@
 import pytest
 import os
+import sys
 from pytest_mock import mocker
 from _pytest import monkeypatch
+from pathlib import Path
 
 from PySide2.QtCore import QObject, Signal, Slot, Property, QUrl
 
@@ -67,7 +69,8 @@ def test_create_project_zip():
 
     temp1 = make_temp_dir()
     saveName1 = os.path.join(temp1.name, 'aa.zip')
-    isSaved, saveName2 = create_project_zip(data_dir, saveName1)
+    FILE = Path(saveName1).as_uri()
+    isSaved, saveName2 = create_project_zip(data_dir, FILE)
     assert isSaved == True
     assert saveName1 == str(saveName2)
     assert os.path.isfile(saveName1) == True
@@ -76,14 +79,15 @@ def test_create_project_zip():
     temp1 = make_temp_dir()
     saveName1 = os.path.join(temp1.name, 'aa')
     saveName3 = saveName1 + '.zip'
-    isSaved, saveName2 = create_project_zip(data_dir, saveName1)
+    FILE = Path(saveName1).as_uri()
+    isSaved, saveName2 = create_project_zip(data_dir, FILE)
     assert isSaved == True
     assert str(saveName2) == saveName3
     assert os.path.isfile(saveName3) == True
     temp1.cleanup()
 
     temp1 = make_temp_dir()
-    saveName1 = os.path.join(temp1.name, 'aa.zip')
+    FILE = Path(os.path.join(temp1.name, 'aa.zip')).as_uri()
     with pytest.raises(FileNotFoundError):
-        create_project_zip('Dummy/Dir', saveName1)
+        isSaved, saveName2 = create_project_zip('Dummy/Dir', FILE)
     temp1.cleanup()

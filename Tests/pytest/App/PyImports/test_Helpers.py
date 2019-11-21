@@ -57,7 +57,7 @@ def no_test_find_in_obj():
 
     assert list(find_in_obj(obj, condition, path=path)) == ""
 
-
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Skipped on Windows")
 def test_open_url(mocker):
     mocker.patch('logging.info')
 

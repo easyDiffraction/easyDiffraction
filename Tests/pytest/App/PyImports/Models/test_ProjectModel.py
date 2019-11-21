@@ -2,6 +2,8 @@ import pytest
 import os
 from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
+from pathlib import Path
+import sys
 
 from PyImports.Models.ProjectModel import ProjectModel
 
@@ -13,7 +15,7 @@ TEST_DIR = os.path.join(os.getcwd(), 'Tests', 'Data')
 
 def test_ProjectModel_creation():
     model = ProjectModel()
-    assert os.path.exists(model.tempDir.name) == True
+    assert os.path.exists(model.tempDir.name)
     assert model.name is None
     assert model.keywords is None
     assert model._projectFile is None
@@ -23,18 +25,20 @@ def test_ProjectModel_creation():
 
 def test_ProjectModel_loadProject_cif():
     model = ProjectModel()
-    model.loadProject(QUrl.fromLocalFile(TEST_CIF).toString())
+    FILE = Path(TEST_CIF).as_uri()
+    model.loadProject(FILE)
 
     assert model.name == 'Fe3O4\n'
     assert model.keywords == '\'neutron diffraction, powder, 1d\'\n'
     assert model._projectFile is None
-    assert model._isValidCif is True
+    assert model._isValidCif
     assert model.main_rcif_path == TEST_CIF
 
 
 def test_ProjectModel_loadProject_cif_error():
     model = ProjectModel()
-    model.loadProject(QUrl.fromLocalFile(TEST_CIF_ERROR).toString())
+    FILE = Path(TEST_CIF_ERROR).as_uri()
+    model.loadProject(FILE)
 
     assert model.name is None
     assert model.keywords is None
@@ -45,13 +49,15 @@ def test_ProjectModel_loadProject_cif_error():
 
 def test_ProjectModel_loadProject_zip():
     model = ProjectModel()
-    model.loadProject(QUrl.fromLocalFile(TEST_ZIP).toString())
+    FILE = Path(TEST_ZIP).as_uri()
+    model.loadProject(FILE)
 
     assert model.name == 'Fe3O4 \n'
     assert model.keywords == '\'neutron diffraction, powder, 1d\' \n'
     assert model._projectFile == TEST_ZIP
-    assert model._isValidCif is True
-    assert model.main_rcif_path == os.path.join(model.tempDir.name, 'main.cif')
+    assert model._isValidCif
+    TEMP_PATH = os.path.join(model.tempDir.name, 'main.cif')
+    assert model.main_rcif_path == TEMP_PATH
 
 
 def test_ProjectModel_writeMain():
@@ -79,7 +85,7 @@ def test_ProjectModel_writeMain():
 def test_ProjectModel_createProject():
     model = ProjectModel()
     model.createProject(os.path.join(TEST_DIR, 'boo.zip'))
-    assert os.path.exists(model.tempDir.name) == True
+    assert os.path.exists(model.tempDir.name)
     assert model.name is None
     assert model.keywords is None
     assert model._projectFile == os.path.join(TEST_DIR, 'boo.zip')
@@ -87,7 +93,7 @@ def test_ProjectModel_createProject():
     assert model.main_rcif_path is None
 
     model.createProject(os.path.join(TEST_DIR, 'boo'))
-    assert os.path.exists(model.tempDir.name) == True
+    assert os.path.exists(model.tempDir.name)
     assert model.name is None
     assert model.keywords is None
     assert model._projectFile == os.path.join(TEST_DIR, 'boo.zip')
