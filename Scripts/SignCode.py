@@ -16,6 +16,9 @@ if __name__ == "__main__":
     certificate_file_path = config['certificate']['path']
     certificates_zip_path = config['certificate']['zip_path']
 
+    if os_name == 'linux':
+        exit()
+
     passwords_dict = ast.literal_eval(sys.argv[1]) if len(sys.argv) > 1 else {'osx':'', 'windows':'', 'zip':''}
     certificate_password = passwords_dict[os_name].replace('\\', '')
     zip_password = passwords_dict['zip']
@@ -28,9 +31,6 @@ if __name__ == "__main__":
             )
 
     Project.printTitle('Sign code')
-    if os_name == 'linux':
-        exit()
-
     elif os_name == 'windows':
         signtool_exe_path = os.path.join('C:', os.sep, 'Program Files (x86)', 'Windows Kits', '10', 'bin', 'x86', 'signtool.exe')
 
