@@ -4,56 +4,11 @@ import os, sys
 #import re
 import requests
 import shutil
-import yaml # pip3 install pyyaml
-from uritemplate import URITemplate
-import Variables
+import yaml # pip install pyyaml
+from uritemplate import URITemplate # pip install uritemplate
+import Project
 
-# CLASS
-
-class ProjectConfig:
-    def __init__(self, *path_items):
-        self._working_dir = os.getcwd()
-        self._relative_path = os.path.join(*path_items)
-        self._absolute_path = os.path.join(self._working_dir, self._relative_path)
-        self._config = self._loadConfig(self._absolute_path)
-
-    def _loadConfig(self, file_path):
-        if not os.path.isfile(file_path):
-            print("----- Failed to find config '{0}'".format(file_path))
-            sys.exit()
-        with open(file_path, 'r') as file:
-            file_content = yaml.load(file, Loader=yaml.FullLoader)
-            return file_content
-
-    def osName(self):
-        platform = sys.platform
-        if platform.startswith('darwin'):
-            return 'osx'
-        elif platform.startswith('lin'):
-            return 'linux'
-        elif platform.startswith('win'):
-            return 'windows'
-        else:
-            print("***** Unsupported platform '{0}'".format(platform))
-            return None
-
-    def getVal(self, *keys):
-        current_level = self._config
-        for key in keys:
-            if key in current_level:
-                current_level = current_level[key]
-            else:
-                return None
-        return current_level
-
-    def toAbsolutePath(self, releative_path):
-        return os.path.join(self._working_dir, releative_path)
-
-    def printAsYaml(self):
-        yml = yaml.dump(self._config, sort_keys=False, indent=2, allow_unicode=True)
-        print(yml)
-
-# CLASS
+# CLASSES
 
 class GithubAgent: # Agent, Communicator, Connector?
     def __init__(self, owner, repo, token):
@@ -82,15 +37,15 @@ class GithubAgent: # Agent, Communicator, Connector?
         #self._asset_file_name = None
 
     def _printRequestStatus(self, response):
-        print("***** Status code: '{0}'".format(response.status_code))
-        print("***** Status info: '{0}'".format(response.text))
+        print("* Status code: '{0}'".format(response.status_code))
+        print("* Status info: '{0}'".format(response.text))
 
     def _checkUrlAccessible(self, url):
         response = requests.get(url, headers=self._auth_header)
         if response:
-            print("***** Succeeded to access '{0}'".format(url))
+            print("* Succeeded to access '{0}'".format(url))
         else:
-            print("----- Failed to access '{0}'".format(url))
+            print("- Failed to access '{0}'".format(url))
             self._printRequestStatus(response)
             sys.exit()
 
@@ -98,10 +53,10 @@ class GithubAgent: # Agent, Communicator, Connector?
     def _requestReleases(self, url):
         response = requests.get(url, headers=self._auth_header)
         if response:
-            print("+++++ Succeeded to get list of releases from '{0}'".format(url))
+            print("+ Succeeded to get list of releases from '{0}'".format(url))
             return response.json()
         else:
-            print("----- Failed to get list of releases from '{0}'".format(url))
+            print("- Failed to get list of releases from '{0}'".format(url))
             self._printRequestStatus(response)
             return []
 
@@ -110,10 +65,10 @@ class GithubAgent: # Agent, Communicator, Connector?
         branch_url = '{0}/{1}'.format(self._branches_url, name)
         response = requests.get(branch_url, headers=self._auth_header)
         if response:
-            print("+++++ Succeeded to find branch '{0}'".format(name))
+            print("+ Succeeded to find branch '{0}'".format(name))
             return True
         else:
-            print("----- Failed to find branch '{0}'".format(name))
+            print("- Failed to find branch '{0}'".format(name))
             self._printRequestStatus(response)
             return False
 
@@ -126,9 +81,9 @@ class GithubAgent: # Agent, Communicator, Connector?
     def releaseExistByTagName(self, tag_name):
         for release in self._releases_list:
             if release.get('tag_name') == tag_name:
-                print("+++++ Succeeded to find release '{0}' in previously downloaded list".format(tag_name))
+                print("+ Succeeded to find release '{0}' in previously downloaded list".format(tag_name))
                 return True
-        print("----- Failed to find release '{0}' in previously downloaded list".format(tag_name))
+        print("- Failed to find release '{0}' in previously downloaded list".format(tag_name))
         return False
 
     def selectReleaseByTagName(self, tag_name):
@@ -146,7 +101,7 @@ class GithubAgent: # Agent, Communicator, Connector?
                 self._selected_release_upload_url = release['upload_url']
                 break
 
-    def uploadAsset(self, asset_dir, app_name, os_name, tag_name):
+    def uploadAsset(self, asset_dir, installer_exe_name, app_name, os_name, tag_name):
         # Define asset file/path
         asset_file_name = '{0}_{1}'.format(app_name, os_name)
         if tag_name is not None:
@@ -156,44 +111,43 @@ class GithubAgent: # Agent, Communicator, Connector?
         asset_file_name += '.{0}'.format(asset_file_format)
         asset_file_path = os.path.join(asset_dir, asset_file_name)
         # Make MakeArchive
-        var = Variables.VarsConfig()
-        input_name = var.installer_exe_name
+        input_name = installer_exe_name
         input_dir = asset_dir
         output_format = asset_file_format
         output_path = asset_file_path_without_ext
         shutil.make_archive(output_path, output_format, input_dir, input_name)
         if os.path.isfile(asset_file_path):
-            print("+++++ Succeeded to find local asset file '{0}'".format(asset_file_path))
+            print("+ Succeeded to find local asset file '{0}'".format(asset_file_path))
         else:
-            print("----- Failed to find local asset file '{0}'".format(asset_file_path))
+            print("- Failed to find local asset file '{0}'".format(asset_file_path))
             sys.exit()
         # Get list of assets for the desired release
         self._selected_release_assets_url = '{0}/{1}/assets'.format(self._releases_url, self._selected_release_id)
         response = requests.get(self._selected_release_assets_url, headers=self._auth_header)
         if response:
-            print("+++++ Succeeded to find remote assets for release '{0}'".format(self._selected_release_tag_name))
+            print("+ Succeeded to find remote assets for release '{0}'".format(self._selected_release_tag_name))
             self._selected_release_assets_dict = response.json()
         else:
-            print("----- Failed to find remote assets for release '{0}'".format(self._selected_release_tag_name))
+            print("- Failed to find remote assets for release '{0}'".format(self._selected_release_tag_name))
         # Delete existing asset (if any)
         for asset in self._selected_release_assets_dict:
             if asset['name'] == asset_file_name:
-                print("+++++ Succeeded to find remote asset '{0}'".format(asset_file_name))
+                print("+ Succeeded to find remote asset '{0}'".format(asset_file_name))
                 asset_url = '{0}/{1}'.format(self._assets_url, asset['id'])
                 response = requests.delete(asset_url, headers=self._auth_header)
                 if response:
-                    print("+++++ Succeeded to delete remote asset '{0}'".format(asset_file_name))
+                    print("+ Succeeded to delete remote asset '{0}'".format(asset_file_name))
                 else:
-                    print("----- Failed to delete remote asset '{0}'".format(asset_file_name))
+                    print("- Failed to delete remote asset '{0}'".format(asset_file_name))
                     self._printRequestStatus(response)
                     sys.exit()
         # Upload asset
         asset_upload_url = URITemplate(self._selected_release_upload_url).expand(name=asset_file_name)
         response = requests.post(asset_upload_url, headers=self._upload_zip_header, data=open(asset_file_path, 'rb').read())
         if response:
-            print("+++++ Succeeded to upload local asset file '{0}'".format(asset_file_name))
+            print("+ Succeeded to upload local asset file '{0}'".format(asset_file_name))
         else:
-            print("----- Failed to upload local asset file '{0}'".format(asset_file_name))
+            print("- Failed to upload local asset file '{0}'".format(asset_file_name))
             self._printRequestStatus(response)
             sys.exit()
 
@@ -201,9 +155,9 @@ class GithubAgent: # Agent, Communicator, Connector?
         release_name = config['name']
         response = requests.post(self._releases_url, headers=self._auth_header, json=config)
         if response:
-            print("+++++ Succeeded to create release '{0}'".format(release_name))
+            print("+ Succeeded to create release '{0}'".format(release_name))
         else:
-            print("----- Failed to create release '{0}'".format(release_name))
+            print("- Failed to create release '{0}'".format(release_name))
             self._printRequestStatus(response)
             sys.exit()
 
@@ -270,29 +224,27 @@ def environmentVariable(name, default=None):
     if value is not None:
         return value
     else:
-        print("----- Failed to find environment variable '{0}', using default value '{1}'".format(name, default))
+        print("- Failed to find environment variable '{0}', using default value '{1}'".format(name, default))
         return default
 
 # MAIN
 
 if __name__ == "__main__":
-    # Read configs
-    #auth = ProjectConfig('Configs', 'Auth.yml')
-    project = ProjectConfig('Configs', 'Project.yml')
+    config = Project.Config()
 
     # Init github communication
-    owner = project.getVal('github', 'owner')
-    repo = project.getVal('github', 'repo')
-    #token = environmentVariable('GITHUB_TOKEN', default=auth.getVal('github_token'))
+    owner = config.getVal('github', 'owner')
+    repo = config.getVal('github', 'repo')
     token = environmentVariable('GITHUB_TOKEN')
+    #token = environmentVariable('GITHUB_TOKEN', default='...')
     github = GithubAgent(owner=owner, repo=repo, token=token)
 
     # Create release config
-    version = project.getVal('release', 'version')
-    date = project.getVal('release', 'date')
-    changes = project.getVal('release', 'changes')
-    #branch = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
+    version = config.getVal('release', 'version')
+    date = config.getVal('release', 'date')
+    changes = config.getVal('release', 'changes')
     branch = environmentVariable('TRAVIS_BRANCH')
+    #branch = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
     release = ReleaseConfig(version=version, branch=branch, date=date, changes=changes)
 
     # Select desired branch
@@ -306,7 +258,8 @@ if __name__ == "__main__":
     github.selectReleaseByTagName(tag_name)
 
     # Upload asset
-    app_name = project.getVal('app', 'name')
-    os_name = project.osName()
-    asset_dir = project.toAbsolutePath(project.getVal('structure', 'installer'))
-    github.uploadAsset(asset_dir=asset_dir, app_name=app_name, os_name=os_name, tag_name=tag_name)
+    app_name = config.getVal('app', 'name')
+    os_name = config.getVal('os', 'name')
+    asset_dir = config.getVal('project', 'subdirs', 'distribution', 'path')
+    installer_exe_name = config.getVal('app', 'installer', 'exe_name')
+    github.uploadAsset(asset_dir=asset_dir, installer_exe_name=installer_exe_name, app_name=app_name, os_name=os_name, tag_name=tag_name)
