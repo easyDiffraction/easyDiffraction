@@ -14,11 +14,12 @@ def test_MeasuredDataModel():
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
 
-    m = Model.MeasuredDataModel(calculator)
+    m = Model.MeasuredDataModel()
+    m.setCalculator(calculator)
+
 
     assert isinstance(m._data_model, QStandardItemModel)
     assert isinstance(m._headers_model, QStandardItemModel)
-    assert isinstance(m._project_dict, dict)
 
     # assure _setModelFromProject got called
     assert m._data_model.rowCount() == 381
@@ -52,7 +53,8 @@ def test_MeasuredDataModel_bad_calculator():
 
     # null calculator
     with pytest.raises(AttributeError):
-        m = Model.MeasuredDataModel(calculator)
+        m = Model.MeasuredDataModel()
+        m.setCalculator(calculator)
 
     # empty file
     #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()

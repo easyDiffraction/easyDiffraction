@@ -14,7 +14,9 @@ def test_StatusModelModel():
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
 
-    m = Model.StatusModel(calculator)
+    m = Model.StatusModel()
+    m.setCalculator(calculator)
+
 
     assert isinstance(m._statusBarModel, QStandardItemModel)
     assert isinstance(m._chartDisplayModel, QStandardItemModel)
@@ -55,4 +57,6 @@ def test_StatusModelModel_bad_calculator():
 
     # null calculator
     with pytest.raises(AttributeError):
-        m = Model.StatusModel(calculator)
+        m = Model.StatusModel()
+        m.setCalculator(calculator)
+
