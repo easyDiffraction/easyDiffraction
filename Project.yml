@@ -23,7 +23,7 @@ certificate:
   name:
     osx: ESS_cert_mac.p12
     windows: ESS_cert_win.pfx
-    linux: []
+    linux: ''
   path: null
   zip_path: null
 # application
@@ -39,8 +39,8 @@ app:
   freezed_path: null
   freezed_ext:
     osx: '.app'
-    windows: []
-    linux: []
+    windows: ''
+    linux: ''
   installer:
     name: null
     config_dir_path: null
@@ -56,11 +56,11 @@ os:
   gui_exe_ext:
     osx: .app
     windows: .exe
-    linux': []
+    linux': ''
   cli_exe_ext:
-    osx: []
+    osx: ''
     windows: .exe
-    linux': []
+    linux': ''
 # user
 user:
   home_dir: null

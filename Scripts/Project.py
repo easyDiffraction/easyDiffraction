@@ -45,6 +45,11 @@ class Config():
         # scripts
         self.__dict__['scripts']['silent_install'] = os.path.join(self.__dict__['project']['subdirs']['scripts']['path'], 'SilentInstall.js')
         # scripts
+        print("!!!!")
+        print(self.__dict__['project']['subdirs']['certificates']['path'])
+        print(self.__dict__['certificate']['name'])
+        print(self.__dict__['certificate']['name'][self._osName()])
+
         self.__dict__['certificate']['path'] = os.path.join(self.__dict__['project']['subdirs']['certificates']['path'], self.__dict__['certificate']['name'][self._osName()])
         self.__dict__['certificate']['zip_path'] = os.path.join(self.__dict__['project']['subdirs']['certificates']['path'], 'codesigning.zip')
         # application
