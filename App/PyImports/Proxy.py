@@ -19,6 +19,7 @@ from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
 import PyImports.ProjectIO as ProjectIO
 
+
 class Proxy(QObject):
 
     def __init__(self, parent=None):
@@ -27,9 +28,8 @@ class Proxy(QObject):
         #
         self._main_rcif_path = None
         self._calculator = None
-        self._tempFolder = None
         #
-        self._project_model = ProjectModel()
+        self.project_control = ProjectModel()
         self._measured_data_model = MeasuredDataModel()
         self._calculated_data_model = CalculatedDataModel()
         self._bragg_peaks_model = BraggPeaksModel()
@@ -50,7 +50,7 @@ class Proxy(QObject):
     @Slot()
     def initialize(self):
         logging.info("")
-        self._main_rcif_path = self._project_model.main_rcif_path
+        self._main_rcif_path = self.project_control.main_rcif_path
         #
         self._calculator = CryspyCalculator(self._main_rcif_path)
         self._calculator.projectDictChanged.connect(self.projectChanged)
@@ -58,7 +58,7 @@ class Proxy(QObject):
         if not ProjectIO.check_project_dict(self._calculator.asCifDict()):
             # Note that new projects also fall into here, so:
             if not self._calculator.name():
-                self._project_model._isValidCif = False
+                self.project_control._isValidCif = False
                 return
         #
         self._measured_data_model.setCalculator(self._calculator)
@@ -77,12 +77,12 @@ class Proxy(QObject):
 
     @Slot(str)
     def saveProject(self, saveName):
-        self._calculator.saveCifs(self._project_model.tempDir.name)
-        ProjectIO.writeProject(self._project_model, saveName)
+        self._calculator.saveCifs(self.project_control.tempDir.name)
+        ProjectIO.writeProject(self.project_control, saveName)
 
     @Slot()
     def updateProjectSave(self):
-        self.saveProject(self._project_model._projectFile.name)
+        self.saveProject(self.project_control._projectFile.name)
 
     # ##############
     # QML Properties
@@ -99,7 +99,8 @@ class Proxy(QObject):
     measuredData = Property('QVariant', lambda self: self._measured_data_model.asDataModel(), constant=True)
     measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), constant=True)
     calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asDataModel(), constant=True)
-    calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(), constant=True)
+    calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(),
+                                    constant=True)
     braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asDataModel(), constant=True)
     braggPeaksTicks = Property('QVariant', lambda self: self._bragg_peaks_model.asTickModel(), constant=True)
     cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)

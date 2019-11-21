@@ -5,9 +5,10 @@ from urllib.parse import urlparse
 
 from PySide2.QtCore import QObject, Slot, QUrl, Signal, Property
 
+
 class ProjectModel(QObject):
 
-    def __init__(self, projectManager=None, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
         self.tempDir = ProjectIO.make_temp_dir()

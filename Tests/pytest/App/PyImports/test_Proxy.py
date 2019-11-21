@@ -36,7 +36,7 @@ def test_Proxy_properties():
 def test_Proxy_loadCif():
     manager = ProjectManager()
     proxy = Proxy(manager)
-    proxy._project_model.loadProject(TEST_FILE)
+    proxy.project_control.loadProject(TEST_FILE)
     proxy.initialize()
     assert proxy._main_rcif_path == "Tests/Data/main.cif"
     assert isinstance(proxy._calculator, CryspyCalculator)
@@ -58,7 +58,7 @@ def test_Proxy_loadCif():
 def no_test_refine(qtbot, capsys):  # to be modified with AS's changes
     manager = ProjectManager()
     proxy = Proxy(manager)
-    proxy._project_model.loadProject(TEST_FILE)
+    proxy.project_control.loadProject(TEST_FILE)
     proxy.initialize()
 
     assert proxy._refinement_running == False
@@ -82,7 +82,7 @@ def no_test_refine(qtbot, capsys):  # to be modified with AS's changes
 def test_get_project_dir_absolute_path():
     manager = ProjectManager()
     proxy = Proxy(manager)
-    proxy._project_model.loadProject(TEST_FILE)
+    proxy.project_control.loadProject(TEST_FILE)
     proxy.initialize()
 
     path = os.path.join('easyDiffraction', 'Tests', 'Data')
@@ -102,13 +102,13 @@ def test_store_report():
 def test_save_report(mocker, tmp_path):
     manager = ProjectManager()
     proxy = Proxy(manager)
-    proxy._project_model.loadProject(TEST_FILE)
+    proxy.project_control.loadProject(TEST_FILE)
     mocker.patch.object(Helpers, 'open_url', autospec=True)
 
     # no html
     manager = ProjectManager()
     proxy = Proxy(manager)
-    proxy._project_model.loadProject(TEST_FILE)
+    proxy.project_control.loadProject(TEST_FILE)
     proxy.initialize()
 
     proxy.store_report("")
@@ -132,7 +132,7 @@ def test_save_report(mocker, tmp_path):
 def test_saveProject():
     manager = ProjectManager()
     proxy = Proxy(manager)
-    proxy._project_model.loadProject(TEST_FILE)
+    proxy.project_control.loadProject(TEST_FILE)
     proxy.initialize()
     thisZIP = os.path.join(os.getcwd(), 'Tests', 'Data', 'test.zip')
     proxy.saveProject(thisZIP)
