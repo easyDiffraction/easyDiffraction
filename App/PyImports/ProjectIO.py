@@ -3,7 +3,7 @@ import zipfile
 import tempfile
 import urllib
 import pathlib
-
+from urllib.parse import urlparse
 
 def check_project_dict(project_dict):
     isValid = True
@@ -64,7 +64,7 @@ def create_project_zip(data_dir, saveName):
     canContain = ['saved_structure.png',
                   'saved_refinement.png']
 
-    saveName = file_uri_to_path(saveName)
+    saveName = urlparse(saveName).path
 
     with zipfile.ZipFile(saveName, 'w') as zip:
 
@@ -88,27 +88,3 @@ def writeProject(projectModel, saveName):
     projectModel._projectFile = saveName
     if not allOK:
         raise FileNotFoundError
-
-
-def file_uri_to_path(file_uri, path_class=pathlib.PurePath):
-    """
-    This function returns a pathlib.PurePath object for the supplied file URI.
-
-    :param str file_uri: The file URI ...
-    :param class path_class: The type of path in the file_uri. By default it uses
-        the system specific path pathlib.PurePath, to force a specific type of path
-        pass pathlib.PureWindowsPath or pathlib.PurePosixPath
-    :returns: the pathlib.PurePath object
-    :rtype: pathlib.PurePath
-    """
-    windows_path = isinstance(path_class(), pathlib.PureWindowsPath)
-    file_uri_parsed = urllib.parse.urlparse(file_uri)
-    file_uri_path_unquoted = urllib.parse.unquote(file_uri_parsed.path)
-    if windows_path and file_uri_path_unquoted.startswith("/"):
-        result = path_class(file_uri_path_unquoted[1:])
-    else:
-        result = path_class(file_uri_path_unquoted)
-    if result.is_absolute() == False:
-        raise ValueError("Invalid file uri {} : resulting path {} not absolute".format(
-            file_uri, result))
-    return result

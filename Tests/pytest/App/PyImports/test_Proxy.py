@@ -23,12 +23,15 @@ import PyImports.Helpers as Helpers
 from PyImports.Proxy import *
 from PyImports.Models.ProjectModel import ProjectManager
 TEST_FILE = "file:Tests/Data/main.cif"
+
+
 def test_Proxy_properties():
     manager = ProjectManager()
     proxy = Proxy(manager)
     assert proxy._main_rcif_path == None
     assert proxy._refinement_running == False
     assert proxy._refinement_done == False
+
 
 def test_Proxy_loadCif():
     manager = ProjectManager()
@@ -50,6 +53,7 @@ def test_Proxy_loadCif():
 
     #assert "\\easyDiffraction\\Tests\\Data" in proxy.project_dir_absolute_path
     assert "file:Tests/Data" in proxy.project_url_absolute_path
+
 
 def no_test_refine(qtbot, capsys):  # to be modified with AS's changes
     manager = ProjectManager()
@@ -74,6 +78,7 @@ def no_test_refine(qtbot, capsys):  # to be modified with AS's changes
 
     #assert_application_results(app)
 
+
 def test_get_project_dir_absolute_path():
     manager = ProjectManager()
     proxy = Proxy(manager)
@@ -83,6 +88,7 @@ def test_get_project_dir_absolute_path():
     path = os.path.join('easyDiffraction', 'Tests', 'Data')
     assert path in proxy.get_project_dir_absolute_path()
 
+
 def test_store_report():
     manager = ProjectManager()
     proxy = Proxy(manager)
@@ -91,6 +97,7 @@ def test_store_report():
     proxy.store_report(report)
 
     assert proxy.report_html == report
+
 
 def test_save_report(mocker, tmp_path):
     manager = ProjectManager()
@@ -120,6 +127,7 @@ def test_save_report(mocker, tmp_path):
 
     proxy.save_report()
     assert Helpers.open_url.called == True
+
 
 def test_saveProject():
     manager = ProjectManager()
