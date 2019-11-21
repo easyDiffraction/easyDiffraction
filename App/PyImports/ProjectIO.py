@@ -8,7 +8,6 @@ from urllib.parse import urlparse
 def check_project_dict(project_dict):
     isValid = True
     keys = ['phases', 'experiments', 'calculations']
-    # if set(project_dict.keys).intersection([''])
     if len(set(project_dict.keys()).difference(set(keys))) > 0:
         return False
     for key in keys:

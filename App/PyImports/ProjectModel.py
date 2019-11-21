@@ -1,12 +1,13 @@
-import PyImports.ProjectIO as ProjectIO
 import os
 import sys
 from urllib.parse import urlparse
 
+import PyImports.ProjectIO as ProjectIO
+
 from PySide2.QtCore import QObject, Slot, QUrl, Signal, Property
 
 
-class ProjectModel(QObject):
+class ProjectControl(QObject):
 
     def __init__(self, parent=None):
         super().__init__(parent)

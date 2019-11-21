@@ -1,11 +1,7 @@
-import pytest
 import os
-from PySide2.QtCore import Qt, QUrl
-from PySide2.QtGui import QStandardItemModel
 from pathlib import Path
-import sys
 
-from PyImports.Models.ProjectModel import ProjectModel
+from PyImports.ProjectModel import ProjectControl
 
 TEST_ZIP = os.path.join(os.getcwd(), 'Tests', 'Data', 'Fe3O4_project.zip')
 TEST_ZIP_ERROR = os.path.join(os.getcwd(), 'Tests', 'Data', 'Fe3O4_project_error.zip')
@@ -14,7 +10,7 @@ TEST_CIF_ERROR = os.path.join(os.getcwd(), 'Tests', 'Data', 'phases.cif')
 TEST_DIR = os.path.join(os.getcwd(), 'Tests', 'Data')
 
 def test_ProjectModel_creation():
-    model = ProjectModel()
+    model = ProjectControl()
     assert os.path.exists(model.tempDir.name)
     assert model.name is None
     assert model.keywords is None
@@ -24,7 +20,7 @@ def test_ProjectModel_creation():
 
 
 def test_ProjectModel_loadProject_cif():
-    model = ProjectModel()
+    model = ProjectControl()
     FILE = Path(TEST_CIF).as_uri()
     model.loadProject(FILE)
 
@@ -36,7 +32,7 @@ def test_ProjectModel_loadProject_cif():
 
 
 def test_ProjectModel_loadProject_cif_error():
-    model = ProjectModel()
+    model = ProjectControl()
     FILE = Path(TEST_CIF_ERROR).as_uri()
     model.loadProject(FILE)
 
@@ -48,7 +44,7 @@ def test_ProjectModel_loadProject_cif_error():
 
 
 def test_ProjectModel_loadProject_zip():
-    model = ProjectModel()
+    model = ProjectControl()
     FILE = Path(TEST_ZIP).as_uri()
     model.loadProject(FILE)
 
@@ -61,7 +57,7 @@ def test_ProjectModel_loadProject_zip():
 
 
 def test_ProjectModel_writeMain():
-    model = ProjectModel()
+    model = ProjectControl()
 
     def checker(name, keywords):
         with open(model.main_rcif_path, 'r') as f:
@@ -83,7 +79,7 @@ def test_ProjectModel_writeMain():
     checker('Test', 'Testing')
 
 def test_ProjectModel_createProject():
-    model = ProjectModel()
+    model = ProjectControl()
     model.createProject(os.path.join(TEST_DIR, 'boo.zip'))
     assert os.path.exists(model.tempDir.name)
     assert model.name is None

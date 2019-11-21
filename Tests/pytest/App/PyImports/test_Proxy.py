@@ -1,27 +1,6 @@
-import sys
-import os
-import pytest
-from pytest_mock import mocker
-from _pytest import monkeypatch
-
-from PySide2.QtCore import QObject, Signal, Slot, Property, QUrl
-
-from PyImports.Calculators.CryspyCalculator import *
-from PyImports.Models.MeasuredDataModel import *
-from PyImports.Models.CalculatedDataModel import *
-from PyImports.Models.BraggPeaksModel import *
-from PyImports.Models.CellParametersModel import *
-from PyImports.Models.CellBoxModel import *
-from PyImports.Models.AtomSitesModel import *
-from PyImports.Models.AtomAdpsModel import *
-from PyImports.Models.AtomMspsModel import *
-from PyImports.Models.FitablesModel import *
-from PyImports.Refinement import *
-import PyImports.Helpers as Helpers
-
 # tested module
 from PyImports.Proxy import *
-from PyImports.Models.ProjectModel import ProjectManager
+from PyImports.ProjectModel import ProjectManager
 TEST_FILE = "file:Tests/Data/main.cif"
 
 

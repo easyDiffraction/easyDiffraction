@@ -14,7 +14,7 @@ from PyImports.Models.AtomAdpsModel import AtomAdpsModel
 from PyImports.Models.AtomMspsModel import AtomMspsModel
 from PyImports.Models.FitablesModel import FitablesModel
 from PyImports.Models.StatusModel import StatusModel
-from PyImports.Models.ProjectModel import ProjectModel, ProjectManager
+from PyImports.ProjectModel import ProjectControl
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
 import PyImports.ProjectIO as ProjectIO
@@ -29,7 +29,7 @@ class Proxy(QObject):
         self._main_rcif_path = None
         self._calculator = None
         #
-        self.project_control = ProjectModel()
+        self.project_control = ProjectControl()
         self._measured_data_model = MeasuredDataModel()
         self._calculated_data_model = CalculatedDataModel()
         self._bragg_peaks_model = BraggPeaksModel()
