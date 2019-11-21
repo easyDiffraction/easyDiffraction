@@ -31,7 +31,7 @@ if __name__ == "__main__":
             )
 
     Project.printTitle('Sign code')
-    elif os_name == 'windows':
+    if os_name == 'windows':
         signtool_exe_path = os.path.join('C:', os.sep, 'Program Files (x86)', 'Windows Kits', '10', 'bin', 'x86', 'signtool.exe')
 
         Project.printTitle('Import certificate')
