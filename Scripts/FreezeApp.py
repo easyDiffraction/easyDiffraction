@@ -13,6 +13,7 @@ if __name__ == "__main__":
     distribution_dir = config['project']['subdirs']['distribution']
     distribution_dir_path = os.path.join(project_dir_path, distribution_dir)
     cryspy_path = config['pyinstaller']['lib_path']['cryspy']
+    icon_ext = config['app']['icon']['ext'][os_name]
     separator = config['pyinstaller']['separator'][os_name]
 
     Project.run(title='Create dist by pyinstaller', args=[
@@ -25,7 +26,7 @@ if __name__ == "__main__":
         '--log-level', 'WARN',                                      # LEVEL may be one of DEBUG, INFO, WARN, ERROR, CRITICAL (default: INFO).
         '--distpath', "{0}".format(distribution_dir_path),          # Where to put the bundled app (default: ./dist)
         '--workpath', "{0}/.build".format(distribution_dir_path),   # Where to put all the temporary work files, .log, .pyz and etc. (default: ./build)
-        '--icon', '{0}/App/QmlImports/{1}/Resources/Icons/App.{2}'.format(project_dir_path, project_name, separator),
+        '--icon', '{0}/App/QmlImports/{1}/Resources/Icons/App.{2}'.format(project_dir_path, project_name, icon_ext),
         '--add-data', "{0}{1}cryspy".format(cryspy_path, separator),
         '--add-data', "{0}/App{1}.".format(project_dir_path, separator)
         ])

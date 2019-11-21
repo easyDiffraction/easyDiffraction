@@ -6,6 +6,15 @@ project:
     scripts: Scripts
     certificates: Certificates
     examples: Examples
+app:
+  name: easyDiffraction
+  organization: easyDiffraction
+  url: https://easydiffraction.org
+  icon:
+    ext:
+      osx: icns
+      windows: ico
+      linux: png
 github:
   owner: easyDiffraction
   repo: easyDiffraction
@@ -27,15 +36,6 @@ pyinstaller:
     osx: ':'
     windows: ;
     linux: ':'
-app:
-  name: easyDiffraction
-  organization: easyDiffraction
-  url: https://easydiffraction.org
-icon:
-  ext:
-    osx: icns
-    windows: ico
-    linux: png
 release:
   version: 0.3.7
   date: 19 Nov 2019
