@@ -6,10 +6,6 @@ import zipfile
 import Project
 
 if __name__ == "__main__":
-    passwords_dict = ast.literal_eval(sys.argv[1]) if len(sys.argv) > 1 else {'osx':'', 'windows':'', 'zip':''}
-    certificate_password = passwords_dict[os_name].replace('\\', '')
-    zip_password = passwords_dict['zip']
-
     config = Project.Config()
 
     os_name = config['os']['name']
@@ -19,6 +15,10 @@ if __name__ == "__main__":
     certificates_dir_path = config['project']['subdirs']['certificates']['path']
     certificate_file_path = config['certificate']['path']
     certificates_zip_path = config['certificate']['zip_path']
+
+    passwords_dict = ast.literal_eval(sys.argv[1]) if len(sys.argv) > 1 else {'osx':'', 'windows':'', 'zip':''}
+    certificate_password = passwords_dict[os_name].replace('\\', '')
+    zip_password = passwords_dict['zip']
 
     Project.printTitle('Unzip certificates')
     with zipfile.ZipFile(certificates_zip_path) as zf:
