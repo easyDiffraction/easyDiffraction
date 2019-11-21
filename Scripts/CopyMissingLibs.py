@@ -12,7 +12,7 @@ if __name__ == "__main__":
     shiboken2_path = config['pyinstaller']['lib_path']['shiboken2']
     pyside2_path = config['pyinstaller']['lib_path']['pyside2']
 
-    printTitle('Copy missing libraries')
+    Project.printTitle('Copy missing libraries')
     for file_name in missing_files:
         file_path = os.path.join(shiboken2_path, file_name)
         for file_path in glob.glob(file_path): # for cases with '*' in the lib name
