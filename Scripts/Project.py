@@ -119,6 +119,15 @@ class Config():
         }
         return d[os_name]
 
+    def getVal(self, *keys):
+        current_level = self.__dict__
+        for key in keys:
+            if key in current_level:
+                current_level = current_level[key]
+            else:
+                return None
+        return current_level
+
 # MAIN
 
 if __name__ == "__main__":
