@@ -29,3 +29,4 @@ CellParametersTableView 1.0 CellParametersTableView.qml
 PhasesTableView 1.0 PhasesTableView.qml
 ExperimentsTableView 1.0 ExperimentsTableView.qml
 StatusBar 1.0 StatusBar.qml
+FlowButtons 1.0 FlowButtons.qml

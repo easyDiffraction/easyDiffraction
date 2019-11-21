@@ -4,16 +4,13 @@ from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 class CellBoxModel(QObject):
-    def __init__(self, calculator, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._project_dict = calculator.asDict()
+        self._project_dict = None
         self._model = QStandardItemModel()
         # set roles
         self._x_role, self._y_role, self._z_role = [ Qt.UserRole + 1 + i for i in range(3) ]
         self._model.setItemRoleNames({ self._x_role: b'xPos', self._y_role: b'yPos', self._z_role: b'zPos' })
-        # set model
-        self._setModelFromProject()
 
     def _setModelFromProject(self):
         """Create the model needed for GUI structure chart (unit cell box)."""
@@ -67,3 +64,8 @@ class CellBoxModel(QObject):
     def asModel(self):
         """Return model."""
         return self._model
+
+    def setCalculator(self, calculator):
+        calculator.projectDictChanged.connect(self.onProjectChanged)
+        self._project_dict = calculator.asDict()
+        self._setModelFromProject()
