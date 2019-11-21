@@ -2,17 +2,17 @@
 
 import os
 import glob, shutil
-import Config
+import Project
 
 if __name__ == "__main__":
-    config = Config()
+    config = Project.Config()
 
     os_name = config['os']['name']
     missing_files = config['pyinstaller']['missing_files'][os_name]
     shiboken2_path = config['pyinstaller']['lib_path']['shiboken2']
     pyside2_path = config['pyinstaller']['lib_path']['pyside2']
 
-    print('\n***** Copy missing libraries')
+    printTitle('Copy missing libraries')
     for file_name in missing_files:
         file_path = os.path.join(shiboken2_path, file_name)
         for file_path in glob.glob(file_path): # for cases with '*' in the lib name

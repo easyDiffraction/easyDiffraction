@@ -65,13 +65,14 @@ install:
 before_script:
   - echo $TRAVIS_OS_NAME
   - echo $TRAVIS_BRANCH
+  - python Scripts/PrintLog.py
+  - python Scripts/Config.py # print config
 
 script:
-  - python Scripts/PrintLog.py
   - python Scripts/CopyMissingLibs.py
   #- python Scripts/CompilePyResource.py
   - python Scripts/RunTests.py
-  - python Scripts/MakeDist.py
+  - python Scripts/FreezeApp.py
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
   - python Scripts/Deploy.py #$GITHUB_TOKEN

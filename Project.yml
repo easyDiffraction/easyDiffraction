@@ -1,12 +1,11 @@
 project:
-  dir: null
-structure:
-  distribution: dist
-  installer: dist
-  configs: Configs
-  scripts: Scripts
-  certificates: Certificates
-  examples: Examples
+  name: easyDiffraction
+  dir_path: null
+  subdirs:
+    distribution: Distribution
+    scripts: Scripts
+    certificates: Certificates
+    examples: Examples
 github:
   owner: easyDiffraction
   repo: easyDiffraction
@@ -14,6 +13,7 @@ os:
   name: null
 pyinstaller:
   lib_path:
+    cryspy: null
     shiboken2: null
     pyside2: null
   missing_files:
@@ -23,6 +23,10 @@ pyinstaller:
     - shiboken2.abi3.dll
     - MSVCP140.dll
     linux: []
+  separator:
+    osx: ':'
+    windows: ;
+    linux: ':'
 app:
   name: easyDiffraction
   organization: easyDiffraction
