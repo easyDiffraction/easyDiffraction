@@ -18,6 +18,14 @@ project:
 # scripts
 scripts:
   silent_install: null
+# certificates
+certificate:
+  name:
+    osx: ESS_cert_mac.p12
+    windows: ESS_cert_win.pfx
+    linux: []
+  path: null
+  zip_path: null
 # application
 app:
   name: easyDiffraction
