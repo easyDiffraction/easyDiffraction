@@ -1,7 +1,5 @@
-app:
-  name: easyDiffraction
-  organization: easyDiffraction
-  url: https://easydiffraction.org
+project:
+  dir: null
 structure:
   distribution: dist
   installer: dist
@@ -12,6 +10,8 @@ structure:
 github:
   owner: easyDiffraction
   repo: easyDiffraction
+os:
+  name: null
 pyinstaller:
   lib_path:
     shiboken2: null
@@ -23,6 +23,15 @@ pyinstaller:
     - shiboken2.abi3.dll
     - MSVCP140.dll
     linux: []
+app:
+  name: easyDiffraction
+  organization: easyDiffraction
+  url: https://easydiffraction.org
+icon:
+  ext:
+    osx: icns
+    windows: ico
+    linux: png
 release:
   version: 0.3.7
   date: 19 Nov 2019
