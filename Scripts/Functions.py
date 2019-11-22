@@ -5,23 +5,26 @@ import subprocess
 
 # FUNCTIONS
 
+def colorTitle(title):
+    return '\033[0;30;43m' + title + '\033[0m' # http://ozzmaker.com/add-colour-to-text-in-python/
+
 def printTitle(title):
     #print('{0}***** {1}'.format(os.linesep, title))
     max_len = 80
-    spaces_len = 1
-    fill_len = max_len - 2*spaces_len - len(title)
+    fill_len = max_len - len(title)
     if (fill_len % 2) == 0:
         left_fill_len = int(fill_len / 2)
         right_fill_len = left_fill_len
     else:
         left_fill_len = int((fill_len + 1) / 2)
         right_fill_len = left_fill_len - 1
-    s = title.upper()
-    s = ('*'*left_fill_len) + (' '*spaces_len) + s + (' '*spaces_len) + ('*'*right_fill_len)
-    #s = '\033[0;37;44m' + s + '\033[0m' # http://ozzmaker.com/add-colour-to-text-in-python/
-    s = '\033[0;30;43m' + s + '\033[0m' # http://ozzmaker.com/add-colour-to-text-in-python/
-    s = os.linesep + s
-    print(s)
+    title = (' '*left_fill_len) + title + (' '*right_fill_len)
+    title = title.upper()
+    empty_title = ' '*max_len
+    print()
+    print(colorTitle(empty_title))
+    print(colorTitle(title))
+    print(colorTitle(empty_title))
 
 def run(*args):
     result = subprocess.run(
