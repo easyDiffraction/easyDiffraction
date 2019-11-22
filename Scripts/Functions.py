@@ -19,7 +19,7 @@ def printTitle(title):
         left_fill_len = int((fill_len + 1) / 2)
         right_fill_len = left_fill_len - 1
     title = (' '*left_fill_len) + title + (' '*right_fill_len)
-    title = title.upper()
+    #title = title.upper()
     empty_title = ' '*max_len
     print()
     print(colorTitle(empty_title))

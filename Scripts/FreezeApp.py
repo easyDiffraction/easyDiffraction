@@ -6,6 +6,8 @@ import Project
 import Functions
 
 if __name__ == "__main__":
+    Functions.printTitle('Freeze app by PyInstaller')
+
     config = Project.Config()
 
     os_name = config['os']['name']
@@ -17,7 +19,6 @@ if __name__ == "__main__":
     icon_ext = config['app']['icon']['ext'][os_name]
     separator = config['pyinstaller']['separator'][os_name]
 
-    Functions.printTitle('Freeze app by PyInstaller')
     Functions.run(
         'pyinstaller', '{0}/App/{1}.py'.format(project_dir_path, project_name),
         '--name', project_name,                                                 # Name to assign to the bundled app and spec file (default: first script’s basename)
@@ -32,12 +33,13 @@ if __name__ == "__main__":
         '--add-data', "{0}/App{1}.".format(project_dir_path, separator),        # Add App Pythnon and QML source files
         '--icon', '{0}/App/QmlImports/{1}/Resources/Icons/App.{2}'.format(project_dir_path, project_name, icon_ext)
         )
+    print("+ Succeeded to freeze app")
 
     if os_name == 'osx':
-        Functions.printTitle('Add hidpi support')
         Functions.run(
             'plutil',
             '-insert', 'NSHighResolutionCapable',
             '-bool', 'YES',
             '{0}/{1}.app/Contents/Info.plist'.format(distribution_dir_path, app_name)
             )
+        print("+ Succeeded to add hidpi support")
