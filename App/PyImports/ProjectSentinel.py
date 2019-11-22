@@ -48,7 +48,7 @@ class ProjectControl(QObject):
                 self.name = name[1]
             elif '_keywords ' in line:
                 keywords = line.split('_keywords ')
-                self.keywords = keywords[1:]
+                self.keywords = keywords[1].split('\'')[1].split(' ')
 
         if (self.name is None) or (self.keywords is None):
             self._isValidCif = False
@@ -56,15 +56,23 @@ class ProjectControl(QObject):
             self.manager.projectName = self.name
             if isinstance(self.keywords, str):
                 self.manager.projectKeywords = self.keywords
+            else:
+                self.manager.projectKeywords = ' '.join(self.keywords)
 
     @Slot(str, str)
-    def writeMain(self, name='Undefined', keywords='\'neutron diffraction, powder, 1d\''):
+    def writeMain(self, name='Undefined', keywords='neutron diffraction, powder, 1d'):
         """
         Writes a main.cif file in the temp file location.
         :param string name: What is the project name
         :param string keywords: Keywords associated withe the project for easy finding
         :return:
         """
+        if isinstance(keywords, str):
+            if keywords[0] != '\'':
+                keywords = '\'' + keywords + '\''
+        elif isinstance(keywords, list):
+            keywords = '\'%s\'' % ' '.join(keywords)
+
         with open(os.path.join(self.tempDir.name, 'main.cif'), 'w') as f:
             f.write('_name %s\n' % name)
             f.write('_keywords %s\n' % keywords)
@@ -85,6 +93,29 @@ class ProjectControl(QObject):
             saveName = dataDir + '.zip'
         self._projectFile = saveName
         self.manager.validSaveState = True
+
+
+    @Slot(str, result=str)
+    def fullFilePath(self, fname):
+        fpath = os.path.join(self.get_project_dir_absolute_path(), fname)
+        furl = os.path.join(self.get_project_url_absolute_path(), fname)
+        if os.path.isfile(fpath):
+            return furl
+        return ""
+
+    def get_project_dir_absolute_path(self):
+        if self.main_rcif_path:
+            return os.path.dirname(os.path.abspath(self.main_rcif_path))
+        return ""
+
+    def get_project_url_absolute_path(self):
+        if self.main_rcif_path:
+            FILE = urlparse(self.main_rcif_path).path
+            if sys.platform.startswith("win"):
+                if FILE[0] == '/':
+                    FILE = FILE[1:].replace('/', os.path.sep)
+            return FILE
+        return ""
 
     def setMain_rcif_path(self, rcifPath):
         """
@@ -120,7 +151,8 @@ class ProjectControl(QObject):
 
     validCif = Property(bool, lambda self: self._isValidCif, constant=False)
     savedProject = Property(bool, lambda self: self._saveSuccess, constant=False)
-
+    project_dir_absolute_path = Property(str, get_project_dir_absolute_path, constant=False)
+    project_url_absolute_path = Property(str, get_project_url_absolute_path, constant=False)
 
 class ProjectManager(QObject):
     projectSaveChange = Signal(bool)
@@ -132,58 +164,6 @@ class ProjectManager(QObject):
         self._projectSaveBool = False
         self._projectName = ''
         self._projectKeywords = ''
-
-    #     self._model = QStandardItemModel()
-    #     # Interest items
-    #     self._interests = {'name': None,
-    #                       'keywords': None
-    #                       }
-    #     # set role names
-    #     self._first_role = Qt.UserRole + 1
-    #     self._role_names_list = ['label', 'value']
-    #     self._roles_list = []
-    #     self._roles_dict = {'projectInfo': {}
-    #                         }
-    #     self._setRolesListAndDict()
-    #
-    # @property
-    # def interests(self):
-    #     return self._interests
-    #
-    # @interests.setter
-    # def interests(self, value):
-    #     self._interests = value
-    #     self._setModelFromDict()
-    #     self.projectLoadSignal.emit()
-    #
-    # def _setRolesListAndDict(self):
-    #     """..."""
-    #     offset = 100
-    #     for i, role_name in enumerate(self._role_names_list):
-    #         display_role = self._first_role + i
-    #         self._roles_dict['projectInfo'][display_role] = role_name.encode()
-    #         self._roles_list.append(display_role)
-    #
-    # def _setModelFromDict(self):
-    #     """Create the initial data list with structure for GUI fitables table."""
-    #     self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
-    #     # set column
-    #     column = []
-    #     for key in self.interests.keys():
-    #         item = QStandardItem()
-    #         for role, role_name_bytes in self._roles_dict['projectInfo'].items():
-    #             role_name = role_name_bytes.decode()
-    #             value = ''
-    #             if role_name == 'value':
-    #                 if self.interests[key] is not None:
-    #                     value = self.interests[key]
-    #             elif role_name == 'label':
-    #                 value = key
-    #             item.setData(value, role)
-    #         column.append(item)
-    #     # set model
-    #     self._model.appendColumn(column) # dataChanged is not emited. why?
-    #     self._model.dataChanged.emit(self._model.index(0, 0), self._model.index(self._model.rowCount()-1, self._model.columnCount()-1), self._roles_list)
 
     def get_isValidSaveState(self):
         return self._projectSaveBool
@@ -208,7 +188,6 @@ class ProjectManager(QObject):
         self.projectSaveChange.emit(value)
 
     validSaveState = Property(bool, get_isValidSaveState, set_isValidSaveState, notify=projectSaveChange)
-    # projectInfo = Property('QVariant', lambda self: self._model, notify=projectLoadSignal)
     projectName = Property(str, get_projectNameChanged, set_projectNameChanged, notify=projectSaveChange)
     projectKeywords = Property(str, get_projectKeywordsChanged, set_projectKeywordsChanged, notify=projectSaveChange)
 

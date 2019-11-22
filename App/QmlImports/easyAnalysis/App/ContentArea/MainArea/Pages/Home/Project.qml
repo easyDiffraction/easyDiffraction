@@ -84,7 +84,7 @@ Rectangle {
                 model: ["saved_structure.png", "saved_refinement.png"]
 
                 Rectangle {
-                    visible: image.progress
+                    visible: image.progress && Boolean(projectManager.projectName)
                     height: (mainRectangle.width - 3*margin) / 2
                     width: height
                     color: "white"
@@ -97,7 +97,7 @@ Rectangle {
                         clip: true
                         antialiasing: true
                         smooth: true
-                        source: Specific.Variables.projectOpened ? proxy.fullFilePath(modelData) : ""
+                        source: Specific.Variables.projectOpened && Boolean(projectManager.projectName) ? projectControl.fullFilePath(modelData) : ""
                     }
                 }
             }
