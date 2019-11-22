@@ -18,7 +18,9 @@ def printTitle(title):
         right_fill_len = left_fill_len - 1
     s = title.upper()
     s = ('*'*left_fill_len) + (' '*spaces_len) + s + (' '*spaces_len) + ('*'*right_fill_len)
-    s = '\033[0;37;44m' + s + '\033[0m' # http://ozzmaker.com/add-colour-to-text-in-python/
+    #s = '\033[0;37;44m' + s + '\033[0m' # http://ozzmaker.com/add-colour-to-text-in-python/
+    s = '\033[0;30;43m' + s + '\033[0m' # http://ozzmaker.com/add-colour-to-text-in-python/
+    s = os.linesep + s
     print(s)
 
 def run(*args):
@@ -35,3 +37,8 @@ def run(*args):
     if result.stderr:
         print("- Fail:{0}{1}".format(os.linesep, result.stderr))
         sys.exit()
+
+if __name__ == "__main__":
+    print('before')
+    printTitle('Test title')
+    print('after')
