@@ -4,7 +4,8 @@ import tempfile
 import zipfile
 from urllib.parse import urlparse
 
-from PySide2.QtCore import QObject, Slot, QUrl, Signal, Property
+from PySide2.QtCore import Qt, QObject, Slot, Signal, Property
+from PySide2.QtGui import QStandardItemModel, QStandardItem
 
 
 class ProjectControl(QObject):
@@ -18,8 +19,8 @@ class ProjectControl(QObject):
         self._projectFile = None
         self._isValidCif = None
         self.main_rcif_path = None
-        self.name = None
-        self.keywords = None
+        self.name = ''
+        self.keywords = ''
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
@@ -47,10 +48,14 @@ class ProjectControl(QObject):
                 self.name = name[1]
             elif '_keywords ' in line:
                 keywords = line.split('_keywords ')
-                self.keywords = keywords[1]
+                self.keywords = keywords[1:]
 
         if (self.name is None) or (self.keywords is None):
             self._isValidCif = False
+        else:
+            self.manager.projectName = self.name
+            if isinstance(self.keywords, str):
+                self.manager.projectKeywords = self.keywords
 
     @Slot(str, str)
     def writeMain(self, name='Undefined', keywords='\'neutron diffraction, powder, 1d\''):
@@ -120,9 +125,65 @@ class ProjectControl(QObject):
 class ProjectManager(QObject):
     projectSaveChange = Signal(bool)
 
+    # projectLoadSignal = Signal()
+
     def __init__(self, parent=None):
         super(ProjectManager, self).__init__(parent)
         self._projectSaveBool = False
+        self._projectName = ''
+        self._projectKeywords = ''
+
+    #     self._model = QStandardItemModel()
+    #     # Interest items
+    #     self._interests = {'name': None,
+    #                       'keywords': None
+    #                       }
+    #     # set role names
+    #     self._first_role = Qt.UserRole + 1
+    #     self._role_names_list = ['label', 'value']
+    #     self._roles_list = []
+    #     self._roles_dict = {'projectInfo': {}
+    #                         }
+    #     self._setRolesListAndDict()
+    #
+    # @property
+    # def interests(self):
+    #     return self._interests
+    #
+    # @interests.setter
+    # def interests(self, value):
+    #     self._interests = value
+    #     self._setModelFromDict()
+    #     self.projectLoadSignal.emit()
+    #
+    # def _setRolesListAndDict(self):
+    #     """..."""
+    #     offset = 100
+    #     for i, role_name in enumerate(self._role_names_list):
+    #         display_role = self._first_role + i
+    #         self._roles_dict['projectInfo'][display_role] = role_name.encode()
+    #         self._roles_list.append(display_role)
+    #
+    # def _setModelFromDict(self):
+    #     """Create the initial data list with structure for GUI fitables table."""
+    #     self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
+    #     # set column
+    #     column = []
+    #     for key in self.interests.keys():
+    #         item = QStandardItem()
+    #         for role, role_name_bytes in self._roles_dict['projectInfo'].items():
+    #             role_name = role_name_bytes.decode()
+    #             value = ''
+    #             if role_name == 'value':
+    #                 if self.interests[key] is not None:
+    #                     value = self.interests[key]
+    #             elif role_name == 'label':
+    #                 value = key
+    #             item.setData(value, role)
+    #         column.append(item)
+    #     # set model
+    #     self._model.appendColumn(column) # dataChanged is not emited. why?
+    #     self._model.dataChanged.emit(self._model.index(0, 0), self._model.index(self._model.rowCount()-1, self._model.columnCount()-1), self._roles_list)
 
     def get_isValidSaveState(self):
         return self._projectSaveBool
@@ -132,7 +193,24 @@ class ProjectManager(QObject):
             self._projectSaveBool = value
             self.projectSaveChange.emit(value)
 
+    def get_projectNameChanged(self):
+        return self._projectName
+
+    def set_projectNameChanged(self, value):
+        self._projectName = value
+        self.projectSaveChange.emit(value)
+
+    def get_projectKeywordsChanged(self):
+        return self._projectKeywords
+
+    def set_projectKeywordsChanged(self, value):
+        self._projectKeywords = value
+        self.projectSaveChange.emit(value)
+
     validSaveState = Property(bool, get_isValidSaveState, set_isValidSaveState, notify=projectSaveChange)
+    # projectInfo = Property('QVariant', lambda self: self._model, notify=projectLoadSignal)
+    projectName = Property(str, get_projectNameChanged, set_projectNameChanged, notify=projectSaveChange)
+    projectKeywords = Property(str, get_projectKeywordsChanged, set_projectKeywordsChanged, notify=projectSaveChange)
 
 
 def check_project_dict(project_dict):

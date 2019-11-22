@@ -90,7 +90,7 @@ ColumnLayout {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     projectControl.loadProject(fileUrl)
                     fileDialogLoadProject.close()
-                    if (projectControl.validCif == true) {
+                    if (projectControl.validCif) {
                         proxy.initialize()
 //                        if (proxy.validPojectZip) {
 //                            saveStateButton.enabled = true

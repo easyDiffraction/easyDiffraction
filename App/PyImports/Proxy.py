@@ -18,7 +18,6 @@ from PyImports.Models.StatusModel import StatusModel
 from PyImports.ProjectSentinel import ProjectControl
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
-import PyImports.ProjectIO as ProjectIO
 
 
 class Proxy(QObject):

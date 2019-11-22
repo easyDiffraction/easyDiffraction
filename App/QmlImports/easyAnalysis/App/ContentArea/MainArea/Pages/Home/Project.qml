@@ -53,7 +53,7 @@ Rectangle {
         spacing: 10
 
         Text {
-            text: Specific.Variables.projectOpened ? proxy.project.info.name : ""
+            text: Specific.Variables.projectOpened ? projectManager.projectName : ""
             font.pointSize: Generic.Style.fontPointSize * 3
             font.family: Generic.Style.fontFamily
         }
@@ -63,7 +63,7 @@ Rectangle {
                 let s = ""
                 if (!Specific.Variables.projectOpened)
                     return s
-                s += "Keywords: " + proxy.project.info.keywords.join(", ") + "\n"
+                s += "Keywords: " + projectManager.projectKeywords + "\n"
                 s += "Phases: " + proxy.project.info.phase_ids.join(", ") + "\n"
                 s += "Experiments: " + proxy.project.info.experiment_ids.join(", ") + "\n"
                 s += "Instrument: 6T2 at LLB\n"
