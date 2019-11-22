@@ -4,8 +4,11 @@ import os, sys
 import ast
 import zipfile
 import Project
+import Functions
 
 if __name__ == "__main__":
+    Functions.printTitle('Sign code')
+
     config = Project.Config()
 
     os_name = config['os']['name']
@@ -17,33 +20,35 @@ if __name__ == "__main__":
     certificates_zip_path = config['certificate']['zip_path']
 
     if os_name == 'linux':
+        print('* No code signing needed for linux')
         exit()
 
     passwords_dict = ast.literal_eval(sys.argv[1]) if len(sys.argv) > 1 else {'osx':'', 'windows':'', 'zip':''}
     certificate_password = passwords_dict[os_name].replace('\\', '')
     zip_password = passwords_dict['zip']
 
-    Project.printTitle('Unzip certificates')
+    print('* Unzip certificates')
     with zipfile.ZipFile(certificates_zip_path) as zf:
         zf.extractall(
             path = certificates_dir_path,
             pwd = bytes(zip_password, 'utf-8')
             )
 
-    Project.printTitle('Sign code')
     if os_name == 'windows':
+        print('* Code signing for windows')
+
         signtool_exe_path = os.path.join('C:', os.sep, 'Program Files (x86)', 'Windows Kits', '10', 'bin', 'x86', 'signtool.exe')
 
-        Project.printTitle('Import certificate')
-        Project.run(
+        print('* Import certificate')
+        Functions.run(
             'certutil.exe',
             #'-user',                               # "Current User" Personal store.
             '-p', certificate_password,             # the password for the .pfx file
             '-importpfx', certificate_file_path # name of the .pfx file
             )
 
-        Project.printTitle('Sign code with imported certificate')
-        Project.run(
+        print('* Sign code with imported certificate')
+        Functions.run(
             signtool_exe_path, 'sign',              # info - https://msdn.microsoft.com/en-us/data/ff551778(v=vs.71)
             #'/f', certificate_file_path,           # signing certificate in a file
             #'/p', certificate_password,            # password to use when opening a PFX file
@@ -57,37 +62,39 @@ if __name__ == "__main__":
             )
 
     elif os_name == 'osx':
+        print('* Code signing for osx')
+
         keychain_name = 'codesign.keychain'
         keychain_password = 'password'
         identity = 'Developer ID Application: European Spallation Source Eric (W2AG9MPZ43)'
 
-        Project.printTitle('Create keychain')
-        Project.run(
+        print('* Create keychain')
+        Functions.run(
             'security', 'create-keychain',
             '-p', keychain_password,
             keychain_name
             )
 
-        Project.printTitle('Set it to be default keychain')
-        Project.run(
+        print('* Set it to be default keychain')
+        Functions.run(
             'security', 'default-keychain',
             '-s', keychain_name
             )
 
-        Project.printTitle('List keychains')
-        Project.run(
+        print('* List keychains')
+        Functions.run(
             'security', 'list-keychains'
             )
 
-        Project.printTitle('Unlock created keychain')
-        Project.run(
+        print('* Unlock created keychain')
+        Functions.run(
             'security', 'unlock-keychain',
             '-p', keychain_password,
             keychain_name
             )
 
-        Project.printTitle('Import certificate to created keychain')
-        Project.run(
+        print('* Import certificate to created keychain')
+        Functions.run(
             'security', 'import',
             certificate_file_path,
             '-k', keychain_name,
@@ -95,22 +102,22 @@ if __name__ == "__main__":
             '-T', '/usr/bin/codesign'
             )
 
-        Project.printTitle('Show certificates')
-        Project.run(
+        print('* Show certificates')
+        Functions.run(
             'security', 'find-identity',
             '-v'
             )
 
-        Project.printTitle('Allow codesign to access certificate key from keychain')
-        Project.run(
+        print('* Allow codesign to access certificate key from keychain')
+        Functions.run(
             'security', 'set-key-partition-list',
             '-S', 'apple-tool:,apple:,codesign:',
             '-s',
             '-k', keychain_password
             )
 
-        Project.printTitle('Sign code with imported certificate')
-        Project.run(
+        print('* Sign code with imported certificate')
+        Functions.run(
             'codesign',
             '--deep',
             '--force',

@@ -7,6 +7,7 @@ import shutil
 import yaml # pip install pyyaml
 from uritemplate import URITemplate # pip install uritemplate
 import Project
+import Functions
 
 # CLASSES
 
@@ -230,6 +231,8 @@ def environmentVariable(name, default=None):
 # MAIN
 
 if __name__ == "__main__":
+    Functions.printTitle('Deploy')
+
     config = Project.Config()
 
     # Init github communication
