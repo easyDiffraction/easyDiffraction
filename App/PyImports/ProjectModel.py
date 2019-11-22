@@ -1,8 +1,8 @@
 import os
 import sys
+import tempfile
+import zipfile
 from urllib.parse import urlparse
-
-import PyImports.ProjectIO as ProjectIO
 
 from PySide2.QtCore import QObject, Slot, QUrl, Signal, Property
 
@@ -12,7 +12,7 @@ class ProjectControl(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.tempDir = ProjectIO.make_temp_dir()
+        self.tempDir = make_temp_dir()
         self.manager = ProjectManager()
         self._saveSuccess = False
         self._projectFile = None
@@ -31,9 +31,9 @@ class ProjectControl(QObject):
         #
         self.setMain_rcif_path(main_rcif_path)
         #
-        if ProjectIO.check_if_zip(self.main_rcif_path):
-            if ProjectIO.check_project_file(self.main_rcif_path):
-                _ = ProjectIO.temp_project_dir(self.main_rcif_path, self.tempDir)
+        if check_if_zip(self.main_rcif_path):
+            if check_project_file(self.main_rcif_path):
+                _ = temp_project_dir(self.main_rcif_path, self.tempDir)
                 self._projectFile = self.main_rcif_path
                 self.manager.set_isValidSaveState(True)
                 self.main_rcif_path = os.path.join(self.tempDir.name, 'main.cif')
@@ -101,7 +101,7 @@ class ProjectControl(QObject):
         """
         # At this point we have an object which needs to be reset.
         self.tempDir.cleanup()
-        self.tempDir = ProjectIO.make_temp_dir()
+        self.tempDir = make_temp_dir()
         self.manager.validSaveState = False
         self._saveSuccess = False
         self._projectFile = None
@@ -133,3 +133,88 @@ class ProjectManager(QObject):
             self.projectSaveChange.emit(value)
 
     validSaveState = Property(bool, get_isValidSaveState, set_isValidSaveState, notify=projectSaveChange)
+
+
+def check_project_dict(project_dict):
+    isValid = True
+    keys = ['phases', 'experiments', 'calculations']
+    if len(set(project_dict.keys()).difference(set(keys))) > 0:
+        return False
+    for key in keys:
+        if not project_dict[key]:
+            isValid = False
+    return isValid
+
+
+def check_if_zip(filename):
+    return zipfile.is_zipfile(filename)
+
+
+def check_project_file(filename):
+    isValid = True
+    mustContain = ['main.cif', 'phases.cif', 'experiments.cif']
+
+    if check_if_zip(filename):
+        with zipfile.ZipFile(filename, 'r') as zip:
+            listList = zip.namelist()
+            for file in mustContain:
+                if file not in listList:
+                    isValid = False
+    else:
+        raise TypeError
+
+    return isValid
+
+
+def make_temp_dir():
+    return tempfile.TemporaryDirectory()
+
+
+def temp_project_dir(filename, targetdir=None):
+    # Assume we're ok.....
+    if targetdir is None:
+        targetdir = make_temp_dir()
+    with zipfile.ZipFile(filename, 'r') as zip:
+        zip.extractall(targetdir.name)
+    return targetdir
+
+
+def create_project_zip(data_dir, saveName):
+    extension = saveName[-4:]
+    if extension != '.zip':
+        saveName = saveName + '.zip'
+
+    mustContain = ['main.cif',
+                   'phases.cif',
+                   'experiments.cif']
+
+    canContain = ['saved_structure.png',
+                  'saved_refinement.png']
+
+    saveName = urlparse(saveName).path
+    if sys.platform.startswith("win"):
+        if saveName[0] == '/':
+            saveName = saveName[1:].replace('/', os.path.sep)
+
+    with zipfile.ZipFile(saveName, 'w') as zip:
+
+        for file in mustContain:
+            fullFile = os.path.join(data_dir, file)
+            if os.path.isfile(fullFile):
+                zip.write(os.path.join(data_dir, file), file)
+            else:
+                raise FileNotFoundError
+        for file in canContain:
+            fullFile = os.path.join(data_dir, file)
+            if os.path.isfile(fullFile):
+                zip.write(fullFile, file)
+
+    return check_project_file(saveName), saveName
+
+
+def writeProject(projectModel, saveName):
+    allOK, saveName = create_project_zip(projectModel.tempDir.name, saveName)
+    projectModel._saveSuccess = True
+    projectModel._projectFile = saveName
+    if not allOK:
+        raise FileNotFoundError

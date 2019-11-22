@@ -1,15 +1,10 @@
 import pytest
 import os
-import sys
-from pytest_mock import mocker
-from _pytest import monkeypatch
 from pathlib import Path
 
-from PySide2.QtCore import QObject, Signal, Slot, Property, QUrl
-
 # tested module
-from PyImports.ProjectIO import *
-
+from PyImports.ProjectModel import check_project_dict, check_if_zip, check_project_file, make_temp_dir, \
+    temp_project_dir, create_project_zip
 
 TEST_ZIP = os.path.join(os.getcwd(), 'Tests', 'Data', 'Fe3O4_project.zip')
 TEST_ZIP_ERROR = os.path.join(os.getcwd(), 'Tests', 'Data', 'Fe3O4_project_error.zip')

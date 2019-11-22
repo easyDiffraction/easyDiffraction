@@ -3,6 +3,7 @@ import logging
 
 from PySide2.QtCore import QUrl, QObject, Signal, Slot, Property
 
+import PyImports.ProjectModel
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.Models.MeasuredDataModel import MeasuredDataModel
 from PyImports.Models.CalculatedDataModel import CalculatedDataModel
@@ -55,7 +56,7 @@ class Proxy(QObject):
         self._calculator = CryspyCalculator(self._main_rcif_path)
         self._calculator.projectDictChanged.connect(self.projectChanged)
         # This should pick up on non-valid cif files
-        if not ProjectIO.check_project_dict(self._calculator.asCifDict()):
+        if not PyImports.ProjectModel.check_project_dict(self._calculator.asCifDict()):
             # Note that new projects also fall into here, so:
             if not self._calculator.name():
                 self.project_control._isValidCif = False
@@ -78,7 +79,7 @@ class Proxy(QObject):
     @Slot(str)
     def saveProject(self, saveName):
         self._calculator.saveCifs(self.project_control.tempDir.name)
-        ProjectIO.writeProject(self.project_control, saveName)
+        PyImports.ProjectModel.writeProject(self.project_control, saveName)
 
     @Slot()
     def updateProjectSave(self):
