@@ -4,6 +4,7 @@ import os, sys
 import requests
 import shutil
 import Project
+import Functions
 
 if __name__ == "__main__":
     config = Project.Config()
@@ -23,34 +24,34 @@ if __name__ == "__main__":
     installer_packages_dir_path = config['app']['installer']['packages_dir_path']
     installer_exe_path = config['app']['installer']['exe_path']
 
-    Project.printTitle('Download QtInstallerFramework installer')
+    Functions.printTitle('Download QtInstallerFramework installer')
     qtifw_installer = requests.get(qtifw_setup_download_url, allow_redirects=True)
     open(qtifw_setup_download_path, 'wb').write(qtifw_installer.content)
 
     if os_name == 'osx':
-        Project.printTitle('Attach QtInstallerFramework DMG')
-        Project.run('hdiutil', 'attach', config['qtifw']['setup']['download_path'])
+        Functions.printTitle('Attach QtInstallerFramework DMG')
+        Functions.run('hdiutil', 'attach', config['qtifw']['setup']['download_path'])
     elif os_name == 'linux':
-        Project.printTitle('export QT_QPA_PLATFORM=minimal')
+        Functions.printTitle('export QT_QPA_PLATFORM=minimal')
         os.environ["QT_QPA_PLATFORM"] = "minimal"
-        Project.printTitle('Fix permissions')
-        Project.run('chmod', 'a+x', config['qtifw']['setup']['exe_path'])
+        Functions.printTitle('Fix permissions')
+        Functions.run('chmod', 'a+x', config['qtifw']['setup']['exe_path'])
 
-    Project.printTitle('Install QtInstallerFramework silently')
-    Project.run(
+    Functions.printTitle('Install QtInstallerFramework silently')
+    Functions.run(
         qtifw_setup_exe_path,
         '--script', silent_install_script,
         '--no-force-installations'
         )
 
-    Project.printTitle('Move files/dirs needed for creating installer')
+    Functions.printTitle('Move files/dirs needed for creating installer')
     shutil.rmtree(installer_data_dir_path, ignore_errors=True)
     os.makedirs(installer_data_dir_path)
     shutil.move(examples_dir_path, installer_data_dir_path)
     shutil.move(freezed_app_path, installer_data_dir_path)
 
-    Project.printTitle('Create installer from moved files/dirs')
-    Project.run(
+    Functions.printTitle('Create installer from moved files/dirs')
+    Functions.run(
         qtifw_binarycreator_path,
         '--verbose',
         '--offline-only',

@@ -7,6 +7,7 @@ import shutil
 import yaml # pip install pyyaml
 from uritemplate import URITemplate # pip install uritemplate
 import Project
+import Functions
 
 # CLASSES
 
