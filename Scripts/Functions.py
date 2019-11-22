@@ -7,7 +7,19 @@ import subprocess
 
 def printTitle(title):
     #print('{0}***** {1}'.format(os.linesep, title))
-    print('***** {0}'.format(title))
+    max_len = 80
+    spaces_len = 1
+    fill_len = max_len - 2*spaces_len - len(title)
+    if (fill_len % 2) == 0:
+        left_fill_len = int(fill_len / 2)
+        right_fill_len = left_fill_len
+    else:
+        left_fill_len = int((fill_len + 1) / 2)
+        right_fill_len = left_fill_len - 1
+    s = title.upper()
+    s = ('*'*left_fill_len) + (' '*spaces_len) + s + (' '*spaces_len) + ('*'*right_fill_len)
+    s = '\033[0;37;44m' + s + '\033[0m' # http://ozzmaker.com/add-colour-to-text-in-python/
+    print(s)
 
 def run(*args):
     result = subprocess.run(

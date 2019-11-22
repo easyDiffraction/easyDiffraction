@@ -28,7 +28,7 @@ if __name__ == '__main__':
     install(
         'cryspy==0.1.13',
         'PySide2==5.13.1',
-        'pyinstaller==3.5',
+        'pyinstaller==3.5',     # https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
         'requests==2.22.0',
         'uritemplate==3.0.0',
         'pyyaml==5.1.2',

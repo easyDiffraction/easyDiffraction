@@ -231,6 +231,8 @@ def environmentVariable(name, default=None):
 # MAIN
 
 if __name__ == "__main__":
+    Functions.printTitle('Deploy')
+
     config = Project.Config()
 
     # Init github communication
