@@ -48,6 +48,7 @@ before_script:
   - pip --version
   - echo $TRAVIS_OS_NAME
   - echo $TRAVIS_BRANCH
+  - echo $TRAVIS_PULL_REQUEST
   #- python Scripts/Project.py # print config
 
 script:
@@ -58,6 +59,7 @@ script:
   - python Scripts/FreezeApp.py
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then python Scripts/Deploy.py; fi
   - python Scripts/Deploy.py #$GITHUB_TOKEN $TRAVIS_BRANCH
   #- python Scripts/UpdateWebPage.py
 
