@@ -1,6 +1,6 @@
 # tested module
 from PyImports.Proxy import *
-from PyImports.ProjectModel import ProjectManager
+from PyImports.ProjectSentinel import ProjectManager
 TEST_FILE = "file:Tests/Data/main.cif"
 
 
