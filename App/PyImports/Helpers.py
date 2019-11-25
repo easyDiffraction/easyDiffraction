@@ -55,15 +55,3 @@ def get_num_refine_pars(project_dict):
         if nested_get(project_dict, keys_list + ['refine']):
             numPars = numPars + 1
     return numPars
-
-
-def check_project_dict(project_dict):
-    isValid = True
-    keys = ['phases', 'experiments', 'calculations']
-    # if set(project_dict.keys).intersection([''])
-    if len(set(project_dict.keys()).difference(set(keys))) > 0:
-        return False
-    for key in keys:
-        if not project_dict[key]:
-            isValid = False
-    return isValid

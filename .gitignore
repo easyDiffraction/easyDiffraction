@@ -68,9 +68,10 @@ __pycache__
 # PyInstaller
 build
 dist
+Distribution
 
 # Misc
 ..*
 *.log
-
+Auth.yml
 .idea/

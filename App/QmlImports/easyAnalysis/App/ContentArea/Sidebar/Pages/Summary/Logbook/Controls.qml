@@ -71,47 +71,26 @@ ColumnLayout {
     /////////
     // Spacer
     /////////
-    Item { Layout.fillHeight: true }
+        Item { Layout.fillHeight: true }
 
-    ///////////
     // Groupbox
-    ///////////
-    GenericAppElements.GroupBox {
-        collapsible: false
-        showBorder: false
-        content: GenericAppElements.RowLayout {
 
-            GenericAppContentAreaButtons.GoPrevious {
-                text: "Analysis"
-                ToolTip.text: qsTr("Go to the previous step: Analysis")
-                onClicked: {
-                    Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
-                }
-                GenericAppElements.GuideWindow {
-                    message: "Click here to go to the previous step: Analysis.\n\nAlternatively, you can click on the 'Analysis' button in toolbar."
-                    position: "top"
-                    guideCurrentIndex: 2
-                    toolbarCurrentIndex: Generic.Variables.SummaryIndex
-                    guidesCount: Generic.Variables.SummaryGuidesCount
-                }
+    GenericAppElements.FlowButtons {
+        documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.6.-summary"
+        goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
+            text: "Analysis"
+            ToolTip.text: qsTr("Go to the previous step: Analysis")
+            onClicked: {
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
             }
-            GenericAppContentAreaButtons.SaveState {
-            }
-            GenericAppContentAreaButtons.Help {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.org/umanual_use.html#3.2.6.-summary")
-            }
-            GenericAppContentAreaButtons.Bug {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.org/contact.html")
-                GenericAppElements.GuideWindow {
-                    message: "Please send us your feedback.\n\nYour opinion matters!"
-                    position: "top left"
-                    guideCurrentIndex: 3
-                    toolbarCurrentIndex: Generic.Variables.SummaryIndex
-                    guidesCount: Generic.Variables.SummaryGuidesCount
-                }
+            GenericAppElements.GuideWindow {
+                message: "Click here to go to the previous step: Analysis.\n\nAlternatively, you can click on the 'Analysis' button in toolbar."
+                position: "top"
+                guideCurrentIndex: 2
+                toolbarCurrentIndex: Generic.Variables.SummaryIndex
+                guidesCount: Generic.Variables.SummaryGuidesCount
             }
         }
     }
-
 }
 

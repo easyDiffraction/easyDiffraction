@@ -131,6 +131,7 @@
         <file>QmlImports/easyAnalysis/App/Elements/StructureView.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/TextField.qml</file>
         <file>QmlImports/easyAnalysis/App/Elements/VerticalBorder.qml</file>
+        <file>QmlImports/easyAnalysis/App/Elements/FlowButtons.qml</file>
         <file>QmlImports/easyAnalysis/App/Menubar/Menubar.qml</file>
         <file>QmlImports/easyAnalysis/App/Menubar/qmldir</file>
         <file>QmlImports/easyAnalysis/App/Toolbar/Buttons/Analysis.qml</file>
