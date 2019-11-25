@@ -62,7 +62,7 @@ script:
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then python Scripts/Deploy.py; fi # python Scripts/Deploy.py $GITHUB_TOKEN $TRAVIS_BRANCH
-  #- python Scripts/UpdateWebPage.py
+  #- python Scripts/UpdateWebPage.py $TRAVIS_BRANCH # if $TRAVIS_BRANCH is of the format like v0.3.7
 
 after_success:
   - codecov
