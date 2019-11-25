@@ -106,8 +106,7 @@ qtifw:
   installerbase_path: null
 # release
 release:
-  version: 0.3.7
-  date: 19 Nov 2019
+  version: 0.3.8
+  date: 25 Nov 2019
   changes: # Get from pull requests description?
-  - Minor Changes 1
-  - Minor Changes 2
+  - Project management added
