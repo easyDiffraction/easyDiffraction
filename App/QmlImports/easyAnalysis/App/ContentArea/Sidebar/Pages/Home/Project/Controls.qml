@@ -126,8 +126,6 @@ ColumnLayout {
                     fileDialogSaveProject.close()
                     if (projectControl.savedProject == false) {
                         failSaveDialog.visible = true
-                    } else {
-                        saveStateButton.enabled = true
                     }
                 }
             }
@@ -211,9 +209,7 @@ ColumnLayout {
                 onAccepted: {
                     projectControl.writeMain(titleInput.text, keywordsInput.text)
                     proxy.initialize()
-                    saveStateButton.enabled = true
                     Specific.Variables.projectOpened = true
-                    saveButton.enabled = true
                 }
             }
 

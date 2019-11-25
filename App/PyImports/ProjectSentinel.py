@@ -3,12 +3,15 @@ import sys
 import tempfile
 import zipfile
 from urllib.parse import urlparse
-
+from urllib.parse import *
+from datetime import datetime
 from PySide2.QtCore import Qt, QObject, Slot, Signal, Property
 from PySide2.QtGui import QStandardItemModel, QStandardItem
+from pathlib import Path
 
 
 class ProjectControl(QObject):
+    projectLoad = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -19,8 +22,6 @@ class ProjectControl(QObject):
         self._projectFile = None
         self._isValidCif = None
         self.main_rcif_path = None
-        self.name = ''
-        self.keywords = ''
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
@@ -33,11 +34,16 @@ class ProjectControl(QObject):
         self.setMain_rcif_path(main_rcif_path)
         #
         if check_if_zip(self.main_rcif_path):
+            # This is if we've loaded a `zip`
             if check_project_file(self.main_rcif_path):
                 _ = temp_project_dir(self.main_rcif_path, self.tempDir)
                 self._projectFile = self.main_rcif_path
-                self.manager.set_isValidSaveState(True)
+                self.manager.validSaveState = True
                 self.main_rcif_path = os.path.join(self.tempDir.name, 'main.cif')
+        else:
+            # This is if we have loaded a `cif`
+            self.manager.validSaveState = False
+
         self._isValidCif = True
 
         with open(self.main_rcif_path, 'r') as f:
@@ -45,19 +51,14 @@ class ProjectControl(QObject):
         for line in lines:
             if '_name ' in line:
                 name = line.split('_name ')
-                self.name = name[1]
+                self.manager.projectName = name[1]
             elif '_keywords ' in line:
                 keywords = line.split('_keywords ')
-                self.keywords = keywords[1].split('\'')[1].split(' ')
+                self.manager.projectKeywords = keywords[1].split('\'')[1].split(', ')
 
-        if (self.name is None) or (self.keywords is None):
+        if (self.manager.projectName is None) or (self.manager.projectKeywords is None):
             self._isValidCif = False
-        else:
-            self.manager.projectName = self.name
-            if isinstance(self.keywords, str):
-                self.manager.projectKeywords = self.keywords
-            else:
-                self.manager.projectKeywords = ' '.join(self.keywords)
+            self.manager.validSaveState = False
 
     @Slot(str, str)
     def writeMain(self, name='Undefined', keywords='neutron diffraction, powder, 1d'):
@@ -68,25 +69,27 @@ class ProjectControl(QObject):
         :return:
         """
         if isinstance(keywords, str):
-            if keywords[0] != '\'':
-                keywords = '\'' + keywords + '\''
-        elif isinstance(keywords, list):
-            keywords = '\'%s\'' % ' '.join(keywords)
+            if keywords[0] == '\'':
+                keywords = keywords[1:-1]
+            keywords = keywords.split(', ')
 
         with open(os.path.join(self.tempDir.name, 'main.cif'), 'w') as f:
             f.write('_name %s\n' % name)
-            f.write('_keywords %s\n' % keywords)
+            f.write('_keywords %s\n' % '\'%s\'' % ', '.join(keywords))
             f.write('_phases\n')
             f.write('_experiments\n')
         self.main_rcif_path = os.path.join(self.tempDir.name, 'main.cif')
+        self.manager.projectName = name
+        self.manager.projectKeywords = keywords
+        self.manager.projectModified = datetime.now()
 
     @Slot(str)
     def createProject(self, dataDir):
-        '''
+        """
         Set a project name so that when saving, a project can be created/updated
         :param string dataDir: String corresponding to a save file with full path
         :return:
-        '''
+        """
         extension = dataDir[-4:]
         saveName = dataDir
         if extension != '.zip':
@@ -94,23 +97,35 @@ class ProjectControl(QObject):
         self._projectFile = saveName
         self.manager.validSaveState = True
 
-
     @Slot(str, result=str)
     def fullFilePath(self, fname):
+        """
+        Return the full file path as a uri for the GUI
+        :param fname: string name of file
+        :return: string with base path + file encoded as a URI
+        """
         fpath = os.path.join(self.get_project_dir_absolute_path(), fname)
-        furl = os.path.join(self.get_project_url_absolute_path(), fname)
+        fURI = os.path.join(self.get_project_url_absolute_path(), fname)
         if os.path.isfile(fpath):
-            return furl
+            return fURI
         return ""
 
     def get_project_dir_absolute_path(self):
+        """
+        Get the project path as a folder reference
+        :return: string path directory to a folder containing the main rcif
+        """
         if self.main_rcif_path:
             return os.path.dirname(os.path.abspath(self.main_rcif_path))
         return ""
 
     def get_project_url_absolute_path(self):
+        """
+        Get the project path as a folder reference
+        :return: URI path directory to a folder containing the main rcif
+        """
         if self.main_rcif_path:
-            FILE = urlparse(self.main_rcif_path).path
+            FILE = Path(self.get_project_dir_absolute_path()).as_uri()
             if sys.platform.startswith("win"):
                 if FILE[0] == '/':
                     FILE = FILE[1:].replace('/', os.path.sep)
@@ -138,13 +153,11 @@ class ProjectControl(QObject):
         # At this point we have an object which needs to be reset.
         self.tempDir.cleanup()
         self.tempDir = make_temp_dir()
-        self.manager.validSaveState = False
+        self.manager.resetManager()
         self._saveSuccess = False
         self._projectFile = None
         self._isValidCif = None
         self.main_rcif_path = None
-        self.name = None
-        self.keywords = None
 
     def __exit__(self, exc, value, tb):
         self.tempDir.cleanup()
@@ -153,44 +166,87 @@ class ProjectControl(QObject):
     savedProject = Property(bool, lambda self: self._saveSuccess, constant=False)
     project_dir_absolute_path = Property(str, get_project_dir_absolute_path, constant=False)
     project_url_absolute_path = Property(str, get_project_url_absolute_path, constant=False)
+    hasImages = Property(bool, lambda self: hasImages(self.get_project_dir_absolute_path()), notify=projectLoad)
+
 
 class ProjectManager(QObject):
     projectSaveChange = Signal(bool)
+    projectDetailChange = Signal()
 
     # projectLoadSignal = Signal()
 
     def __init__(self, parent=None):
         super(ProjectManager, self).__init__(parent)
         self._projectSaveBool = False
-        self._projectName = ''
-        self._projectKeywords = ''
+        self._projectName = None
+        self._projectKeywords = None
+        self._projectExp = None
+        self._projectInstruments = None
+        self._modified = datetime.now()
 
     def get_isValidSaveState(self):
         return self._projectSaveBool
 
     def set_isValidSaveState(self, value):
-        if self._projectSaveBool != value:
-            self._projectSaveBool = value
-            self.projectSaveChange.emit(value)
+        self._projectSaveBool = value
+        self.projectSaveChange.emit(value)
 
     def get_projectNameChanged(self):
         return self._projectName
 
     def set_projectNameChanged(self, value):
         self._projectName = value
-        self.projectSaveChange.emit(value)
+        self.projectDetailChange.emit()
 
     def get_projectKeywordsChanged(self):
-        return self._projectKeywords
+        KEYWORDS = ''
+        if self._projectKeywords is not None:
+            KEYWORDS = ', '.join(self._projectKeywords)
+        return KEYWORDS
 
     def set_projectKeywordsChanged(self, value):
         self._projectKeywords = value
-        self.projectSaveChange.emit(value)
+        self.projectDetailChange.emit()
+
+    def get_projectExperimentsChanged(self):
+        return self._projectExp
+
+    def set_projectExperimentsChanged(self, value):
+        self._projectExp = value
+        self.projectDetailChange.emit()
+
+    def get_projectInstrumentsChanged(self):
+        return self._projectInstruments
+
+    def set_projectInstrumentsChanged(self, value):
+        self._projectInstruments = value
+        self.projectDetailChange.emit()
+
+    def get_projectModifiedChanged(self):
+        return self._modified.strftime("%d/%m/%Y, %H:%M")
+
+    def set_projectModifiedChanged(self, value):
+        self._modified = value
+        self.projectDetailChange.emit()
+
+    def resetManager(self):
+        self._projectSaveBool = False
+        self._projectName = None
+        self._projectKeywords = None
+        self._projectExp = None
+        self._projectInstruments = None
 
     validSaveState = Property(bool, get_isValidSaveState, set_isValidSaveState, notify=projectSaveChange)
-    projectName = Property(str, get_projectNameChanged, set_projectNameChanged, notify=projectSaveChange)
-    projectKeywords = Property(str, get_projectKeywordsChanged, set_projectKeywordsChanged, notify=projectSaveChange)
+    projectName = Property(str, get_projectNameChanged, set_projectNameChanged, notify=projectDetailChange)
+    projectKeywords = Property(str, get_projectKeywordsChanged, set_projectKeywordsChanged, notify=projectDetailChange)
+    projectExperiments = Property(str, get_projectExperimentsChanged, set_projectExperimentsChanged,
+                                  notify=projectDetailChange)
+    projectInstruments = Property(str, get_projectInstrumentsChanged, set_projectInstrumentsChanged,
+                                  notify=projectDetailChange)
+    projectModified = Property(str, get_projectModifiedChanged, set_projectModifiedChanged, notify=projectDetailChange)
 
+
+## Project output checking
 
 def check_project_dict(project_dict):
     isValid = True
@@ -267,6 +323,16 @@ def create_project_zip(data_dir, saveName):
                 zip.write(fullFile, file)
 
     return check_project_file(saveName), saveName
+
+
+def hasImages(data_dir, signal=None):
+    canContain = ['saved_structure.png',
+                  'saved_refinement.png']
+    r = True
+    for file in canContain:
+        if not os.path.isfile(os.path.join(data_dir, file)):
+            r = False
+    return r
 
 
 def writeProject(projectModel, saveName):
