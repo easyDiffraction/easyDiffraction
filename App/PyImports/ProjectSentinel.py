@@ -11,7 +11,6 @@ from pathlib import Path
 
 
 class ProjectControl(QObject):
-    projectLoad = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -166,7 +165,6 @@ class ProjectControl(QObject):
     savedProject = Property(bool, lambda self: self._saveSuccess, constant=False)
     project_dir_absolute_path = Property(str, get_project_dir_absolute_path, constant=False)
     project_url_absolute_path = Property(str, get_project_url_absolute_path, constant=False)
-    hasImages = Property(bool, lambda self: hasImages(self.get_project_dir_absolute_path()), notify=projectLoad)
 
 
 class ProjectManager(QObject):
@@ -323,16 +321,6 @@ def create_project_zip(data_dir, saveName):
                 zip.write(fullFile, file)
 
     return check_project_file(saveName), saveName
-
-
-def hasImages(data_dir, signal=None):
-    canContain = ['saved_structure.png',
-                  'saved_refinement.png']
-    r = True
-    for file in canContain:
-        if not os.path.isfile(os.path.join(data_dir, file)):
-            r = False
-    return r
 
 
 def writeProject(projectModel, saveName):
