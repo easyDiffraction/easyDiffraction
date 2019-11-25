@@ -4,13 +4,11 @@ from PySide2.QtCore import Qt, QObject, Signal
 from PySide2.QtGui import QStandardItemModel
 
 class CalculatedDataModel(QObject):
-    def __init__(self, calculator, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._project_dict = calculator.asDict()
         self._headers_model = QStandardItemModel()
         self._data_model = QStandardItemModel()
-        self._setModelsFromProjectDict()
+        self._project_dict = None
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI calculated data table and chart."""
@@ -48,3 +46,8 @@ class CalculatedDataModel(QObject):
     def asDataModel(self):
         """Return data model."""
         return self._data_model
+
+    def setCalculator(self, calculator):
+        calculator.projectDictChanged.connect(self.onProjectChanged)
+        self._project_dict = calculator.asDict()
+        self._setModelsFromProjectDict()

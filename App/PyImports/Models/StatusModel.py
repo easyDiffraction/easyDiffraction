@@ -5,11 +5,10 @@ import PyImports.Helpers as Helpers
 from PyImports.StatusObjects import StatusItem, StatusList
 
 class StatusModel(QObject):
-    def __init__(self, calculator, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
-        # major properties
-        self._calculator = calculator
+        self._calculator = None
 
         # Create the status items
         chiItem = StatusItem('chiSq', title='Current \u03c7\u00b2', additionalData=1)
@@ -22,7 +21,6 @@ class StatusModel(QObject):
             StatusItem('numData', title='Experiments', additionalData=0),
             StatusItem('numPhases', title='Phases', additionalData=0)
         ])
-        self._updateStatusList()
 
         # minor properties
         self._first_role = Qt.UserRole + 1
@@ -37,10 +35,6 @@ class StatusModel(QObject):
         self._setRolesListAndDict()
         self._statusBarModel.setItemRoleNames(self._roles_dict['status'])
         self._chartDisplayModel.setItemRoleNames(self._roles_dict['plot'])
-        # set model
-        self._setModelFromProject()
-        # connect to project changed signals
-        self._calculator.projectDictChanged.connect(self.onProjectChanged)
 
     def _setRolesListAndDict(self):
         """..."""
@@ -90,7 +84,11 @@ class StatusModel(QObject):
         project_dict = self._calculator.asDict()
 
         # Set chi squared
-        self._interestedList.setItemValue('chiSq', round(project_dict['info']['chi_squared']['value'], 2))
+        try:
+            self._interestedList.setItemValue('chiSq', round(project_dict['info']['chi_squared']['value'], 2))
+        except KeyError:
+            self._interestedList.setItemValue('chiSq', 0)
+
 
         # Get number of parameters
         numPars = Helpers.get_num_refine_pars(project_dict)
@@ -132,3 +130,9 @@ class StatusModel(QObject):
                 continue
             item.setData(value, role)
         return item
+
+    def setCalculator(self, calculator):
+        calculator.projectDictChanged.connect(self.onProjectChanged)
+        self._calculator = calculator
+        self._updateStatusList()
+        self._setModelFromProject()

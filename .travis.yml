@@ -7,6 +7,8 @@ cache: pip
 
 env:
   global:
+    # terminal width
+    - COLUMNS=100
     # GITHUB_TOKEN
     - secure: "scbwc6CuiVf7ryKROBNOdbRAr2RyF/rcquGYL5Gsf3CMXukGyT95NNP8KwZLH/MSWg5I9wItb9b0lMxqad3sz28jbr7ARKooC5vfT3A2m5aMN8Y+7QoG3myYirsOjpwDW9zjk7/vjGT1QZh1twr6fg10pLPfZWAGxAbKLTVzcDsvhPu9+9uzvkrZitPc1EhUmjhusF2dnSKqBjYE/dYrz/xHwNGKYSlqkl+CBVBi6T7LC3J6LHUFKNo0QfqkW0EW6hATAWeLXgu9pT917B6BPpwll2oAZT5J9oFbms/szAelzsWBAJedyEIkJ4EzPlk9qokOr61kWFZ+7hkAXfj+Mq7k4VQXorFPWub0sZ+nMtfbAoZ6PO+REpH9BLBQGFwvwpHlp5DvKh+XHtIxFnmm107+AS7vNI94bSbObWDuzbcrwiKZUXNkExjaGQtLI/RV2XeDXIYr6T6SPYW+Ayr7Uutmqv1oUkdqEt1yCxNpsWly09teTac7ZnxgWqewcvr9ayLRC/l9ffAP5PHCErMm67pv8bXEiTRuMzbNTgHxbKOEqtSoEgI1xoU/+J2r+bO6sJs8QzKPNKfQWKyZRu/+KPOkZmKt9yzBQe57frDoEgCaBMGYwFyUyrqBaWKi4xSwcKYfeT3mexQ6pvemfp7+umFU/HAVkHxYLm6MXnu584E="
     # CODE_SIGN_PSWD_DICT
@@ -40,43 +42,26 @@ matrix:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
 
-install:
-  - python --version
-  #
-  - python -m pip install --upgrade pip
-  - pip --version
-  #
-  - pip install cryspy==0.1.13
-  - pip install PySide2==5.13.1
-  - pip install pyinstaller==3.5
-  - pip install requests==2.22.0
-  - pip install uritemplate==3.0.0
-  - pip install pyyaml==5.1.2
-  #
-  - pip install pytest
-  - pytest --version
-  #
-  - pip install pytest_mock
-  - pip install pytest-cov
-  - pip install pytest-qt
-  #
-  - pip install codecov
+#install:
+#  python -m pip install --upgrade pip
 
 before_script:
+  - python --version
+  - pip --version
   - echo $TRAVIS_OS_NAME
   - echo $TRAVIS_BRANCH
+  - echo $TRAVIS_PULL_REQUEST
+  #- python Scripts/Project.py # print config
 
 script:
-  - python Scripts/PrintLog.py
-  - python Scripts/CreateProjectConfig.py
+  - python Scripts/InstallPyPackages.py
   - python Scripts/CopyMissingLibs.py
   #- python Scripts/CompilePyResource.py
   - python Scripts/RunTests.py
-  - python Scripts/MakeDist.py
+  - python Scripts/FreezeApp.py
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
-  - python Scripts/MakeArchive.py #$RELEASE_NUMBER
-  - python Scripts/UploadArtifacts.py #$GITHUB_TOKEN
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then python Scripts/Deploy.py; fi # python Scripts/Deploy.py $GITHUB_TOKEN $TRAVIS_BRANCH
   #- python Scripts/UpdateWebPage.py
 
 after_success:

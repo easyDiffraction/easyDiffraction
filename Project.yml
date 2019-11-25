@@ -1,0 +1,112 @@
+# project
+project:
+  name: easyDiffraction
+  dir_path: null
+  subdirs:
+    distribution:
+      name: Distribution
+      path: null
+    scripts:
+      name: Scripts
+      path: null
+    certificates:
+      name: Certificates
+      path: null
+    examples:
+      name: Examples
+      path: null
+# scripts
+scripts:
+  silent_install: null
+# certificates
+certificate:
+  name:
+    osx: ESS_cert_mac.p12
+    windows: ESS_cert_win.pfx
+    linux: ''
+  path: null
+  zip_path: null
+# application
+app:
+  name: easyDiffraction
+  organization: easyDiffraction
+  url: https://easydiffraction.org
+  icon:
+    ext:
+      osx: icns
+      windows: ico
+      linux: png
+  freezed_path: null
+  freezed_ext:
+    osx: '.app'
+    windows: ''
+    linux: ''
+  installer:
+    name: null
+    config_dir_path: null
+    config_xml_path: null
+    packages_dir_path: null
+    data_dir_path: null
+    dir_path: null
+    exe_name: null
+    exe_path: null
+# operating system
+os:
+  name: null
+  gui_exe_ext:
+    osx: .app
+    windows: .exe
+    linux: ''
+  cli_exe_ext:
+    osx: ''
+    windows: .exe
+    linux: ''
+# user
+user:
+  home_dir: null
+# version control
+github:
+  owner: easyDiffraction
+  repo: easyDiffraction
+# freeze app
+pyinstaller:
+  lib_path:
+    cryspy: null
+    shiboken2: null
+    pyside2: null
+  missing_files:
+    osx:
+    - libshiboken2.abi3.*.dylib
+    windows:
+    - shiboken2.abi3.dll
+    - MSVCP140.dll
+    linux: []
+  separator:
+    osx: ':'
+    windows: ;
+    linux: ':'
+# make installer
+qtifw:
+  version: 3.1.1
+  setup:
+    base:
+      osx: QtInstallerFramework-mac-x64
+      windows: QtInstallerFramework-win-x86
+      linux: QtInstallerFramework-linux-x64
+    ext:
+      osx: dmg
+      windows: exe
+      linux: run
+    name: null
+    download_url: null
+    download_path: null
+    exe_path: null
+  bin_dir_path: null
+  binarycreator_path: null
+  installerbase_path: null
+# release
+release:
+  version: 0.3.8
+  date: 25 Nov 2019
+  changes: # Get from pull requests description?
+  - Project management added

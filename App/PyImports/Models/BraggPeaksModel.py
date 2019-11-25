@@ -4,13 +4,11 @@ from PySide2.QtCore import Qt, QObject, Signal
 from PySide2.QtGui import QStandardItemModel
 
 class BraggPeaksModel(QObject):
-    def __init__(self, calculator, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._project_dict = calculator.asDict()
+        self._project_dict = None
         self._data_model = QStandardItemModel()
         self._tick_model = QStandardItemModel()
-        self._setModelsFromProjectDict()
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI chart: Bragg peaks."""
@@ -61,3 +59,7 @@ class BraggPeaksModel(QObject):
         return self._data_model
 
 
+    def setCalculator(self, calculator):
+        calculator.projectDictChanged.connect(self.onProjectChanged)
+        self._project_dict = calculator.asDict()
+        self._setModelsFromProjectDict()

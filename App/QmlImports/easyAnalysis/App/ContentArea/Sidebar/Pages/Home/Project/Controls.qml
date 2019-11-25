@@ -25,11 +25,13 @@ ColumnLayout {
 
             // Buttons
             GenericAppContentAreaButtons.Create {
-                enabled: false
+                enabled: true
                 text: qsTr("Create a new project")
 
+                onClicked: fileDialogCreateProject.open()
+
                 GenericAppElements.GuideWindow {
-                    message: "Disables buttons are not implemented yet."
+                    message: "Create a new project."
                     position: "left"
                     guideCurrentIndex: 2
                     toolbarCurrentIndex: Generic.Variables.HomeIndex
@@ -42,7 +44,7 @@ ColumnLayout {
                 text: qsTr("Open another project")
                 enabled: !proxy.refinementRunning
 
-                onClicked: fileDialog.open()
+                onClicked: fileDialogLoadProject.open()
 
                 GenericAppElements.GuideWindow {
                     message: "Click here to open existing project."
@@ -59,8 +61,20 @@ ColumnLayout {
             }
 
             GenericAppContentAreaButtons.Save {
+                id: saveButton
                 enabled: false
                 text: qsTr("Save project as...")
+
+                onClicked: fileDialogSaveProject.open()
+
+                GenericAppElements.GuideWindow {
+                    message: "Click here to save a project."
+                    position: "left"
+                    guideCurrentIndex: 0
+                    toolbarCurrentIndex: Generic.Variables.HomeIndex
+                    guidesCount: Generic.Variables.HomeGuidesCount
+                }
+
             }
 
             // Persistent settings
@@ -69,20 +83,27 @@ ColumnLayout {
 
             // Open project dialog
             Dialogs1.FileDialog{
-                id: fileDialog
-                nameFilters: [ "CIF files (*.cif)" ]
+                id: fileDialogLoadProject
+                nameFilters: [ "CIF files (*.cif)", "Project files (*.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    proxy.loadCif(fileUrl)
-                    fileDialog.close()
-                    if (proxy.validCif == true) {
+                    projectControl.loadProject(fileUrl)
+                    fileDialogLoadProject.close()
+                    if (projectControl.validCif) {
+                        proxy.initialize()
+//                        if (proxy.validPojectZip) {
+//                            saveStateButton.enabled = true
+//                        } else {
+//                            saveStateButton.enabled = false
+//                        }
                         Specific.Variables.projectOpened = true
                         Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                        saveButton.enabled = true
                     } else {
                         failOpenDialog.visible = true
                         Specific.Variables.projectOpened = false
@@ -94,6 +115,33 @@ ColumnLayout {
                     }
                 }
             }
+
+            Dialogs1.FileDialog{
+                id: fileDialogSaveProject
+                selectExisting: false
+                nameFilters: ["Project files (*.zip)"]
+                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                onAccepted: {
+                    proxy.saveProject(fileUrl)
+                    fileDialogSaveProject.close()
+                    if (projectControl.savedProject == false) {
+                        failSaveDialog.visible = true
+                    }
+                }
+            }
+
+            Dialogs1.FileDialog{
+                id: fileDialogCreateProject
+                selectExisting: false
+                nameFilters: ["Project files (*.zip)"]
+                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                onAccepted: {
+                    fileDialogCreateProject.close()
+                    projectControl.createProject(fileUrl)
+                    getProjectInfoDialog.visible = true
+                }
+            }
+
             Dialog {
                 id: failOpenDialog
                 parent: Overlay.overlay
@@ -104,12 +152,67 @@ ColumnLayout {
                 Label {
                     id: infoLabel
                     anchors.centerIn: parent
-                    text: 'Warning: File was not a valid main `rcif` file.'
+                    text: 'Warning: File was not a valid main `cif` file.'
                     color: "black"
                     font.family: Generic.Style.introThinFontFamily
                     font.pointSize: Generic.Style.systemFontPointSize + 1
                 }
             }
+
+             Dialog {
+                id: failSaveDialog
+                parent: Overlay.overlay
+                anchors.centerIn: parent
+                modal: true
+                opacity: 0.9
+                visible: false
+                Label {
+                    id: infoLabel2
+                    anchors.centerIn: parent
+                    text: 'Error: The project file was not saved.'
+                    color: "black"
+                    font.family: Generic.Style.introThinFontFamily
+                    font.pointSize: Generic.Style.systemFontPointSize + 1
+                }
+            }
+
+            Dialog {
+                id: getProjectInfoDialog
+                visible: false
+                parent: Overlay.overlay
+                anchors.centerIn: parent
+                modal: true
+                title: "Project description"
+                GenericAppElements.ColumnLayout {
+                    GenericAppElements.RowLayout {
+                        Label {
+                            text: "Project Title:"
+                        }
+                        TextInput {
+                            id: titleInput
+                            text: "Undefined"
+                            cursorVisible: true
+                        }
+                    }
+                    GenericAppElements.RowLayout {
+                        Label {
+                            text: "Project keywords:"
+                        }
+                        TextInput {
+                            id: keywordsInput
+                            text: "\'neutron diffraction, powder, 1d\'"
+                            cursorVisible: true
+                        }
+                    }
+                }
+                standardButtons: Dialog.Ok
+                onAccepted: {
+                    projectControl.writeMain(titleInput.text, keywordsInput.text)
+                    proxy.initialize()
+                    Specific.Variables.projectOpened = true
+                }
+            }
+
         }
     }
 
@@ -208,34 +311,23 @@ ColumnLayout {
 
     // Groupbox
 
-    GenericAppElements.GroupBox {
-        collapsible: false
-        showBorder: false
-        content: GenericAppElements.RowLayout {
-            GenericAppContentAreaButtons.GoNext {
-                text: "Experimental Data"
-                ToolTip.text: qsTr("Go to the next step: Experimental data")
-                enabled: Specific.Variables.projectOpened
-                highlighted: Specific.Variables.projectOpened
-                onClicked: {
-                    Generic.Variables.homePageFinished = true
-                    Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
-                }
-                GenericAppElements.GuideWindow {
-                    message: "Click here to go to the next step: Experimental data."
-                    position: "top"
-                    guideCurrentIndex: 5
-                    toolbarCurrentIndex: Generic.Variables.HomeIndex
-                    guidesCount: Generic.Variables.HomeGuidesCount
-                }
+    GenericAppElements.FlowButtons {
+        documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.2.-project"
+        goNextButton: GenericAppContentAreaButtons.GoNext {
+            text: "Experimental Data"
+            ToolTip.text: qsTr("Go to the next step: Experimental data")
+            enabled: Specific.Variables.projectOpened
+            highlighted: Specific.Variables.projectOpened
+            onClicked: {
+                Generic.Variables.homePageFinished = true
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
             }
-            GenericAppContentAreaButtons.SaveState {
-            }
-            GenericAppContentAreaButtons.Help {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.org/umanual_use.html#3.2.2.-project")
-            }
-            GenericAppContentAreaButtons.Bug {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.org/contact.html")
+            GenericAppElements.GuideWindow {
+                message: "Click here to go to the next step: Experimental data."
+                position: "top"
+                guideCurrentIndex: 5
+                toolbarCurrentIndex: Generic.Variables.HomeIndex
+                guidesCount: Generic.Variables.HomeGuidesCount
             }
         }
     }

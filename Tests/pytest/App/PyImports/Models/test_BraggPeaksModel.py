@@ -16,7 +16,9 @@ def test_BraggPeaksModel():
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
 
-    m = Model.BraggPeaksModel(calculator)
+    m = Model.BraggPeaksModel()
+    m.setCalculator(calculator)
+
 
     assert isinstance(m._data_model, QStandardItemModel)
     assert isinstance(m._tick_model, QStandardItemModel)
@@ -50,7 +52,8 @@ def test_BraggPeaksModel_bad_calculator():
 
     # null calculator
     with pytest.raises(AttributeError):
-        m = Model.BraggPeaksModel(calculator)
+        m = Model.BraggPeaksModel()
+        m.setCalculator(calculator)
 
     # empty file
     #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()
