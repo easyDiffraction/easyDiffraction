@@ -1,0 +1,2 @@
+cryspy==0.1.13
+pyside2

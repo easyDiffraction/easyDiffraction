@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=easyDiffraction
+GenericName=Python application
+Comment=easyDiffraction - modelling and analysis of neutron diffraction data.
+Exec=easydiffraction
+Icon=${SNAP}/meta/gui/easyDiffraction.png
+Terminal=false
+Type=Application
+Categories=Education;
+StartupNotify=true

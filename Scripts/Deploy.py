@@ -180,28 +180,23 @@ class ReleaseConfig:
             return True
         return False
 
-    def _isMaster(self, branch):
-        if branch == 'master':
-            return True
-        return False
-
     def _isFinal(self, version, branch):
         if branch == 'v{0}'.format(version): #re.search('v\d+\.\d+\.\d+', branch)
             return True
         return False
 
     def _releaseTagName(self, version, branch):
-        if self._isMaster(branch) or self._isFinal(version=version, branch=branch):
+        if self._isFinal(version=version, branch=branch):
             return 'v{0}'.format(version)
         return branch
 
     def _releaseName(self, version, branch, date):
-        if self._isMaster(branch) or self._isFinal(version=version, branch=branch):
+        if self._isFinal(version=version, branch=branch):
             return 'Version {0} ({1})'.format(version, date)
         return branch
 
     def _releaseBody(self, version, branch, changes):
-        if self._isMaster(branch) or self._isFinal(version=version, branch=branch):
+        if self._isFinal(version=version, branch=branch):
             body = ''
             for item in changes:
                 body += '* {0}{1}'.format(item, os.linesep)
@@ -209,7 +204,7 @@ class ReleaseConfig:
         return ''
 
     def _targetCommitish(self, version, branch):
-        if self._isMaster(branch) or self._isFinal(version=version, branch=branch):
+        if self._isFinal(version=version, branch=branch):
             return 'master'
         return branch
 
@@ -266,9 +261,8 @@ if __name__ == "__main__":
     github.selectReleaseByTagName(tag_name)
 
     # Upload asset
-    if tag_name != 'master':
-        app_name = config.getVal('app', 'name')
-        os_name = config.getVal('os', 'name')
-        asset_dir = config.getVal('project', 'subdirs', 'distribution', 'path')
-        installer_exe_name = config.getVal('app', 'installer', 'exe_name')
-        github.uploadAsset(asset_dir=asset_dir, installer_exe_name=installer_exe_name, app_name=app_name, os_name=os_name, tag_name=tag_name)
+    app_name = config.getVal('app', 'name')
+    os_name = config.getVal('os', 'name')
+    asset_dir = config.getVal('project', 'subdirs', 'distribution', 'path')
+    installer_exe_name = config.getVal('app', 'installer', 'exe_name')
+    github.uploadAsset(asset_dir=asset_dir, installer_exe_name=installer_exe_name, app_name=app_name, os_name=os_name, tag_name=tag_name)
