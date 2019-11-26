@@ -31,7 +31,7 @@ def test_Proxy_loadCif():
     assert isinstance(proxy._refine_thread, Refiner)
 
     #assert "\\easyDiffraction\\Tests\\Data" in proxy.project_dir_absolute_path
-    assert "file:Tests/Data" in proxy.project_url_absolute_path
+    assert os.path.join('Tests','Data') in proxy.project_control.project_url_absolute_path
 
 
 def no_test_refine(qtbot, capsys):  # to be modified with AS's changes
@@ -65,7 +65,7 @@ def test_get_project_dir_absolute_path():
     proxy.initialize()
 
     path = os.path.join('easyDiffraction', 'Tests', 'Data')
-    assert path in proxy.get_project_dir_absolute_path()
+    assert path in proxy.project_control.get_project_dir_absolute_path()
 
 
 def test_store_report():
@@ -102,7 +102,7 @@ def test_save_report(mocker, tmp_path):
 
     # temp dir instead of project dir
     tmp_dir = os.path.join(tmp_path,"local_dir")
-    mocker.patch.object(proxy, 'get_project_dir_absolute_path', return_value=tmp_path, autospec=True)
+    mocker.patch.object(proxy.project_control, 'get_project_dir_absolute_path', return_value=tmp_path, autospec=True)
 
     proxy.save_report()
     assert Helpers.open_url.called == True
