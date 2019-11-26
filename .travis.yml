@@ -85,8 +85,13 @@ services:
 - docker
 
 deploy:
-  'on':
-    branch: master
-  provider: script
-  script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
-  skip_cleanup: true
+  - provider: script
+    script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release beta"
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: script
+    script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
+    skip_cleanup: true
+    on:
+      branch: develop
