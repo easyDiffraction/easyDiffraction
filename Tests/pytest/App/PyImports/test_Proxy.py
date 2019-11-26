@@ -31,7 +31,7 @@ def test_Proxy_loadCif():
     assert isinstance(proxy._refine_thread, Refiner)
 
     #assert "\\easyDiffraction\\Tests\\Data" in proxy.project_dir_absolute_path
-    assert os.path.join('Tests','Data') in proxy.project_control.project_url_absolute_path
+    assert os.path.join('Tests', 'Data') in proxy.project_control.project_url_absolute_path
 
 
 def no_test_refine(qtbot, capsys):  # to be modified with AS's changes

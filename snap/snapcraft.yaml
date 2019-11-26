@@ -3,30 +3,25 @@ version: git
 summary: 'easyDiffraction - modelling and analysis of neutron diffraction data.'
 description: |
   easyDiffraction is a scientific software for modelling and analysis of the neutron diffraction data.
-  http://easydiffraction.github.io/
+  https://easydiffraction.org
 
 grade: stable # devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 base: core18
+icon: snap/gui/easyDiffraction.png
 
 architectures:
   - build-on: amd64
-
-plugs:
-  home-read:
-    interface: home
-    read:
-      all
 
 apps:
     easydiffraction:
         command: python3 $SNAP/easyDiffraction.py
         plugs:
           - opengl
-          - desktop
+          - home
           - wayland
           - x11
-          - home-read
+          - unity7
         desktop: usr/share/applications/easyDiffraction.desktop
 
 parts:
@@ -51,7 +46,6 @@ parts:
       - libxcursor1
       - libxtst6
       - libxrandr2
-      - libasound2
       - libglu1-mesa
       - libgles2-mesa
       - fontconfig
