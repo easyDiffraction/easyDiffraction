@@ -62,7 +62,7 @@ script:
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then python Scripts/Deploy.py; fi # python Scripts/Deploy.py $GITHUB_TOKEN $TRAVIS_BRANCH
-  #- python Scripts/UpdateWebPage.py $TRAVIS_BRANCH # if $TRAVIS_BRANCH is of the format like v0.3.7. Should all the other scripts be skipped (because everything is already checked on master branch?)
+  - python Scripts/UpdateWebPage.py
 
 after_success:
   - codecov
@@ -70,17 +70,7 @@ after_success:
   - openssl aes-256-cbc -K $encrypted_b23b1079e659_key -iv $encrypted_b23b1079e659_iv -in Scripts/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d
 
 #after_deploy:
-#  -  |
-#     if [ $TRAVIS_BRANCH = "master" ]; then
-#        cd ~/
-#        git clone https://github.com/easyDiffraction/easyDiffraction.github.io.git
-#        cd easyDiffraction.github.io
-#        git remote set-url origin https://$GH_TOKEN@github.com/easyDiffraction/easyDiffraction.github.io.git
-#        cat index_template.html | awk '{gsub(/RELEASE_V/,"'$TRAVIS_TAG'")}1' | awk '{gsub(/RELEASE_N/,"'$RELEASE_NUMBER'")}1' | awk '{gsub(/RELEASE_D/,"'$(date +'%d %b %Y')'")}1' > index.html
-#        git add index.html
-#        git commit -m 'Bumped release links [ci skip]'
-#        git push origin HEAD:master
-#     fi
+#  - 
 
 notifications:
   slack:
