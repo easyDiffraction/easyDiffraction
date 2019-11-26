@@ -593,7 +593,7 @@ ColumnLayout {
                 const reduced_height =  chartContainer.height / chartContainer.width * reduced_width
                 chartContainer.grabToImage(
                             function(result) {
-                                result.saveToFile(proxy.project_dir_absolute_path + "/saved_refinement.png")
+                                result.saveToFile(projectControl.project_dir_absolute_path + "/saved_refinement.png")
                             },
                             Qt.size(reduced_width, reduced_height)
                             )

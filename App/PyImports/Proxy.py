@@ -1,9 +1,8 @@
 import os
 import logging
 
-from PySide2.QtCore import QUrl, QObject, Signal, Slot, Property
+from PySide2.QtCore import QObject, Signal, Slot, Property
 
-import PyImports.ProjectSentinel
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.Models.MeasuredDataModel import MeasuredDataModel
 from PyImports.Models.CalculatedDataModel import CalculatedDataModel
@@ -15,7 +14,7 @@ from PyImports.Models.AtomAdpsModel import AtomAdpsModel
 from PyImports.Models.AtomMspsModel import AtomMspsModel
 from PyImports.Models.FitablesModel import FitablesModel
 from PyImports.Models.StatusModel import StatusModel
-from PyImports.ProjectSentinel import ProjectControl
+from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
 
@@ -55,7 +54,7 @@ class Proxy(QObject):
         self._calculator = CryspyCalculator(self._main_rcif_path)
         self._calculator.projectDictChanged.connect(self.projectChanged)
         # This should pick up on non-valid cif files
-        if not PyImports.ProjectSentinel.check_project_dict(self._calculator.asCifDict()):
+        if not check_project_dict(self._calculator.asCifDict()):
             # Note that new projects also fall into here, so:
             if not self._calculator.name():
                 self.project_control._isValidCif = False
@@ -74,25 +73,32 @@ class Proxy(QObject):
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
+        # We can't link signals as the manager signals emitted before the dict is updated :-(
+        self.projectChanged.emit()
 
     @Slot(str)
     def saveProject(self, saveName):
         self._calculator.saveCifs(self.project_control.tempDir.name)
-        PyImports.ProjectSentinel.writeProject(self.project_control, saveName)
+        writeProject(self.project_control, saveName)
 
     @Slot()
     def updateProjectSave(self):
-        self.saveProject(self.project_control._projectFile.name)
+        self.saveProject(self.project_control._projectFile)
 
     # ##############
     # QML Properties
     # ##############
+    def calculatorAsDict(self):
+        return self._calculator.asDict()
+
+    def calculatorAsCifDict(self):
+        return self._calculator.asCifDict()
 
     # Notifications of changes for QML GUI about projectDictChanged,
     # which calls another signal projectChanged
     projectChanged = Signal()
-    project = Property('QVariant', lambda self: self._calculator.asDict(), notify=projectChanged)
-    cif = Property('QVariant', lambda self: self._calculator.asCifDict(), notify=projectChanged)
+    project = Property('QVariant', lambda self: self.calculatorAsDict(), notify=projectChanged)
+    cif = Property('QVariant', lambda self: self.calculatorAsCifDict(), notify=projectChanged)
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
@@ -161,31 +167,6 @@ class Proxy(QObject):
     refinementDone = Property(bool, lambda self: self._refinement_done, notify=refinementChanged)
     refinementResult = Property('QVariant', lambda self: self._refinement_result, notify=refinementChanged)
 
-    # ####
-    # MISC
-    # ####
-
-    @Slot(str, result=str)
-    def fullFilePath(self, fname):
-        fpath = os.path.join(self.get_project_dir_absolute_path(), fname)
-        furl = os.path.join(self.get_project_url_absolute_path(), fname)
-        if os.path.isfile(fpath):
-            return furl
-        return ""
-
-    def get_project_dir_absolute_path(self):
-        if self._main_rcif_path:
-            return os.path.dirname(os.path.abspath(self._main_rcif_path))
-        return ""
-
-    def get_project_url_absolute_path(self):
-        if self._main_rcif_path:
-            return str(QUrl.fromLocalFile(os.path.dirname(self._main_rcif_path)).toString())
-        return ""
-
-    project_dir_absolute_path = Property(str, get_project_dir_absolute_path, notify=projectChanged)
-    project_url_absolute_path = Property(str, get_project_url_absolute_path, notify=projectChanged)
-
     # ######
     # REPORT
     # ######
@@ -204,7 +185,7 @@ class Proxy(QObject):
         Currently only html
         """
         full_filename = filename + extension.lower()
-        full_filename = os.path.join(self.get_project_dir_absolute_path(), full_filename)
+        full_filename = os.path.join(self.project_control.get_project_dir_absolute_path(), full_filename)
 
         if not self.report_html:
             logging.info("No report to save")

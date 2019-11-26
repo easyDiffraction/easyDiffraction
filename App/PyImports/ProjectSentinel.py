@@ -2,12 +2,11 @@ import os
 import sys
 import tempfile
 import zipfile
-from urllib.parse import urlparse
-from urllib.parse import *
 from datetime import datetime
-from PySide2.QtCore import Qt, QObject, Slot, Signal, Property
-from PySide2.QtGui import QStandardItemModel, QStandardItem
 from pathlib import Path
+from urllib.parse import *
+
+from PySide2.QtCore import QObject, Slot, Signal, Property
 
 
 class ProjectControl(QObject):

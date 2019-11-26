@@ -56,11 +56,14 @@ class CryspyCalculator(QObject):
         main_block.to_file(os.path.join(saveDir, 'main.cif'))
 
         phases_block = pycifstar.Global()
-        phases_block.take_from_string(self._cryspy_obj.crystals[0].to_cif)
+        # TODO write output for multiple phases
+        if len(self._cryspy_obj.crystals) > 0:
+            phases_block.take_from_string(self._cryspy_obj.crystals[0].to_cif)
         phases_block.to_file(os.path.join(saveDir, 'phases.cif'))
 
         exp_block = pycifstar.Global()
-        exp_block.take_from_string(self._cryspy_obj._RhoChi__experiments[0].to_cif)
+        if len(self._cryspy_obj._RhoChi__experiments) > 0:
+            exp_block.take_from_string(self._cryspy_obj._RhoChi__experiments[0].to_cif)
         exp_block.to_file(os.path.join(saveDir, 'experiments.cif'))
 
     def setAppDict(self):
