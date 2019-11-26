@@ -62,7 +62,7 @@ script:
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then python Scripts/Deploy.py; fi # python Scripts/Deploy.py $GITHUB_TOKEN $TRAVIS_BRANCH
-  #- python Scripts/UpdateWebPage.py
+  #- python Scripts/UpdateWebPage.py $TRAVIS_BRANCH # if $TRAVIS_BRANCH is of the format like v0.3.7. Should all the other scripts be skipped (because everything is already checked on master branch?)
 
 after_success:
   - codecov
@@ -98,6 +98,5 @@ deploy:
   'on':
     branch: master
   provider: script
-  script: docker run -v $(pwd):$(pwd) -t snapcore/snapcraft sh -c "apt update -qq
-    && cd $(pwd) && snapcraft && snapcraft push *.snap --release edge"
+  script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
   skip_cleanup: true

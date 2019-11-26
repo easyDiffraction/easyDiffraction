@@ -51,8 +51,9 @@ parts:
       - libxslt1.1
       - xfonts-base
       - xfonts-scalable
-    requirements:
-      - /root/project/requirements.txt
+    python-packages:
+      - pyside2
+      - cryspy
 
 layout:
   /etc/fonts:

@@ -3,6 +3,7 @@ import logging
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
 
+import PyImports.ProjectSentinel
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.Models.MeasuredDataModel import MeasuredDataModel
 from PyImports.Models.CalculatedDataModel import CalculatedDataModel

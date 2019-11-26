@@ -17,11 +17,11 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 [25]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=win&label=Windows%2010.0&branch=master
 [26]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=osx&label=macOS%2010.13%20(High%20Sierra)&branch=master
 [27]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?style=flat-square&env=BADGE=linux&label=Ubuntu%20Linux%2016.04%20(Xenial)&branch=master
-[28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/develop/graph/badge.svg
+[28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/master/graph/badge.svg
 
 <!---GitHub Latest Release--->
-[30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.5
-[35]: https://img.shields.io/badge/Release-v0.3.6_(13_Nov_2019)-informational.svg?style=flat-square
+[30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.7
+[35]: https://img.shields.io/badge/Release-v0.3.7_(25_Nov_2019)-informational.svg?style=flat-square
 
 <!---User Manual--->
 [40]: https://easydiffraction.github.io/documentation.html
@@ -33,4 +33,4 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 
 <!---Code coverage--->
 [21]: https://codecov.io/gh/easyDiffraction/easyDiffraction
-[28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/develop/graph/badge.svg
+[28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/master/graph/badge.svg

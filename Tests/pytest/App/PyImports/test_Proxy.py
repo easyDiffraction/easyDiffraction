@@ -34,6 +34,7 @@ def test_Proxy_loadCif():
     assert 'Tests/Data' in proxy.project_control.project_url_absolute_path
 
 
+
 def no_test_refine(qtbot, capsys):  # to be modified with AS's changes
     manager = ProjectManager()
     proxy = Proxy(manager)
@@ -66,6 +67,7 @@ def test_get_project_dir_absolute_path():
 
     path = os.path.join('easyDiffraction', 'Tests', 'Data')
     assert path in proxy.project_control.get_project_dir_absolute_path()
+
 
 
 def test_store_report():
