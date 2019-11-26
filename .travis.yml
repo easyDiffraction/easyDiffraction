@@ -66,6 +66,7 @@ script:
 
 after_success:
   - codecov
+  - openssl aes-256-cbc -K $encrypted_b23b1079e659_key -iv $encrypted_b23b1079e659_iv -in .snapcraft/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d
 
 #after_deploy:
 #  -  |
@@ -88,3 +89,14 @@ notifications:
     on_failure: always
 
 #https://docs.travis-ci.com/user/job-lifecycle/
+
+services:
+- docker
+
+deploy:
+  'on':
+    branch: master
+  provider: script
+  script: docker run -v $(pwd):$(pwd) -t snapcore/snapcraft sh -c "apt update -qq
+    && cd $(pwd) && snapcraft && snapcraft push *.snap --release edge"
+  skip_cleanup: true
