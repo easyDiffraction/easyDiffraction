@@ -10,6 +10,8 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 
 [![][28]][21]
 
+[![][32]][31]
+
 <!---Travis CI Build Status--->
 [20]: https://travis-ci.org/easyDiffraction/easyDiffraction
 [21]: https://codecov.io/gh/easyDiffraction/easyDiffraction
@@ -34,3 +36,7 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 <!---Code coverage--->
 [21]: https://codecov.io/gh/easyDiffraction/easyDiffraction
 [28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/master/graph/badge.svg
+
+<!---SnapStatus--->
+[32]: https://snapcraft.io//easydiffraction/badge.svg
+[31]: https://snapcraft.io/easydiffraction
