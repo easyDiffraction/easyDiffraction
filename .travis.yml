@@ -21,6 +21,22 @@ matrix:
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       dist: xenial
       env: BADGE=linux
+      services:
+        - docker
+      before_deploy:
+        - mkdir .snapcraft
+        - openssl aes-256-cbc -K $encrypted_b23b1079e659_key -iv $encrypted_b23b1079e659_iv -in Scripts/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d
+      deploy:
+        - provider: script
+          script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release beta"
+          skip_cleanup: true
+          on:
+            branch: master
+        - provider: script
+          script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
+          skip_cleanup: true
+          on:
+            branch: develop
     # macOS
     - name: "Python 3.7.0 on macOS 10.13 (High Sierra)"
       os: osx
@@ -66,8 +82,6 @@ script:
 
 after_success:
   - codecov
-  - mkdir .snapcraft
-  - openssl aes-256-cbc -K $encrypted_b23b1079e659_key -iv $encrypted_b23b1079e659_iv -in Scripts/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d
 
 #after_deploy:
 #  - 
@@ -80,18 +94,3 @@ notifications:
     on_failure: always
 
 #https://docs.travis-ci.com/user/job-lifecycle/
-
-services:
-- docker
-
-deploy:
-  - provider: script
-    script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release beta"
-    skip_cleanup: true
-    on:
-      branch: master
-  - provider: script
-    script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
-    skip_cleanup: true
-    on:
-      branch: develop
