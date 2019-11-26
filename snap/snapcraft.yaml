@@ -51,6 +51,7 @@ parts:
       - libxslt1.1
       - xfonts-base
       - xfonts-scalable
+      - python3-distutils-extra
     requirements:
       - /root/project/requirements.txt
 
