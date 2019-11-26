@@ -22,6 +22,8 @@ ColumnLayout {
 
         model: Specific.Variables.projectOpened ? proxy.statusInfo : null
 
+        visible: model !== null
+
         delegate: Rectangle {
             width: childrenRect.width
             height: parent.height
@@ -37,7 +39,7 @@ ColumnLayout {
                     font.family: Generic.Style.fontFamily
                     font.pointSize: Generic.Style.fontPointSize - 1
                     color: Generic.Style.buttonTextDisabledColor
-                    text: label
+                    text: label + ":"
                 }
                 Text {
                     height: parent.height

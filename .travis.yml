@@ -1,6 +1,18 @@
 language: python            # this works for Linux but is an error on macOS or Windows
 sudo: required
 cache: pip
+#cache:
+#  directories:
+#    - ~/easyDiffraction
+
+env:
+  global:
+    # terminal width
+    - COLUMNS=100
+    # GITHUB_TOKEN
+    - secure: "scbwc6CuiVf7ryKROBNOdbRAr2RyF/rcquGYL5Gsf3CMXukGyT95NNP8KwZLH/MSWg5I9wItb9b0lMxqad3sz28jbr7ARKooC5vfT3A2m5aMN8Y+7QoG3myYirsOjpwDW9zjk7/vjGT1QZh1twr6fg10pLPfZWAGxAbKLTVzcDsvhPu9+9uzvkrZitPc1EhUmjhusF2dnSKqBjYE/dYrz/xHwNGKYSlqkl+CBVBi6T7LC3J6LHUFKNo0QfqkW0EW6hATAWeLXgu9pT917B6BPpwll2oAZT5J9oFbms/szAelzsWBAJedyEIkJ4EzPlk9qokOr61kWFZ+7hkAXfj+Mq7k4VQXorFPWub0sZ+nMtfbAoZ6PO+REpH9BLBQGFwvwpHlp5DvKh+XHtIxFnmm107+AS7vNI94bSbObWDuzbcrwiKZUXNkExjaGQtLI/RV2XeDXIYr6T6SPYW+Ayr7Uutmqv1oUkdqEt1yCxNpsWly09teTac7ZnxgWqewcvr9ayLRC/l9ffAP5PHCErMm67pv8bXEiTRuMzbNTgHxbKOEqtSoEgI1xoU/+J2r+bO6sJs8QzKPNKfQWKyZRu/+KPOkZmKt9yzBQe57frDoEgCaBMGYwFyUyrqBaWKi4xSwcKYfeT3mexQ6pvemfp7+umFU/HAVkHxYLm6MXnu584E="
+    # CODE_SIGN_PSWD_DICT
+    - secure: "MUGB3OUDTpB8ZN70aRBmsCEqeUXsxMgNR5aDrTzgaOR8UIrAhRs30GH8NnASe8VIO6L48SRqGoFeXA4ZZ9h8RFZxQBcPG88/bKzPvPni+WQC5QYF9zbK1mv5IzHfurK08eH05FVz9Mx1BA/L0gviwnP4S4+1ICou0EnnO+sxxGFcGw+ixUpDYPJ2A+R6Dz5OICd2yUVGj3tD2ZYUY+dfnWbTtysb29OMbSMLIMybJ0MOXJ1ozWJibWmyV1tqo4eJ6ZeZKEhH4vKnWtZAeZ6MHLzWLN++jAc3XqxZAJ2czMpsHMeGRx3rjnyGqTXoVFPdmDovRmFZdF7RLYOVWiOKqpc041OMouy2E/dEZ48qJTqkFWQnLqu5HTQCx98RAwIh2czJni0N9DAViv0W/Vj+20JL03hIKYDWXBbigPKFQMI04DobYakBGB/NR3iWhTU4jpG84ttWmtkRfvmPBgIP5zxpJf6xUK6IK02zlENVyzX/X4gZ0cNwGMA7qUpPeBKAVVf8XVf5rSrTPKmH87K1TTbuKn4yP/nx9XqpEcTbkF+LkoyAeCyPEwds3sG9he1uXUd9N+kK/tBC+g444bfHmPJy+6qLS3UK/egX1mweYNVZ6ljA5Aoy4kYlNOJc7XVamjF6aQtBx2yADx5jZJkIhK29Rfy28br4sMaaIDyOysM="
 
 matrix:
   include:
@@ -19,92 +31,41 @@ matrix:
         - source $TRAVIS_BUILD_DIR/.python-venv/bin/activate # activate virtual environment
       env: BADGE=osx
     # Windows
-    - name: "Python 3.7.4 on Windows 10.0"
+    - name: "Python 3.7.0 on Windows 10.0"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
       filter_secrets: false
       before_install:
-        - choco install python --version=3.7.4 # 3.8 fails with cryspy
+        - choco install python --version=3.7.0 # 3.8 fails with cryspy
         - pip install pypiwin32
       env:
         - PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
 
-env:
-  global:
-    # GH_TOKEN
-    - secure: "iUDKM5LbuZIrxqYewO4g8GKbpCvdIwbQckYVX9tj9pP9outFNzLicu7gGpL3gSkl52kzWQk8wtsE27Yx4EYE4i5N6h64Czqenhu+pt0wl84Rne0hq36jugHvXz6L8wGibdM/dq99AS78ctGE733FHgPwv5K7CF4iyWaJlj7CKR1F7UN/HcoFFUJ9yfsIsgYWHYOwniDo6NDVRyI+DI15CwrAQDcOBYP1wIAPDemTciVi3BHiFFS3ORuf32Fug69pIAuO/8mPWJP+seecxcXS4wLbxxru8LFMx3/fPv971QR1c7gZHPAIK9kQUFFVRm7g9giA+hhVFZFfLxzgBBJXpTuQoTDusjTlt+l3om8w692vpMuccZ0/CEAv6vM1P7g+vWur/e6jmi5NvA291bv3ijCRfN6wrYLbhuZx4JqT0R6T/CY/+jAKpfvl/ktqe6KNK/lQJqh9Ug9FO5+/w+lNZyOXFgIlQbijC3DgdyCK2rHlnBS67XCWDixQUYeCC/slhRo0mtkphWg+mNnJT5vq7GFEpLupl4pRfi/HK805Pzj4GjdBZXxTcHzSEwdDZRXb7puoZrmATLQo+jbAqz4UgUs3EKcjXIt66HIeaL8qr6hVDZ51Xhuk+iY9E06DijnqGZ7zIRfXFu3cbSvWwwuPCjtY1qxzlTaG1esWPMI9Mgc="
-    # CODE_SIGN_PSWD_DICT
-    - secure: "MUGB3OUDTpB8ZN70aRBmsCEqeUXsxMgNR5aDrTzgaOR8UIrAhRs30GH8NnASe8VIO6L48SRqGoFeXA4ZZ9h8RFZxQBcPG88/bKzPvPni+WQC5QYF9zbK1mv5IzHfurK08eH05FVz9Mx1BA/L0gviwnP4S4+1ICou0EnnO+sxxGFcGw+ixUpDYPJ2A+R6Dz5OICd2yUVGj3tD2ZYUY+dfnWbTtysb29OMbSMLIMybJ0MOXJ1ozWJibWmyV1tqo4eJ6ZeZKEhH4vKnWtZAeZ6MHLzWLN++jAc3XqxZAJ2czMpsHMeGRx3rjnyGqTXoVFPdmDovRmFZdF7RLYOVWiOKqpc041OMouy2E/dEZ48qJTqkFWQnLqu5HTQCx98RAwIh2czJni0N9DAViv0W/Vj+20JL03hIKYDWXBbigPKFQMI04DobYakBGB/NR3iWhTU4jpG84ttWmtkRfvmPBgIP5zxpJf6xUK6IK02zlENVyzX/X4gZ0cNwGMA7qUpPeBKAVVf8XVf5rSrTPKmH87K1TTbuKn4yP/nx9XqpEcTbkF+LkoyAeCyPEwds3sG9he1uXUd9N+kK/tBC+g444bfHmPJy+6qLS3UK/egX1mweYNVZ6ljA5Aoy4kYlNOJc7XVamjF6aQtBx2yADx5jZJkIhK29Rfy28br4sMaaIDyOysM="
-
-install:
-  - python --version
-  #
-  - python -m pip install --upgrade pip
-  - pip --version
-  #
-  - pip install cryspy==0.1.13
-  - pip install PySide2==5.13.1
-  - pip install pyinstaller==3.5
-  - pip install requests==2.22.0
-  #
-  - pip install pytest
-  - pytest --version
-  #
-  - pip install pytest_mock
-  - pip install pytest-cov
-  - pip install pytest-qt
-  #
-  #- pip install coveralls
+#install:
+#  python -m pip install --upgrade pip
 
 before_script:
-  #- python Scripts/CompilePyResource.py
-  - export RELEASE_NUMBER=`python Scripts/GetReleaseNumber.py`
-  - export TRAVIS_TAG=`python Scripts/GetTravisTag.py $RELEASE_NUMBER $TRAVIS_BRANCH`
-  - export RELEASE_TITLE=easyDiffraction-$TRAVIS_TAG
+  - python --version
+  - pip --version
+  - echo $TRAVIS_OS_NAME
   - echo $TRAVIS_BRANCH
-  - echo $RELEASE_NUMBER
-  - echo $TRAVIS_TAG
-  - echo $RELEASE_TITLE
-  - echo Scripts/PrintLog.py
+  - echo $TRAVIS_PULL_REQUEST
+  #- python Scripts/Project.py # print config
 
 script:
-  # Compile qrc (qt resource file) into python file
-  #- pyside2-rcc App/QmlResource.qrc -o App/QmlResource.py -no-compress
+  - python Scripts/InstallPyPackages.py
   - python Scripts/CopyMissingLibs.py
-  - python Scripts/MakeDist.py
+  #- python Scripts/CompilePyResource.py
+  - python Scripts/RunTests.py
+  - python Scripts/FreezeApp.py
   - python Scripts/MakeInstaller.py
   - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
-  - python Scripts/MakeArchive.py $RELEASE_NUMBER
-  - if [ "$TRAVIS_OS_NAME" == osx ]; then export PYTHONPATH=.:App:App/PyImports:$PYTHONPATH; pytest --cov=App Tests; fi
-  - if [ "$TRAVIS_OS_NAME" != osx ]; then python runTests.py; fi
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then python Scripts/Deploy.py; fi # python Scripts/Deploy.py $GITHUB_TOKEN $TRAVIS_BRANCH
+  #- python Scripts/UpdateWebPage.py
 
-#after_success:
-  #- coveralls
-
-#cache:
-#  directories:
-#    - ~/easyDiffraction
-
-before_deploy:
-  # Set up git user name and tag this commit
-  - git config --local user.name "Travis CI"
-  - git config --local user.email "travis@travis-ci.org"
-  # This writes a changelog. If wanted
-  #- '[ "$TRAVIS_BRANCH" != master ] || cd ../ && pip3 install gitchangelog pystache && echo "output_engine = mustache(\"markdown\")" > .gitchangelog.rc && gitchangelog ^$(git describe --abbrev=0 --tags) HEAD > CHANGELOG'
-
-deploy:
-  - provider: releases # GitHub repository
-    name: $RELEASE_TITLE
-    api_key:
-      secure: "s3uqRW5prwmZp8dFSroXQCUBOFOCVU10iSGMVfBCtn51HDmF/RXDlQw7UJHs8vJJbtY+0tQ2yByCj5nah6VzaXKVyvxl7/VXGgB67LkHaI4idKV8HOqcSShJ1sxGapvMC3u5Ezx8tg3cK09SJnSFXq/xk9NoTdmxuFDX6X9P3jRq/CKM5mkHkOiUWLeU86sulJiBIBdcYoFwIXOKQE5KlDDBFDiI/qnEC98B4lKMSzRQB5VQEXeW+Z4f7KsK7/aS8H+Tw0sA+P81TN8CVXBeWAhBpEzrSAxLGEMRTP5GY/AkiJbdBuJMmHcc1t0S79OBsKQcrV2Yl9CtN4/WuvIH2caX19z39AvfjzDyHMnkDzN0XBv5fvQYla/45PxdmQf8O6GaiITXewBu+1DT9nQzLLaLh6GHz/zdGZeO2/ivwBMQnd8A3+B8YaO5/2dYGndAPDt06ECQBKI6RGvEBfTjApSTnuX07CjAwkXyg39uZo4KRtF1FGSjZdcNaDQGByPNHu4IOM60xDgM7VHI0EBz5YfZMpVs0sVTIsnwe7m+tFzRa00E/mlFdPCUvpYeZxgBJpNIvoBA53R7hUcvPd/xNeTfiT7tF08cAc3rdm+Mmdeewifn91SGunUBwLiNBVLB6YVlIfj2Btkce5fgdLTkVGnBlnawGAZtJwtH1Z6EJR4="
-    skip_cleanup: true
-    draft: true 
-    overwrite: true
-    file_glob: true
-    file: easyDiffraction-*.zip
-    on:
-      all_branches: true
+after_success:
+  - codecov
 
 #after_deploy:
 #  -  |

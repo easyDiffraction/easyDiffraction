@@ -14,7 +14,9 @@ def test_StatusModelModel():
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
 
-    m = Model.StatusModel(calculator)
+    m = Model.StatusModel()
+    m.setCalculator(calculator)
+
 
     assert isinstance(m._statusBarModel, QStandardItemModel)
     assert isinstance(m._chartDisplayModel, QStandardItemModel)
@@ -37,12 +39,12 @@ def test_StatusModelModel():
 
     fr = Qt.UserRole + 1
     offset = 100
-    assert m._statusBarModel.item(0, 0).data(role=fr + 1) == pytest.approx(27413.1)
-    assert m._statusBarModel.item(1, 0).data(role=fr + 1) == 5
+    assert m._statusBarModel.item(0, 0).data(role=fr + 1) == pytest.approx(71.95)
     assert m._statusBarModel.item(2, 0).data(role=fr + 1) == 1
     assert m._statusBarModel.item(3, 0).data(role=fr + 1) == 1
+    assert m._statusBarModel.item(1, 0).data(role=fr + 1) == 5
 
-    assert m._chartDisplayModel.item(0, 0).data(role=fr + offset + 1) == pytest.approx(27413.1)
+    assert m._chartDisplayModel.item(0, 0).data(role=fr + offset + 1) == pytest.approx(71.95)
     assert m._chartDisplayModel.item(1, 0).data(role=fr + offset + 1) == 5
 
     assert m._statusBarModel == m.returnStatusBarModel()
@@ -55,4 +57,6 @@ def test_StatusModelModel_bad_calculator():
 
     # null calculator
     with pytest.raises(AttributeError):
-        m = Model.StatusModel(calculator)
+        m = Model.StatusModel()
+        m.setCalculator(calculator)
+

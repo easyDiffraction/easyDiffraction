@@ -14,7 +14,9 @@ def test_CellParametersModel():
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
 
-    m = Model.CellParametersModel(calculator)
+    m = Model.CellParametersModel()
+    m.setCalculator(calculator)
+
 
     assert m._a_role == 257
     assert m._gamma_role == 262
@@ -46,7 +48,8 @@ def test_CellParametersModel_bad_calculator():
 
     # null calculator
     with pytest.raises(AttributeError):
-        m = Model.CellParametersModel(calculator)
+        m = Model.CellParametersModel()
+        m.setCalculator(calculator)
 
     # empty file
     #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()

@@ -5,14 +5,15 @@ from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 import PyImports.Helpers as Helpers
 
+
 class CellParametersModel(QObject):
-    def __init__(self, calculator, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._project_dict = calculator.asDict()
+        self._project_dict = None
         self._model = QStandardItemModel()
         # set roles
-        self._a_role,         self._b_role,        self._c_role,        self._alpha_role,        self._beta_role,        self._gamma_role = [ Qt.UserRole + 1 + i for i in range(6) ]
+        self._a_role, self._b_role, self._c_role, self._alpha_role, self._beta_role, self._gamma_role = [
+            Qt.UserRole + 1 + i for i in range(6)]
         self._model.setItemRoleNames({
             self._a_role: b'length_a',
             self._b_role: b'length_b',
@@ -20,13 +21,11 @@ class CellParametersModel(QObject):
             self._alpha_role: b'angle_alpha',
             self._beta_role: b'angle_beta',
             self._gamma_role: b'angle_gamma'
-            })
-        # set model
-        self._setModelFromProject()
+        })
 
     def _setModelFromProject(self):
         """Create the model needed for GUI ..."""
-        logging.info("+++++++++++++++++++++++++ setData start") # profiling
+        logging.info("+++++++++++++++++++++++++ setData start")  # profiling
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
             self._model.blockSignals(True)
@@ -37,9 +36,9 @@ class CellParametersModel(QObject):
                 self._b_role: Helpers.nested_get(phase_dict, ['cell', 'length_b', 'value']),
                 self._c_role: Helpers.nested_get(phase_dict, ['cell', 'length_c', 'value']),
                 self._alpha_role: Helpers.nested_get(phase_dict, ['cell', 'angle_alpha', 'value']),
-                self._beta_role:  Helpers.nested_get(phase_dict, ['cell', 'angle_beta',  'value']),
+                self._beta_role: Helpers.nested_get(phase_dict, ['cell', 'angle_beta', 'value']),
                 self._gamma_role: Helpers.nested_get(phase_dict, ['cell', 'angle_gamma', 'value']),
-                })
+            })
             # set model size
             self._model.setColumnCount(1)
             self._model.setRowCount(len(data))
@@ -51,7 +50,7 @@ class CellParametersModel(QObject):
             # unblock signals and emit model layout changed
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++ setData end") # profiling
+        logging.info("+++++++++++++++++++++++++ setData end")  # profiling
 
     def onProjectChanged(self):
         """Define what to do if project dict is changed, e.g. by external library object."""
@@ -60,3 +59,8 @@ class CellParametersModel(QObject):
     def asModel(self):
         """Return model."""
         return self._model
+
+    def setCalculator(self, calculator):
+        calculator.projectDictChanged.connect(self.onProjectChanged)
+        self._project_dict = calculator.asDict()
+        self._setModelFromProject()

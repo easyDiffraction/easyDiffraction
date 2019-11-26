@@ -2,8 +2,8 @@ import os
 import logging
 
 from PySide2.QtCore import QUrl, QObject, Signal, Slot, Property
-from PySide2.QtGui import QStandardItemModel
 
+import PyImports.ProjectSentinel
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.Models.MeasuredDataModel import MeasuredDataModel
 from PyImports.Models.CalculatedDataModel import CalculatedDataModel
@@ -15,8 +15,10 @@ from PyImports.Models.AtomAdpsModel import AtomAdpsModel
 from PyImports.Models.AtomMspsModel import AtomMspsModel
 from PyImports.Models.FitablesModel import FitablesModel
 from PyImports.Models.StatusModel import StatusModel
+from PyImports.ProjectSentinel import ProjectControl
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
+
 
 class Proxy(QObject):
 
@@ -27,63 +29,78 @@ class Proxy(QObject):
         self._main_rcif_path = None
         self._calculator = None
         #
-        self._measured_data_model = None
-        self._calculated_data_model = None
-        self._calculated_headers_model = None
-        self._bragg_peaks_model = None
-        self._cell_parameters_model = None
-        self._cell_box_model = None
-        self._atom_sites_model = None
-        self._atom_adps_model = None
-        self._atom_msps_model = None
-        self._fitables_model = None
-        self._status_model = None
+        self.project_control = ProjectControl()
+        self._measured_data_model = MeasuredDataModel()
+        self._calculated_data_model = CalculatedDataModel()
+        self._bragg_peaks_model = BraggPeaksModel()
+        self._cell_parameters_model = CellParametersModel()
+        self._cell_box_model = CellBoxModel()
+        self._atom_sites_model = AtomSitesModel()
+        self._atom_adps_model = AtomAdpsModel()
+        self._atom_msps_model = AtomMspsModel()
+        self._fitables_model = FitablesModel()
+        self._status_model = StatusModel()
+
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
         self._refinement_result = None
-        self._isValidCif = None
 
     # Load CIF method, accessible from QML
-    @Slot(str)
-    def loadCif(self, main_rcif_path):
+    @Slot()
+    def initialize(self):
         logging.info("")
+        self._main_rcif_path = self.project_control.main_rcif_path
         #
-        self._main_rcif_path = QUrl(main_rcif_path).toLocalFile()
         self._calculator = CryspyCalculator(self._main_rcif_path)
         self._calculator.projectDictChanged.connect(self.projectChanged)
+        # This should pick up on non-valid cif files
+        if not PyImports.ProjectSentinel.check_project_dict(self._calculator.asCifDict()):
+            # Note that new projects also fall into here, so:
+            if not self._calculator.name():
+                self.project_control._isValidCif = False
+                return
         #
-        if not Helpers.check_project_dict(self._calculator.asCifDict()):
-            self._isValidCif = False
-            return
-        #
-        self._measured_data_model = MeasuredDataModel(self._calculator)
-        self._calculated_data_model = CalculatedDataModel(self._calculator)
-        self._bragg_peaks_model = BraggPeaksModel(self._calculator)
-        self._cell_parameters_model = CellParametersModel(self._calculator)
-        self._cell_box_model = CellBoxModel(self._calculator)
-        self._atom_sites_model = AtomSitesModel(self._calculator)
-        self._atom_adps_model = AtomAdpsModel(self._calculator)
-        self._atom_msps_model = AtomMspsModel(self._calculator)
-        self._fitables_model = FitablesModel(self._calculator)
-        self._status_model = StatusModel(self._calculator)
-
+        self._measured_data_model.setCalculator(self._calculator)
+        self._calculated_data_model.setCalculator(self._calculator)
+        self._bragg_peaks_model.setCalculator(self._calculator)
+        self._cell_parameters_model.setCalculator(self._calculator)
+        self._cell_box_model.setCalculator(self._calculator)
+        self._atom_sites_model.setCalculator(self._calculator)
+        self._atom_adps_model.setCalculator(self._calculator)
+        self._atom_msps_model.setCalculator(self._calculator)
+        self._fitables_model.setCalculator(self._calculator)
+        self._status_model.setCalculator(self._calculator)
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
-        self._isValidCif = True
+
+    @Slot(str)
+    def saveProject(self, saveName):
+        self._calculator.saveCifs(self.project_control.tempDir.name)
+        PyImports.ProjectSentinel.writeProject(self.project_control, saveName)
+
+    @Slot()
+    def updateProjectSave(self):
+        self.saveProject(self.project_control._projectFile.name)
+
     # ##############
     # QML Properties
     # ##############
 
+    # Notifications of changes for QML GUI about projectDictChanged,
+    # which calls another signal projectChanged
     projectChanged = Signal()
     project = Property('QVariant', lambda self: self._calculator.asDict(), notify=projectChanged)
     cif = Property('QVariant', lambda self: self._calculator.asCifDict(), notify=projectChanged)
 
+    # Notifications of changes for QML GUI are done, when needed, in the
+    # respective classes via dataChanged.emit() or layotChanged.emit() signals
     measuredData = Property('QVariant', lambda self: self._measured_data_model.asDataModel(), constant=True)
     measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), constant=True)
     calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asDataModel(), constant=True)
-    calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(), constant=True)
+    calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(),
+                                    constant=True)
     braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asDataModel(), constant=True)
     braggPeaksTicks = Property('QVariant', lambda self: self._bragg_peaks_model.asTickModel(), constant=True)
     cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
@@ -94,8 +111,6 @@ class Proxy(QObject):
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
     statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
-
-    validCif = Property(bool, lambda self: self._isValidCif, constant=False)
 
     # ##########
     # REFINEMENT
@@ -162,10 +177,12 @@ class Proxy(QObject):
         if self._main_rcif_path:
             return os.path.dirname(os.path.abspath(self._main_rcif_path))
         return ""
+
     def get_project_url_absolute_path(self):
         if self._main_rcif_path:
             return str(QUrl.fromLocalFile(os.path.dirname(self._main_rcif_path)).toString())
         return ""
+
     project_dir_absolute_path = Property(str, get_project_dir_absolute_path, notify=projectChanged)
     project_url_absolute_path = Property(str, get_project_url_absolute_path, notify=projectChanged)
 
@@ -201,4 +218,3 @@ class Proxy(QObject):
         # Show the generated report in the default browser
         url = os.path.realpath(full_filename)
         Helpers.open_url(url=url)
-

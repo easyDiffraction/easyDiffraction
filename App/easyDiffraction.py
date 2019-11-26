@@ -6,8 +6,6 @@ from PySide2.QtCore import QUrl, Qt, QCoreApplication
 from PySide2.QtWidgets import QApplication
 from PySide2.QtQml import QQmlApplicationEngine
 
-#import QmlResource
-
 from PyImports.Proxy import Proxy
 
 current_dir = os.path.dirname(sys.argv[0])
@@ -42,16 +40,18 @@ if __name__ == '__main__':
 
     proxy = Proxy()
 
-    examples_dir = str(QUrl.fromLocalFile(os.path.join(installationPath(), 'Examples')).toString())
-
-    qml_gui_path = os.path.join(current_dir, "Gui.qml")
-    imports_path = os.path.join(current_dir, "QmlImports")
+    examples_dir_path = str(QUrl.fromLocalFile(os.path.join(installationPath(), 'Examples')).toString())
+    qml_imports_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir, "QmlImports")).toString())
+    qnl_gui_file_path = os.path.join(current_dir, "Gui.qml")
 
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("proxy", proxy)
-    engine.rootContext().setContextProperty("examplesDir", examples_dir)
-    engine.addImportPath(imports_path)
-    engine.load(qml_gui_path)
+    engine.rootContext().setContextProperty("projectControl", proxy.project_control)
+    engine.rootContext().setContextProperty("projectManager", proxy.project_control.manager)
+    engine.rootContext().setContextProperty("examplesDir", examples_dir_path)
+    engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)
+    engine.addImportPath(qml_imports_dir_path)
+    engine.load(qnl_gui_file_path)
     #engine.addImportPath(":/QmlImports")
     #engine.load(":/Gui.qml")
 

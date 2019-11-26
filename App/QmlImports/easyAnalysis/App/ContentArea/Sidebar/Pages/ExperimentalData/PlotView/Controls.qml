@@ -11,8 +11,6 @@ import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
     spacing: 0
-
-
     // Groupbox
 
     GenericAppElements.GroupBox {
@@ -150,46 +148,35 @@ ColumnLayout {
 
     // Groupbox
 
-    GenericAppElements.GroupBox {
-        collapsible: false
-        showBorder: false
-        content: GenericAppElements.RowLayout {
-            GenericAppContentAreaButtons.GoPrevious {
-                text: "Home"
-                ToolTip.text: qsTr("Go to the previous step: Home")
-                onClicked: {
-                    Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
-                }
-                GenericAppElements.GuideWindow {
-                    message: "Click here to go to the previous step: Home.\n\nAlternatively, you can click on the 'Home' button in toolbar."
-                    position: "top"
-                    guideCurrentIndex: 5
-                    toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                    guidesCount: Generic.Variables.ExperimentalDataGuidesCount
-                }
+    GenericAppElements.FlowButtons {
+        documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.3.-experimental-data"
+        goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
+            text: "Home"
+            ToolTip.text: qsTr("Go to the previous step: Home")
+            onClicked: {
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
             }
-            GenericAppContentAreaButtons.GoNext {
-                text: "Sample Model"
-                ToolTip.text: qsTr("Go to the next step: Sample model")
-                onClicked: {
-                    Generic.Variables.dataPageFinished = true
-                    Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
-                }
-                GenericAppElements.GuideWindow {
-                    message: "Click here to go to the next step: Sample model."
-                    position: "top"
-                    guideCurrentIndex: 6
-                    toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                    guidesCount: Generic.Variables.ExperimentalDataGuidesCount
-                }
+            GenericAppElements.GuideWindow {
+                message: "Click here to go to the previous step: Home.\n\nAlternatively, you can click on the 'Home' button in toolbar."
+                position: "top"
+                guideCurrentIndex: 5
+                toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
+                guidesCount: Generic.Variables.ExperimentalDataGuidesCount
             }
-            GenericAppContentAreaButtons.SaveState {
+        }
+        goNextButton: GenericAppContentAreaButtons.GoNext {
+            text: "Sample Model"
+            ToolTip.text: qsTr("Go to the next step: Sample model")
+            onClicked: {
+                Generic.Variables.dataPageFinished = true
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
             }
-            GenericAppContentAreaButtons.Help {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/documentation_use.html#3.2.2.-experimental-data")
-            }
-            GenericAppContentAreaButtons.Bug {
-                onClicked: Qt.openUrlExternally("https://easydiffraction.github.io/contact.html")
+            GenericAppElements.GuideWindow {
+                message: "Click here to go to the next step: Sample model."
+                position: "top"
+                guideCurrentIndex: 6
+                toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
+                guidesCount: Generic.Variables.ExperimentalDataGuidesCount
             }
         }
     }

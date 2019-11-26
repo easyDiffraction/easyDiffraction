@@ -37,17 +37,31 @@ class CryspyCalculator(QObject):
         self._main_rcif = pycifstar.read_star_file(self._main_rcif_path)
         if "_phases" in str(self._main_rcif):
             phases_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_phases"].value)
-            with open(phases_rcif_path, 'r') as f:
-                phases_rcif_content = f.read()
-                full_rcif_content += phases_rcif_content
+            if os.path.isfile(phases_rcif_path):
+                with open(phases_rcif_path, 'r') as f:
+                    phases_rcif_content = f.read()
+                    full_rcif_content += phases_rcif_content
         if "_experiments" in str(self._main_rcif):
             experiments_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_experiments"].value)
-            with open(experiments_rcif_path, 'r') as f:
-                experiments_rcif_content = f.read()
-                full_rcif_content += experiments_rcif_content
+            if os.path.isfile(experiments_rcif_path):
+                with open(experiments_rcif_path, 'r') as f:
+                    experiments_rcif_content = f.read()
+                    full_rcif_content += experiments_rcif_content
         rho_chi = cryspy.RhoChi()
         rho_chi.from_cif(full_rcif_content)
         return rho_chi
+
+    def saveCifs(self, saveDir):
+        main_block = self._main_rcif
+        main_block.to_file(os.path.join(saveDir, 'main.cif'))
+
+        phases_block = pycifstar.Global()
+        phases_block.take_from_string(self._cryspy_obj.crystals[0].to_cif)
+        phases_block.to_file(os.path.join(saveDir, 'phases.cif'))
+
+        exp_block = pycifstar.Global()
+        exp_block.take_from_string(self._cryspy_obj._RhoChi__experiments[0].to_cif)
+        exp_block.to_file(os.path.join(saveDir, 'experiments.cif'))
 
     def setAppDict(self):
         """Set application state"""
@@ -612,14 +626,14 @@ class CryspyCalculator(QObject):
             chi_sq, n_res = experiment.calc_chi_sq(self._cryspy_obj.crystals)
             logging.info("calc_chi_sq end") # profiling
 
-            self.final_chi_square = chi_sq
+            self.final_chi_square = chi_sq / n_res
 
             # Main parameters
             self._info_dict['chi_squared'] = {
                 'header': '',
                 'tooltip': '',
                 'url': '',
-                'value': float(chi_sq) }
+                'value': float(self.final_chi_square) }
             self._info_dict['n_res'] = {
                 'header': '',
                 'tooltip': '',

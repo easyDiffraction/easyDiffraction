@@ -1,10 +1,16 @@
 {
 "files": [
     "App/easyDiffraction.py",
-    "App/PyImports/Proxy.py",
+
     "App/PyImports/Helpers.py",
+    "App/PyImports/ProjectIO.py",
+    "App/PyImports/ProjectModel.py",
+    "App/PyImports/Proxy.py",
     "App/PyImports/Refinement.py",
+    "App/PyImports/StatusObjects.py",
+
     "App/PyImports/Calculators/CryspyCalculator.py",
+
     "App/PyImports/Models/MeasuredDataModel.py",
     "App/PyImports/Models/AtomSitesModel.py",
     "App/PyImports/Models/AtomAdpsModel.py",
@@ -14,7 +20,10 @@
     "App/PyImports/Models/CalculatedDataModel.py",
     "App/PyImports/Models/BraggPeaksModel.py",
     "App/PyImports/Models/FitablesModel.py",
+    "App/PyImports/Models/StatusModel.py",
+
     "App/Gui.qml",
+
     "App/QmlResource.qrc"
     ]
 }
