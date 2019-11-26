@@ -22,19 +22,11 @@ apps:
           - wayland
           - x11
           - unity7
-        desktop: usr/share/applications/easyDiffraction.desktop
 
 parts:
   copy-app-files:
     plugin: dump
     source: ./App
-
-  copy-desktop-icon-files:
-    plugin: dump
-    source: snap/gui
-    organize:
-      easyDiffraction.png: usr/share/applications/easyDiffraction.png
-      easyDiffraction.desktop: usr/share/applications/easyDiffraction.desktop
 
   easydiffraction:
     plugin: python
