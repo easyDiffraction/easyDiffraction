@@ -128,7 +128,7 @@ ColumnLayout {
                 onAccepted: {
                     proxy.saveProject(fileUrl)
                     fileDialogSaveProject.close()
-                    if (projectControl.savedProject == false) {
+                    if (projectControl.savedProject === false) {
                         failSaveDialog.visible = true
                     }
                 }
