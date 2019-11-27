@@ -25,15 +25,18 @@ matrix:
         - docker
       before_deploy:
         - mkdir .snapcraft
-        - openssl aes-256-cbc -K $encrypted_b23b1079e659_key -iv $encrypted_b23b1079e659_iv -in Scripts/travis_snapcraft.cfg -out .snapcraft/snapcraft.cfg -d
       deploy:
         - provider: script
-          script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release beta"
+          script:
+            - openssl aes-256-cbc -K $encrypted_b23b1079e659_key -iv $encrypted_b23b1079e659_iv -in Certificates/snapCredentialsBeta.enc -out .snapcraft/snapcraft.cfg -d
+            - docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release beta"
           skip_cleanup: true
           on:
             branch: master
         - provider: script
-          script: docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
+          script:
+            - openssl aes-256-cbc -K $encrypted_b23b1079e659_key -iv $encrypted_b23b1079e659_iv -in Certificates/snapCredentialsEdge.enc -out .snapcraft/snapcraft.cfg -d
+            - docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
           skip_cleanup: true
           on:
             branch: develop
@@ -84,7 +87,7 @@ after_success:
   - codecov
 
 #after_deploy:
-#  - 
+#  -
 
 notifications:
   slack:
