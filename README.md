@@ -4,11 +4,11 @@
 
 Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for more details.
 
-[![][25]][20] [![][26]][20] [![][27]][20]
+[![][25]][20] [![][26]][20] [![][27]][20] [![][33]][34] 
 
-[![][32]][31]
+[![][35]][30] [![][32]][31]
 
-[![][35]][30] [![][45]][40] [![][55]][50]
+[![][45]][40] [![][55]][50]
 
 [![][28]][21]
 
@@ -40,3 +40,5 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 <!---SnapStatus--->
 [32]: https://snapcraft.io//easydiffraction/badge.svg
 [31]: https://snapcraft.io/easydiffraction
+[33]: https://build.snapcraft.io/badge/easyDiffraction/easyDiffraction.svg
+[34]: https://build.snapcraft.io/user/easyDiffraction/easyDiffraction
