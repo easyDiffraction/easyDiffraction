@@ -106,7 +106,8 @@ qtifw:
   installerbase_path: null
 # release
 release:
-  version: 0.3.7
-  date: 25 Nov 2019
+  version: 0.3.8
+  date: 27 Nov 2019
   changes: # Get from pull requests description?
-  - Project management added
+  - Added linux snap deployment
+  - Fix guide windows
