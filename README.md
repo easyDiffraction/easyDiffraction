@@ -6,11 +6,11 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 
 [![][25]][20] [![][26]][20] [![][27]][20]
 
+[![][32]][31]
+
 [![][35]][30] [![][45]][40] [![][55]][50]
 
 [![][28]][21]
-
-[![][32]][31]
 
 <!---Travis CI Build Status--->
 [20]: https://travis-ci.org/easyDiffraction/easyDiffraction
