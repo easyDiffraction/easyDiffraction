@@ -26,7 +26,7 @@ matrix:
       before_deploy:
         - mkdir .snapcraft
         - openssl aes-256-cbc -K $encrypted_b23b1079e659_key -iv $encrypted_b23b1079e659_iv -in Certificates/snapCredentials.tar.enc -out Certificates/snapCredentials.tar -d
-        - tar zvf Certificates/snapCredentials.tar -C Certificates
+        - tar xvf Certificates/snapCredentials.tar -C Certificates
       deploy:
         - provider: script
           script: mv Certificates/snapCredentialsBeta .snapcraft/snapcraft.cfg && docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release beta"
