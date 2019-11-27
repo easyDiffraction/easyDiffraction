@@ -30,6 +30,7 @@ ColumnLayout {
 
                 onClicked: fileDialogCreateProject.open()
 
+                /*
                 GenericAppElements.GuideWindow {
                     message: "Create a new project."
                     position: "left"
@@ -37,6 +38,7 @@ ColumnLayout {
                     toolbarCurrentIndex: Generic.Variables.HomeIndex
                     guidesCount: Generic.Variables.HomeGuidesCount
                 }
+                */
             }
 
             GenericAppContentAreaButtons.Open {
@@ -67,6 +69,7 @@ ColumnLayout {
 
                 onClicked: fileDialogSaveProject.open()
 
+                /*
                 GenericAppElements.GuideWindow {
                     message: "Click here to save a project."
                     position: "left"
@@ -74,6 +77,7 @@ ColumnLayout {
                     toolbarCurrentIndex: Generic.Variables.HomeIndex
                     guidesCount: Generic.Variables.HomeGuidesCount
                 }
+                */
 
             }
 
@@ -124,7 +128,7 @@ ColumnLayout {
                 onAccepted: {
                     proxy.saveProject(fileUrl)
                     fileDialogSaveProject.close()
-                    if (projectControl.savedProject == false) {
+                    if (projectControl.savedProject === false) {
                         failSaveDialog.visible = true
                     }
                 }
@@ -246,7 +250,7 @@ ColumnLayout {
         GenericAppElements.GuideWindow {
             message: "The sidebar groups can be folded and unfolded.\n\nClick on the group name to unfold the group.\n\nDisabled groups are not implemented yet."
             position: "left"
-            guideCurrentIndex: 3
+            guideCurrentIndex: 2
             toolbarCurrentIndex: Generic.Variables.HomeIndex
             guidesCount: Generic.Variables.HomeGuidesCount
         }
@@ -299,7 +303,7 @@ ColumnLayout {
         GenericAppElements.GuideWindow {
             message: "Application user guides and animated intro\ncan be disabled or enabled here."
             position: "left"
-            guideCurrentIndex: 4
+            guideCurrentIndex: 3
             toolbarCurrentIndex: Generic.Variables.HomeIndex
             guidesCount: Generic.Variables.HomeGuidesCount
         }
@@ -325,7 +329,7 @@ ColumnLayout {
             GenericAppElements.GuideWindow {
                 message: "Click here to go to the next step: Experimental data."
                 position: "top"
-                guideCurrentIndex: 5
+                guideCurrentIndex: 4
                 toolbarCurrentIndex: Generic.Variables.HomeIndex
                 guidesCount: Generic.Variables.HomeGuidesCount
             }

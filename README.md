@@ -6,6 +6,8 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 
 [![][25]][20] [![][26]][20] [![][27]][20]
 
+[![][32]][31]
+
 [![][35]][30] [![][45]][40] [![][55]][50]
 
 [![][28]][21]
@@ -34,3 +36,7 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 <!---Code coverage--->
 [21]: https://codecov.io/gh/easyDiffraction/easyDiffraction
 [28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/master/graph/badge.svg
+
+<!---SnapStatus--->
+[32]: https://snapcraft.io//easydiffraction/badge.svg
+[31]: https://snapcraft.io/easydiffraction
