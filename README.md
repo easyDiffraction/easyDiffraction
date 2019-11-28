@@ -28,7 +28,7 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 
 <!---GitHub Latest Release--->
 [30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.7
-[35]: https://img.shields.io/badge/Release-v0.3.7_(25_Nov_2019)-informational.svg
+[35]: https://img.shields.io/badge/Release-v0.3.8_(27_Nov_2019)-informational.svg
 
 <!---Snap Latest Release--->
 [32]: https://snapcraft.io//easydiffraction/badge.svg
