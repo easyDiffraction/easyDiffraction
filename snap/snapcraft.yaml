@@ -13,6 +13,12 @@ icon: snap/gui/easyDiffraction.png
 architectures:
   - build-on: amd64
 
+slots:
+  easydiffraction-svc:
+    interface: dbus
+    bus: session
+    name: org.easy.diffraction
+
 apps:
     easydiffraction:
         command: python3 $SNAP/easyDiffraction.py
@@ -25,6 +31,8 @@ apps:
           - desktop
           - desktop-legacy
           - removable-media
+        slots:
+          - easydiffraction-svc
 
 parts:
   copy-app-files:
