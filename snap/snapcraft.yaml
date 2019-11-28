@@ -22,6 +22,9 @@ apps:
           - wayland
           - x11
           - unity7
+          - desktop
+          - desktop-legacy
+          - removable-media
 
 parts:
   copy-app-files:
