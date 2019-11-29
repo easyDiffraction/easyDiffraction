@@ -137,7 +137,7 @@ When in doubt, the best is to follow PEP 257 (<https://www.python.org/dev/peps/p
     try:
         ...
     except:
-    	    ...
+        ...
     ```
     unless there is a very good reason. If so, add a comment justifying the reasoning and a corresponding pylint exception so this code does not get flagged.
 -   If you catch an exception and all you do is calling pass or print, you have not dealt with the error properly.
@@ -172,10 +172,12 @@ When in doubt - follow [PEP 8](http://www.python.org/dev/peps/pep-0008/) (<https
     ```python
     max_bins = 7
     if i < max_bins:
+      ...
     ```
     Not:
     ```python
-    if i < 7
+    if i < 7:
+      ...
     ```
 -   Ideally, the code should conform to the [SOLID](https://en.wikipedia.org/wiki/SOLID) principles.
 
@@ -209,6 +211,7 @@ When in doubt - follow [PEP 8](http://www.python.org/dev/peps/pep-0008/) (<https
 -   Only the person(s) responsible should be tasked with merging develop → master.
 -   Remote work branches and draft releases should be deleted at final release
 -   When merging a branch with multiple commits use --squash or interactively rebase before pushing to master.
+
     ![](git.png)
 
 ## Code Reviews
@@ -272,7 +275,6 @@ The proposed access to the core functionality should be consistent for all persp
     ```python
     def fit(self, msg_q=None, q=None, handler=None, curr_thread=None, ftol=1.49012e-8, reset_flag=False):
       # type: (CalcThread.queue, CalcThread.queue, FitHandler, CalcThread, float, bool) -> Union[CalcThread.queue, FResult]
-      pass
     ```
 -   In cases where several pieces of information are calculated at the same time, a list of outputs, a dictionary, or an output object that contains the computed data should be returned
 -   Error codes from a method should never be returned - use exceptions
