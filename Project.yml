@@ -3,6 +3,9 @@ project:
   name: easyDiffraction
   dir_path: null
   subdirs:
+    app:
+      name: App
+      path: null
     distribution:
       name: Distribution
       path: null

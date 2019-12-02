@@ -36,5 +36,6 @@ if __name__ == '__main__':
         'pytest_mock==1.12.1',
         'pytest-cov==2.8.1',
         'pytest-qt==3.2.2',
+        'wily==1.13.0',
         'codecov==2.0.15',
         )

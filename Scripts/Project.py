@@ -16,6 +16,7 @@ class Config():
         self.__dict__ = self._loadYaml(self._config_dir, self._config_name)
         # project
         self.__dict__['project']['dir_path'] = os.getcwd() # ??? self._config_dir
+        self.__dict__['project']['subdirs']['app']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['app']['name'])
         self.__dict__['project']['subdirs']['distribution']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['distribution']['name'])
         self.__dict__['project']['subdirs']['scripts']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['scripts']['name'])
         self.__dict__['project']['subdirs']['certificates']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['certificates']['name'])
