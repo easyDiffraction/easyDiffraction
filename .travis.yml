@@ -17,9 +17,11 @@ env:
 matrix:
   include:
     # Linux
-    - name: "Python 3.7.1 on Ubuntu Linux 16.04 (Xenial)"
+    - name: "Python 3.7.1 on Linux Ubuntu 18.04 (Bionic Beaver)"
+    #- name: "Python 3.7.1 on Linux Ubuntu 16.04 (Xenial)"
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
-      dist: xenial
+      dist: bionic
+      #dist: xenial
       env: BADGE=linux
       services:
         - docker
