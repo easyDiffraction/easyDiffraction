@@ -2,6 +2,7 @@
 
 import os
 import subprocess
+from distutils import dir_util
 import Project
 import Functions
 
@@ -43,3 +44,17 @@ if __name__ == "__main__":
             '{0}/{1}.app/Contents/Info.plist'.format(distribution_dir_path, app_name)
             )
         print("+ Succeeded to add hidpi support")
+
+    if os_name == 'linux':
+        missing_plugins = config['pyinstaller']['missing_plugins'][os_name]
+        pyside2_path = config['pyinstaller']['lib_path']['pyside2']
+        app_plugins_path = os.path.join(distribution_dir_path, app_name, 'PySide2', 'plugins')
+
+        for relative_dir_path in missing_plugins:
+            src_dir_name = os.path.basename(relative_dir_path)
+            src_dir_path = os.path.join(pyside2_path, relative_dir_path)
+            dst_dir_path = os.path.join(app_plugins_path, src_dir_name)
+            print("= source:     ", src_dir_path)
+            print("+ destination:", app_plugins_path)
+            dir_util.copy_tree(src_dir_path, dst_dir_path)
+        print("+ Succeeded to copy missing EGL and GLX plugins")

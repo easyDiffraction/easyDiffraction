@@ -84,6 +84,11 @@ pyinstaller:
     - shiboken2.abi3.dll
     - MSVCP140.dll
     linux: []
+  missing_plugins:
+    osx: []
+    windows: []
+    linux:
+    - Qt/plugins/xcbglintegrations # libqxcb-egl-integration.so and libqxcb-glx-integration.so
   separator:
     osx: ':'
     windows: ;
