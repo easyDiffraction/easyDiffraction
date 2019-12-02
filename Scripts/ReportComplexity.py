@@ -32,9 +32,11 @@ if __name__ == "__main__":
     app_dir_path = config['project']['subdirs']['app']['path']
     file_paths = pyFilePaths(app_dir_path)
 
+    # if Travis
     if environmentVariable('TRAVIS_BRANCH'):
         print('Not implemented yet')
 
+    # if local machine
     else:
         Functions.runAsIs(
             'wily',
