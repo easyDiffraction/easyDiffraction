@@ -26,7 +26,7 @@ def printTitle(title):
     print(colorTitle(title))
     print(colorTitle(empty_title))
 
-def run(*args, report_errors=True, report_success=False):
+def run(*args, report_success=False, report_errors=True, exit_on_error=True):
     result = subprocess.run(
         args,
         #capture_output=True,
@@ -39,7 +39,8 @@ def run(*args, report_errors=True, report_success=False):
         print("+ Success:{0}{1}".format(os.linesep, result.stdout))
     if report_errors and result.stderr:
         print("- Fail:{0}{1}".format(os.linesep, result.stderr))
-        sys.exit()
+        if exit_on_error:
+            sys.exit()
 
 if __name__ == "__main__":
     print('before')
