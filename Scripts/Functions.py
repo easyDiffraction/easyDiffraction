@@ -26,10 +26,18 @@ def printTitle(title):
     print(colorTitle(title))
     print(colorTitle(empty_title))
 
-def run(*args, report_success=False, report_errors=True, exit_on_error=True):
+def runAsIs(*args):
     result = subprocess.run(
         args,
-        #capture_output=True,
+        capture_output=False,
+        universal_newlines=True,    # converts the output to a string instead of a byte array.
+        #check=True                  # forces the Python method to throw an exception if the underlying process encounters errors
+    )
+
+def run(*args, capture_output=False, exit_on_error=True):
+    result = subprocess.run(
+        args,
+        capture_output=capture_output,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         universal_newlines=True,    # converts the output to a string instead of a byte array.
