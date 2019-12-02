@@ -46,8 +46,8 @@ def run(*args, report_success=False, report_errors=True, exit_on_error=True):
         print("+ Success:{0}{1}".format(os.linesep, result.stdout))
     if report_errors and result.stderr:
         print("- Fail:{0}{1}".format(os.linesep, result.stderr))
-        if exit_on_error:
-            sys.exit()
+    if exit_on_error and result.stderr:
+        sys.exit()
 
 if __name__ == "__main__":
     print('before')
