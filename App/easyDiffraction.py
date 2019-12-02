@@ -3,6 +3,7 @@ import sys
 import logging
 
 from PySide2.QtCore import QUrl, Qt, QCoreApplication
+from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import QApplication
 from PySide2.QtQml import QQmlApplicationEngine
 
@@ -37,6 +38,7 @@ if __name__ == '__main__':
     app.setOrganizationName("easyDiffraction")
     app.setOrganizationDomain("easyDiffraction.org")
     app.setApplicationName("easyDiffraction")
+    app.setWindowIcon(QIcon(os.path.join(current_dir, 'QmlImports', 'EasyDiffraction', 'Resources', 'Icons', 'App.png')))
 
     proxy = Proxy()
 
@@ -50,6 +52,7 @@ if __name__ == '__main__':
     engine.rootContext().setContextProperty("projectManager", proxy.project_control.manager)
     engine.rootContext().setContextProperty("examplesDir", examples_dir_path)
     engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)
+
     engine.addImportPath(qml_imports_dir_path)
     engine.load(qnl_gui_file_path)
     #engine.addImportPath(":/QmlImports")
