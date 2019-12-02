@@ -75,7 +75,6 @@ before_script:
   - echo $TRAVIS_PULL_REQUEST
   - echo $TRAVIS_TAG
   #- python Scripts/Project.py # print config
-  - python Scripts/ReportComplexity.py
 
 script:
   - python Scripts/InstallPyPackages.py
@@ -89,6 +88,7 @@ script:
   - python Scripts/UpdateWebPage.py
 
 after_success:
+  - python Scripts/ReportComplexity.py
   - codecov
 
 #after_deploy:
