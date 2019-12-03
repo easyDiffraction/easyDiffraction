@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+from distutils import dir_util
 import Project
 import BasicFunctions
 
@@ -38,11 +39,11 @@ def freezeApp():
 def osDependentAddons():
     config = Project.Config()
     os_name = config['os']['name']
+    app_name = config['app']['name']
+    distribution_dir_path = config['project']['subdirs']['distribution']['path']
     if os_name == 'osx':
         message = "add hidpi support ({0})".format(os_name)
         try:
-            distribution_dir_path = config['project']['subdirs']['distribution']['path']
-            app_name = config['app']['name']
             BasicFunctions.run(
                 'plutil',
                 '-insert', 'NSHighResolutionCapable',
@@ -57,7 +58,6 @@ def osDependentAddons():
     elif os_name == 'linux':
         message = "copy missing EGL and GLX plugins ({0})".format(os_name)
         try:
-            from distutils import dir_util
             missing_plugins = config['pyinstaller']['missing_plugins'][os_name]
             pyside2_path = config['pyinstaller']['lib_path']['pyside2']
             app_plugins_path = os.path.join(distribution_dir_path, app_name, 'PySide2', 'plugins')

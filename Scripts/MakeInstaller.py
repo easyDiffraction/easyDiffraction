@@ -43,7 +43,7 @@ def osDependentPreparation():
         else:
             BasicFunctions.printSuccessMessage(message)
     else:
-        message = "No preparation needed for os '{0}'".format(os_name)
+        message = "* No preparation needed for os '{0}'".format(os_name)
         print(message)
 
 def installQtInstallerFramework():
