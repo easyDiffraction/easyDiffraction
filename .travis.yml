@@ -76,10 +76,10 @@ before_script:
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_PULL_REQUEST
   - echo $TRAVIS_TAG
-  - python Scripts/Project.py # print config
 
 script:
   - python Scripts/InstallPyPackages.py
+  - python Scripts/Project.py # print config
   - python Scripts/CopyMissingLibs.py
   #- python Scripts/CompilePyResource.py
   - python Scripts/RunTests.py
