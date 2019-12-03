@@ -2,7 +2,7 @@
 
 import os
 import Project
-import Functions
+import BasicFunctions
 
 def freezeApp():
     message = "freeze app"
@@ -15,7 +15,7 @@ def freezeApp():
         cryspy_path = config['pyinstaller']['lib_path']['cryspy']
         icon_ext = config['app']['icon']['ext'][os_name]
         separator = config['pyinstaller']['separator'][os_name]
-        Functions.run(
+        BasicFunctions.run(
             'pyinstaller', '{0}/App/{1}.py'.format(project_dir_path, project_name),
             '--name', project_name,                                                 # Name to assign to the bundled app and spec file (default: first script’s basename)
             '--noconfirm',                                                          # Replace output directory (default: SPECPATH/dist/SPECNAME) without asking for confirmation
@@ -30,10 +30,10 @@ def freezeApp():
             '--icon', '{0}/App/QmlImports/{1}/Resources/Icons/App.{2}'.format(project_dir_path, project_name, icon_ext)
             )
     except Exception as exception:
-        Functions.printFailMessage(message, exception)
+        BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
-        Functions.printSuccessMessage(message)
+        BasicFunctions.printSuccessMessage(message)
 
 def osDependentAddons():
     config = Project.Config()
@@ -42,18 +42,18 @@ def osDependentAddons():
         try:
             distribution_dir_path = config['project']['subdirs']['distribution']['path']
             app_name = config['app']['name']
-            Functions.run(
+            BasicFunctions.run(
                 'plutil',
                 '-insert', 'NSHighResolutionCapable',
                 '-bool', 'YES',
                 '{0}/{1}.app/Contents/Info.plist'.format(distribution_dir_path, app_name)
             )
         except Exception as exception:
-            Functions.printFailMessage(message, exception)
+            BasicFunctions.printFailMessage(message, exception)
             sys.exit()
         else:
             message = "add hidpi support ({0})".format(os_name)
-            Functions.printSuccessMessage(message)
+            BasicFunctions.printSuccessMessage(message)
     elif os_name == 'linux':
         try:
             from distutils import dir_util
@@ -68,16 +68,16 @@ def osDependentAddons():
                 print("+ destination:", app_plugins_path)
                 dir_util.copy_tree(src_dir_path, dst_dir_path)
         except Exception as exception:
-            Functions.printFailMessage(message, exception)
+            BasicFunctions.printFailMessage(message, exception)
             sys.exit()
         else:
             message = "copy missing EGL and GLX plugins ({0})".format(os_name)
-            Functions.printSuccessMessage(message)
+            BasicFunctions.printSuccessMessage(message)
     else:
         message = "No addons needed for os '{0}'".format(os_name)
         print(message)
 
 if __name__ == "__main__":
-    Functions.printTitle('Freeze app by PyInstaller')
+    BasicFunctions.printTitle('Freeze app by PyInstaller')
     freezeApp()
     osDependentAddons()

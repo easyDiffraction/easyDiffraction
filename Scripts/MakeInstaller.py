@@ -4,6 +4,7 @@ import os, sys
 import xml, dicttoxml
 import datetime
 import Project
+import BasicFunctions
 import Functions
 
 def downloadQtInstallerFramework():
@@ -15,10 +16,10 @@ def downloadQtInstallerFramework():
             destination=config['qtifw']['setup']['download_path']
         )
     except Exception as exception:
-        Functions.printFailMessage(message, exception)
+        BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
-        Functions.printSuccessMessage(message)
+        BasicFunctions.printSuccessMessage(message)
 
 def osDependentPreparation():
     config = Project.Config()
@@ -28,19 +29,19 @@ def osDependentPreparation():
         try:
             Functions.attachDmg(config['qtifw']['setup']['download_path'])
         except Exception as exception:
-            Functions.printFailMessage(message, exception)
+            BasicFunctions.printFailMessage(message, exception)
             sys.exit()
         else:
-            Functions.printSuccessMessage(message)
+            BasicFunctions.printSuccessMessage(message)
     elif os_name == 'linux':
         try:
             Functions.setEnvVariable("QT_QPA_PLATFORM", "minimal")
             Functions.addReadPermission(config['qtifw']['setup']['exe_path'])
         except Exception as exception:
-            Functions.printFailMessage(message, exception)
+            BasicFunctions.printFailMessage(message, exception)
             sys.exit()
         else:
-            Functions.printSuccessMessage(message)
+            BasicFunctions.printSuccessMessage(message)
     else:
         message = "No preparation needed for os '{0}'".format(os_name)
         print(message)
@@ -54,10 +55,10 @@ def installQtInstallerFramework():
             silent_script=config['scripts']['silent_install']
         )
     except Exception as exception:
-        Functions.printFailMessage(message, exception)
+        BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
-        Functions.printSuccessMessage(message)
+        BasicFunctions.printSuccessMessage(message)
 
 def installerConfigXml():
     message = "create config.xml content"
@@ -72,7 +73,7 @@ def installerConfigXml():
         elif os_name == 'linux':
             target_dir = '@HomeDir@/{0}'.format(app_name)
         else:
-            Functions.printFailMessage("Unsupported os '{0}'".format(os_name))
+            BasicFunctions.printFailMessage("Unsupported os '{0}'".format(os_name))
             sys.exit()
         pydict = {
             'Installer': {
@@ -94,10 +95,10 @@ def installerConfigXml():
         #raw_xml = html.fromstring(raw_xml)
         #raw_xml = etree.tostring(raw_xml, xml_declaration=False, encoding='unicode', pretty_print=True)#.decode()
     except Exception as exception:
-        Functions.printFailMessage(message, exception)
+        BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
-        Functions.printSuccessMessage(message)
+        BasicFunctions.printSuccessMessage(message)
         return pretty_xml
 
 def installerPackageXml():
@@ -125,10 +126,10 @@ def installerPackageXml():
         raw_xml = dicttoxml.dicttoxml(pydict, root=False, attr_type=False)
         pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
     except Exception as exception:
-        Functions.printFailMessage(message, exception)
+        BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
-        Functions.printSuccessMessage(message)
+        BasicFunctions.printSuccessMessage(message)
         return pretty_xml
 
 def createInstallerSourceDir():
@@ -144,16 +145,16 @@ def createInstallerSourceDir():
         Functions.moveDir(source=config['app']['freezed']['path'], destination=config['installer']['packages_data_path'])
         Functions.moveDir(source=config['project']['subdirs']['examples']['path'], destination=config['installer']['packages_data_path'])
     except Exception as exception:
-        Functions.printFailMessage(message, exception)
+        BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
-        Functions.printSuccessMessage(message)
+        BasicFunctions.printSuccessMessage(message)
 
 def createInstallerFile():
     message = "create installer file"
     try:
         config = Project.Config()
-        Functions.run(
+        BasicFunctions.run(
             config['qtifw']['binarycreator_path'],
             '--verbose',
             '--offline-only',
@@ -163,13 +164,13 @@ def createInstallerFile():
             config['app']['installer']['exe_path']
         )
     except Exception as exception:
-        Functions.printFailMessage(message, exception)
+        BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
-        Functions.printSuccessMessage(message)
+        BasicFunctions.printSuccessMessage(message)
 
 if __name__ == "__main__":
-    Functions.printTitle('Create Installer')
+    BasicFunctions.printTitle('Create Installer')
     downloadQtInstallerFramework()
     osDependentPreparation()
     installQtInstallerFramework()

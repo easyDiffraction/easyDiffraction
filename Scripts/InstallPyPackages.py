@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-import Functions
+import BasicFunctions
 
 # FUNCTIONS
 
@@ -10,12 +10,12 @@ def printSysPath():
         if path: print(path)
 
 def upgradePip():
-    Functions.run('python', '-m', 'pip', 'install', '--upgrade', 'pip')
+    BasicFunctions.run('python', '-m', 'pip', 'install', '--upgrade', 'pip')
     print("+ Succeeded to upgrade PIP")
 
 def install(*packages):
     for package in packages:
-        Functions.run('pip', 'install', package)
+        BasicFunctions.run('pip', 'install', package)
         print("+ Succeeded to install '{0}'".format(package))
 
 # MAIN
@@ -23,7 +23,7 @@ def install(*packages):
 if __name__ == '__main__':
     #Functions.printTitle('Print sys path')
     #printSysPath()
-    Functions.printTitle('Upgrade PIP and install packages')
+    BasicFunctions.printTitle('Upgrade PIP and install packages')
     upgradePip()
     install(
         'cryspy==0.1.13',

@@ -2,7 +2,7 @@
 
 import os
 import Project
-import Functions
+import BasicFunctions
 
 def pyFilePaths(input_dir_path):
     parent_dir_path = os.path.dirname(input_dir_path)
@@ -25,7 +25,7 @@ def environmentVariable(name, default=None):
         return default
 
 if __name__ == "__main__":
-    Functions.printTitle('Report Complexity')
+    BasicFunctions.printTitle('Report Complexity')
 
     config = Project.Config()
     project_dir_path = config['project']['dir_path']
@@ -38,13 +38,13 @@ if __name__ == "__main__":
 
     # if local machine
     else:
-        Functions.runAsIs(
+        BasicFunctions.runAsIs(
             'wily',
             'build',                                                            # By default, it will assume the directory is a git repository and will scan back through 50 revisions
             app_dir_path,                                                       # directory to be scanned
             '--max-revisions', '1',                                             # -n, --max-revisions <max_revisions>: The maximum number of historical commits to archive
             )
-        Functions.runAsIs(
+        BasicFunctions.runAsIs(
             'wily',
             'diff',                                                             # compare the last cached revision of the code with the current metrics (for the current environment).
             *file_paths,                                                        # to see the changes in metrics for a list of files
