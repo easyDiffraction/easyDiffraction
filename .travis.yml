@@ -79,7 +79,7 @@ before_script:
 
 script:
   - python Scripts/InstallPyPackages.py
-  - python Scripts/Project.py # print config
+  #- python Scripts/Project.py # print config
   - python Scripts/CopyMissingLibs.py
   #- python Scripts/CompilePyResource.py
   - python Scripts/RunTests.py
