@@ -47,7 +47,7 @@ class Config():
         self.__dict__['installer']['config_control_script']['path'] = os.path.join(self.__dict__['project']['subdirs']['scripts']['path'], self.__dict__['installer']['config_control_script']['name'])
         self.__dict__['installer']['package_install_script']['path'] = os.path.join(self.__dict__['project']['subdirs']['scripts']['path'], self.__dict__['installer']['package_install_script']['name'])
         # app installer input
-        self.__dict__['installer']['dir_name'] = self.__dict__['app']['name'] + self.__dict__['app']['installer']['name_suffix']
+        self.__dict__['installer']['dir_name'] = self.__dict__['app']['name'] + self.__dict__['app']['installer']['name_suffix'] + 'Input' # without 'Input' installer dir has the same name as installer app on Linux
         self.__dict__['installer']['dir_path'] = os.path.join(self.__dict__['project']['subdirs']['distribution']['path'], self.__dict__['installer']['dir_name'])
         self.__dict__['installer']['config_dir_path'] = os.path.join(self.__dict__['installer']['dir_path'], 'config')
         self.__dict__['installer']['config_xml_path'] = os.path.join(self.__dict__['installer']['config_dir_path'], 'config.xml')
