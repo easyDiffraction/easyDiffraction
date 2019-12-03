@@ -39,6 +39,7 @@ def osDependentAddons():
     config = Project.Config()
     os_name = config['os']['name']
     if os_name == 'osx':
+        message = "add hidpi support ({0})".format(os_name)
         try:
             distribution_dir_path = config['project']['subdirs']['distribution']['path']
             app_name = config['app']['name']
@@ -52,9 +53,9 @@ def osDependentAddons():
             BasicFunctions.printFailMessage(message, exception)
             sys.exit()
         else:
-            message = "add hidpi support ({0})".format(os_name)
             BasicFunctions.printSuccessMessage(message)
     elif os_name == 'linux':
+        message = "copy missing EGL and GLX plugins ({0})".format(os_name)
         try:
             from distutils import dir_util
             missing_plugins = config['pyinstaller']['missing_plugins'][os_name]
@@ -71,7 +72,6 @@ def osDependentAddons():
             BasicFunctions.printFailMessage(message, exception)
             sys.exit()
         else:
-            message = "copy missing EGL and GLX plugins ({0})".format(os_name)
             BasicFunctions.printSuccessMessage(message)
     else:
         message = "No addons needed for os '{0}'".format(os_name)
