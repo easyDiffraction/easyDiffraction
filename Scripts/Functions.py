@@ -22,7 +22,7 @@ def downloadFile(url, destination):
 def attachDmg(file):
     message = "attach '{0}'".format(file)
     try:
-        run('hdiutil', 'attach', file)
+        BasicFunctions.run('hdiutil', 'attach', file)
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
@@ -42,7 +42,7 @@ def setEnvVariable(name, value):
 def addReadPermission(file):
     message = "add read permissions to '{0}'".format(file)
     try:
-        run('chmod', 'a+x', file)
+        BasicFunctions.run('chmod', 'a+x', file)
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
@@ -95,7 +95,7 @@ def moveDir(source, destination):
 def installSilently(installer, silent_script):
     message = "install '{0}'".format(installer)
     try:
-        run(
+        BasicFunctions.run(
             installer,
             '--script', silent_script,
             '--no-force-installations'
