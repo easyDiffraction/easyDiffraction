@@ -57,7 +57,7 @@ class Config():
         self.__dict__['installer']['packages_meta_path'] = os.path.join(self.__dict__['installer']['packages_url_path'], 'meta')
         self.__dict__['installer']['package_xml_path'] = os.path.join(self.__dict__['installer']['packages_meta_path'], 'package.xml')
         # app installer
-        self.__dict__['app']['installer']['name'] = self.__dict__['installer']['dir_name']
+        self.__dict__['app']['installer']['name'] = self.__dict__['app']['name'] + self.__dict__['app']['installer']['name_suffix']
         self.__dict__['app']['installer']['exe_name'] = self.__dict__['app']['installer']['name'] + self.__dict__['os']['gui_exe_ext'][self._osName()]
         self.__dict__['app']['installer']['dir_path'] = self.__dict__['project']['subdirs']['distribution']['path']
         self.__dict__['app']['installer']['exe_path'] = os.path.join(self.__dict__['app']['installer']['dir_path'], self.__dict__['app']['installer']['exe_name'])
