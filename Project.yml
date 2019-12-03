@@ -34,24 +34,26 @@ app:
   name: easyDiffraction
   organization: easyDiffraction
   url: https://easydiffraction.org
+  description: A scientific software for modelling and analysis of the neutron diffraction data
   icon:
     ext:
       osx: icns
       windows: ico
       linux: png
-  freezed_path: null
-  freezed_ext:
-    osx: '.app'
-    windows: ''
-    linux: ''
+  license:
+    file_name: LICENSE
+    file_path: null
+  freezed:
+    path: null
+    ext:
+      osx: '.app'
+      windows: ''
+      linux: ''
   installer:
+    name_suffix: Installer
     name: null
-    config_dir_path: null
-    config_xml_path: null
-    packages_dir_path: null
-    data_dir_path: null
-    dir_path: null
     exe_name: null
+    dir_path: null
     exe_path: null
 # operating system
 os:
@@ -112,6 +114,22 @@ qtifw:
   bin_dir_path: null
   binarycreator_path: null
   installerbase_path: null
+installer:
+  config_control_script:
+    name: controlscript.js
+    path: null
+  package_install_script:
+    name: installscript.js
+    path: null
+  dir_name: null
+  dir_path: null
+  config_dir_path: null
+  config_xml_path: null
+  packages_dir_path: null
+  packages_url_path: null
+  packages_data_path: null
+  packages_meta_path: null
+  package_xml_path: null
 # release
 release:
   version: 0.3.8
