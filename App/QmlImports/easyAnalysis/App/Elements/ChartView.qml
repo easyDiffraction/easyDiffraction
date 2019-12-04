@@ -159,6 +159,8 @@ ColumnLayout {
                 backgroundColor: "transparent"
                 titleFont: commonFont
 
+                animationDuration: 300
+                animationOptions: ChartView.NoAnimation
 
                 // X-axis for measured and calculated data
 
@@ -296,6 +298,7 @@ ColumnLayout {
                 anchors.fill: topChartContainer
                 acceptedButtons: Qt.LeftButton
                 onPressed: {
+                    topChart.animationOptions = ChartView.SeriesAnimations
                     recZoom.x = mouseX
                     recZoom.y = mouseY
                     recZoom.visible = true
