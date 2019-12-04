@@ -79,15 +79,18 @@ def installerConfigXml():
             'Installer': {
                 'Name': config['app']['name'],
                 'Version': config['release']['version'],
-                'Title': '{0} {1}'.format(config['app']['name'], config['app']['installer']['name_suffix']),
+                'Title': config['app']['name'],
                 'Publisher': config['app']['name'],
                 'ProductUrl': config['app']['url'],
+                #'Logo': 'logo.png',
+                #'WizardStyle': 'Classic',#'Aero',
                 'StartMenuDir': config['app']['name'],
                 'TargetDir': target_dir,
                 'MaintenanceToolName': '{0}{1}'.format(config['app']['name'], 'Uninstaller'),
-                'ControlScript': config['installer']['config_control_script']['name'],
-                'InstallActionColumnVisible': 'false',
+                'AllowNonAsciiCharacters': 'true',
                 'AllowSpaceInPath': 'true',
+                'InstallActionColumnVisible': 'false',
+                'ControlScript': config['installer']['config_control_script']['name'],
             }
         }
         raw_xml = dicttoxml.dicttoxml(pydict, root=False, attr_type=False)
@@ -114,6 +117,7 @@ def installerPackageXml():
                 'Default': 'true',
                 'Essential': 'true',
                 'ForcedInstallation': 'true',
+                #'RequiresAdminRights': 'true',
                 #'Licenses': {
                 #    'License': {
                 #        'name': "GNU General Public License Version 3",
@@ -121,6 +125,7 @@ def installerPackageXml():
                 #    }
             	#	<License name="GNU General Public License Version 3" file="LICENSE" /> # SHOULD BE IN THIS FORMAT
                 #}
+                'Script': config['installer']['package_install_script']['name'],
             }
         }
         raw_xml = dicttoxml.dicttoxml(pydict, root=False, attr_type=False)

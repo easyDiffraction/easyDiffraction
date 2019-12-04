@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os
+import os, sys
 from distutils import dir_util
 import Project
 import BasicFunctions
@@ -10,6 +10,7 @@ def freezeApp():
     try:
         config = Project.Config()
         os_name = config['os']['name']
+        app_name = config['app']['name']
         project_name = config['project']['name']
         project_dir_path = config['project']['dir_path']
         distribution_dir_path = config['project']['subdirs']['distribution']['path']
@@ -25,7 +26,7 @@ def freezeApp():
             '--onedir',                                                             # Create a one-folder bundle containing an executable (default)
             '--log-level', 'WARN',                                                  # LEVEL may be one of DEBUG, INFO, WARN, ERROR, CRITICAL (default: INFO).
             '--distpath', "{0}".format(distribution_dir_path),                      # Where to put the bundled app (default: ./dist)
-            '--workpath', "{0}/.build".format(distribution_dir_path),               # Where to put all the temporary work files, .log, .pyz and etc. (default: ./build)
+            '--workpath', os.path.join(distribution_dir_path, 'FreezeAppTmp'),      # Where to put all the temporary work files, .log, .pyz and etc. (default: ./build)
             '--add-data', "{0}{1}cryspy".format(cryspy_path, separator),            # Add CrysPy library
             '--add-data', "{0}/App{1}.".format(project_dir_path, separator),        # Add App Pythnon and QML source files
             '--icon', '{0}/App/QmlImports/{1}/Resources/Icons/App.{2}'.format(project_dir_path, project_name, icon_ext)

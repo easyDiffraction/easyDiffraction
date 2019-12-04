@@ -50,7 +50,7 @@ app:
       windows: ''
       linux: ''
   installer:
-    name_suffix: Installer
+    name_suffix: Setup
     name: null
     exe_name: null
     dir_path: null
@@ -116,10 +116,10 @@ qtifw:
   installerbase_path: null
 installer:
   config_control_script:
-    name: controlscript.js
+    name: InstallerControlScript.js
     path: null
   package_install_script:
-    name: installscript.js
+    name: InstallerInstallScript.js
     path: null
   dir_name: null
   dir_path: null
