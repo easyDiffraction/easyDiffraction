@@ -34,6 +34,8 @@ ColumnLayout {
         text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
         onTextChanged: {
             if (Specific.Variables.projectOpened) {
+                proxy.measuredDataSeries.updateQmlLowerSeries(lowerLineSeries)
+                proxy.measuredDataSeries.updateQmlUpperSeries(upperLineSeries)
                 adjustLeftAxesAnchor()
             }
         }
@@ -205,20 +207,28 @@ ColumnLayout {
                     borderWidth: 1.5
                     useOpenGL: true
 
+
+
                     lowerSeries: LineSeries {
+                        id: lowerLineSeries
+                        /*
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.measuredData : null
                             xColumn: 0
                             yColumn: 5
                         }
+                        */
                     }
 
                     upperSeries: LineSeries {
+                        id: upperLineSeries
+                        /*
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.measuredData : null
                             xColumn: 0
                             yColumn: 6
                         }
+                        */
                     }
 
                     onHovered: {
@@ -232,6 +242,7 @@ ColumnLayout {
                         infoToolTip.contentItem.color = Generic.Style.blueColor
                         infoToolTip.background.border.color = Qt.lighter(Generic.Style.blueColor, 1.9)
                     }
+
                 }
 
                 // Calculated curve

@@ -6,6 +6,7 @@ from PySide2.QtCore import QObject, Signal, Slot, Property
 import PyImports.ProjectSentinel
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.Models.MeasuredDataModel import MeasuredDataModel
+from PyImports.Models.MeasuredDataModel import MeasuredDataSeries
 from PyImports.Models.CalculatedDataModel import CalculatedDataModel
 from PyImports.Models.BraggPeaksModel import BraggPeaksModel
 from PyImports.Models.CellParametersModel import CellParametersModel
@@ -31,6 +32,7 @@ class Proxy(QObject):
         #
         self.project_control = ProjectControl()
         self._measured_data_model = MeasuredDataModel()
+        self._measured_data_series = MeasuredDataSeries()
         self._calculated_data_model = CalculatedDataModel()
         self._bragg_peaks_model = BraggPeaksModel()
         self._cell_parameters_model = CellParametersModel()
@@ -62,6 +64,7 @@ class Proxy(QObject):
                 return
         #
         self._measured_data_model.setCalculator(self._calculator)
+        self._measured_data_series.initSeries(self._calculator)
         self._calculated_data_model.setCalculator(self._calculator)
         self._bragg_peaks_model.setCalculator(self._calculator)
         self._cell_parameters_model.setCalculator(self._calculator)
@@ -104,6 +107,7 @@ class Proxy(QObject):
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
     measuredData = Property('QVariant', lambda self: self._measured_data_model.asDataModel(), constant=True)
+    measuredDataSeries = Property('QVariant', lambda self: self._measured_data_series, constant=True)
     measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), constant=True)
     calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asDataModel(), constant=True)
     calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(),
