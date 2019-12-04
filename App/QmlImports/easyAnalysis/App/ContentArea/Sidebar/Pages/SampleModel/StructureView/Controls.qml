@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
+import QtQuick.Dialogs 1.3 as Dialogs1
 import QtQuick.Layouts 1.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
@@ -61,11 +62,43 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 2
 
-                GenericAppContentAreaButtons.Add { enabled: false; text: "Add new phase manually" }
-                GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all phases" }
+                GenericAppContentAreaButtons.Add { 
+                    text: "Add new phase manually"
+                    enabled: !proxy.refinementRunning
+                    onClicked: fileDialogLoadPhase.open()
+                    }
+                GenericAppContentAreaButtons.RemoveAll {
+                    id: removeButton;
+                    enabled: false;
+                    text: "Remove all phases" }
                 GenericAppContentAreaButtons.Import { enabled: false; text: "Import new phase from CIF" }
                 GenericAppContentAreaButtons.Export { enabled: false; text: "Export selected phase to CIF" }
             }
+            // Open project dialog
+            Dialogs1.FileDialog{
+                id: fileDialogLoadPhase
+                nameFilters: [ "CIF files (*.cif)", "Project files (*.zip)"]
+                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                onAccepted: {
+                    settings.setValue("lastOpenedProjectFolder", folder)
+                    projectControl.loadPhases(fileUrl)
+                    fileDialogLoadPhase.close()
+                    if (projectControl.validCif) {
+                        proxy.loadPhasesFromFile()
+                        Specific.Variables.projectOpened = true
+                        Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
+                        removeButton.enabled = true
+                    } else {
+                        failOpenDialog.visible = true
+                        Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
+                    }
+                }
+            }
+
         }
     }
 

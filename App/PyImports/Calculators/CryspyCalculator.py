@@ -10,6 +10,9 @@ import pycifstar
 
 from PySide2.QtCore import QObject, Signal
 
+PHASE_SEGMENT = "_phases"
+EXPERIMENT_SEGMENT = "_experiments"
+
 class CryspyCalculator(QObject):
     def __init__(self, main_rcif_path, parent=None):
         super().__init__(parent)
@@ -24,29 +27,52 @@ class CryspyCalculator(QObject):
         # cryspy
         self._main_rcif_path = main_rcif_path
         self._main_rcif = None
+        self._phases_path = ""
+        self._experiments_path = ""
         self.final_chi_square = None
         self._cryspy_obj = self._createCryspyObj() #cryspy.rhochi_read_file(self._main_rcif_path)
         # project dict
         self._project_dict = {}
         self.setProjectDictFromCryspyObj()
 
-    def _createCryspyObj(self):
-        """Temporary solution to create cryspy object from separate rcif files"""
-        full_rcif_content = ''
+    def updatePhases(self, phases_path):
+        """
+        Parse the relevant phases file and updates the corresponding model
+        """
+        self._phases_path = phases_path
+        full_rcif_content = self._parseSegment(EXPERIMENT_SEGMENT)
+
+        phases_rcif = pycifstar.read_star_file(self._phases_path)
+
+        if os.path.isfile(self._phases_path):
+            with open(self._phases_path, 'r') as f:
+                phases_rcif_content = f.read()
+                full_rcif_content += phases_rcif_content
+
+        #rho_chi = cryspy.RhoChi()
+        self._cryspy_obj.from_cif(full_rcif_content)
+
+    def _parseSegment(self, segment=""):
+        """Parse the given segment info from the main rcif file"""
+        if not segment:
+            return ""
+        if segment not in (PHASE_SEGMENT, EXPERIMENT_SEGMENT):
+            return ""
         rcif_dir_name = os.path.dirname(self._main_rcif_path)
         self._main_rcif = pycifstar.read_star_file(self._main_rcif_path)
-        if "_phases" in str(self._main_rcif):
-            phases_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_phases"].value)
-            if os.path.isfile(phases_rcif_path):
-                with open(phases_rcif_path, 'r') as f:
-                    phases_rcif_content = f.read()
-                    full_rcif_content += phases_rcif_content
-        if "_experiments" in str(self._main_rcif):
-            experiments_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_experiments"].value)
-            if os.path.isfile(experiments_rcif_path):
-                with open(experiments_rcif_path, 'r') as f:
-                    experiments_rcif_content = f.read()
-                    full_rcif_content += experiments_rcif_content
+        rcif_content = ""
+        if segment in str(self._main_rcif):
+            segment_rcif_path = os.path.join(rcif_dir_name, self._main_rcif[segment].value)
+            if os.path.isfile(segment_rcif_path):
+                with open(segment_rcif_path, 'r') as f:
+                    segment_rcif_content = f.read()
+                    rcif_content += segment_rcif_content
+        return rcif_content
+
+    def _createCryspyObj(self):
+        """Create cryspy object from separate rcif files"""
+        full_rcif_content = self._parseSegment(EXPERIMENT_SEGMENT) + self._parseSegment(PHASE_SEGMENT)
+
         rho_chi = cryspy.RhoChi()
         rho_chi.from_cif(full_rcif_content)
         return rho_chi
