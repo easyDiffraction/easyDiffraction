@@ -36,6 +36,9 @@ ColumnLayout {
             if (Specific.Variables.projectOpened) {
                 proxy.measuredDataSeries.updateQmlLowerSeries(lowerLineSeries)
                 proxy.measuredDataSeries.updateQmlUpperSeries(upperLineSeries)
+                proxy.calculatedDataSeries.updateQmlCalcSeries(calcSeries)
+                proxy.calculatedDataSeries.updateQmlLowerDiffSeries(lowerDiffSeries)
+                proxy.calculatedDataSeries.updateQmlUpperDiffSeries(upperDiffSeries)
                 adjustLeftAxesAnchor()
             }
         }
@@ -256,12 +259,14 @@ ColumnLayout {
                     axisY: axisY
                     color: Generic.Style.redColor
                     width: 2.5
-                    useOpenGL: true
+                    //useOpenGL: true
+                    /*
                     VXYModelMapper{
                         model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                         xColumn: 0
                         yColumn: 1
                     }
+                    */
                     onHovered: {
                         const p = topChart.mapToPosition(point)
                         const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
@@ -299,6 +304,8 @@ ColumnLayout {
                 acceptedButtons: Qt.LeftButton
                 onPressed: {
                     topChart.animationOptions = ChartView.SeriesAnimations
+                    middleChart.animationOptions = ChartView.SeriesAnimations
+                    bottomChart.animationOptions = ChartView.SeriesAnimations
                     recZoom.x = mouseX
                     recZoom.y = mouseY
                     recZoom.visible = true
@@ -371,6 +378,9 @@ ColumnLayout {
                 backgroundRoundness: 0
                 backgroundColor: "transparent"
                 titleFont: commonFont
+
+                animationDuration: 300
+                animationOptions: ChartView.NoAnimation
 
                 ValueAxis {
                     id: axisXbragg
@@ -480,6 +490,9 @@ ColumnLayout {
                 backgroundColor: "transparent"
                 titleFont: commonFont
 
+                animationDuration: 300
+                animationOptions: ChartView.NoAnimation
+
                 ValueAxis {
                     id: axisXdiff
                     lineVisible: false
@@ -518,22 +531,26 @@ ColumnLayout {
 
                     upperSeries: LineSeries {
                         id: upperDiffSeries
+                        /*
                         useOpenGL: true
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                             xColumn: 0
                             yColumn: 2
                         }
+                        */
                     }
 
                     lowerSeries: LineSeries {
                         id: lowerDiffSeries
+                        /*
                         useOpenGL: true
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                             xColumn: 0
                             yColumn: 3
                         }
+                        */
                     }
 
                     onHovered: {

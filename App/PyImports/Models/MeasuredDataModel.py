@@ -22,10 +22,6 @@ class MeasuredDataSeries(QObject):
                 self._upperSeries.append(QPointF(x, y_obs_upper))
         logging.info("+++++++++++++++++++++++++ end") # profiling
 
-    @Slot(result=int)
-    def counttt(self):
-        return len(self._lowerSeries)
-
     @Slot(QtCharts.QXYSeries)
     def updateQmlLowerSeries(self, series):
         series.replace(self._lowerSeries)
