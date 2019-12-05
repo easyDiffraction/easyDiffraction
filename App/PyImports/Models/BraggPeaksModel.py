@@ -1,7 +1,30 @@
 import logging
 
-from PySide2.QtCore import Qt, QObject, Signal
-from PySide2.QtGui import QStandardItemModel
+from PySide2.QtCore import Qt, QObject, QPointF, Signal, Slot, Property
+from PySide2.QtGui import QStandardItem, QStandardItemModel
+from PySide2.QtCharts import QtCharts
+
+class BraggPeaksSeries(QObject):
+    def __init__(self, parent=None):
+        QObject.__init__(self, parent)
+        self._series = []
+
+    def updateSeries(self, calculator):
+        logging.info("+++++++++++++++++++++++++ start") # profiling
+        project_dict = calculator.asDict()
+        self._series.clear()
+        for experiment_id, experiment_dict in project_dict['calculations'].items():
+            for phase_id in project_dict['phases'].keys():
+                x_list = experiment_dict['bragg_peaks'][phase_id]['ttheta']
+                for x in x_list:
+                    vertical_points = 11
+                    for vertical_index in range(vertical_points):
+                        self._series.append(QPointF(x, vertical_index))
+        logging.info("+++++++++++++++++++++++++ end") # profiling
+
+    @Slot(QtCharts.QXYSeries)
+    def updateQmlSeries(self, series):
+        series.replace(self._series)
 
 class BraggPeaksModel(QObject):
     def __init__(self, parent=None):

@@ -10,6 +10,7 @@ from PyImports.Models.MeasuredDataModel import MeasuredDataSeries
 from PyImports.Models.CalculatedDataModel import CalculatedDataModel
 from PyImports.Models.CalculatedDataModel import CalculatedDataSeries #---#
 from PyImports.Models.BraggPeaksModel import BraggPeaksModel
+from PyImports.Models.BraggPeaksModel import BraggPeaksSeries #---#
 from PyImports.Models.CellParametersModel import CellParametersModel
 from PyImports.Models.CellBoxModel import CellBoxModel
 from PyImports.Models.AtomSitesModel import AtomSitesModel
@@ -37,6 +38,7 @@ class Proxy(QObject):
         self._calculated_data_model = CalculatedDataModel()
         self._calculated_data_series = CalculatedDataSeries() #---#
         self._bragg_peaks_model = BraggPeaksModel()
+        self._bragg_peaks_series = BraggPeaksSeries() #---#
         self._cell_parameters_model = CellParametersModel()
         self._cell_box_model = CellBoxModel()
         self._atom_sites_model = AtomSitesModel()
@@ -71,6 +73,7 @@ class Proxy(QObject):
         self._calculated_data_model.setCalculator(self._calculator)
         self._calculated_data_series.updateSeries(self._calculator) #---#
         self._bragg_peaks_model.setCalculator(self._calculator)
+        self._bragg_peaks_series.updateSeries(self._calculator) #---#
         self._cell_parameters_model.setCalculator(self._calculator)
         self._cell_box_model.setCalculator(self._calculator)
         self._atom_sites_model.setCalculator(self._calculator)
@@ -106,12 +109,17 @@ class Proxy(QObject):
         self._calculated_data_series.updateSeries(self._calculator) #---#
         return self._calculated_data_series
 
+    def braggPeaksSeries(self):
+        self._bragg_peaks_series.updateSeries(self._calculator) #---#
+        return self._bragg_peaks_series
+
     # Notifications of changes for QML GUI about projectDictChanged,
     # which calls another signal projectChanged
     projectChanged = Signal()
     project = Property('QVariant', calculatorAsDict, notify=projectChanged)
     cif = Property('QVariant', calculatorAsCifDict, notify=projectChanged)
     calculatedDataSeries = Property('QVariant', calculatedSeries, notify=projectChanged) #---#
+    braggPeaksDataSeries = Property('QVariant', braggPeaksSeries, notify=projectChanged) #---#
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals

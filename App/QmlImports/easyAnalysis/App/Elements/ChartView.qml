@@ -21,6 +21,9 @@ ColumnLayout {
 
     property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pointSize: Generic.Style.fontPointSize })
 
+    property int globalAnimationDuration: 300
+    property var globalAnimationOptions: ChartView.SeriesAnimations //ChartView.AllAnimations //ChartView.NoAnimation
+
     property var tthHklDict: ({})
 
     spacing: 0
@@ -37,6 +40,7 @@ ColumnLayout {
                 proxy.measuredDataSeries.updateQmlLowerSeries(lowerLineSeries)
                 proxy.measuredDataSeries.updateQmlUpperSeries(upperLineSeries)
                 proxy.calculatedDataSeries.updateQmlCalcSeries(calcSeries)
+                proxy.braggPeaksDataSeries.updateQmlSeries(braggSeries)
                 proxy.calculatedDataSeries.updateQmlLowerDiffSeries(lowerDiffSeries)
                 proxy.calculatedDataSeries.updateQmlUpperDiffSeries(upperDiffSeries)
                 adjustLeftAxesAnchor()
@@ -162,8 +166,8 @@ ColumnLayout {
                 backgroundColor: "transparent"
                 titleFont: commonFont
 
-                animationDuration: 300
-                animationOptions: ChartView.NoAnimation
+                animationDuration: globalAnimationDuration
+                animationOptions: globalAnimationOptions
 
                 // X-axis for measured and calculated data
 
@@ -210,7 +214,7 @@ ColumnLayout {
                     opacity: 0.4
                     borderColor: Qt.darker(Generic.Style.blueColor, 1.1)
                     borderWidth: 1.5
-                    useOpenGL: true
+                    //useOpenGL: true
 
 
 
@@ -258,7 +262,7 @@ ColumnLayout {
                     axisX: axisX
                     axisY: axisY
                     color: Generic.Style.redColor
-                    width: 2.5
+                    width: 2
                     //useOpenGL: true
                     /*
                     VXYModelMapper{
@@ -303,9 +307,9 @@ ColumnLayout {
                 anchors.fill: topChartContainer
                 acceptedButtons: Qt.LeftButton
                 onPressed: {
-                    topChart.animationOptions = ChartView.SeriesAnimations
-                    middleChart.animationOptions = ChartView.SeriesAnimations
-                    bottomChart.animationOptions = ChartView.SeriesAnimations
+                    //topChart.animationOptions = ChartView.SeriesAnimations
+                    //middleChart.animationOptions = ChartView.SeriesAnimations
+                    //bottomChart.animationOptions = ChartView.SeriesAnimations
                     recZoom.x = mouseX
                     recZoom.y = mouseY
                     recZoom.visible = true
@@ -371,16 +375,16 @@ ColumnLayout {
                 id: middleChart
                 anchors.fill: parent
                 anchors.margins: -extraPadding
-                anchors.topMargin: -3.6*extraPadding
-                anchors.bottomMargin: -4*extraPadding
-                antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
+                anchors.topMargin: -3*extraPadding
+                anchors.bottomMargin: -3*extraPadding
+                //antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false
                 backgroundRoundness: 0
                 backgroundColor: "transparent"
                 titleFont: commonFont
 
-                animationDuration: 300
-                animationOptions: ChartView.NoAnimation
+                animationDuration: globalAnimationDuration
+                animationOptions: globalAnimationOptions
 
                 ValueAxis {
                     id: axisXbragg
@@ -398,8 +402,8 @@ ColumnLayout {
                     lineVisible: false
                     labelsVisible: false
                     gridVisible:false
-                    min: -7
-                    max: 15
+                    min: 0
+                    max: 10
                     labelFormat: "%.0f"
                     labelsFont: commonFont
                 }
@@ -425,15 +429,23 @@ ColumnLayout {
                     axisX: axisXbragg
                     axisY: axisYbragg
                     markerShape: ScatterSeries.MarkerShapeRectangle
+                    /*
                     markerSize: 1
                     borderWidth: 0.0001
                     borderColor: "transparent"
                     color: "#333"
+                    */
+                    markerSize: 1
+                    borderWidth: 0.00000001
+                    borderColor: color
+                    color: "#333"
+                    /*
                     VXYModelMapper{
                         model: Specific.Variables.projectOpened ? proxy.braggPeaksTicks : null
                         xColumn: 0
                         yColumn: 1
                     }
+                    */
 
                     /*
                     onHovered: {
@@ -490,8 +502,8 @@ ColumnLayout {
                 backgroundColor: "transparent"
                 titleFont: commonFont
 
-                animationDuration: 300
-                animationOptions: ChartView.NoAnimation
+                animationDuration: globalAnimationDuration
+                animationOptions: globalAnimationOptions
 
                 ValueAxis {
                     id: axisXdiff
