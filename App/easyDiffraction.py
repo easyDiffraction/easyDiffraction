@@ -38,7 +38,7 @@ if __name__ == '__main__':
     app.setOrganizationName("easyDiffraction")
     app.setOrganizationDomain("easyDiffraction.org")
     app.setApplicationName("easyDiffraction")
-    app.setWindowIcon(QIcon(os.path.join(current_dir, 'QmlImports', 'EasyDiffraction', 'Resources', 'Icons', 'App.png')))
+    app.setWindowIcon(QIcon(os.path.join(current_dir, 'QmlImports', 'easyDiffraction', 'Resources', 'Icons', 'App.png')))
 
     proxy = Proxy()
 
