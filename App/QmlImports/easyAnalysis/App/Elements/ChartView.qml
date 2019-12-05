@@ -115,9 +115,11 @@ ColumnLayout {
                 width: childrenRect.width
                 height: childrenRect.height
 
-                color: Generic.Style.buttonBkgFinishedColor
-                border.color: Generic.Style.buttonBorderFinishedColor
-                border.width: 1
+                color: Generic.Style.tableHeaderRowColor //Generic.Style.buttonBkgFinishedColor
+                border.color: Generic.Style.mainAreaTabBorderColor //Generic.Style.buttonBorderFinishedColor
+                border.width: Generic.Style.appBorderThickness //1
+
+                opacity: 0.8
 
                 Label {
                     id: plotInfo
@@ -128,7 +130,7 @@ ColumnLayout {
 
                     font.family: Generic.Style.fontFamily
                     font.pointSize: Generic.Style.fontPointSize
-                    color: Generic.Style.buttonTextFinishedColor
+                    color: Generic.Style.tableTextColor //Generic.Style.buttonTextFinishedColor
 
                     text: {
                         const showPars = {
