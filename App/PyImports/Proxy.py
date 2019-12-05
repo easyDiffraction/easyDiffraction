@@ -69,7 +69,7 @@ class Proxy(QObject):
                 return
         #
         self._measured_data_model.setCalculator(self._calculator)
-        self._measured_data_series.initSeries(self._calculator)
+        self._measured_data_series.updateSeries(self._calculator)
         self._calculated_data_model.setCalculator(self._calculator)
         self._calculated_data_series.updateSeries(self._calculator) #---#
         self._bragg_peaks_model.setCalculator(self._calculator)

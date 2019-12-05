@@ -10,9 +10,11 @@ class MeasuredDataSeries(QObject):
         self._upperSeries = []
         self._lowerSeries = []
 
-    def initSeries(self, calculator):
+    def updateSeries(self, calculator):
         logging.info("+++++++++++++++++++++++++ start") # profiling
         project_dict = calculator.asDict()
+        self._upperSeries.clear()
+        self._lowerSeries.clear()
         for experiment_id, experiment_dict in project_dict['experiments'].items():
             x_list = experiment_dict['measured_pattern']['x']
             y_obs_lower_list = experiment_dict['measured_pattern']['y_obs_lower']
