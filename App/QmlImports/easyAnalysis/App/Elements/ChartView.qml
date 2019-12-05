@@ -157,6 +157,7 @@ ColumnLayout {
 
             ChartView {
                 id: topChart
+                //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
                 anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
@@ -167,7 +168,6 @@ ColumnLayout {
                 titleFont: commonFont
 
                 animationDuration: globalAnimationDuration
-                animationOptions: globalAnimationOptions
 
                 // X-axis for measured and calculated data
 
@@ -307,9 +307,6 @@ ColumnLayout {
                 anchors.fill: topChartContainer
                 acceptedButtons: Qt.LeftButton
                 onPressed: {
-                    //topChart.animationOptions = ChartView.SeriesAnimations
-                    //middleChart.animationOptions = ChartView.SeriesAnimations
-                    //bottomChart.animationOptions = ChartView.SeriesAnimations
                     recZoom.x = mouseX
                     recZoom.y = mouseY
                     recZoom.visible = true
@@ -384,7 +381,6 @@ ColumnLayout {
                 titleFont: commonFont
 
                 animationDuration: globalAnimationDuration
-                animationOptions: globalAnimationOptions
 
                 ValueAxis {
                     id: axisXbragg
@@ -503,7 +499,6 @@ ColumnLayout {
                 titleFont: commonFont
 
                 animationDuration: globalAnimationDuration
-                animationOptions: globalAnimationOptions
 
                 ValueAxis {
                     id: axisXdiff
@@ -642,6 +637,27 @@ ColumnLayout {
                             )
             }
         }
+    }
+
+    // Set animation timers to skip animation once, when you see chart for the 1st time.
+    // TO DO: find a better way to do that
+    Timer {
+        interval: 100
+        running: topChart.visible
+        repeat: false
+        onTriggered: topChart.animationOptions = globalAnimationOptions
+    }
+    Timer {
+        interval: 100
+        running: middleChart.visible
+        repeat: false
+        onTriggered: middleChart.animationOptions = globalAnimationOptions
+    }
+    Timer {
+        interval: 100
+        running: bottomChart.visible
+        repeat: false
+        onTriggered: bottomChart.animationOptions = globalAnimationOptions
     }
 
     ////////////////
