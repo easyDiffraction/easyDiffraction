@@ -14,6 +14,9 @@ class CalculatedDataSeries(QObject):
     def updateSeries(self, calculator):
         logging.info("+++++++++++++++++++++++++ start") # profiling
         project_dict = calculator.asDict()
+        self._calcSeries.clear()
+        self._lowerDiffSeries.clear()
+        self._upperDiffSeries.clear()
         for experiment_id, experiment_dict in project_dict['calculations'].items():
             x_list = experiment_dict['calculated_pattern']['x']
             y_calc_list = experiment_dict['calculated_pattern']['y_calc']
