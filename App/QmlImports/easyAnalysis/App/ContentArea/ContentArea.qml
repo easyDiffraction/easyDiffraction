@@ -5,10 +5,11 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Pages 1.0 as GenericAppContentAreaPages
 
-StackLayout {
-    //width: parent.width
-    //Layout.fillWidth: true
-    //Layout.fillHeight: true
+SwipeView {
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+
+    interactive: false
 
     currentIndex: Generic.Variables.toolbarCurrentIndex
 
