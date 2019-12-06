@@ -525,8 +525,25 @@ ColumnLayout {
                     titleText: "Iobs - Icalc"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max : 0
+                    min: {
+                        if (Specific.Variables.projectOpened) {
+                            let min = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min
+                            let max = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max
+                            let MAX = Math.max(Math.abs(min), Math.abs(max))
+                            return Math.sign(min) * MAX
+                        }
+                        return 0
+                    }
+                    max: {
+                        if (Specific.Variables.projectOpened) {
+                            let min = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min
+                            let max = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max
+                            let MAX = Math.max(Math.abs(min), Math.abs(max))
+                            return Math.sign(max) * MAX
+                        }
+                        return 1
+                    }
+
                 }
 
                 AreaSeries {
