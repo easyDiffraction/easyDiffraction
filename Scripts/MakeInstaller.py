@@ -71,7 +71,7 @@ def installerConfigXml():
         elif os_name == 'windows':
             target_dir = '@ApplicationsDir@\\{0}'.format(app_name)
         elif os_name == 'linux':
-            target_dir = '@HomeDir@/{0}'.format(app_name)
+            target_dir = '@ApplicationsDir@/{0}'.format(app_name)
         else:
             BasicFunctions.printFailMessage("Unsupported os '{0}'".format(os_name))
             sys.exit()
@@ -117,7 +117,7 @@ def installerPackageXml():
                 'Default': 'true',
                 'Essential': 'true',
                 'ForcedInstallation': 'true',
-                #'RequiresAdminRights': 'true',
+                'RequiresAdminRights': 'true',
                 #'Licenses': {
                 #    'License': {
                 #        'name': "GNU General Public License Version 3",
