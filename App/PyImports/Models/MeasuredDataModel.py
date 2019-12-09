@@ -1,7 +1,36 @@
 import logging
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
+from PySide2.QtCore import Qt, QObject, QPointF, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
+from PySide2.QtCharts import QtCharts
+
+class MeasuredDataSeries(QObject):
+    def __init__(self, parent=None):
+        QObject.__init__(self, parent)
+        self._upperSeries = []
+        self._lowerSeries = []
+
+    def updateSeries(self, calculator):
+        logging.info("+++++++++++++++++++++++++ start") # profiling
+        project_dict = calculator.asDict()
+        self._upperSeries.clear()
+        self._lowerSeries.clear()
+        for experiment_id, experiment_dict in project_dict['experiments'].items():
+            x_list = experiment_dict['measured_pattern']['x']
+            y_obs_lower_list = experiment_dict['measured_pattern']['y_obs_lower']
+            y_obs_upper_list = experiment_dict['measured_pattern']['y_obs_upper']
+            for x, y_obs_lower, y_obs_upper in zip(x_list, y_obs_lower_list, y_obs_upper_list):
+                self._lowerSeries.append(QPointF(x, y_obs_lower))
+                self._upperSeries.append(QPointF(x, y_obs_upper))
+        logging.info("+++++++++++++++++++++++++ end") # profiling
+
+    @Slot(QtCharts.QXYSeries)
+    def updateQmlLowerSeries(self, series):
+        series.replace(self._lowerSeries)
+
+    @Slot(QtCharts.QXYSeries)
+    def updateQmlUpperSeries(self, series):
+        series.replace(self._upperSeries)
 
 class MeasuredDataModel(QObject):
     def __init__(self, parent=None):

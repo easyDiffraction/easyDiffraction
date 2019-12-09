@@ -16,6 +16,7 @@ class Config():
         self.__dict__ = self._loadYaml(self._config_dir, self._config_name)
         # project
         self.__dict__['project']['dir_path'] = os.getcwd() # ??? self._config_dir
+        self.__dict__['project']['subdirs']['app']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['app']['name'])
         self.__dict__['project']['subdirs']['distribution']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['distribution']['name'])
         self.__dict__['project']['subdirs']['scripts']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['scripts']['name'])
         self.__dict__['project']['subdirs']['certificates']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['certificates']['name'])
@@ -26,14 +27,14 @@ class Config():
         # scripts
         self.__dict__['certificate']['path'] = os.path.join(self.__dict__['project']['subdirs']['certificates']['path'], self.__dict__['certificate']['name'][self._osName()])
         self.__dict__['certificate']['zip_path'] = os.path.join(self.__dict__['project']['subdirs']['certificates']['path'], 'codesigning.zip')
-        # application
-        self.__dict__['app']['freezed_path'] = os.path.join(self.__dict__['project']['subdirs']['distribution']['path'], self.__dict__['app']['name'] + self.__dict__['app']['freezed_ext'][self._osName()])
         # user
         self.__dict__['user']['home_dir'] = os.path.expanduser('~')
-        # freeze app
+        # freeze
         self.__dict__['pyinstaller']['lib_path']['cryspy'] = cryspy.__path__[0]
         self.__dict__['pyinstaller']['lib_path']['shiboken2'] = shiboken2.__path__[0]
         self.__dict__['pyinstaller']['lib_path']['pyside2'] = PySide2.__path__[0]
+        # freezed app
+        self.__dict__['app']['freezed']['path'] = os.path.join(self.__dict__['project']['subdirs']['distribution']['path'], self.__dict__['app']['name'] + self.__dict__['app']['freezed']['ext'][self._osName()])
         # installer framework
         self.__dict__['qtifw']['setup']['name'] = '{0}.{1}'.format(self.__dict__['qtifw']['setup']['base'][self._osName()], self.__dict__['qtifw']['setup']['ext'][self._osName()])
         self.__dict__['qtifw']['setup']['download_url'] = 'https://download.qt.io/official_releases/qt-installer-framework/{0}/{1}'.format(self.__dict__['qtifw']['version'], self.__dict__['qtifw']['setup']['name'])
@@ -42,15 +43,25 @@ class Config():
         self.__dict__['qtifw']['bin_dir_path'] = self._binDirPath(self._osName())
         self.__dict__['qtifw']['binarycreator_path'] = os.path.join(self.__dict__['qtifw']['bin_dir_path'], 'binarycreator')
         self.__dict__['qtifw']['installerbase_path'] = os.path.join(self.__dict__['qtifw']['bin_dir_path'], 'installerbase')
+        # installer scripts
+        self.__dict__['installer']['config_control_script']['path'] = os.path.join(self.__dict__['project']['subdirs']['scripts']['path'], self.__dict__['installer']['config_control_script']['name'])
+        self.__dict__['installer']['package_install_script']['path'] = os.path.join(self.__dict__['project']['subdirs']['scripts']['path'], self.__dict__['installer']['package_install_script']['name'])
+        # app installer structure
+        self.__dict__['installer']['dir_name'] = self.__dict__['app']['installer']['name_suffix'] + 'Tmp'
+        self.__dict__['installer']['dir_path'] = os.path.join(self.__dict__['project']['subdirs']['distribution']['path'], self.__dict__['installer']['dir_name'])
+        self.__dict__['installer']['config_dir_path'] = os.path.join(self.__dict__['installer']['dir_path'], 'config')
+        self.__dict__['installer']['config_xml_path'] = os.path.join(self.__dict__['installer']['config_dir_path'], 'config.xml')
+        self.__dict__['installer']['packages_dir_path'] = os.path.join(self.__dict__['installer']['dir_path'], 'packages')
+        self.__dict__['installer']['packages_url_path'] = os.path.join(self.__dict__['installer']['packages_dir_path'], 'org.easydiffraction')
+        self.__dict__['installer']['packages_data_path'] = os.path.join(self.__dict__['installer']['packages_url_path'], 'data')
+        self.__dict__['installer']['packages_meta_path'] = os.path.join(self.__dict__['installer']['packages_url_path'], 'meta')
+        self.__dict__['installer']['package_xml_path'] = os.path.join(self.__dict__['installer']['packages_meta_path'], 'package.xml')
         # app installer
-        self.__dict__['app']['installer']['config_dir_path'] = os.path.join(self.__dict__['project']['dir_path'], 'Installer')
-        self.__dict__['app']['installer']['config_xml_path'] = os.path.join(self.__dict__['app']['installer']['config_dir_path'], 'config', 'config.xml')
-        self.__dict__['app']['installer']['packages_dir_path'] = os.path.join(self.__dict__['app']['installer']['config_dir_path'], 'packages')
-        self.__dict__['app']['installer']['data_dir_path'] = os.path.join(self.__dict__['app']['installer']['packages_dir_path'], 'io.github.easydiffraction', 'data')
-        self.__dict__['app']['installer']['dir_path'] = self.__dict__['project']['subdirs']['distribution']['path']
-        self.__dict__['app']['installer']['name'] = self.__dict__['app']['name'] + 'Installer'
+        self.__dict__['app']['installer']['name'] = self.__dict__['app']['name'] + self.__dict__['app']['installer']['name_suffix']
         self.__dict__['app']['installer']['exe_name'] = self.__dict__['app']['installer']['name'] + self.__dict__['os']['gui_exe_ext'][self._osName()]
+        self.__dict__['app']['installer']['dir_path'] = self.__dict__['project']['subdirs']['distribution']['path']
         self.__dict__['app']['installer']['exe_path'] = os.path.join(self.__dict__['app']['installer']['dir_path'], self.__dict__['app']['installer']['exe_name'])
+        self.__dict__['app']['license']['file_path'] = os.path.join(self.__dict__['project']['dir_path'], self.__dict__['app']['license']['file_name'])
 
     def __getitem__(self, key):
         return self.__dict__[key]

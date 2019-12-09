@@ -7,7 +7,7 @@ import shutil
 import yaml # pip install pyyaml
 from uritemplate import URITemplate # pip install uritemplate
 import Project
-import Functions
+import BasicFunctions
 
 import re
 import base64
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     branch = environmentVariable('TRAVIS_BRANCH')
 
     if branch == 'v{0}'.format(version): #re.search('v\d+\.\d+\.\d+', branch)
-        Functions.printTitle('Update web page')
+        BasicFunctions.printTitle('Update web page')
         owner = 'easyDiffraction'
         repo = 'easyDiffraction.github.io'
         token = environmentVariable('GITHUB_TOKEN')

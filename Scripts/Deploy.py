@@ -7,7 +7,7 @@ import shutil
 import yaml # pip install pyyaml
 from uritemplate import URITemplate # pip install uritemplate
 import Project
-import Functions
+import BasicFunctions
 
 # CLASSES
 
@@ -236,7 +236,7 @@ def environmentVariable(name, default=None):
 # MAIN
 
 if __name__ == "__main__":
-    Functions.printTitle('Deploy')
+    BasicFunctions.printTitle('Deploy')
 
     config = Project.Config()
 

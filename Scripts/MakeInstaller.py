@@ -1,64 +1,183 @@
 #!/usr/bin/env python3
 
 import os, sys
-import requests
-import shutil
+import xml, dicttoxml
+import datetime
 import Project
+import BasicFunctions
 import Functions
 
-if __name__ == "__main__":
-    Functions.printTitle('Create Installer')
+def downloadQtInstallerFramework():
+    message = "download QtInstallerFramework"
+    try:
+        config = Project.Config()
+        Functions.downloadFile(
+            url=config['qtifw']['setup']['download_url'],
+            destination=config['qtifw']['setup']['download_path']
+        )
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
 
+def osDependentPreparation():
     config = Project.Config()
     os_name = config['os']['name']
-    project_dir_path = config['project']['dir_path']
-    scripts_dir_path = config['project']['subdirs']['scripts']['path']
-    examples_dir_path = config['project']['subdirs']['examples']['path']
-    silent_install_script = config['scripts']['silent_install']
-    freezed_app_path = config['app']['freezed_path']
-    qtifw_installerbase_path = config['qtifw']['installerbase_path']
-    qtifw_binarycreator_path = config['qtifw']['binarycreator_path']
-    qtifw_setup_download_url = config['qtifw']['setup']['download_url']
-    qtifw_setup_exe_path = config['qtifw']['setup']['exe_path']
-    qtifw_setup_download_path = config['qtifw']['setup']['download_path']
-    installer_data_dir_path = config['app']['installer']['data_dir_path']
-    installer_config_xml_path = config['app']['installer']['config_xml_path']
-    installer_packages_dir_path = config['app']['installer']['packages_dir_path']
-    installer_exe_path = config['app']['installer']['exe_path']
-
-    print('* Download QtInstallerFramework installer')
-    qtifw_installer = requests.get(qtifw_setup_download_url, allow_redirects=True)
-    open(qtifw_setup_download_path, 'wb').write(qtifw_installer.content)
-
+    message = "prepare for os '{0}'".format(os_name)
     if os_name == 'osx':
-        print('* Attach QtInstallerFramework DMG')
-        Functions.run('hdiutil', 'attach', config['qtifw']['setup']['download_path'])
+        try:
+            Functions.attachDmg(config['qtifw']['setup']['download_path'])
+        except Exception as exception:
+            BasicFunctions.printFailMessage(message, exception)
+            sys.exit()
+        else:
+            BasicFunctions.printSuccessMessage(message)
     elif os_name == 'linux':
-        print('* export QT_QPA_PLATFORM=minimal')
-        os.environ["QT_QPA_PLATFORM"] = "minimal"
-        print('* Fix permissions')
-        Functions.run('chmod', 'a+x', config['qtifw']['setup']['exe_path'])
+        try:
+            Functions.setEnvVariable("QT_QPA_PLATFORM", "minimal")
+            Functions.addReadPermission(config['qtifw']['setup']['exe_path'])
+        except Exception as exception:
+            BasicFunctions.printFailMessage(message, exception)
+            sys.exit()
+        else:
+            BasicFunctions.printSuccessMessage(message)
+    else:
+        message = "* No preparation needed for os '{0}'".format(os_name)
+        print(message)
 
-    print('* Install QtInstallerFramework silently')
-    Functions.run(
-        qtifw_setup_exe_path,
-        '--script', silent_install_script,
-        '--no-force-installations'
+def installQtInstallerFramework():
+    message = "install QtInstallerFramework"
+    try:
+        config = Project.Config()
+        Functions.installSilently(
+            installer=config['qtifw']['setup']['exe_path'],
+            silent_script=config['scripts']['silent_install']
         )
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
 
-    print('* Move files/dirs needed for creating installer')
-    shutil.rmtree(installer_data_dir_path, ignore_errors=True)
-    os.makedirs(installer_data_dir_path)
-    shutil.move(examples_dir_path, installer_data_dir_path)
-    shutil.move(freezed_app_path, installer_data_dir_path)
+def installerConfigXml():
+    message = "create config.xml content"
+    try:
+        config = Project.Config()
+        os_name = config['os']['name']
+        app_name = config['app']['name']
+        if os_name == 'osx':
+            target_dir = '@ApplicationsDir@/{0}'.format(app_name)
+        elif os_name == 'windows':
+            target_dir = '@ApplicationsDir@\\{0}'.format(app_name)
+        elif os_name == 'linux':
+            target_dir = '@HomeDir@/{0}'.format(app_name)
+        else:
+            BasicFunctions.printFailMessage("Unsupported os '{0}'".format(os_name))
+            sys.exit()
+        pydict = {
+            'Installer': {
+                'Name': config['app']['name'],
+                'Version': config['release']['version'],
+                'Title': config['app']['name'],
+                'Publisher': config['app']['name'],
+                'ProductUrl': config['app']['url'],
+                #'Logo': 'logo.png',
+                #'WizardStyle': 'Classic',#'Aero',
+                'StartMenuDir': config['app']['name'],
+                'TargetDir': target_dir,
+                'MaintenanceToolName': '{0}{1}'.format(config['app']['name'], 'Uninstaller'),
+                'AllowNonAsciiCharacters': 'true',
+                'AllowSpaceInPath': 'true',
+                'InstallActionColumnVisible': 'false',
+                'ControlScript': config['installer']['config_control_script']['name'],
+            }
+        }
+        raw_xml = dicttoxml.dicttoxml(pydict, root=False, attr_type=False)
+        pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
+        #raw_xml = html.fromstring(raw_xml)
+        #raw_xml = etree.tostring(raw_xml, xml_declaration=False, encoding='unicode', pretty_print=True)#.decode()
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+        return pretty_xml
 
-    print('* Create installer from moved files/dirs')
-    Functions.run(
-        qtifw_binarycreator_path,
-        '--verbose',
-        '--offline-only',
-        '-c', installer_config_xml_path,
-        '-p', installer_packages_dir_path,
-        '-t', qtifw_installerbase_path,
-        installer_exe_path
-    )
+def installerPackageXml():
+    message = "create package.xml content"
+    try:
+        config = Project.Config()
+        pydict = {
+            'Package': {
+                'DisplayName': config['app']['name'],
+                'Description': config['app']['description'],
+                'Version': config['release']['version'],
+                'ReleaseDate': datetime.datetime.strptime(config['release']['date'], "%d %b %Y").strftime("%Y-%m-%d"),
+                'Default': 'true',
+                'Essential': 'true',
+                'ForcedInstallation': 'true',
+                #'RequiresAdminRights': 'true',
+                #'Licenses': {
+                #    'License': {
+                #        'name': "GNU General Public License Version 3",
+                #        'file': "LICENSE"
+                #    }
+            	#	<License name="GNU General Public License Version 3" file="LICENSE" /> # SHOULD BE IN THIS FORMAT
+                #}
+                'Script': config['installer']['package_install_script']['name'],
+            }
+        }
+        raw_xml = dicttoxml.dicttoxml(pydict, root=False, attr_type=False)
+        pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+        return pretty_xml
+
+def createInstallerSourceDir():
+    message = "create installer source directory"
+    try:
+        config = Project.Config()
+        Functions.createFile(path=config['installer']['config_xml_path'], content=installerConfigXml())
+        Functions.copyFile(source=config['installer']['config_control_script']['path'], destination=config['installer']['config_dir_path'])
+        Functions.createFile(path=config['installer']['package_xml_path'], content=installerPackageXml())
+        Functions.copyFile(source=config['installer']['package_install_script']['path'], destination=config['installer']['packages_meta_path'])
+        Functions.copyFile(source=config['app']['license']['file_path'], destination=config['installer']['packages_meta_path'])
+        Functions.createDir(config['installer']['packages_data_path'])
+        Functions.moveDir(source=config['app']['freezed']['path'], destination=config['installer']['packages_data_path'])
+        Functions.moveDir(source=config['project']['subdirs']['examples']['path'], destination=config['installer']['packages_data_path'])
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+
+def createInstallerFile():
+    message = "create installer file"
+    try:
+        config = Project.Config()
+        BasicFunctions.run(
+            config['qtifw']['binarycreator_path'],
+            '--verbose',
+            '--offline-only',
+            '-c', config['installer']['config_xml_path'],
+            '-p', config['installer']['packages_dir_path'],
+            '-t', config['qtifw']['installerbase_path'],
+            config['app']['installer']['exe_path']
+        )
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+
+if __name__ == "__main__":
+    BasicFunctions.printTitle('Create Installer')
+    downloadQtInstallerFramework()
+    osDependentPreparation()
+    installQtInstallerFramework()
+    createInstallerSourceDir()
+    createInstallerFile()
