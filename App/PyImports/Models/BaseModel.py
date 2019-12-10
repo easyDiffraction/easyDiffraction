@@ -10,13 +10,13 @@ class BaseModel(QObject):
         self._data_model = QStandardItemModel()
         self._project_dict = None
 
-    def _setModelFromProjectDict(self):
+    def _setModelsFromProjectDict(self):
         """ Pure virtual data setter """
         raise NotImplementedError("_setModelFromProjectDict must be implemented in derived class.")
 
     def onProjectChanged(self):
         """Set headers and data models from project dictionary"""
-        self._setModelFromProjectDict()
+        self._setModelsFromProjectDict()
 
     def asHeadersModel(self):
         """Return headers model."""

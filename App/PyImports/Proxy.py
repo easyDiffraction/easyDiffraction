@@ -122,7 +122,7 @@ class Proxy(QObject):
     # which calls another signal projectChanged
     projectChanged = Signal()
     project = Property('QVariant', lambda self: self.calculatorAsDict(), notify=projectChanged)
-    #cif = Property('QVariant', lambda self: self.calculatorAsCifDict(), notify=projectChanged)
+    cif = Property('QVariant', lambda self: self.calculatorAsCifDict(), notify=projectChanged)
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals

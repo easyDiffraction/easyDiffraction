@@ -26,7 +26,6 @@ class FileStructureModel(BaseModel):
         phases_cif = cif_dict['phases']
         exp_cif = cif_dict['experiments']
 
-
         for colum_index, (data_id, data_str) in enumerate(cif_dict.items()):
             index = self._headers_model.index(0, colum_index)
             self._headers_model.setData(index, data_id, Qt.DisplayRole)

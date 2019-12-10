@@ -40,17 +40,27 @@ class CryspyCalculator(QObject):
         Parse the relevant phases file and updates the corresponding model
         """
         self._phases_path = phases_path
-        full_rcif_content = self._parseSegment(EXPERIMENT_SEGMENT)
+        rcif_content = ""
 
+        # This will read the CIF file
         phases_rcif = pycifstar.read_star_file(self._phases_path)
 
         if os.path.isfile(self._phases_path):
             with open(self._phases_path, 'r') as f:
                 phases_rcif_content = f.read()
-                full_rcif_content += phases_rcif_content
+                rcif_content += phases_rcif_content
 
-        #rho_chi = cryspy.RhoChi()
-        self._cryspy_obj.from_cif(full_rcif_content)
+        # This will concatenate the old experiment info
+        rcif_content += self._parseSegment(EXPERIMENT_SEGMENT)
+
+        # This will update the CrysPy object
+        self._cryspy_obj.from_cif(rcif_content)
+
+        # This will re-create all local directories
+        self.setProjectDictFromCryspyObj()
+
+        # This will notify the GUI models changed
+        self.projectDictChanged.emit()
 
     def _parseSegment(self, segment=""):
         """Parse the given segment info from the main rcif file"""
@@ -652,6 +662,8 @@ class CryspyCalculator(QObject):
 
             # Calculated chi squared and number of data points used for refinement
             logging.info("calc_chi_sq start") # profiling
+            chi_sq = 0.0
+            n_res = 1
             chi_sq, n_res = experiment.calc_chi_sq(self._cryspy_obj.crystals)
             logging.info("calc_chi_sq end") # profiling
 
