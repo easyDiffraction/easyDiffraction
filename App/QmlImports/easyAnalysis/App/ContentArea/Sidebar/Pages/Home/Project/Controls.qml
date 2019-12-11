@@ -213,6 +213,7 @@ ColumnLayout {
                 onAccepted: {
                     projectControl.writeMain(titleInput.text, keywordsInput.text)
                     proxy.initialize()
+                    proxy.createProjectZip()
                     Specific.Variables.projectOpened = true
                 }
             }

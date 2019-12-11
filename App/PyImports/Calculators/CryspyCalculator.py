@@ -87,20 +87,28 @@ class CryspyCalculator(QObject):
         rho_chi.from_cif(full_rcif_content)
         return rho_chi
 
-    def saveCifs(self, saveDir):
+    def writeMainCif(self, saveDir):
         main_block = self._main_rcif
         main_block.to_file(os.path.join(saveDir, 'main.cif'))
 
+    def writePhaseCif(self, saveDir):
         phases_block = pycifstar.Global()
         # TODO write output for multiple phases
         if len(self._cryspy_obj.crystals) > 0:
             phases_block.take_from_string(self._cryspy_obj.crystals[0].to_cif)
         phases_block.to_file(os.path.join(saveDir, 'phases.cif'))
 
+    def writeExpCif(self, saveDir):
         exp_block = pycifstar.Global()
         if len(self._cryspy_obj._RhoChi__experiments) > 0:
             exp_block.take_from_string(self._cryspy_obj._RhoChi__experiments[0].to_cif)
         exp_block.to_file(os.path.join(saveDir, 'experiments.cif'))
+
+    def saveCifs(self, saveDir):
+        self.writeMainCif(saveDir)
+        self.writePhaseCif(saveDir)
+        self.writeExpCif(saveDir)
+
 
     def setAppDict(self):
         """Set application state"""

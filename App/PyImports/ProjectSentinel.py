@@ -326,6 +326,19 @@ def temp_project_dir(filename, targetdir=None):
     return targetdir
 
 
+def create_empty_project(data_dir, saveName):
+
+    extension = saveName[-4:]
+    if extension != '.zip':
+        saveName = saveName + '.zip'
+
+    mustContain = ['main.cif']
+    canContain = []
+
+    write_zip(data_dir, saveName, mustContain, canContain)
+    return saveName
+
+
 def create_project_zip(data_dir, saveName):
     extension = saveName[-4:]
     if extension != '.zip':
@@ -338,6 +351,12 @@ def create_project_zip(data_dir, saveName):
     canContain = ['saved_structure.png',
                   'saved_refinement.png']
 
+    write_zip(data_dir, saveName, mustContain, canContain)
+
+    return check_project_file(saveName), saveName
+
+
+def write_zip(data_dir, saveName, mustContain, canContain):
     saveName = urlparse(saveName).path
     if sys.platform.startswith("win"):
         if saveName[0] == '/':
@@ -356,8 +375,6 @@ def create_project_zip(data_dir, saveName):
             if os.path.isfile(fullFile):
                 zip.write(fullFile, file)
 
-    return check_project_file(saveName), saveName
-
 
 def writeProject(projectModel, saveName):
     allOK, saveName = create_project_zip(projectModel.tempDir.name, saveName)
@@ -365,3 +382,8 @@ def writeProject(projectModel, saveName):
     projectModel._projectFile = saveName
     if not allOK:
         raise FileNotFoundError
+
+def writeEmptyProject(projectModel, saveName):
+    saveName = create_empty_project(projectModel.tempDir.name, saveName)
+    projectModel._saveSuccess = True
+    projectModel._projectFile = saveName

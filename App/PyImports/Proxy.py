@@ -16,7 +16,7 @@ from PyImports.Models.AtomMspsModel import AtomMspsModel
 from PyImports.Models.FitablesModel import FitablesModel
 from PyImports.Models.StatusModel import StatusModel
 from PyImports.Models.FileStructureModel import FileStructureModel
-from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict
+from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
 
@@ -99,6 +99,12 @@ class Proxy(QObject):
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
         # We can't link signals as the manager signals emitted before the dict is updated :-(
         self.projectChanged.emit()
+
+
+    @Slot()
+    def createProjectZip(self):
+        self._calculator.writeMainCif(self.project_control.tempDir.name)
+        writeEmptyProject(self.project_control, self.project_control._projectFile)
 
     @Slot(str)
     def saveProject(self, saveName):
