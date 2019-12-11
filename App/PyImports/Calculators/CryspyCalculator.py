@@ -37,21 +37,27 @@ class CryspyCalculator(QObject):
 
     def updatePhases(self, phases_path):
         """
-        Parse the relevant phases file and updates the corresponding model
+        Parse the relevant phases file and update the corresponding model
         """
         self._phases_path = phases_path
         rcif_content = ""
 
         # This will read the CIF file
-        phases_rcif = pycifstar.read_star_file(self._phases_path)
-
         if os.path.isfile(self._phases_path):
             with open(self._phases_path, 'r') as f:
                 phases_rcif_content = f.read()
                 rcif_content += phases_rcif_content
 
-        # This will concatenate the old experiment info
-        rcif_content += self._parseSegment(EXPERIMENT_SEGMENT)
+        # find the name of the new phase
+        data_segment = phases_rcif_content.find('data_') # first instance only
+        data_segment_length = len('data_')
+        new_phase_name = phases_rcif_content[data_segment+data_segment_length:phases_rcif_content.find('\n')]
+
+        # This will replace phase name in EXPERIMENT
+        experiment_segment = self.replacePhaseInSegment(EXPERIMENT_SEGMENT, new_phase_name)
+
+        # Concatenate the old/corrected experiment info
+        rcif_content += experiment_segment
 
         # This will update the CrysPy object
         self._cryspy_obj.from_cif(rcif_content)
@@ -61,6 +67,19 @@ class CryspyCalculator(QObject):
 
         # This will notify the GUI models changed
         self.projectDictChanged.emit()
+
+    def replacePhaseInSegment(self, segment, new_phase_name):
+        """
+        Replaces original phase name with the given name in a segment
+        """
+        segment_content = self._parseSegment(segment)
+        old_phase_name = self._phase_name
+        segment_content = segment_content.replace(old_phase_name, new_phase_name)
+        # update old phase name
+        self._phase_name = new_phase_name
+
+        # return the new segment
+        return segment_content
 
     def _parseSegment(self, segment=""):
         """Parse the given segment info from the main rcif file"""
@@ -81,7 +100,13 @@ class CryspyCalculator(QObject):
 
     def _createCryspyObj(self):
         """Create cryspy object from separate rcif files"""
-        full_rcif_content = self._parseSegment(EXPERIMENT_SEGMENT) + self._parseSegment(PHASE_SEGMENT)
+        phase_segment = self._parseSegment(PHASE_SEGMENT)
+        full_rcif_content = self._parseSegment(EXPERIMENT_SEGMENT) + phase_segment
+
+        # find the phase name
+        data_segment = phase_segment.find('data_') # first instance only
+        data_segment_length = len('data_')
+        self._phase_name = phase_segment[data_segment+data_segment_length:phase_segment.find('\n')]
 
         rho_chi = cryspy.RhoChi()
         rho_chi.from_cif(full_rcif_content)

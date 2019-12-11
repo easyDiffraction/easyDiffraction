@@ -7,6 +7,7 @@ import easyDiffraction 1.0 as Specific
 
 Rectangle {
     color: "white"
+    property bool showContent: false
 
     ListView {
         width: parent.width
@@ -20,7 +21,8 @@ Rectangle {
                 leftPadding: font.pixelSize
                 rightPadding: leftPadding
                 horizontalAlignment: Text.AlignLeft
-                text: model.phasesRole
+                text: showContent ? model.phasesRole : ""
+
         }
     }
 }

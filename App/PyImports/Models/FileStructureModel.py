@@ -9,8 +9,8 @@ class FileStructureModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         # set roles
-        self._phase_role = Qt.UserRole + 1
-        self._experiment_role = Qt.UserRole + 2
+        self._phase_role = Qt.UserRole + 2
+        self._experiment_role = Qt.UserRole + 3
         self._data_model.setItemRoleNames({
             self._phase_role: b'phasesRole',
             self._experiment_role: b'experimentsRole',
@@ -22,6 +22,8 @@ class FileStructureModel(BaseModel):
         """
 
         cif_dict = self._calculator.asCifDict()
+        # Important - clear the model, so subsequent calls deal with empty
+        self._data_model.clear()
 
         self._data_model.blockSignals(True)
         self._headers_model.blockSignals(True)
