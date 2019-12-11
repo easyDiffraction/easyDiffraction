@@ -1,13 +1,20 @@
 import logging
 
 from PySide2.QtCore import Qt, QObject, Signal
-from PySide2.QtGui import QStandardItemModel
+from PySide2.QtGui import QStandardItemModel, QStandardItem
 
 from PyImports.Models.BaseModel import BaseModel
 
 class FileStructureModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
+        # set roles
+        self._phase_role = Qt.UserRole + 1
+        self._experiment_role = Qt.UserRole + 2
+        self._data_model.setItemRoleNames({
+            self._phase_role: b'phasesRole',
+            self._experiment_role: b'experimentsRole',
+            })
 
     def _setModelsFromProjectDict(self):
         """
@@ -16,23 +23,29 @@ class FileStructureModel(BaseModel):
 
         cif_dict = self._calculator.asCifDict()
 
-        column_count = len(cif_dict)
-        row_count = 1 # currenly just 1 component
         self._data_model.blockSignals(True)
         self._headers_model.blockSignals(True)
-        self._data_model.setColumnCount(column_count)
-        self._data_model.setRowCount(row_count)
 
         phases_cif = cif_dict['phases']
         exp_cif = cif_dict['experiments']
 
-        for colum_index, (data_id, data_str) in enumerate(cif_dict.items()):
-            index = self._headers_model.index(0, colum_index)
-            self._headers_model.setData(index, data_id, Qt.DisplayRole)
-            index = self._data_model.index(0, colum_index)
-            self._data_model.setData(index, data_str, Qt.DisplayRole)
+        # Currently only one phase/experiment, so assigning
+        # explicitly. With more components, we need a proper loop
+        # as shown below
+        item1 = QStandardItem()
+        item1.setData(phases_cif, self._phase_role)
+        self._data_model.appendRow(item1)
+        item2 = QStandardItem()
+        item2.setData(exp_cif, self._experiment_role)
+        self._data_model.appendRow(item2)
+
+        #for data_str cif_dict.items():
+        #    item = QStandardItem()
+        #    item.setData(phases_cif, <self._some_role>)
+        #    self._data_model.appendRow(item)
 
         self._data_model.blockSignals(False)
         self._headers_model.blockSignals(False)
         self._data_model.layoutChanged.emit()
         self._headers_model.layoutChanged.emit()
+
