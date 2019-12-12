@@ -279,3 +279,21 @@ def test_refine(cal, mocker, fit_len):
     assert ret['njev'] == 42
     assert ret['nit'] == 2
     assert ret['num_refined_parameters'] == fit_len
+
+def test_updatePhases(cal):
+    """
+    Load another phase file and check if the content is correctly updated
+    """
+    NEW_PHASE_FILE = "file:Tests/Data/phases_2.cif"
+    file_path = QUrl(NEW_PHASE_FILE).toLocalFile()
+
+    cal.updatePhases(file_path)
+
+    assert cal.phasesIds() == ['Fe2Co1O4']
+    assert cal.name() == 'Fe3O4'
+
+    d = cal.asCifDict()
+    assert 'data_Fe2Co1O4' in d['phases']
+    assert 'data_pnd' in d['experiments']
+
+
