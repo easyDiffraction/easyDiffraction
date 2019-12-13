@@ -236,8 +236,15 @@ def environmentVariable(name, default=None):
 # MAIN
 
 if __name__ == "__main__":
-    BasicFunctions.printTitle('Deploy')
+    BasicFunctions.printTitle('Deploy to GitHub releases')
 
+    # Exit if pull request
+    pull_request = environmentVariable('TRAVIS_PULL_REQUEST')
+    if pull_request:
+        print("* Deployment not needed. It's a pull request No. '{}'".format(pull_request))
+        exit()
+
+    # Load config
     config = Project.Config()
 
     # Init github communication
