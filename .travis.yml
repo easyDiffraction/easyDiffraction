@@ -23,8 +23,9 @@ matrix:
       #dist: bionic
       dist: xenial
       before_install:
-        - python -m venv $TRAVIS_BUILD_DIR/.python-venv # create virtual environment for convenience
-        - source $TRAVIS_BUILD_DIR/.python-venv/bin/activate # activate virtual environment
+        - python -m venv .python-venv # create virtual environment for convenience
+        - source .python-venv/bin/activate # activate virtual environment
+        - which python
       env: BADGE=linux
       services:
         - docker
@@ -54,8 +55,9 @@ matrix:
       osx_image: xcode9.4   # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
-        - python3 -m venv $TRAVIS_BUILD_DIR/.python-venv # create virtual environment for convenience
-        - source $TRAVIS_BUILD_DIR/.python-venv/bin/activate # activate virtual environment
+        - python3 -m venv .python-venv # create virtual environment for convenience
+        - source .python-venv/bin/activate # activate virtual environment
+        - which python
       env: BADGE=osx
     # Windows
     - name: "Python 3.7.0 on Windows 10.0"
@@ -63,12 +65,12 @@ matrix:
       language: shell       # 'language: python' is an error on Travis CI Windows
       filter_secrets: false
       before_install:
-        - choco install python --version=3.7.0 # 3.8 fails with cryspy
-        - python -m venv $TRAVIS_BUILD_DIR/.python-venv # create virtual environment for convenience
-        - $TRAVIS_BUILD_DIR/.python-venv/Scripts/activate.bat # activate virtual environment
+        - choco install python --params "/InstallDir:C:\Python3" --version=3.7.0 # 3.8 fails with cryspy
+        - C:/Python3/python -m venv .python-venv # create virtual environment for convenience
+        - .python-venv/Scripts/activate.bat # activate virtual environment
         - pip install pypiwin32
       env:
-        - PATH=/c/Python37:/c/Python37/Scripts:$PATH
+        #- PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
 
 #install:
