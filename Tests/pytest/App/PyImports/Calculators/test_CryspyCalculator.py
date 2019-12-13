@@ -7,6 +7,8 @@ import cryspy
 
 # module for testing
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from PyImports.Calculators.CryspyCalculator import PHASE_SEGMENT, EXPERIMENT_SEGMENT
+
 
 TEST_FILE = "file:Tests/Data/main.cif"
 fitdata_data = [0, 2, 3, 5]
@@ -296,4 +298,24 @@ def test_updatePhases(cal):
     assert 'data_Fe2Co1O4' in d['phases']
     assert 'data_Fe2Co1O4' in d['experiments']
 
+def test_parseSegment(cal):
+    """
+    parsing of the experiment or phase segment
+    """
+    exp_segment = cal._parseSegment(segment=EXPERIMENT_SEGMENT)
+
+    phase_segment = cal._parseSegment(segment=PHASE_SEGMENT)
+
+    bad_segment = cal._parseSegment(segment='poop')
+
+    empty_segment = cal._parseSegment()
+
+    assert bad_segment == ''
+    assert empty_segment == ''
+
+    assert 'Fe3O4' in exp_segment
+    assert 'n_radiation_wavelength' in exp_segment
+
+    assert 'Fe3O4' in phase_segment
+    assert 'cell_length_a' in phase_segment
 
