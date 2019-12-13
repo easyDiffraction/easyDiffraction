@@ -12,6 +12,8 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 
 [![][28]][21]
 
+[![][61]][62]
+
 <!---Travis CI Build Status--->
 [20]: https://travis-ci.org/easyDiffraction/easyDiffraction
 [21]: https://codecov.io/gh/easyDiffraction/easyDiffraction
@@ -42,3 +44,8 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 [31]: https://snapcraft.io/easydiffraction
 [33]: https://build.snapcraft.io/badge/easyDiffraction/easyDiffraction.svg
 [34]: https://build.snapcraft.io/user/easyDiffraction/easyDiffraction
+
+<!---LicenseScan--->
+[61]: https://app.fossa.com/api/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction.svg?type=shield
+[62]: https://app.fossa.com/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction?ref=badge_shield
+
