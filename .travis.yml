@@ -78,6 +78,8 @@ matrix:
         - dir
         - cd Scripts
         - dir
+        - python --version
+        - python.exe --version
       env:
         - BADGE=win
         - PATH=$PATH:$TRAVIS_BUILD_DIR/.python-venv:$TRAVIS_BUILD_DIR/python-venv/Scripts          # Travis equivalent of 'update Windows PATH variable'
