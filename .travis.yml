@@ -20,12 +20,12 @@ matrix:
       dist: xenial
       before_install:
         - sudo add-apt-repository -y ppa:deadsnakes/ppa                   # add python 3.6 repository
-        - sudo apt-get -y update                                          #
+        - sudo apt-get -y update                                          # update
         - sudo apt-get -y install python3.6 python3.6-dev python3.6-venv  # install python 3.6
         - python3.6 -m venv .python-venv                                  # create virtual environment
         - source .python-venv/bin/activate                                # activate virtual environment
-        - which python
-        - python --version
+        - which python                                                    # show current python path
+        #- python --version
       env: BADGE=linux
 #      services:
 #        - docker
@@ -56,8 +56,8 @@ matrix:
       before_install:
         - python3.6 -m venv .python-venv      # create virtual environment
         - source .python-venv/bin/activate    # activate virtual environment
-        - which python
-        - python --version
+        - which python                        # show current python path
+        #- python --version
       env: BADGE=osx
     # Windows
     - name: "Python 3.7.0 on Windows 10.0"
@@ -65,14 +65,14 @@ matrix:
       filter_secrets: false
       before_install:
         #- echo $TRAVIS_BUILD_DIR/.python-venv/Scripts
-        - choco install python --version=3.6.5 # 3.8 fails with cryspy
-        - C:/Python36/python -m venv .python-venv # create virtual environment for convenience
-        - .python-venv/Scripts/activate.bat # activate virtual environment
+        - choco install python --version=3.6.5
+        - C:/Python36/python -m venv .python-venv                                                     # create virtual environment
+        - .python-venv/Scripts/activate.bat                                                           # activate virtual environment
         - echo %PATH%
         #- set PATH=$TRAVIS_BUILD_DIR/.python-venv/Scripts
-        - setx PATH "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"
-        - echo %PATH%
-        - python --version
+        - setx PATH "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"  # update Windows PATH variable
+        - echo %PATH%                                                                                 # show path variable
+        #- python --version
         #- python3 --version
         #- pip3 install pypiwin32
       env: BADGE=win
