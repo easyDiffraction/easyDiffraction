@@ -51,15 +51,21 @@ class CryspyCalculator(QObject):
         # find the name of the new phase
         data_segment = phases_rcif_content.find('data_') # first instance only
         data_segment_length = len('data_')
-        new_phase_name = phases_rcif_content[data_segment+data_segment_length:phases_rcif_content.find('\n')]
+        end_loc = data_segment + phases_rcif_content[data_segment:].find('\n')
+        new_phase_name = phases_rcif_content[data_segment+data_segment_length:end_loc].strip()
 
         # This will replace phase name in EXPERIMENT
         experiment_segment = self.replacePhaseInSegment(EXPERIMENT_SEGMENT, new_phase_name)
 
+        # This will remove unneeded 'global_'s in both segments
+        experiment_segment = experiment_segment.replace('global_', '')
+        rcif_content = rcif_content.replace('global_', '')
+
         # Concatenate the old/corrected experiment info
-        rcif_content += experiment_segment
+        rcif_content = experiment_segment + rcif_content
 
         # This will update the CrysPy object
+        self._cryspy_obj = cryspy.RhoChi()
         self._cryspy_obj.from_cif(rcif_content)
 
         # This will re-create all local directories
@@ -74,9 +80,10 @@ class CryspyCalculator(QObject):
         """
         segment_content = self._parseSegment(segment)
         old_phase_name = self._phase_name
-        segment_content = segment_content.replace(old_phase_name, new_phase_name)
-        # update old phase name
-        self._phase_name = new_phase_name
+        if old_phase_name and old_phase_name != new_phase_name:
+            segment_content = segment_content.replace(old_phase_name, new_phase_name)
+            # update old phase name
+            self._phase_name = new_phase_name
 
         # return the new segment
         return segment_content
@@ -106,8 +113,8 @@ class CryspyCalculator(QObject):
         # find the phase name
         data_segment = phase_segment.find('data_') # first instance only
         data_segment_length = len('data_')
-        self._phase_name = phase_segment[data_segment+data_segment_length:phase_segment.find('\n')]
-
+        end_loc = data_segment + phase_segment[data_segment:].find('\n')
+        self._phase_name = phase_segment[data_segment+data_segment_length:end_loc].strip()
         rho_chi = cryspy.RhoChi()
         rho_chi.from_cif(full_rcif_content)
         return rho_chi

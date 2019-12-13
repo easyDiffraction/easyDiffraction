@@ -90,21 +90,17 @@ ColumnLayout {
                     fileDialogLoadPhase.close()
                     var old_analysis_state = Generic.Variables.analysisPageFinished
                     var old_summary_state = Generic.Variables.summaryPageFinished
-                    if (projectControl.validCif) {
-                        proxy.loadPhasesFromFile()
-                        Specific.Variables.projectOpened = true
-                        Generic.Variables.homePageFinished = true
-                        Generic.Variables.dataPageFinished = true
-                        Generic.Variables.samplePageFinished = true
-                        Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
-
-                        // The remove button will have to be enabled once we start actually adding phases
-                        //removeButton.enabled = true
-                    } else {
-                        failOpenDialog.visible = true
-                        // load failed/cancelled. Keep the current state
-                    }
+                    //if (projectControl.validCif) {
+                    proxy.loadPhasesFromFile()
+                    Specific.Variables.projectOpened = true
+                    Generic.Variables.homePageFinished = true
+                    Generic.Variables.dataPageFinished = true
+                    Generic.Variables.samplePageFinished = true
+                    Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                    // The remove button will have to be enabled once we start actually adding phases
+                    //removeButton.enabled = true
+                    //}
                 }
             }
 
