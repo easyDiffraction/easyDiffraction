@@ -68,9 +68,9 @@ matrix:
         - C:/Python36/python -m venv .python-venv                                                     # create virtual environment
         - .python-venv/Scripts/activate.bat                                                           # activate virtual environment
         #- echo %PATH%
-        - echo $PATH
-        - setx PATH "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"  # update Windows PATH variable
-        - echo $PATH
+        #- echo $PATH
+        #- setx PATH "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"  # update Windows PATH variable
+        #- echo $PATH
         #- echo %PATH%                                                                                 # show path variable
       env: BADGE=win
 
