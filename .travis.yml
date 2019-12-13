@@ -24,7 +24,7 @@ matrix:
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
-        - python -m venv .python-venv # create virtual environment for convenience
+        - python3 -m venv .python-venv # create virtual environment for convenience
         - source .python-venv/bin/activate # activate virtual environment
         - which python
         - python --version
