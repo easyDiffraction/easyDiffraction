@@ -26,29 +26,32 @@ matrix:
         - python -m venv .python-venv # create virtual environment for convenience
         - source .python-venv/bin/activate # activate virtual environment
         - which python
+        - python --version
+        - which python3
+        - python3 --version
       env: BADGE=linux
-      services:
-        - docker
-      before_deploy:
-        - mkdir .snapcraft
-        - openssl aes-256-cbc -K $encrypted_d23b8f89b93f_key -iv $encrypted_d23b8f89b93f_iv -in Certificates/snapCredentials.tar.enc -out Certificates/snapCredentials.tar -d
-        - tar xvf Certificates/snapCredentials.tar -C Certificates
-      deploy:
-#        - provider: script # For when we click release
-#          script: mv Certificates/snapCredentialsStable .snapcraft/snapcraft.cfg && docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release stable"
+#      services:
+#        - docker
+#      before_deploy:
+#        - mkdir .snapcraft
+#        - openssl aes-256-cbc -K $encrypted_d23b8f89b93f_key -iv $encrypted_d23b8f89b93f_iv -in Certificates/snapCredentials.tar.enc -out Certificates/snapCredentials.tar -d
+#        - tar xvf Certificates/snapCredentials.tar -C Certificates
+#      deploy:
+##        - provider: script # For when we click release
+##          script: mv Certificates/snapCredentialsStable .snapcraft/snapcraft.cfg && docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release stable"
+##          skip_cleanup: true
+##          on:
+##            tags: true
+#        - provider: script # For builds on the master branch
+#          script: mv Certificates/snapCredentialsBeta .snapcraft/snapcraft.cfg && docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release beta"
 #          skip_cleanup: true
 #          on:
-#            tags: true
-        - provider: script # For builds on the master branch
-          script: mv Certificates/snapCredentialsBeta .snapcraft/snapcraft.cfg && docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release beta"
-          skip_cleanup: true
-          on:
-            branch: master
-        - provider: script # For builds on the develop branch
-          script: mv Certificates/snapCredentialsEdge .snapcraft/snapcraft.cfg && docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
-          skip_cleanup: true
-          on:
-            branch: develop
+#            branch: master
+#        - provider: script # For builds on the develop branch
+#          script: mv Certificates/snapCredentialsEdge .snapcraft/snapcraft.cfg && docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
+#          skip_cleanup: true
+#          on:
+#            branch: develop
     # macOS
     - name: "Python 3.7.0 on macOS 10.13 (High Sierra)"
       os: osx
@@ -66,6 +69,8 @@ matrix:
       filter_secrets: false
       before_install:
         - choco install python --params "/InstallDir:C:\Python3" --version=3.7.0 # 3.8 fails with cryspy
+        - cd C:/Python3
+        - dir
         - C:/Python3/python -m venv .python-venv # create virtual environment for convenience
         - .python-venv/Scripts/activate.bat # activate virtual environment
         - pip install pypiwin32
