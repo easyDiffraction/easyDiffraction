@@ -5,6 +5,18 @@ import subprocess
 
 # FUNCTIONS
 
+def osName(self):
+    platform = sys.platform
+    if platform.startswith('darwin'):
+        return 'osx'
+    elif platform.startswith('lin'):
+        return 'linux'
+    elif platform.startswith('win'):
+        return 'windows'
+    else:
+        print("* Unsupported platform '{0}'".format(platform))
+        return None
+
 def coloredText(message='', style='1', background_color='49m', text_color='39'):
     # http://ozzmaker.com/add-colour-to-text-in-python/
     escape_code = '\033['

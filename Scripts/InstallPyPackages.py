@@ -25,8 +25,8 @@ if __name__ == '__main__':
     #printSysPath()
     BasicFunctions.printTitle('Upgrade PIP and install packages')
     upgradePip()
+    if BasicFunctions.osName() == 'windows': install('pypiwin32')
     install(
-        'pypiwin32',
         'cryspy==0.1.13',
         'PySide2==5.13.1',
         'pyinstaller==3.5',     # https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
