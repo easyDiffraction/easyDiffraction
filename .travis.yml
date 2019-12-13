@@ -29,6 +29,8 @@ matrix:
         - source $ED_VENV/bin/activate                                          # activate virtual environment
         - which python                                                          # show current python path
       env: BADGE=linux
+      services:
+        - docker                                                                # for snap store
     # macOS
     - name: "Python 3.6.5 on macOS 10.13 (High Sierra)"
       os: osx
@@ -62,18 +64,19 @@ before_script:
   - echo $TRAVIS_PULL_REQUEST
   - echo $TRAVIS_TAG
 
+
 script:
   - python Scripts/InstallPyPackages.py
   #- python Scripts/Project.py # print config
-#  - python Scripts/CopyMissingLibs.py
+  - python Scripts/CopyMissingLibs.py
   #- python Scripts/CompilePyResource.py
-#  - python Scripts/RunTests.py
-#  - python Scripts/FreezeApp.py
-#  - python Scripts/MakeInstaller.py
-#  - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
-#  - python Scripts/DeployToGithub.py # $GITHUB_TOKEN $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
+  - python Scripts/RunTests.py
+  - python Scripts/FreezeApp.py
+  - python Scripts/MakeInstaller.py
+  - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
+  - python Scripts/DeployToGithub.py # $GITHUB_TOKEN $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
   - python Scripts/DeployToAppStore.py
-#  - python Scripts/UpdateWebPage.py
+  - python Scripts/UpdateWebPage.py
 
 after_success:
 #  - python Scripts/ReportComplexity.py

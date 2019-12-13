@@ -21,14 +21,12 @@ def decryptCertificates():
     try:
         BasicFunctions.run(
             'openssl', 'aes-256-cbc',
-            '-K', BasicFunctions.environmentVariable('encrypted_d23b8f89b93f_key'), #'$encrypted_d23b8f89b93f_key',
-            '-iv', BasicFunctions.environmentVariable('encrypted_d23b8f89b93f_iv'), #'$encrypted_d23b8f89b93f_iv',
+            '-K', BasicFunctions.environmentVariable('encrypted_d23b8f89b93f_key'),
+            '-iv', BasicFunctions.environmentVariable('encrypted_d23b8f89b93f_iv'),
             '-in', 'Certificates/snapCredentials.tar.enc',
             '-out', 'Certificates/snapCredentials.tar',
             '-d'
             )
-        #command = 'openssl aes-256-cbc -K $encrypted_d23b8f89b93f_key -iv $encrypted_d23b8f89b93f_iv -in Certificates/snapCredentials.tar.enc -out Certificates/snapCredentials.tar -d'
-        #os.system(command)
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
@@ -61,16 +59,32 @@ def moveCertificates(dir_name):
 
 # docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
 
+def runDocker(project_dir_path):
+    message = "push release '{}'".format(dir_name)
+    try:
+        BasicFunctions.run(
+            'docker', 'run',
+            '-v', '{}:/easyDiffraction'.format(project_dir_path),
+            '-t', 'cibuilds/snapcraft:core18',
+            'sh', '-c', "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
+            )
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
 
 def osDependentDeploy():
     config = Project.Config()
     os_name = config['os']['name']
+    project_dir_path = config['project']['dir_path']
     if os_name == 'linux':
         snapcraft_dir_name = '.snapcraft'
         createSnapcraftDir(snapcraft_dir_name)
         decryptCertificates()
         extractCertificates()
         moveCertificates(snapcraft_dir_name)
+        runDocker(project_dir_path)
     else:
         message = "* No deployment for '{}' App Store is implemented".format(os_name)
         print(message)
