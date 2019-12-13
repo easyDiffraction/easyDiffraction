@@ -41,7 +41,8 @@ class Config():
         self.__dict__['qtifw']['setup']['download_url'] = 'https://download.qt.io/official_releases/qt-installer-framework/{0}/{1}'.format(self.__dict__['qtifw']['version'], self.__dict__['qtifw']['setup']['name'])
         self.__dict__['qtifw']['setup']['download_path'] = os.path.join(self.__dict__['project']['subdirs']['distribution']['path'], self.__dict__['qtifw']['setup']['name'])
         self.__dict__['qtifw']['setup']['exe_path'] = self._qtifwExe(BasicFunctions.osName())
-        self.__dict__['qtifw']['bin_dir_path'] = self._binDirPath(BasicFunctions.osName())
+        self.__dict__['qtifw']['bin_dir_path'] = self._qtifwBinDirPath(BasicFunctions.osName())
+        self.__dict__['qtifw']['dir_path'] = self._qtifwDirPath(BasicFunctions.osName())
         self.__dict__['qtifw']['binarycreator_path'] = os.path.join(self.__dict__['qtifw']['bin_dir_path'], 'binarycreator')
         self.__dict__['qtifw']['installerbase_path'] = os.path.join(self.__dict__['qtifw']['bin_dir_path'], 'installerbase')
         # installer scripts
@@ -90,11 +91,19 @@ class Config():
         }
         return d[os_name]
 
-    def _binDirPath(self, os_name):
+    def _qtifwBinDirPath(self, os_name):
         d = {
             'osx': '{0}/Qt/QtIFW-{1}/bin'.format(self.__dict__['user']['home_dir'], self.__dict__['qtifw']['version']),
             'windows': 'C:\\Qt\\QtIFW-{0}\\bin'.format(self.__dict__['qtifw']['version']),
             'linux': '{0}/Qt/QtIFW-{1}/bin'.format(self.__dict__['user']['home_dir'], self.__dict__['qtifw']['version'])
+        }
+        return d[os_name]
+
+    def _qtifwDirPath(self, os_name):
+        d = {
+            'osx': '{0}/Qt/QtIFW-{1}'.format(self.__dict__['user']['home_dir'], self.__dict__['qtifw']['version']),
+            'windows': 'C:\\Qt\\QtIFW-{0}'.format(self.__dict__['qtifw']['version']),
+            'linux': '{0}/Qt/QtIFW-{1}'.format(self.__dict__['user']['home_dir'], self.__dict__['qtifw']['version'])
         }
         return d[os_name]
 

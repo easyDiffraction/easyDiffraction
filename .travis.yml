@@ -1,9 +1,6 @@
 language: shell                                                                 # 'language: python' is an error on Travis CI macOS
 sudo: required
-cache: pip
-#cache:
-#  directories:
-#    - ~/easyDiffraction
+#cache: pip
 
 env:
   global:
@@ -64,7 +61,6 @@ before_script:
   - echo $TRAVIS_PULL_REQUEST
   - echo $TRAVIS_TAG
 
-
 script:
   - python Scripts/InstallPyPackages.py
   #- python Scripts/Project.py # print config
@@ -79,11 +75,15 @@ script:
   - python Scripts/UpdateWebPage.py
 
 after_success:
-#  - python Scripts/ReportComplexity.py
-#  - codecov
+  - python Scripts/ReportComplexity.py
+  - codecov
 
 #after_deploy:
 #  -
+
+cache:
+  directories:
+    - python Scripts/ReturnQtifwPath.py
 
 notifications:
   slack:

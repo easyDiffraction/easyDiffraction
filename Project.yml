@@ -111,6 +111,7 @@ qtifw:
     download_url: null
     download_path: null
     exe_path: null
+  dir_path: null
   bin_dir_path: null
   binarycreator_path: null
   installerbase_path: null

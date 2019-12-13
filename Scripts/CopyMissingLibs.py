@@ -22,6 +22,6 @@ if __name__ == "__main__":
     for file_name in missing_files:
         file_path = os.path.join(shiboken2_path, file_name)
         for file_path in glob.glob(file_path): # for cases with '*' in the lib name
-            print("< source:     ", file_path)
-            print("> destination:", pyside2_path)
+            print("< src:", file_path)
+            print("> dst:", pyside2_path)
             shutil.copy(file_path, pyside2_path, follow_symlinks=True)
