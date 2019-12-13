@@ -59,8 +59,8 @@ def moveCertificates(dir_name):
 
 # docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
 
-def runDocker(project_dir_path):
-    message = "push release '{}'".format(dir_name)
+def runDocker(project_dir_path, branch):
+    message = "push release 'edge' for branch '{}'".format(branch)
     try:
         BasicFunctions.run(
             'docker', 'run',
@@ -78,13 +78,18 @@ def osDependentDeploy():
     config = Project.Config()
     os_name = config['os']['name']
     project_dir_path = config['project']['dir_path']
+    branch = BasicFunctions.environmentVariable('TRAVIS_BRANCH')
     if os_name == 'linux':
-        snapcraft_dir_name = '.snapcraft'
-        createSnapcraftDir(snapcraft_dir_name)
-        decryptCertificates()
-        extractCertificates()
-        moveCertificates(snapcraft_dir_name)
-        runDocker(project_dir_path)
+        if branch == 'develop':
+            snapcraft_dir_name = '.snapcraft'
+            createSnapcraftDir(snapcraft_dir_name)
+            decryptCertificates()
+            extractCertificates()
+            moveCertificates(snapcraft_dir_name)
+            runDocker(project_dir_path, branch)
+        else:
+            message = "* No deployment for branch '{}' is implemented".format(branch)
+            print(message)
     else:
         message = "* No deployment for '{}' App Store is implemented".format(os_name)
         print(message)
