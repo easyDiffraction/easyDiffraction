@@ -28,6 +28,7 @@ matrix:
         - which python                                                    # show current python path
         #- python --version
       env: BADGE=linux
+      # For snap app store
 #      services:
 #        - docker
 #      before_deploy:
@@ -66,12 +67,14 @@ matrix:
       filter_secrets: false
       install:
         - choco install python --version=3.6.5
-        - C:/Python36/python -m venv .python-venv                                                     # create virtual environment
-        - .python-venv/Scripts/activate.bat                                                           # activate virtual environment
-        #- set PATH=%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\    # update Windows PATH variable
-        - set PATH=$PATH:$TRAVIS_BUILD_DIR/.python-venv:$TRAVIS_BUILD_DIR/.python-venv/Scripts        # Travis equivalent of 'update Windows PATH variable'
-        - echo $PATH                                                                                  # show path variable
-      env: BADGE=win
+        - C:/Python36/python -m venv .python-venv                                                       # create virtual environment
+        - .python-venv/Scripts/activate.bat                                                             # activate virtual environment
+        #- setx path "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"   # update Windows PATH variable
+        #- set PATH=%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\      # update Windows PATH variable
+        - echo $PATH                                                                                    # show path variable
+      env:
+        - BADGE=win
+        - PATH=$PATH:$TRAVIS_BUILD_DIR/.python-venv:$TRAVIS_BUILD_DIR/.python-venv/Scripts          # Travis equivalent of 'update Windows PATH variable'
 
 #install:
 #  python -m pip install --upgrade pip
