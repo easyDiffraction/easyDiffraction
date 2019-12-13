@@ -68,10 +68,10 @@ matrix:
       language: shell       # 'language: python' is an error on Travis CI Windows
       filter_secrets: false
       before_install:
-        - choco install python --params "/InstallDir:C:\Python3" --version=3.7.0 # 3.8 fails with cryspy
-        - cd C:/Python3
+        - choco install python --version=3.7.0 # 3.8 fails with cryspy
+        - cd C:/Python37
         - dir
-        - C:/Python3/python -m venv .python-venv # create virtual environment for convenience
+        - C:/Python37/python -m venv .python-venv # create virtual environment for convenience
         - .python-venv/Scripts/activate.bat # activate virtual environment
         - pip install pypiwin32
       env:
