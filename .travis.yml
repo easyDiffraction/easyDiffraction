@@ -67,24 +67,15 @@ matrix:
       filter_secrets: false
       install:
         - choco install python --version=3.6.5
-        - dir
-        - dir C:/Python36
         - C:/Python36/python -m venv python-venv                                                       # create virtual environment
-        - C:/Python36/python --version
         - python-venv/Scripts/activate.bat                                                             # activate virtual environment
         #- setx path "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"   # update Windows PATH variable (permanently) - doesn't work on travis
         #- set PATH=%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\      # update Windows PATH variable (temporary) - doesn't work on travis
+        - set PATH=$TRAVIS_BUILD_DIR/python-venv:$TRAVIS_BUILD_DIR/python-venv/Scripts:$PATH          # Travis equivalent of 'update Windows PATH variable'
         - echo $PATH                                                                                    # show path variable
-        - cd python-venv
-        - dir
-        - cd Scripts
-        - dir
-        - python --version
-        - python.exe --version
-        - $TRAVIS_BUILD_DIR/python-venv/Scripts/python --version
       env:
         - BADGE=win
-        - PATH=$TRAVIS_BUILD_DIR/python-venv:$TRAVIS_BUILD_DIR/python-venv/Scripts:$PATH          # Travis equivalent of 'update Windows PATH variable'
+        #- PATH=$TRAVIS_BUILD_DIR/python-venv:$TRAVIS_BUILD_DIR/python-venv/Scripts:$PATH          # Travis equivalent of 'update Windows PATH variable'
 
 #install:
 #  python -m pip install --upgrade pip
