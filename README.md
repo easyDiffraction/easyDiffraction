@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction?ref=badge_shield)
+
 <img src="https://easydiffraction.github.io/images/easydiffraction-logo.svg" height="80"><img width="15"><img src="https://easydiffraction.github.io/images/easydiffraction-text.svg" height="80">
 
 **easyDiffraction** is a scientific software for modelling and analysis of the neutron diffraction data.
@@ -45,3 +47,7 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 <!---Code coverage--->
 [21]: https://codecov.io/gh/easyDiffraction/easyDiffraction
 [28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/master/graph/badge.svg
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction?ref=badge_large)
