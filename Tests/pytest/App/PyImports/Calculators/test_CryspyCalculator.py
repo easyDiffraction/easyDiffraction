@@ -294,6 +294,6 @@ def test_updatePhases(cal):
 
     d = cal.asCifDict()
     assert 'data_Fe2Co1O4' in d['phases']
-    assert 'data_pnd' in d['experiments']
+    assert 'data_Fe2Co1O4' in d['experiments']
 
 
