@@ -1,4 +1,3 @@
-#language: python            # this works for Linux but is an error on macOS or Windows
 sudo: required
 cache: pip
 #cache:
@@ -17,26 +16,16 @@ env:
 matrix:
   include:
     # Linux
-    #- name: "Python 3.7.1 on Linux Ubuntu 18.04 (Bionic Beaver)"
     - name: "Python 3.7.1 on Linux Ubuntu 16.04 (Xenial)"
-      #dist: bionic
       dist: xenial
-      #python: 3.7           # this works for Linux but is ignored on macOS or Windows
-      language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
-        #- sudo apt update
-        #- sudo apt install software-properties-common
-        - sudo add-apt-repository -y ppa:deadsnakes/ppa
-        - sudo apt-get -y update
-        - sudo apt-get -y install python3.6 python3.6-venv
-        - which python3
-        - python3 --version
-        - python3.6 -m venv .python-venv # create virtual environment for convenience
-        - source .python-venv/bin/activate # activate virtual environment
+        - sudo add-apt-repository -y ppa:deadsnakes/ppa                   # add python 3.6 repository
+        - sudo apt-get -y update                                          #
+        - sudo apt-get -y install python3.6 python3.6-dev python3.6-venv  # install python 3.6
+        - python3.6 -m venv .python-venv                                  # create virtual environment
+        - source .python-venv/bin/activate                                # activate virtual environment
         - which python
         - python --version
-        - which python3
-        - python3 --version
       env: BADGE=linux
 #      services:
 #        - docker
@@ -64,7 +53,6 @@ matrix:
     - name: "Python 3.6.5 on macOS 10.13 (High Sierra)"
       os: osx
       osx_image: xcode9.4   # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
-      language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
         - python3.6 -m venv .python-venv # create virtual environment for convenience
         - source .python-venv/bin/activate # activate virtual environment
@@ -73,7 +61,6 @@ matrix:
     # Windows
     - name: "Python 3.7.0 on Windows 10.0"
       os: windows           # Windows 10.0.17134 N/A Build 17134
-      language: shell       # 'language: python' is an error on Travis CI Windows
       filter_secrets: false
       before_install:
         - choco install python --version=3.7.0 # 3.8 fails with cryspy
