@@ -22,6 +22,9 @@ matrix:
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       #dist: bionic
       dist: xenial
+      before_install:
+        - python -m venv $TRAVIS_BUILD_DIR/.python-venv # create virtual environment for convenience
+        - source $TRAVIS_BUILD_DIR/.python-venv/bin/activate # activate virtual environment
       env: BADGE=linux
       services:
         - docker
@@ -61,9 +64,11 @@ matrix:
       filter_secrets: false
       before_install:
         - choco install python --version=3.7.0 # 3.8 fails with cryspy
+        - python -m venv $TRAVIS_BUILD_DIR\.python-venv # create virtual environment for convenience
+        - $TRAVIS_BUILD_DIR\.python-venv\Scripts\activate.bat # activate virtual environment
         - pip install pypiwin32
       env:
-        - PATH=/c/Python37:/c/Python37/Scripts:$PATH
+        #- PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
 
 #install:
