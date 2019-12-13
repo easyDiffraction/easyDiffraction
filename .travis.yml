@@ -71,7 +71,7 @@ matrix:
         - echo %PATH%
         - echo $PATH
         #- setx PATH "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"  # update Windows PATH variable
-        - set PATH=%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\
+        - set PATH=%PATH%;$TRAVIS_BUILD_DIR/.python-venv;$TRAVIS_BUILD_DIR/.python-venv/Scripts
         - echo $PATH
         - echo %PATH%                                                                                 # show path variable
       env: BADGE=win
