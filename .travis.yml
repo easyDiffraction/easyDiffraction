@@ -64,7 +64,7 @@ matrix:
       os: windows           # Windows 10.0.17134 N/A Build 17134
       filter_secrets: false
       before_install:
-        - echo $TRAVIS_BUILD_DIR/.python-venv/Scripts
+        #- echo $TRAVIS_BUILD_DIR/.python-venv/Scripts
         - choco install python --version=3.6.5 # 3.8 fails with cryspy
         - C:/Python36/python -m venv .python-venv # create virtual environment for convenience
         - .python-venv/Scripts/activate.bat # activate virtual environment
