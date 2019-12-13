@@ -68,7 +68,7 @@ matrix:
         - $TRAVIS_BUILD_DIR\.python-venv\Scripts\activate.bat # activate virtual environment
         - pip install pypiwin32
       env:
-        #- PATH=/c/Python37:/c/Python37/Scripts:$PATH
+        - PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
 
 #install:
