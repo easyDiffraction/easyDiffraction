@@ -26,6 +26,7 @@ if __name__ == '__main__':
     BasicFunctions.printTitle('Upgrade PIP and install packages')
     upgradePip()
     install(
+        'pypiwin32',
         'cryspy==0.1.13',
         'PySide2==5.13.1',
         'pyinstaller==3.5',     # https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
