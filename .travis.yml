@@ -65,7 +65,7 @@ matrix:
       filter_secrets: false
       install:
         - choco install python --version=3.6.5                            # install python
-        - C:/Python36/python -m venv python-venv                          # create virtual environment
+        - C:/Python36/python -m venv .ed-venv                             # create virtual environment
         - .ed-venv/Scripts/activate.bat                                   # activate virtual environment
         - echo $PATH                                                      # show path variable
       env:
