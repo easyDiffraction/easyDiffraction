@@ -82,8 +82,8 @@ ColumnLayout {
             // Open project dialog
             Dialogs1.FileDialog{
                 id: fileDialogLoadPhase
-                nameFilters: [ "CIF files (*.cif)", "Project files (*.zip)"]
-                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                nameFilters: [ "CIF files (*.cif)"]
+                folder: settings.value("lastOpenedProjectFolder", examplesDir)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     projectControl.loadPhases(fileUrl)
