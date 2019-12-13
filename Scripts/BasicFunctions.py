@@ -5,7 +5,7 @@ import subprocess
 
 # FUNCTIONS
 
-def osName(self):
+def osName():
     platform = sys.platform
     if platform.startswith('darwin'):
         return 'osx'
