@@ -65,13 +65,12 @@ matrix:
       os: windows           # Windows 10.0.17134 N/A Build 17134
       filter_secrets: false
       before_install:
-        #- choco install python --version=3.6.5
-        #- C:/Python36/python -m venv .python-venv                                                     # create virtual environment
-        #- .python-venv/Scripts/activate.bat                                                           # activate virtual environment
+        - choco install python --version=3.6.5
+        - C:/Python36/python -m venv .python-venv                                                     # create virtual environment
+        - .python-venv/Scripts/activate.bat                                                           # activate virtual environment
         - echo %PATH%
         - echo $PATH
-        #- setx PATH "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"  # update Windows PATH variable
-        #- set PATH=%PATH%;$TRAVIS_BUILD_DIR\.python-venv;$TRAVIS_BUILD_DIR\.python-venv\Scripts
+        #- set PATH=%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\    # update Windows PATH variable
         - set PATH=$PATH:$TRAVIS_BUILD_DIR/.python-venv:$TRAVIS_BUILD_DIR/.python-venv/Scripts
         - echo $PATH
         - echo %PATH%                                                                                 # show path variable
