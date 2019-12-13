@@ -9,6 +9,8 @@ env:
   global:
     # terminal width
     - COLUMNS=100
+    # python virtual environment dir name
+    - ED_VENV=.ed-venv
     # GITHUB_TOKEN
     - secure: "scbwc6CuiVf7ryKROBNOdbRAr2RyF/rcquGYL5Gsf3CMXukGyT95NNP8KwZLH/MSWg5I9wItb9b0lMxqad3sz28jbr7ARKooC5vfT3A2m5aMN8Y+7QoG3myYirsOjpwDW9zjk7/vjGT1QZh1twr6fg10pLPfZWAGxAbKLTVzcDsvhPu9+9uzvkrZitPc1EhUmjhusF2dnSKqBjYE/dYrz/xHwNGKYSlqkl+CBVBi6T7LC3J6LHUFKNo0QfqkW0EW6hATAWeLXgu9pT917B6BPpwll2oAZT5J9oFbms/szAelzsWBAJedyEIkJ4EzPlk9qokOr61kWFZ+7hkAXfj+Mq7k4VQXorFPWub0sZ+nMtfbAoZ6PO+REpH9BLBQGFwvwpHlp5DvKh+XHtIxFnmm107+AS7vNI94bSbObWDuzbcrwiKZUXNkExjaGQtLI/RV2XeDXIYr6T6SPYW+Ayr7Uutmqv1oUkdqEt1yCxNpsWly09teTac7ZnxgWqewcvr9ayLRC/l9ffAP5PHCErMm67pv8bXEiTRuMzbNTgHxbKOEqtSoEgI1xoU/+J2r+bO6sJs8QzKPNKfQWKyZRu/+KPOkZmKt9yzBQe57frDoEgCaBMGYwFyUyrqBaWKi4xSwcKYfeT3mexQ6pvemfp7+umFU/HAVkHxYLm6MXnu584E="
     # CODE_SIGN_PSWD_DICT
@@ -23,8 +25,8 @@ matrix:
         - sudo add-apt-repository -y ppa:deadsnakes/ppa                   # add python 3.6 repository
         - sudo apt-get -y update                                          # update
         - sudo apt-get -y install python3.6 python3.6-dev python3.6-venv  # install python 3.6
-        - python3.6 -m venv .ed-venv                                      # create virtual environment
-        - source .ed-venv/bin/activate                                    # activate virtual environment
+        - python3.6 -m venv $ED_VENV                                      # create virtual environment
+        - source $ED_VENV/bin/activate                                    # activate virtual environment
         - which python                                                    # show current python path
       env: BADGE=linux
       # For snap app store
@@ -55,8 +57,8 @@ matrix:
       os: osx
       osx_image: xcode9.4                                                 # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       install:
-        - python3.6 -m venv .ed-venv                                      # create virtual environment
-        - source .ed-venv/bin/activate                                    # activate virtual environment
+        - python3.6 -m venv $ED_VENV                                      # create virtual environment
+        - source $ED_VENV/bin/activate                                    # activate virtual environment
         - which python                                                    # show current python path
       env: BADGE=osx
     # Windows
@@ -65,8 +67,8 @@ matrix:
       filter_secrets: false
       install:
         - choco install python --version=3.6.5                            # install python
-        - C:/Python36/python -m venv .ed-venv                             # create virtual environment
-        - .ed-venv/Scripts/activate.bat                                   # activate virtual environment
+        - C:/Python36/python -m venv $ED_VENV                             # create virtual environment
+        - $ED_VENV/Scripts/activate.bat                                   # activate virtual environment
         - echo $PATH                                                      # show path variable
       env:
         - BADGE=win
