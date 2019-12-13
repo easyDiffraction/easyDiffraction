@@ -71,7 +71,8 @@ matrix:
         - python-venv/Scripts/activate.bat                                                             # activate virtual environment
         #- setx path "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"   # update Windows PATH variable (permanently) - doesn't work on travis
         #- set PATH=%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\      # update Windows PATH variable (temporary) - doesn't work on travis
-        - set PATH=$TRAVIS_BUILD_DIR/python-venv:$TRAVIS_BUILD_DIR/python-venv/Scripts:$PATH          # Travis equivalent of 'update Windows PATH variable'
+        #- set PATH=$TRAVIS_BUILD_DIR/python-venv:$TRAVIS_BUILD_DIR/python-venv/Scripts:$PATH          # Travis equivalent of 'update Windows PATH variable'
+        - setx PATH $TRAVIS_BUILD_DIR/python-venv:$TRAVIS_BUILD_DIR/python-venv/Scripts:$PATH          # Travis equivalent of 'update Windows PATH variable'
         - echo $PATH                                                                                    # show path variable
       env:
         - BADGE=win
