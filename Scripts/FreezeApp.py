@@ -75,7 +75,7 @@ def osDependentAddons():
         else:
             BasicFunctions.printSuccessMessage(message)
     else:
-        message = "No addons needed for os '{0}'".format(os_name)
+        message = "* No addons needed for os '{0}'".format(os_name)
         print(message)
 
 if __name__ == "__main__":
