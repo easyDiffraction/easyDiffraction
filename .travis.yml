@@ -27,7 +27,7 @@ matrix:
         #- sudo apt update
         #- sudo apt install software-properties-common
         - sudo add-apt-repository -y ppa:deadsnakes/ppa
-        - sudo apt-get -y install python3.6 python3.6-venv
+        - sudo apt-get -y install python3.6 python3-venv
         - which python3
         - python3 --version
         - python3.6 -m venv .python-venv # create virtual environment for convenience
@@ -79,7 +79,8 @@ matrix:
         - C:/Python37/python -m venv .python-venv # create virtual environment for convenience
         - .python-venv/Scripts/activate.bat # activate virtual environment
         - python --version
-        - pip3 install pypiwin32
+        - python3 --version
+        #- pip3 install pypiwin32
       env:
         #- PATH=$TRAVIS_BUILD_DIR/.python-venv/bin
         #- PATH=/c/Python37:/c/Python37/Scripts:$PATH
