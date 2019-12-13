@@ -24,11 +24,13 @@ matrix:
       #python: 3.7           # this works for Linux but is ignored on macOS or Windows
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
-        - sudo apt update
-        - sudo apt install software-properties-common
+        #- sudo apt update
+        #- sudo apt install software-properties-common
         - sudo add-apt-repository ppa:deadsnakes/ppa
-        - sudo apt install python3.7 python3-venv
-        - python3.7 -m venv .python-venv # create virtual environment for convenience
+        - sudo apt-get install python3.6 python3-venv
+        - which python3
+        - python3 --version
+        - python3.6 -m venv .python-venv # create virtual environment for convenience
         - source .python-venv/bin/activate # activate virtual environment
         - which python
         - python --version
@@ -58,12 +60,12 @@ matrix:
 #          on:
 #            branch: develop
     # macOS
-    - name: "Python 3.7.0 on macOS 10.13 (High Sierra)"
+    - name: "Python 3.6.5 on macOS 10.13 (High Sierra)"
       os: osx
       osx_image: xcode9.4   # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       before_install:
-        - python3.7 -m venv .python-venv # create virtual environment for convenience
+        - python3.6 -m venv .python-venv # create virtual environment for convenience
         - source .python-venv/bin/activate # activate virtual environment
         - which python
       env: BADGE=osx
