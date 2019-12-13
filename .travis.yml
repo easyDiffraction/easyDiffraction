@@ -64,21 +64,15 @@ matrix:
       os: windows           # Windows 10.0.17134 N/A Build 17134
       filter_secrets: false
       before_install:
-        #- echo $TRAVIS_BUILD_DIR/.python-venv/Scripts
         - choco install python --version=3.6.5
         - C:/Python36/python -m venv .python-venv                                                     # create virtual environment
         - .python-venv/Scripts/activate.bat                                                           # activate virtual environment
-        - echo %PATH%
-        #- set PATH=$TRAVIS_BUILD_DIR/.python-venv/Scripts
+        #- echo %PATH%
+        - echo $PATH
         - setx PATH "%PATH%;$TRAVIS_BUILD_DIR\.python-venv\;$TRAVIS_BUILD_DIR\.python-venv\Scripts\"  # update Windows PATH variable
-        - echo %PATH%                                                                                 # show path variable
-        #- python --version
-        #- python3 --version
-        #- pip3 install pypiwin32
+        - echo $PATH
+        #- echo %PATH%                                                                                 # show path variable
       env: BADGE=win
-        #- PATH=$TRAVIS_BUILD_DIR/.python-venv/Scripts
-        #- PATH=/c/Python37:/c/Python37/Scripts:$PATH
-        #- BADGE=win
 
 #install:
 #  python -m pip install --upgrade pip
