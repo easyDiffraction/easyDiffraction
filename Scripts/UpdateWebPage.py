@@ -95,14 +95,18 @@ def environmentVariable(name, default=None):
 # MAIN
 
 if __name__ == "__main__":
+    BasicFunctions.printTitle('Update web page')
+
     config = Project.Config()
     version = config.getVal('release', 'version')
     branch = environmentVariable('TRAVIS_BRANCH')
 
     if branch == 'v{0}'.format(version): #re.search('v\d+\.\d+\.\d+', branch)
-        BasicFunctions.printTitle('Update web page')
         owner = 'easyDiffraction'
         repo = 'easyDiffraction.github.io'
         token = environmentVariable('GITHUB_TOKEN')
         #token = environmentVariable('GITHUB_TOKEN', default='...')
         github = GithubAgent(owner=owner, repo=repo, token=token)
+    else:
+        message = "* No update needed for branch '{}'".format(branch)
+        print(message)
