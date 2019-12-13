@@ -16,7 +16,7 @@ env:
 matrix:
   include:
     # Linux
-    - name: "Python 3.7.1 on Linux Ubuntu 16.04 (Xenial)"
+    - name: "Python 3.6.9 on Linux Ubuntu 16.04 (Xenial)"
       dist: xenial
       before_install:
         - sudo add-apt-repository -y ppa:deadsnakes/ppa                   # add python 3.6 repository
@@ -54,23 +54,25 @@ matrix:
       os: osx
       osx_image: xcode9.4   # osx_image: xcode11 --- Python 3.7.4 running on macOS 10.14.4
       before_install:
-        - python3.6 -m venv .python-venv # create virtual environment for convenience
-        - source .python-venv/bin/activate # activate virtual environment
+        - python3.6 -m venv .python-venv      # create virtual environment
+        - source .python-venv/bin/activate    # activate virtual environment
         - which python
+        - python --version
       env: BADGE=osx
     # Windows
     - name: "Python 3.7.0 on Windows 10.0"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       filter_secrets: false
       before_install:
-        - choco install python --version=3.7.0 # 3.8 fails with cryspy
-        - C:/Python37/python -m venv .python-venv # create virtual environment for convenience
+        - echo $TRAVIS_BUILD_DIR/.python-venv/Scripts
+        - choco install python --version=3.6.5 # 3.8 fails with cryspy
+        - C:/Python36/python -m venv .python-venv # create virtual environment for convenience
         - .python-venv/Scripts/activate.bat # activate virtual environment
         - python --version
-        - python3 --version
+        #- python3 --version
         #- pip3 install pypiwin32
       env:
-        #- PATH=$TRAVIS_BUILD_DIR/.python-venv/bin
+        - PATH=$TRAVIS_BUILD_DIR/.python-venv/Scripts
         #- PATH=/c/Python37:/c/Python37/Scripts:$PATH
         - BADGE=win
 
