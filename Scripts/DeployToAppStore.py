@@ -21,12 +21,14 @@ def decryptCertificates():
     try:
         BasicFunctions.run(
             'openssl', 'aes-256-cbc',
-            '-K', '$encrypted_d23b8f89b93f_key',
-            '-iv', '$encrypted_d23b8f89b93f_iv',
+            '-K', BasicFunctions.environmentVariable('encrypted_d23b8f89b93f_key'), #'$encrypted_d23b8f89b93f_key',
+            '-iv', BasicFunctions.environmentVariable('encrypted_d23b8f89b93f_iv'), #'$encrypted_d23b8f89b93f_iv',
             '-in', 'Certificates/snapCredentials.tar.enc',
             '-out', 'Certificates/snapCredentials.tar',
             '-d'
             )
+        #command = 'openssl aes-256-cbc -K $encrypted_d23b8f89b93f_key -iv $encrypted_d23b8f89b93f_iv -in Certificates/snapCredentials.tar.enc -out Certificates/snapCredentials.tar -d'
+        #os.system(command)
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
