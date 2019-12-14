@@ -62,8 +62,9 @@ def runDocker(project_dir_path, branch):
     try:
         BasicFunctions.run(
             'docker', 'run',
-            '-v', '{}:/easyDiffraction'.format(project_dir_path),
-            '-t', 'cibuilds/snapcraft:core18',
+            '--volume', '{}:/easyDiffraction'.format(project_dir_path), # Bind mount a volume
+            '--tty', # Allocate a pseudo-TTY
+            'cibuilds/snapcraft:core18',
             'sh', '-c', "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
             )
     except Exception as exception:
