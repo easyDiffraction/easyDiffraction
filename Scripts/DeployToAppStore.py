@@ -92,7 +92,7 @@ def runDockerImage(project_dir_path, branch):
             'docker', 'run',
             '--volume', '{}:/easyDiffraction'.format(project_dir_path), # Bind mount a volume
             '--tty', # Allocate a pseudo-TTY
-            'cibuilds/snapcraft:core18',
+            'cibuilds/snapcraft:core18', 
             'sh', '-c', "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
             )
     except Exception as exception:
