@@ -85,7 +85,7 @@ cache:
   directories:
     - $TRAVIS_BUILD_DIR/$ED_VENV                                                # local python venv
     - cibuilds/snapcraft                                                        # snapcraft image for docker
-    - `python3 Scripts/ReturnQtifwPath.py`                                      # Qt Installer Framework
+    - `python Scripts/ReturnQtifwPath.py`                                       # Qt Installer Framework
 
 notifications:
   slack:
