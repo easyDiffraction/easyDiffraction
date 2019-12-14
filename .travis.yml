@@ -64,7 +64,7 @@ before_script:
 
 script:
   - python Scripts/InstallPyPackages.py
-  - python Scripts/Project.py # print config
+  #- python Scripts/Project.py # print config
   - python Scripts/CopyMissingLibs.py
   #- python Scripts/CompilePyResource.py
   - python Scripts/RunTests.py
@@ -85,7 +85,8 @@ after_success:
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/$ED_VENV                                                # local python venv
-    - $HOME/Qt                                                                  # Qt Installer Framework
+    - $TRAVIS_BUILD_DIR/.soft #setup                                            # Qt Installer Framework
+    - $HOME/Qt #mac and lin
     - /C/Qt #win
     - cibuilds/snapcraft                                                        # snapcraft image for docker
 

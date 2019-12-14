@@ -39,7 +39,7 @@ class Config():
         # installer framework
         self.__dict__['qtifw']['setup']['name'] = '{0}.{1}'.format(self.__dict__['qtifw']['setup']['base'][BasicFunctions.osName()], self.__dict__['qtifw']['setup']['ext'][BasicFunctions.osName()])
         self.__dict__['qtifw']['setup']['download_url'] = 'https://download.qt.io/official_releases/qt-installer-framework/{0}/{1}'.format(self.__dict__['qtifw']['version'], self.__dict__['qtifw']['setup']['name'])
-        self.__dict__['qtifw']['setup']['download_path'] = os.path.join(self.__dict__['project']['subdirs']['distribution']['path'], self.__dict__['qtifw']['setup']['name'])
+        self.__dict__['qtifw']['setup']['download_path'] = os.path.join(self.__dict__['project']['dir_path'], '.soft', self.__dict__['qtifw']['setup']['name'])
         self.__dict__['qtifw']['setup']['exe_path'] = self._qtifwExe(BasicFunctions.osName())
         self.__dict__['qtifw']['bin_dir_path'] = self._qtifwBinDirPath(BasicFunctions.osName())
         self.__dict__['qtifw']['dir_path'] = self._qtifwDirPath(BasicFunctions.osName())
