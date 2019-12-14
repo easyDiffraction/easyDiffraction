@@ -8,6 +8,8 @@ env:
     - COLUMNS=100
     # python virtual environment dir name
     - ED_VENV=.ed-venv
+    # downloaded soft dir name: Qt Installer Framework setup, Docker image for snapcraft
+    - ED_SOFT=.soft
     # Qt cache path
     - QT_CACHE_DIR=$([ $TRAVIS_OS_NAME = 'windows' ] && echo "/C/Qt" || echo "$HOME/Qt")
     # GITHUB_TOKEN
@@ -67,26 +69,20 @@ before_script:
 
 script:
   - python Scripts/InstallPyPackages.py
-  - ls /var/lib/docker
+  #- python Scripts/Project.py # print config
+  - python Scripts/CopyMissingLibs.py
+  #- python Scripts/CompilePyResource.py
+  - python Scripts/RunTests.py
+  - python Scripts/FreezeApp.py
+  - python Scripts/MakeInstaller.py
+  - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
+  - python Scripts/DeployToGithub.py # $GITHUB_TOKEN $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
   - travis_wait 30 python Scripts/DeployToAppStore.py
-  - ls /var/lib/docker
+  - python Scripts/UpdateWebPage.py
 
-
-
-#  #- python Scripts/Project.py # print config
-#  - python Scripts/CopyMissingLibs.py
-#  #- python Scripts/CompilePyResource.py
-#  - python Scripts/RunTests.py
-#  - python Scripts/FreezeApp.py
-#  - python Scripts/MakeInstaller.py
-#  - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
-#  - python Scripts/DeployToGithub.py # $GITHUB_TOKEN $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
-#  - travis_wait 30 python Scripts/DeployToAppStore.py
-#  - python Scripts/UpdateWebPage.py
-#
-#after_success:
-#  - python Scripts/ReportComplexity.py
-#  - codecov
+after_success:
+  - python Scripts/ReportComplexity.py
+  - codecov
 
 #after_deploy:
 #  -
@@ -94,9 +90,8 @@ script:
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/$ED_VENV                                                # local python venv
-    - $TRAVIS_BUILD_DIR/.soft                                                   # downloaded soft: Qt Installer Framework setup, Docker image for snapcraft
+    - $TRAVIS_BUILD_DIR/$ED_SOFT                                                # downloaded soft
     - $QT_CACHE_DIR                                                             # Qt Installer Framework installed
-    - $TRAVIS_BUILD_DIR/cibuilds                                                # snapcraft image for docker
 
 notifications:
   slack:
