@@ -86,10 +86,10 @@ cache:
   directories:
     - $TRAVIS_BUILD_DIR/$ED_VENV                                                # local python venv
     - $TRAVIS_BUILD_DIR/.soft                                                   # Qt Installer Framework setup
-    - if [ "$TRAVIS_OS_NAME" == windows ]; then /C/Qt; fi                       # Qt Installer Framework installed (windows)
-    - if [ "$TRAVIS_OS_NAME" != windows ]; then $HOME/Qt; fi                    # Qt Installer Framework installed (macos and linux)
+    - if [ "$TRAVIS_OS_NAME" == "windows" ]; then /C/Qt; fi                       # Qt Installer Framework installed (windows)
+    - if [ "$TRAVIS_OS_NAME" != "windows" ]; then $HOME/Qt; fi                    # Qt Installer Framework installed (macos and linux)
     #- if [ "$TRAVIS_OS_NAME" == linux ]; then cibuilds/snapcraft; fi            # snapcraft image for docker
-    - if [ "$TRAVIS_OS_NAME" == linux ]; then cibuilds; fi            # snapcraft image for docker
+    #- if [ "$TRAVIS_OS_NAME" == "linux" ]; then $TRAVIS_BUILD_DIR/cibuilds; fi            # snapcraft image for docker
 
 notifications:
   slack:
