@@ -57,7 +57,35 @@ def moveCertificates(dir_name):
     else:
         BasicFunctions.printSuccessMessage(message)
 
-def runDocker(project_dir_path, branch):
+def saveDockerImage():
+    message = "save docker image '{}'".format('')
+    if os.path.exists('.soft/snap.tar.gz'):
+        message = "* Docker image for snapcraft is already downloaded {}".format('')
+        print(message)
+        return()
+    try:
+        os.system('ls .soft')
+        os.system('docker save cibuilds/snapcraft:core18 | gzip > .soft/snap.tar.gz')
+        os.system('ls .soft')
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+
+def loadDockerImage():
+    message = "load docker image '{}'".format('')
+    try:
+        os.system('docker image ls')
+        os.system('docker load < .soft/snap.tar.gz')
+        os.system('docker image ls')
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+
+def runDockerImage(project_dir_path, branch):
     message = "push release 'edge' for branch '{}'".format(branch)
     try:
         BasicFunctions.run(
@@ -85,7 +113,9 @@ def osDependentDeploy():
             decryptCertificates()
             extractCertificates()
             moveCertificates(snapcraft_dir_name)
-            runDocker(project_dir_path, branch)
+            saveDockerImage()
+            loadDockerImage()
+            runDockerImage(project_dir_path, branch)
         else:
             message = "* No deployment for branch '{}' is implemented".format(branch)
             print(message)

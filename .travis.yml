@@ -64,7 +64,6 @@ before_script:
   - echo $TRAVIS_TAG
   - echo $HOME
   - echo $QT_CACHE_DIR
-  - docker info
 
 script:
   - python Scripts/InstallPyPackages.py
@@ -94,9 +93,8 @@ script:
 
 cache:
   directories:
-    - /var/lib/docker
     - $TRAVIS_BUILD_DIR/$ED_VENV                                                # local python venv
-    - $TRAVIS_BUILD_DIR/.soft                                                   # Qt Installer Framework setup
+    - $TRAVIS_BUILD_DIR/.soft                                                   # downloaded soft: Qt Installer Framework setup, Docker image for snapcraft
     - $QT_CACHE_DIR                                                             # Qt Installer Framework installed
     - $TRAVIS_BUILD_DIR/cibuilds                                                # snapcraft image for docker
 
