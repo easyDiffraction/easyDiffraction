@@ -75,31 +75,43 @@ def saveDockerImage():
 
 def loadDockerImage():
     message = "load docker image '{}'".format('')
+    BasicFunctions.run('docker', 'image', 'ls')
+    BasicFunctions.run('docker', 'images')
+    BasicFunctions.run('docker', 'container', 'ls')
     try:
         os.system('docker image ls')
         os.system('docker load < .soft/snap.tar.gz')
         os.system('docker image ls')
+        BasicFunctions.run('docker', 'container', 'ls')
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
         BasicFunctions.printSuccessMessage(message)
+        BasicFunctions.run('docker', 'image', 'ls')
+        BasicFunctions.run('docker', 'images')
+        BasicFunctions.run('docker', 'container', 'ls')
 
 def runDockerImage(project_dir_path, branch):
     message = "push release 'edge' for branch '{}'".format(branch)
+    BasicFunctions.run('docker', 'image', 'ls')
+    BasicFunctions.run('docker', 'images')
+    BasicFunctions.run('docker', 'container', 'ls')
     try:
-        BasicFunctions.run(
-            'docker', 'run',
-            '--volume', '{}:/easyDiffraction'.format(project_dir_path), # Bind mount a volume
-            '--tty', # Allocate a pseudo-TTY
-            'cibuilds/snapcraft:core18', 
-            'sh', '-c', "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
-            )
+        os.system('docker run cibuilds/snapcraft:core18')
+        #BasicFunctions.run(
+        #    'docker', 'run',
+            #'--volume', '{}:/easyDiffraction'.format(project_dir_path), # Bind mount a volume
+            #'--tty', # Allocate a pseudo-TTY
+        #    'cibuilds/snapcraft:core18',
+            #'sh', '-c', "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
+        #    )
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
         BasicFunctions.printSuccessMessage(message)
+        BasicFunctions.run('docker', 'container', 'ls')
 
 def osDependentDeploy():
     config = Project.Config()
