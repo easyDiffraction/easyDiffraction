@@ -60,6 +60,12 @@ def installQtInstallerFramework():
     dir_path = config['qtifw']['dir_path']
     bin_dir_path = config['qtifw']['bin_dir_path']
     binarycreator_path = config['qtifw']['binarycreator_path']
+    print('dir_path', dir_path)
+    print('bin_dir_path', bin_dir_path)
+    print('binarycreator_path', binarycreator_path)
+    print('os.path.exists(binarycreator_path)', os.path.exists(binarycreator_path))
+    print('os.path.exists(bin_dir_path)', os.path.exists(bin_dir_path))
+    print('os.path.exists(dir_path)', os.path.exists(dir_path))
     if os.path.exists(binarycreator_path):
         message = "* QtInstallerFramework was already installed to {}".format(bin_dir_path)
         print(message)
