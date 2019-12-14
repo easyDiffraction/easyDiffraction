@@ -126,12 +126,12 @@ class Proxy(QObject):
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
-    measuredData = Property('QVariant', lambda self: self._measured_data_model.asDataModel(), constant=True)
+    measuredData = Property('QVariant', lambda self: self._measured_data_model.asModel(), constant=True)
     measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), constant=True)
-    calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asDataModel(), constant=True)
+    calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asModel(), constant=True)
     calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(),
                                     constant=True)
-    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asDataModel(), constant=True)
+    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asModel(), constant=True)
     braggPeaksTicks = Property('QVariant', lambda self: self._bragg_peaks_model.asTickModel(), constant=True)
     cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
     cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), constant=True)

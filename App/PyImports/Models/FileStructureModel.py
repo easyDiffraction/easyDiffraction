@@ -11,7 +11,7 @@ class FileStructureModel(BaseModel):
         # set roles
         self._phase_role = Qt.UserRole + 1
         self._experiment_role = Qt.UserRole + 2
-        self._data_model.setItemRoleNames({
+        self._model.setItemRoleNames({
             self._phase_role: b'phasesRole',
             self._experiment_role: b'experimentsRole',
             })
@@ -23,9 +23,9 @@ class FileStructureModel(BaseModel):
 
         cif_dict = self._calculator.asCifDict()
         # Important - clear the model, so subsequent calls deal with empty
-        self._data_model.clear()
+        self._model.clear()
 
-        self._data_model.blockSignals(True)
+        self._model.blockSignals(True)
         self._headers_model.blockSignals(True)
 
         phases_cif = cif_dict['phases']
@@ -36,18 +36,18 @@ class FileStructureModel(BaseModel):
         # as shown below
         item1 = QStandardItem()
         item1.setData(phases_cif, self._phase_role)
-        self._data_model.appendRow(item1)
+        self._model.appendRow(item1)
         item2 = QStandardItem()
         item2.setData(exp_cif, self._experiment_role)
-        self._data_model.appendRow(item2)
+        self._model.appendRow(item2)
 
         #for data_str cif_dict.items():
         #    item = QStandardItem()
         #    item.setData(phases_cif, <self._some_role>)
-        #    self._data_model.appendRow(item)
+        #    self._model.appendRow(item)
 
-        self._data_model.blockSignals(False)
+        self._model.blockSignals(False)
         self._headers_model.blockSignals(False)
-        self._data_model.layoutChanged.emit()
+        self._model.layoutChanged.emit()
         self._headers_model.layoutChanged.emit()
 
