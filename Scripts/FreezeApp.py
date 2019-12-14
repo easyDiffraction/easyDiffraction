@@ -66,8 +66,8 @@ def osDependentAddons():
                 src_dir_name = os.path.basename(relative_dir_path)
                 src_dir_path = os.path.join(pyside2_path, relative_dir_path)
                 dst_dir_path = os.path.join(app_plugins_path, src_dir_name)
-                print("= source:     ", src_dir_path)
-                print("+ destination:", app_plugins_path)
+                print("< src:", src_dir_path)
+                print("> dst:", app_plugins_path)
                 dir_util.copy_tree(src_dir_path, dst_dir_path)
         except Exception as exception:
             BasicFunctions.printFailMessage(message, exception)
