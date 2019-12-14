@@ -57,13 +57,14 @@ def osDependentPreparation():
 
 def installQtInstallerFramework():
     config = Project.Config()
+    dir_path = config['qtifw']['dir_path']
     bin_dir_path = config['qtifw']['bin_dir_path']
     binarycreator_path = config['qtifw']['binarycreator_path']
     if os.path.exists(binarycreator_path):
         message = "* QtInstallerFramework was already installed to {}".format(bin_dir_path)
         print(message)
         return()
-    message = "install QtInstallerFramework"
+    message = "install QtInstallerFramework to '{}'".format(dir_path)
     try:
         Functions.installSilently(
             installer=config['qtifw']['setup']['exe_path'],
