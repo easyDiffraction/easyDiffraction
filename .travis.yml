@@ -8,6 +8,8 @@ env:
     - COLUMNS=100
     # python virtual environment dir name
     - ED_VENV=.ed-venv
+    # Qt cache path
+    - QT_CACHE_DIR=$([ $TRAVIS_OS_NAME = 'windows' ] && echo "/C/Qt" || echo "$HOME/Qt")
     # GITHUB_TOKEN
     - secure: "scbwc6CuiVf7ryKROBNOdbRAr2RyF/rcquGYL5Gsf3CMXukGyT95NNP8KwZLH/MSWg5I9wItb9b0lMxqad3sz28jbr7ARKooC5vfT3A2m5aMN8Y+7QoG3myYirsOjpwDW9zjk7/vjGT1QZh1twr6fg10pLPfZWAGxAbKLTVzcDsvhPu9+9uzvkrZitPc1EhUmjhusF2dnSKqBjYE/dYrz/xHwNGKYSlqkl+CBVBi6T7LC3J6LHUFKNo0QfqkW0EW6hATAWeLXgu9pT917B6BPpwll2oAZT5J9oFbms/szAelzsWBAJedyEIkJ4EzPlk9qokOr61kWFZ+7hkAXfj+Mq7k4VQXorFPWub0sZ+nMtfbAoZ6PO+REpH9BLBQGFwvwpHlp5DvKh+XHtIxFnmm107+AS7vNI94bSbObWDuzbcrwiKZUXNkExjaGQtLI/RV2XeDXIYr6T6SPYW+Ayr7Uutmqv1oUkdqEt1yCxNpsWly09teTac7ZnxgWqewcvr9ayLRC/l9ffAP5PHCErMm67pv8bXEiTRuMzbNTgHxbKOEqtSoEgI1xoU/+J2r+bO6sJs8QzKPNKfQWKyZRu/+KPOkZmKt9yzBQe57frDoEgCaBMGYwFyUyrqBaWKi4xSwcKYfeT3mexQ6pvemfp7+umFU/HAVkHxYLm6MXnu584E="
     # CODE_SIGN_PSWD_DICT
@@ -61,6 +63,7 @@ before_script:
   - echo $TRAVIS_PULL_REQUEST
   - echo $TRAVIS_TAG
   - echo $HOME
+  - echo $QT_CACHE_DIR
 
 script:
   - python Scripts/InstallPyPackages.py
@@ -86,9 +89,7 @@ cache:
   directories:
     - $TRAVIS_BUILD_DIR/$ED_VENV                                                # local python venv
     - $TRAVIS_BUILD_DIR/.soft                                                   # Qt Installer Framework setup
-    - if [ "$TRAVIS_OS_NAME" == "windows" ]; then /C/Qt; fi                       # Qt Installer Framework installed (windows)
-    - if [ "$TRAVIS_OS_NAME" != "windows" ]; then $HOME/Qt; fi                    # Qt Installer Framework installed (macos and linux)
-    #- if [ "$TRAVIS_OS_NAME" == linux ]; then cibuilds/snapcraft; fi            # snapcraft image for docker
+    - $QT_CACHE_DIR                                                             # Qt Installer Framework installed
     #- if [ "$TRAVIS_OS_NAME" == "linux" ]; then $TRAVIS_BUILD_DIR/cibuilds; fi            # snapcraft image for docker
 
 notifications:
