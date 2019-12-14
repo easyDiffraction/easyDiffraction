@@ -57,8 +57,6 @@ def moveCertificates(dir_name):
     else:
         BasicFunctions.printSuccessMessage(message)
 
-# docker run -v $(pwd):/easyDiffraction -t cibuilds/snapcraft:core18 sh -c "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
-
 def runDocker(project_dir_path, branch):
     message = "push release 'edge' for branch '{}'".format(branch)
     try:
