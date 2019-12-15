@@ -93,7 +93,7 @@ def loadDockerImage():
 def runDockerImage(project_dir_path, branch):
     message = "push release 'edge' for branch '{}'".format(branch)
     try:
-        print('before run')
+        print('before run') 
         os.system('docker container ls')
         #print('run')
         #os.system('docker run cibuilds/snapcraft:core18')
