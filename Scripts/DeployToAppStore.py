@@ -62,10 +62,13 @@ def saveDockerImage():
     if os.path.exists('.soft/snap.tar.gz'):
         message = "* Docker image for snapcraft is already downloaded {}".format('')
         print(message)
-        os.system('ls .soft')
+        os.system('ls -l .soft')
+        os.system('shasum -a 256 .soft/snap.tar.gz')
         return()
     try:
         os.system('docker save cibuilds/snapcraft:core18 | gzip > .soft/snap.tar.gz')
+        os.system('ls -l .soft')
+        os.system('shasum -a 256 .soft/snap.tar.gz')
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
@@ -92,10 +95,10 @@ def runDockerImage(project_dir_path, branch):
     try:
         print('before run')
         os.system('docker container ls')
-        print('run')
-        os.system('docker run cibuilds/snapcraft:core18')
-        print('after run')
-        os.system('docker container ls')
+        #print('run')
+        #os.system('docker run cibuilds/snapcraft:core18')
+        #print('after run')
+        #os.system('docker container ls')
         #BasicFunctions.runAsIs('docker', 'run', 'cibuilds/snapcraft:core18')
         #BasicFunctions.run(
         #    'docker', 'run',
