@@ -62,16 +62,12 @@ def saveDockerImage():
     if os.path.exists('.soft/snap.tar.gz'):
         message = "* Docker image for snapcraft is already downloaded {}".format('')
         print(message)
-        os.system('ls -l .soft')
-        os.system('shasum -a 256 .soft/snap.tar.gz')
         return()
     try:
         os.system('docker pull cibuilds/snapcraft:core18')
         os.system('docker save cibuilds/snapcraft:core18 | gzip > .soft/snap.tar.gz')
-        os.system('ls -l .soft')
-        os.system('shasum -a 256 .soft/snap.tar.gz')
     except Exception as exception:
-        BasicFunctions.printFailMessage(message, exception) 
+        BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
         BasicFunctions.printSuccessMessage(message)
@@ -79,13 +75,8 @@ def saveDockerImage():
 def loadDockerImage():
     message = "load docker image '{}'".format('')
     try:
-        print('before load')
-        os.system('docker image ls')
-        print('load')
         #os.system('docker load < .soft/snap.tar.gz')
         os.system('gzip -dc .soft/snap.tar.gz | docker load')
-        print('after load')
-        os.system('docker image ls')
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
@@ -95,20 +86,13 @@ def loadDockerImage():
 def runDockerImage(project_dir_path, branch):
     message = "push release 'edge' for branch '{}'".format(branch)
     try:
-        print('before run')
-        os.system('docker container ls')
-        #print('run')
-        #os.system('docker run cibuilds/snapcraft:core18')
-        #print('after run')
-        #os.system('docker container ls')
-        #BasicFunctions.runAsIs('docker', 'run', 'cibuilds/snapcraft:core18')
-        #BasicFunctions.run(
-        #    'docker', 'run',
-            #'--volume', '{}:/easyDiffraction'.format(project_dir_path), # Bind mount a volume
-            #'--tty', # Allocate a pseudo-TTY
-        #    'cibuilds/snapcraft:core18',
-            #'sh', '-c', "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
-        #    )
+        BasicFunctions.run(
+            'docker', 'run',
+            '--volume', '{}:/easyDiffraction'.format(project_dir_path), # Bind mount a volume
+            '--tty', # Allocate a pseudo-TTY
+            'cibuilds/snapcraft:core18',
+            'sh', '-c', "apt update -qq && cd /easyDiffraction && snapcraft && snapcraft push *.snap --release edge"
+            )
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
@@ -123,10 +107,10 @@ def osDependentDeploy():
     if os_name == 'linux':
         if branch == 'develop':
             snapcraft_dir_name = '.snapcraft'
-            #createSnapcraftDir(snapcraft_dir_name)
-            #decryptCertificates()
-            #extractCertificates()
-            #moveCertificates(snapcraft_dir_name)
+            createSnapcraftDir(snapcraft_dir_name)
+            decryptCertificates()
+            extractCertificates()
+            moveCertificates(snapcraft_dir_name)
             saveDockerImage()
             loadDockerImage()
             runDockerImage(project_dir_path, branch)
