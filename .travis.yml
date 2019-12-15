@@ -7,7 +7,7 @@ env:
     # terminal width
     - COLUMNS=100
     # python virtual environment dir name
-    - ED_VENV=.ed-venv
+    - ED_VENV=.venv
     # downloaded soft dir name: Qt Installer Framework setup, Docker image for snapcraft
     - ED_SOFT=.soft
     # Qt cache path
@@ -70,19 +70,19 @@ before_script:
 script:
   - python Scripts/InstallPyPackages.py
   #- python Scripts/Project.py # print config
-#  - python Scripts/CopyMissingLibs.py
+  - python Scripts/CopyMissingLibs.py
   #- python Scripts/CompilePyResource.py
-#  - python Scripts/RunTests.py
-#  - python Scripts/FreezeApp.py
-#  - python Scripts/MakeInstaller.py
-#  - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
-#  - python Scripts/DeployToGithub.py # $GITHUB_TOKEN $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
+  - python Scripts/RunTests.py
+  - python Scripts/FreezeApp.py
+  - python Scripts/MakeInstaller.py
+  - python Scripts/SignCode.py $CODE_SIGN_PSWD_DICT
+  - python Scripts/DeployToGithub.py # $GITHUB_TOKEN $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
   - travis_wait 30 python Scripts/DeployToAppStore.py
-#  - python Scripts/UpdateWebPage.py
+  - python Scripts/UpdateWebPage.py
 
 after_success:
-#  - python Scripts/ReportComplexity.py
-#  - codecov
+  - python Scripts/ReportComplexity.py
+  - codecov
 
 #after_deploy:
 #  -
