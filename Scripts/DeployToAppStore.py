@@ -66,6 +66,7 @@ def saveDockerImage():
         os.system('shasum -a 256 .soft/snap.tar.gz')
         return()
     try:
+        os.system('docker pull cibuilds/snapcraft:core18')
         os.system('docker save cibuilds/snapcraft:core18 | gzip > .soft/snap.tar.gz')
         os.system('ls -l .soft')
         os.system('shasum -a 256 .soft/snap.tar.gz')
@@ -81,7 +82,8 @@ def loadDockerImage():
         print('before load')
         os.system('docker image ls')
         print('load')
-        os.system('docker load < .soft/snap.tar.gz')
+        #os.system('docker load < .soft/snap.tar.gz')
+        os.system('gzip -dc .soft/snap.tar.gz | docker load')
         print('after load')
         os.system('docker image ls')
     except Exception as exception:
@@ -93,7 +95,7 @@ def loadDockerImage():
 def runDockerImage(project_dir_path, branch):
     message = "push release 'edge' for branch '{}'".format(branch)
     try:
-        print('before run') 
+        print('before run')
         os.system('docker container ls')
         #print('run')
         #os.system('docker run cibuilds/snapcraft:core18')
