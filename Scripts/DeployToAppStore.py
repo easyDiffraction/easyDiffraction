@@ -62,11 +62,10 @@ def saveDockerImage():
     if os.path.exists('.soft/snap.tar.gz'):
         message = "* Docker image for snapcraft is already downloaded {}".format('')
         print(message)
+        os.system('ls .soft')
         return()
     try:
-        os.system('ls .soft')
         os.system('docker save cibuilds/snapcraft:core18 | gzip > .soft/snap.tar.gz')
-        os.system('ls .soft')
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
@@ -75,30 +74,29 @@ def saveDockerImage():
 
 def loadDockerImage():
     message = "load docker image '{}'".format('')
-    BasicFunctions.runAsIs('docker', 'image', 'ls')
-    BasicFunctions.runAsIs('docker', 'images')
-    BasicFunctions.runAsIs('docker', 'container', 'ls')
     try:
+        print('before load')
         os.system('docker image ls')
+        print('load')
         os.system('docker load < .soft/snap.tar.gz')
+        print('after load')
         os.system('docker image ls')
-        BasicFunctions.runAsIs('docker', 'container', 'ls')
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
     else:
         BasicFunctions.printSuccessMessage(message)
-        BasicFunctions.runAsIs('docker', 'image', 'ls')
-        BasicFunctions.runAsIs('docker', 'images')
-        BasicFunctions.runAsIs('docker', 'container', 'ls')
 
 def runDockerImage(project_dir_path, branch):
     message = "push release 'edge' for branch '{}'".format(branch)
-    BasicFunctions.runAsIs('docker', 'image', 'ls')
-    BasicFunctions.runAsIs('docker', 'images')
-    BasicFunctions.runAsIs('docker', 'container', 'ls')
     try:
-        BasicFunctions.runAsIs('docker', 'run', 'cibuilds/snapcraft:core18')
+        print('before run')
+        os.system('docker container ls')
+        print('run')
+        os.system('docker run cibuilds/snapcraft:core18')
+        print('after run')
+        os.system('docker container ls')
+        #BasicFunctions.runAsIs('docker', 'run', 'cibuilds/snapcraft:core18')
         #BasicFunctions.run(
         #    'docker', 'run',
             #'--volume', '{}:/easyDiffraction'.format(project_dir_path), # Bind mount a volume
@@ -111,20 +109,19 @@ def runDockerImage(project_dir_path, branch):
         sys.exit()
     else:
         BasicFunctions.printSuccessMessage(message)
-        BasicFunctions.runAsIs('docker', 'container', 'ls')
 
 def osDependentDeploy():
     config = Project.Config()
     os_name = config['os']['name']
     project_dir_path = config['project']['dir_path']
     branch = BasicFunctions.environmentVariable('TRAVIS_BRANCH')
-    if os_name == 'linux':
-        if branch == 'develop':
+    if os_name == 'osx':
+        if branch == None:
             snapcraft_dir_name = '.snapcraft'
-            createSnapcraftDir(snapcraft_dir_name)
-            decryptCertificates()
-            extractCertificates()
-            moveCertificates(snapcraft_dir_name)
+            #createSnapcraftDir(snapcraft_dir_name)
+            #decryptCertificates()
+            #extractCertificates()
+            #moveCertificates(snapcraft_dir_name)
             saveDockerImage()
             loadDockerImage()
             runDockerImage(project_dir_path, branch)
