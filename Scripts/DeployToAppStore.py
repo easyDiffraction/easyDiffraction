@@ -115,8 +115,8 @@ def osDependentDeploy():
     os_name = config['os']['name']
     project_dir_path = config['project']['dir_path']
     branch = BasicFunctions.environmentVariable('TRAVIS_BRANCH')
-    if os_name == 'osx':
-        if branch == None:
+    if os_name == 'linux':
+        if branch == 'deploy':
             snapcraft_dir_name = '.snapcraft'
             #createSnapcraftDir(snapcraft_dir_name)
             #decryptCertificates()
