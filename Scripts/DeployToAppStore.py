@@ -71,7 +71,7 @@ def saveDockerImage():
         os.system('ls -l .soft')
         os.system('shasum -a 256 .soft/snap.tar.gz')
     except Exception as exception:
-        BasicFunctions.printFailMessage(message, exception)
+        BasicFunctions.printFailMessage(message, exception) 
         sys.exit()
     else:
         BasicFunctions.printSuccessMessage(message)
