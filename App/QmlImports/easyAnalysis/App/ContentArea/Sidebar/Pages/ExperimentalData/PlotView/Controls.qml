@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
+import QtQuick.Dialogs 1.3 as Dialogs1
 import QtQuick.Layouts 1.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
@@ -35,13 +36,43 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 2
 
-                GenericAppContentAreaButtons.Import { enabled: true; text: "Import data from local drive"; }
+                GenericAppContentAreaButtons.Import {
+                 enabled: !proxy.refinementRunning
+                 text: "Import data from local drive";
+                 onClicked: fileDialogLoadExps.open()
+                }
                 GenericAppContentAreaButtons.Link { enabled: false; text: "Link to data on local drive"; }
                 GenericAppContentAreaButtons.Cloud { enabled: false; id: cloudButton; text: "Import data from SciCat" }
                 GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all data" }
             }
         }
     }
+
+    // Loader
+    Dialogs1.FileDialog{
+        id: fileDialogLoadExps
+        nameFilters: [ "CIF files (*.cif)"]
+        folder: settings.value("lastOpenedProjectFolder", examplesDir)
+        onAccepted: {
+            settings.setValue("lastOpenedProjectFolder", folder)
+            projectControl.loadExperiment(fileUrl)
+            fileDialogLoadExps.close()
+            var old_analysis_state = Generic.Variables.analysisPageFinished
+            var old_summary_state = Generic.Variables.summaryPageFinished
+            //if (projectControl.validCif) {
+            proxy.loadExperimentFromFile()
+            Specific.Variables.projectOpened = true
+            Generic.Variables.homePageFinished = true
+            Generic.Variables.dataPageFinished = true
+            Generic.Variables.samplePageFinished = true
+            Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+            Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+            // The remove button will have to be enabled once we start actually adding phases
+            //removeButton.enabled = true
+            //}
+        }
+    }
+
 
     // Groupbox
 

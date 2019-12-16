@@ -72,7 +72,10 @@ class Proxy(QObject):
         """
         Replace internal experiment models based on requested content from CIF
         """
-        pass
+        self._experiment_rcif_path = self.project_control.experiment_rcif_path
+        self._calculator.updateExps(self._experiment_rcif_path)
+        self._file_structure_model.setCalculator(self._calculator)
+        self.projectChanged.emit()
 
     # Load CIF method, accessible from QML
     @Slot()

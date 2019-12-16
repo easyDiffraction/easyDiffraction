@@ -36,6 +36,42 @@ class CryspyCalculator(QObject):
         self._project_dict = {}
         self.setProjectDictFromCryspyObj()
 
+    def updateExps(self, exp_path):
+        """
+        Parse the relevant phases file and update the corresponding model
+        """
+        self._experiments_path = exp_path
+        rcif_content = ""
+
+        # This will read the CIF file
+        if os.path.isfile(self._experiments_path):
+            with open(self._experiments_path, 'r') as f:
+                exp_rcif_content = f.read()
+                rcif_content += exp_rcif_content
+
+        phase_segment = self._cryspy_obj.crystals[0].to_cif
+        experiment_segment = rcif_content
+
+        # find the name of the new phase
+        data_segment = phase_segment.find('data_')  # first instance only
+        data_segment_length = len('data_')
+        end_loc = data_segment + phase_segment[data_segment:].find('\n')
+        phase_name = phase_segment[data_segment + data_segment_length:end_loc].strip()
+
+        # Concatenate the corrected experiment and the new CIF
+        rcif_content = experiment_segment + phase_segment
+
+        # This will update the CrysPy object
+        self._cryspy_obj.from_cif(rcif_content)
+
+        self._cryspy_obj.experiments[0]._Pd__phase._PdPhase__pd_phase_label[0] = phase_name
+
+        # This will re-create all local directories
+        self.setProjectDictFromCryspyObj()
+
+        # This will notify the GUI models changed
+        self.projectDictChanged.emit()
+
     def updatePhases(self, phases_path):
         """
         Parse the relevant phases file and update the corresponding model
