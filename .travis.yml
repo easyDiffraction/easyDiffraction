@@ -39,6 +39,9 @@ matrix:
       os: osx
       osx_image: xcode9.4                                                       # xcode11 --- Python 3.7.4 running on macOS 10.14.4
       install:
+        - which python
+        - which python3
+        - which python3.6
         - python3.6 -m venv $VENV_DIR                                           # create virtual environment
         - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
