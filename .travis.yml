@@ -62,7 +62,7 @@ matrix:
           - $VENV_DIR
           - $SOFT_DIR
           - /C/Qt
-          - /C/Python36
+          #- /C/Python36
       env:
         - BADGE=win
         - PATH=$VENV_DIR/Scripts:$PATH                                          # Travis equivalent of 'update Windows PATH variable'
@@ -78,7 +78,6 @@ before_script:
   - echo $TRAVIS_PULL_REQUEST
   - echo $TRAVIS_TAG
   - echo $HOME
-  - echo $QTIFW_DIR
 
 script:
   - python Scripts/InstallPyPackages.py
