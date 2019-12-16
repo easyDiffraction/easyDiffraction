@@ -100,12 +100,6 @@ after_success:
 #after_deploy:
 #  -
 
-cache:
-  directories:
-    - $SOFT_DIR
-    - $QTIFW_DIR
-    - $VENV_DIR
-
 notifications:
   slack:
     rooms:
