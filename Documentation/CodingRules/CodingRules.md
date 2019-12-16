@@ -209,7 +209,10 @@ When in doubt - follow [PEP 8](http://www.python.org/dev/peps/pep-0008/) (<https
 -   Remember to add files using _git add_ before committing your changes.
 -   Have a self-explanatory commit message. "Merged with master" is not sufficient. It is a good practice to do a _git log_ before pushing to master and check for the top message. _git commit --amend_ can be used to fix commit message if we are not satisfied with it.
 -   Only the person(s) responsible should be tasked with merging develop → master.
--   Remote work branches and draft releases should be deleted at final release
+-   Remote work branches, draft releases and ci caches should be deleted at final release
+    -   Branches: https://github.com/easyDiffraction/easyDiffraction/branches
+    -   Releases: https://github.com/easyDiffraction/easyDiffraction/releases
+    -   Caches: https://travis-ci.org/easyDiffraction/easyDiffraction/caches
 -   When merging a branch with multiple commits use --squash or interactively rebase before pushing to master.
 
     ![](git.png)
