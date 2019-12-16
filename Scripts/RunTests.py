@@ -9,13 +9,13 @@ import sys
 import os
 import pytest
 import warnings
-import Functions
+import BasicFunctions
 
 sys.path.append('App')
 sys.path.append(os.path.join('App','PyImports'))
 sys.path.append('.')
 
-Functions.printTitle('Run unit tests')
+BasicFunctions.printTitle('Run unit tests')
 
 # https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
