@@ -20,6 +20,31 @@ class ProjectControl(QObject):
         self._projectFile = None
         self._isValidCif = None
         self.main_rcif_path = None
+        self.phases_rcif_path = None
+        self.experiment_rcif_path = None
+
+    @Slot(str)
+    def loadPhases(self, phases_rcif_path):
+        """
+        Load a structure from a file.
+        :param structure_rcif_path: URI to structure (r)cif file
+        :return:
+        """
+        self.phases_rcif_path = self.generalizePath(phases_rcif_path)
+        self.manager.validSaveState = False
+
+        pass
+
+    @Slot(str)
+    def loadExperiment(self, experiment_rcif_path):
+        """
+        Load an experiment information from a file.
+        :param experiment_rcif_path: URI to experiment (r)cif file
+        :return:
+        """
+        self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
+
+        pass
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
@@ -137,11 +162,21 @@ class ProjectControl(QObject):
         :return:
         """
         self._resetOnInitialize()
-        FILE = urlparse(rcifPath).path
-        if sys.platform.startswith("win"):
-            if FILE[0] == '/':
-                FILE = FILE[1:].replace('/', os.path.sep)
-        self.main_rcif_path = FILE
+        self.main_rcif_path = self.generalizePath(rcifPath)
+
+    def generalizePath(self, rcifPath):
+        """
+        Generalize the filepath to be platform-specific, so all file operations
+        can be performed.
+        :param URI rcfPath: URI to the file
+        :return URI filename: platform specific URI
+        """
+        filename = urlparse(rcifPath).path
+        if not sys.platform.startswith("win"):
+            return filename
+        if filename[0] == '/':
+            filename = filename[1:].replace('/', os.path.sep)
+        return filename
 
     def _resetOnInitialize(self):
         """
@@ -156,6 +191,8 @@ class ProjectControl(QObject):
         self._projectFile = None
         self._isValidCif = None
         self.main_rcif_path = None
+        self.structure_rcif_path = None
+        self.experiment_rcif_path = None
 
     def __exit__(self, exc, value, tb):
         self.tempDir.cleanup()

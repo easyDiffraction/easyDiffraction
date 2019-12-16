@@ -3,8 +3,9 @@ from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 import PyImports.Helpers as Helpers
 from PyImports.StatusObjects import StatusItem, StatusList
+from PyImports.Models.BaseModel import BaseModel
 
-class StatusModel(QObject):
+class StatusModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -45,7 +46,7 @@ class StatusModel(QObject):
             self._roles_list.append(display_role)
             self._roles_dict['plot'][self._first_role + i + offset] = role_name.encode()
 
-    def _setModelFromProject(self):
+    def _setModelsFromProjectDict(self):
         """Create the initial data list with structure for GUI fitables table."""
         _ = self._statusBarModel.removeColumns(0, self._statusBarModel.columnCount())
         _ = self._chartDisplayModel.removeColumns(0, self._chartDisplayModel.columnCount())
@@ -98,18 +99,13 @@ class StatusModel(QObject):
         self._interestedList.setItemValue('numPhases', len(project_dict['phases']))
         self._interestedList.setItemValue('numData', len(project_dict['experiments']))
 
-    def onProjectChanged(self):
-        """Define what to do if project dict is changed, e.g. by external library object."""
-        self._setModelFromProject()
-        # self._statusBarModel.layoutChanged.emit()
-
     def returnStatusBarModel(self):
         """Return the status bar model."""
         return self._statusBarModel
 
     def onRefinementDone(self):
         """Define what to do when the refinement done is triggered"""
-        self._setModelFromProject()
+        self._setModelsFromProjectDict()
         self._chartDisplayModel.layoutChanged.emit()
 
     def returnChartModel(self):
@@ -130,9 +126,3 @@ class StatusModel(QObject):
                 continue
             item.setData(value, role)
         return item
-
-    def setCalculator(self, calculator):
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._calculator = calculator
-        self._updateStatusList()
-        self._setModelFromProject()

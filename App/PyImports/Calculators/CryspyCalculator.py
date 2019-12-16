@@ -10,6 +10,9 @@ import pycifstar
 
 from PySide2.QtCore import QObject, Signal
 
+PHASE_SEGMENT = "_phases"
+EXPERIMENT_SEGMENT = "_experiments"
+
 class CryspyCalculator(QObject):
     def __init__(self, main_rcif_path, parent=None):
         super().__init__(parent)
@@ -24,32 +27,137 @@ class CryspyCalculator(QObject):
         # cryspy
         self._main_rcif_path = main_rcif_path
         self._main_rcif = None
+        self._phases_path = ""
+        self._phase_name = ""
+        self._experiments_path = ""
         self.final_chi_square = None
         self._cryspy_obj = self._createCryspyObj() #cryspy.rhochi_read_file(self._main_rcif_path)
         # project dict
         self._project_dict = {}
         self.setProjectDictFromCryspyObj()
 
-    def _createCryspyObj(self):
-        """Temporary solution to create cryspy object from separate rcif files"""
-        full_rcif_content = ''
+    def updatePhases(self, phases_path):
+        """
+        Parse the relevant phases file and update the corresponding model
+        """
+        self._phases_path = phases_path
+        rcif_content = ""
+
+        # This will read the CIF file
+        if os.path.isfile(self._phases_path):
+            with open(self._phases_path, 'r') as f:
+                phases_rcif_content = f.read()
+                rcif_content += phases_rcif_content
+
+        # find the name of the new phase
+        data_segment = phases_rcif_content.find('data_') # first instance only
+        data_segment_length = len('data_')
+        end_loc = data_segment + phases_rcif_content[data_segment:].find('\n')
+        new_phase_name = phases_rcif_content[data_segment+data_segment_length:end_loc].strip()
+
+        # This will replace phase name in EXPERIMENT
+        experiment_segment = self.replacePhaseInSegment(EXPERIMENT_SEGMENT, new_phase_name)
+
+        # This will replace occurences of old phase name in the exp segment
+        experiment_segment = self.replaceDataInSegment(experiment_segment, new_phase_name)
+
+        # Concatenate the corrected experiment and the new CIF
+        rcif_content = experiment_segment + rcif_content
+
+        # This will update the CrysPy object
+        self._cryspy_obj.from_cif(rcif_content)
+
+        # This will re-create all local directories
+        self.setProjectDictFromCryspyObj()
+
+        # This will notify the GUI models changed
+        self.projectDictChanged.emit()
+
+    def replacePhaseInSegment(self, segment, new_phase_name):
+        """
+        Replaces original phase name with the given name in a segment
+        """
+        segment_content = self._parseSegment(segment)
+        old_phase_name = self._phase_name
+        if old_phase_name and old_phase_name != new_phase_name:
+            segment_content = segment_content.replace(old_phase_name, new_phase_name)
+            # update old phase name
+            self._phase_name = new_phase_name
+
+        # return the new segment
+        return segment_content
+
+    def replaceDataInSegment(self, segment_content, new_data_name):
+        """
+        Replaces original phase name with the given name in a string representation of segment
+        """
+        if not segment_content:
+            return segment_content
+
+        data_keyword = 'data_'
+        # Find old data name location
+        data_loc = segment_content.find(data_keyword)
+
+        # End of replaced text is the first occurence of EOL
+        data_loc_end = segment_content[data_loc:].find('\n')
+
+        # Length of 'data_' string
+        data_len = len(data_keyword)
+        # Location of the string to be replaced
+        data_loc_start = data_loc + data_len
+
+        # New string = 'data_<new_data_name>\n...'
+        new_segment = segment_content[:data_loc_start]
+        new_segment += new_data_name
+        # append the rest of the string
+        new_segment += segment_content[data_loc_end+data_loc_start-data_len:]
+
+        # return the new segment
+        return new_segment
+
+    def _parseSegment(self, segment=""):
+        """Parse the given segment info from the main rcif file"""
+        if not segment:
+            return ""
+        if segment not in (PHASE_SEGMENT, EXPERIMENT_SEGMENT):
+            return ""
         rcif_dir_name = os.path.dirname(self._main_rcif_path)
         self._main_rcif = pycifstar.read_star_file(self._main_rcif_path)
-        if "_phases" in str(self._main_rcif):
-            phases_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_phases"].value)
-            if os.path.isfile(phases_rcif_path):
-                with open(phases_rcif_path, 'r') as f:
-                    phases_rcif_content = f.read()
-                    full_rcif_content += phases_rcif_content
-        if "_experiments" in str(self._main_rcif):
-            experiments_rcif_path = os.path.join(rcif_dir_name, self._main_rcif["_experiments"].value)
-            if os.path.isfile(experiments_rcif_path):
-                with open(experiments_rcif_path, 'r') as f:
-                    experiments_rcif_content = f.read()
-                    full_rcif_content += experiments_rcif_content
+        rcif_content = ""
+        if segment in str(self._main_rcif):
+            segment_rcif_path = os.path.join(rcif_dir_name, self._main_rcif[segment].value)
+            if os.path.isfile(segment_rcif_path):
+                with open(segment_rcif_path, 'r') as f:
+                    segment_rcif_content = f.read()
+                    rcif_content += segment_rcif_content
+        return rcif_content
+
+    def _createCryspyObj(self):
+        """Create cryspy object from separate rcif files"""
+        phase_segment = self._parseSegment(PHASE_SEGMENT)
+        full_rcif_content = self._parseSegment(EXPERIMENT_SEGMENT) + phase_segment
+
+        # update the phase name global
+        self._setPhaseName(phase_segment)
+
         rho_chi = cryspy.RhoChi()
         rho_chi.from_cif(full_rcif_content)
         return rho_chi
+
+    def _setPhaseName(self, phase_segment):
+        """
+        Set the phase name in state
+        """
+        if not phase_segment:
+            self._phase_name = ''
+            return
+        data_keyword = 'data_'
+        data_keyword_length = len(data_keyword)
+        data_segment = phase_segment.find(data_keyword)
+        end_loc = data_segment + phase_segment[data_segment:].find('\n')
+        self._phase_name = phase_segment[data_segment+data_keyword_length:end_loc].strip()
+
+        return
 
     def saveCifs(self, saveDir):
         main_block = self._main_rcif
@@ -626,6 +734,8 @@ class CryspyCalculator(QObject):
 
             # Calculated chi squared and number of data points used for refinement
             logging.info("calc_chi_sq start") # profiling
+            chi_sq = 0.0
+            n_res = 1
             chi_sq, n_res = experiment.calc_chi_sq(self._cryspy_obj.crystals)
             logging.info("calc_chi_sq end") # profiling
 

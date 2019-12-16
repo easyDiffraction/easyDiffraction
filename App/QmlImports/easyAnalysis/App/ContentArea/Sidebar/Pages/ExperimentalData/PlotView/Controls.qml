@@ -35,7 +35,7 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 2
 
-                GenericAppContentAreaButtons.Import { enabled: false; text: "Import data from local drive"; }
+                GenericAppContentAreaButtons.Import { enabled: true; text: "Import data from local drive"; }
                 GenericAppContentAreaButtons.Link { enabled: false; text: "Link to data on local drive"; }
                 GenericAppContentAreaButtons.Cloud { enabled: false; id: cloudButton; text: "Import data from SciCat" }
                 GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all data" }
