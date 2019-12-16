@@ -56,8 +56,8 @@ matrix:
         #- choco install python --version=3.6.5                                  # install python
         #- C:/Python36/python -m venv $VENV_DIR                                  # create virtual environment
         - curl -O https://www.python.org/ftp/python/3.7.5/python-3.7.5-amd64.exe
-        - python-3.7.5-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
         - dir
+        - python-3.7.5.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
         - python -m venv $VENV_DIR                                              # create virtual environment
         - $VENV_DIR/Scripts/activate.bat                                        # activate virtual environment
         - echo $PATH                                                            # show path variable
