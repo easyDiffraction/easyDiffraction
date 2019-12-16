@@ -351,7 +351,7 @@ def create_project_zip(data_dir, saveName):
     canContain = ['saved_structure.png',
                   'saved_refinement.png']
 
-    write_zip(data_dir, saveName, mustContain, canContain)
+    saveName = write_zip(data_dir, saveName, mustContain, canContain)
 
     return check_project_file(saveName), saveName
 
@@ -374,6 +374,7 @@ def write_zip(data_dir, saveName, mustContain, canContain):
             fullFile = os.path.join(data_dir, file)
             if os.path.isfile(fullFile):
                 zip.write(fullFile, file)
+    return saveName
 
 
 def writeProject(projectModel, saveName):

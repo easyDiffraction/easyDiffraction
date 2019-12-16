@@ -226,7 +226,7 @@ def test_setProjectDictFromCryspyObj(cal):
     assert isinstance(cal._project_dict['app'], dict)
     assert len(cal._project_dict['app']) == 3
     assert cal._project_dict['app']['name'] == "easyDiffraction"
-    assert cal._project_dict['app']['url'] == "http://easydiffraction.github.io"
+    assert cal._project_dict['app']['url'] == "http://easydiffraction.org"
 
     assert 'calculator' in list(cal._project_dict.keys())
     assert 'info' in list(cal._project_dict.keys())

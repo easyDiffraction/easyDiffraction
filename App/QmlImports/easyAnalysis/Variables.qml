@@ -53,7 +53,7 @@ QtObject {
     }
 
     // States
-    property bool isDebug: true
+    property bool isDebug: false
     property bool homePageFinished: isDebug ? true : false
     property bool dataPageFinished: isDebug ? true : false
     property bool samplePageFinished: isDebug ? true : false
