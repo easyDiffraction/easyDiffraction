@@ -102,13 +102,14 @@ ColumnLayout {
 //                            saveStateButton.enabled = false
 //                        }
                         Specific.Variables.projectOpened = true
-                        Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.homePageFinished = true
                         Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
                         saveButton.enabled = true
-                    } else {
+                    }
+                    else {
                         failOpenDialog.visible = true
                         Specific.Variables.projectOpened = false
                         Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
@@ -143,6 +144,11 @@ ColumnLayout {
                     fileDialogCreateProject.close()
                     projectControl.createProject(fileUrl)
                     getProjectInfoDialog.visible = true
+                    Generic.Variables.homePageFinished = true
+                    Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
                 }
             }
 
@@ -323,7 +329,6 @@ ColumnLayout {
             enabled: Specific.Variables.projectOpened
             ToolTip.text: qsTr("Go to the next step: Sample model")
             onClicked: {
-                Generic.Variables.dataPageFinished = true
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
             }
             GenericAppElements.GuideWindow {

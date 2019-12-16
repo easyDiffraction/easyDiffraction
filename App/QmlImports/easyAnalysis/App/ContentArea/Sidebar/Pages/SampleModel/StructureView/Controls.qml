@@ -94,8 +94,8 @@ ColumnLayout {
                     proxy.loadPhasesFromFile()
                     Specific.Variables.projectOpened = true
                     Generic.Variables.homePageFinished = true
-                    Generic.Variables.dataPageFinished = false
                     Generic.Variables.samplePageFinished = true
+                    Generic.Variables.dataPageFinished = false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
                     // The remove button will have to be enabled once we start actually adding phases
@@ -223,6 +223,7 @@ ColumnLayout {
         goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Experimental Data"
             ToolTip.text: qsTr("Go to the next step: Experimental data")
+            enabled: Specific.Variables.projectOpened || Generic.Variables.samplePageFinished
             highlighted: Specific.Variables.projectOpened
             onClicked: {
                 Generic.Variables.samplePageFinished = true

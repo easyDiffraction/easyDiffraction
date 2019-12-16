@@ -23,6 +23,17 @@ class FileStructureModel(BaseModel):
         content = ""
         if self._model.rowCount() > 0:
             content = str(self._model.item(0).data(role=self._phase_role))
+            print("\n\nasPhaseString\n\n", content)
+        return content
+
+    def asExperimentString(self):
+        """
+        Returns the content of the experiment data as string
+        """
+        content = ""
+        if self._model.rowCount() > 0:
+            content = str(self._model.item(0).data(role=self._experiment_role))
+        print("\n\nasExperimentString\n\n", content)
         return content
 
     def _setModelsFromProjectDict(self):

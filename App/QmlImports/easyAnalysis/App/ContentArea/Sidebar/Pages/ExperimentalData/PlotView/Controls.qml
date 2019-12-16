@@ -198,8 +198,8 @@ ColumnLayout {
         goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Analysis"
             ToolTip.text: qsTr("Go to the next step: Analysis")
+            enabled: Specific.Variables.projectOpened || Generic.Variables.dataPageFinished
             onClicked: {
-                Generic.Variables.samplePageFinished = true
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
             }
             GenericAppElements.GuideWindow {

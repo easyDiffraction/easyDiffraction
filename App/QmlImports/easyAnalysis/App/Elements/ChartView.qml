@@ -32,10 +32,12 @@ ColumnLayout {
     // Check if data changed
     ////////////////////////
 
-    Text {
-        visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
-        onTextChanged: {
+    Timer {
+        id: projectChangedTimer
+        interval: 100
+        //running: bottomChart.visible
+        repeat: false
+        onTriggered: {
             if (Specific.Variables.projectOpened) {
                 proxy.measuredDataSeries.updateQmlLowerSeries(lowerLineSeries)
                 proxy.measuredDataSeries.updateQmlUpperSeries(upperLineSeries)
@@ -46,6 +48,12 @@ ColumnLayout {
                 adjustLeftAxesAnchor()
             }
         }
+    }
+
+    Text {
+        visible: false
+        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
+        onTextChanged: projectChangedTimer.restart()
     }
 
     ///////////////////////

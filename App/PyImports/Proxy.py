@@ -74,7 +74,9 @@ class Proxy(QObject):
         """
         self._experiment_rcif_path = self.project_control.experiment_rcif_path
         self._calculator.updateExps(self._experiment_rcif_path)
+        self._measured_data_series.updateSeries(self._calculator)
         self._file_structure_model.setCalculator(self._calculator)
+        # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
 
     # Load CIF method, accessible from QML
@@ -93,7 +95,6 @@ class Proxy(QObject):
                 self.project_control._isValidCif = False
                 return
         #
-        self._measured_data_model.setCalculator(self._calculator)
         self._measured_data_series.updateSeries(self._calculator)
         self._calculated_data_model.setCalculator(self._calculator)
         self._calculated_data_series.updateSeries(self._calculator) #---#
@@ -151,7 +152,8 @@ class Proxy(QObject):
     projectChanged = Signal()
     project = Property('QVariant', calculatorAsDict, notify=projectChanged)
     cif = Property('QVariant', calculatorAsCifDict, notify=projectChanged)
-    cif_text = Property('QVariant', lambda self: self.model_content(), notify=projectChanged)
+    phase_cif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
+    experiment_cif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculatedDataSeries = Property('QVariant', calculatedSeries, notify=projectChanged) #---#
     braggPeaksDataSeries = Property('QVariant', braggPeaksSeries, notify=projectChanged) #---#
 
@@ -256,9 +258,3 @@ class Proxy(QObject):
         # Show the generated report in the default browser
         url = os.path.realpath(full_filename)
         Helpers.open_url(url=url)
-
-    def model_content(self):
-        """
-        Return the content of the first data item (structure)
-        """
-        return self._file_structure_model.asPhaseString()

@@ -5,6 +5,7 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyAnalysis.App.Toolbar.Buttons 1.0 as GenericAppToolbarButtons
+import easyDiffraction 1.0 as Specific
 
 ColumnLayout{
     id: main
@@ -33,11 +34,11 @@ ColumnLayout{
         // -------
 
         GenericAppToolbarButtons.SampleModel {
-            enabled: Generic.Variables.dataPageFinished
+            enabled: Specific.Variables.projectOpened || Generic.Variables.homePageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleModelIndex
         }
         GenericAppToolbarButtons.ExperimentalData {
-            enabled: Generic.Variables.homePageFinished
+            enabled: Specific.Variables.projectOpened || Generic.Variables.samplePageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
             GenericAppElements.GuideWindow {
                 message: "This is a toolbar button of the tab with\ninformation about experimental data."
@@ -66,7 +67,7 @@ ColumnLayout{
         // -------
 
         GenericAppToolbarButtons.Analysis {
-            enabled: Generic.Variables.samplePageFinished
+            enabled: Specific.Variables.projectOpened || Generic.Variables.dataPageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
         }
 
