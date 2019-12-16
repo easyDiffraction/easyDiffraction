@@ -58,8 +58,8 @@ class Proxy(QObject):
         self._phases_rcif_path = self.project_control.phases_rcif_path
         self._calculator.updatePhases(self._phases_rcif_path)
         self._file_structure_model.setCalculator(self._calculator)
-
-        pass
+        # explicit emit required for the view to reload the model content
+        self.projectChanged.emit()
 
     @Slot()
     def loadExperimentFromFile(self):
@@ -97,6 +97,7 @@ class Proxy(QObject):
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
+
         # We can't link signals as the manager signals emitted before the dict is updated :-(
         self.projectChanged.emit()
 
@@ -123,6 +124,7 @@ class Proxy(QObject):
     projectChanged = Signal()
     project = Property('QVariant', lambda self: self.calculatorAsDict(), notify=projectChanged)
     cif = Property('QVariant', lambda self: self.calculatorAsCifDict(), notify=projectChanged)
+    cif_text = Property('QVariant', lambda self: self.model_content(), notify=projectChanged)
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
@@ -224,3 +226,9 @@ class Proxy(QObject):
         # Show the generated report in the default browser
         url = os.path.realpath(full_filename)
         Helpers.open_url(url=url)
+
+    def model_content(self):
+        """
+        Return the content of the first data item (structure)
+        """
+        return self._file_structure_model.asPhaseString()
