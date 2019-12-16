@@ -16,6 +16,15 @@ class FileStructureModel(BaseModel):
             self._experiment_role: b'experimentsRole',
             })
 
+    def asPhaseString(self):
+        """
+        Returns the content of the phase data as string
+        """
+        content = ""
+        if self._model.rowCount() > 0:
+            content = str(self._model.item(0).data(role=self._phase_role))
+        return content
+
     def _setModelsFromProjectDict(self):
         """
         Create the model needed for GUI representation of structure.
