@@ -41,8 +41,8 @@ matrix:
       install:
         - which python
         - which python3
-        - which python3.6
-        - python3.6 -m venv $VENV_DIR                                           # create virtual environment
+        - python3 -V
+        - python3 -m venv $VENV_DIR                                             # create virtual environment
         - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
       cache:
