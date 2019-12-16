@@ -49,12 +49,12 @@ matrix:
           - $HOME/Qt
       env: BADGE=osx
     # Windows
-    - name: "Python 3.7.5 on Windows 10.0"
+    - name: "Python 3.6.5 on Windows 10.0"
       os: windows                                                               # Windows 10.0.17134 N/A Build 17134
       filter_secrets: false
       install:
-        - choco install python --version=3.7.5                                  # install python
-        - C:/Python37/python -m venv $VENV_DIR                                  # create virtual environment
+        - choco install python --version=3.6.5                                  # install python
+        - C:/Python36/python -m venv $VENV_DIR                                  # create virtual environment
         - $VENV_DIR/Scripts/activate.bat                                        # activate virtual environment
         - echo $PATH                                                            # show path variable
       cache:
@@ -62,7 +62,7 @@ matrix:
           - $VENV_DIR
           - $SOFT_DIR
           - /C/Qt
-          #- /C/Python37
+          #- /C/Python36
       env:
         - BADGE=win
         - PATH=$VENV_DIR/Scripts:$PATH                                          # Travis equivalent of 'update Windows PATH variable'
