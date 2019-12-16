@@ -20,7 +20,7 @@ def test_FileStructureModel():
     assert isinstance(m._model, QStandardItemModel)
 
     # assure _setModelFromProject got called
-    assert m._model.rowCount() == 2
+    assert m._model.rowCount() == 1
     assert m._model.columnCount() == 1
 
     phaseRole = Qt.UserRole + 1
@@ -31,7 +31,4 @@ def test_FileStructureModel():
     assert str(m._model.roleNames()[expRole]) == "b'experimentsRole'"
 
     assert 'data_Fe3O4' in m._model.item(0, 0).data(role=phaseRole)
-    assert 'data_pnd' in m._model.item(1, 0).data(role=expRole)
-
-
-
+    assert 'data_pnd' in m._model.item(0, 0).data(role=expRole)

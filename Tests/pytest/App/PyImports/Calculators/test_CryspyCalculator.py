@@ -296,7 +296,7 @@ def test_updatePhases(cal):
 
     d = cal.asCifDict()
     assert 'data_Fe2Co1O4' in d['phases']
-    assert 'data_Fe2Co1O4' in d['experiments']
+    assert 'data_pnd' in d['experiments']
 
 def test_parseSegment(cal):
     """
@@ -318,4 +318,3 @@ def test_parseSegment(cal):
 
     assert 'Fe3O4' in phase_segment
     assert 'cell_length_a' in phase_segment
-
