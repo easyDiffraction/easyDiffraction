@@ -222,8 +222,8 @@ class CryspyCalculator(QObject):
         """Set application state"""
         self._app_dict = {
             'name': 'easyDiffraction',
-            'version': '0.3.6',
-            'url': 'http://easydiffraction.github.io'
+            'version': '0.3.9',
+            'url': 'http://easydiffraction.org'
         }
 
     def setCalculatorDict(self):
