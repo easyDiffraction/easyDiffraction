@@ -94,8 +94,8 @@ ColumnLayout {
                     proxy.loadPhasesFromFile()
                     Specific.Variables.projectOpened = true
                     Generic.Variables.homePageFinished = true
-                    Generic.Variables.dataPageFinished = false
-                    Generic.Variables.samplePageFinished = true
+                    Generic.Variables.dataPageFinished = true
+                    Generic.Variables.samplePageFinished = false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
                     // The remove button will have to be enabled once we start actually adding phases
