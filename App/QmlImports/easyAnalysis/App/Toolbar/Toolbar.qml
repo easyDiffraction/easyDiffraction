@@ -34,11 +34,11 @@ ColumnLayout{
         // -------
 
         GenericAppToolbarButtons.SampleModel {
-            enabled: Specific.Variables.projectOpened || Generic.Variables.homePageFinished
+            enabled: Specific.Variables.projectOpened && Generic.Variables.homePageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleModelIndex
         }
         GenericAppToolbarButtons.ExperimentalData {
-            enabled: Specific.Variables.projectOpened || Generic.Variables.samplePageFinished
+            enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
             GenericAppElements.GuideWindow {
                 message: "This is a toolbar button of the tab with\ninformation about experimental data."
@@ -67,7 +67,7 @@ ColumnLayout{
         // -------
 
         GenericAppToolbarButtons.Analysis {
-            enabled: Specific.Variables.projectOpened || Generic.Variables.dataPageFinished
+            enabled: Specific.Variables.projectOpened && Generic.Variables.dataPageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
         }
 
@@ -76,7 +76,7 @@ ColumnLayout{
         // -------
 
         GenericAppToolbarButtons.Summary {
-            enabled: (Generic.Variables.analysisPageFinished && proxy.refinementDone) || Generic.Variables.isDebug
+            enabled: proxy.refinementDone || Generic.Variables.isDebug
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
         }
     }

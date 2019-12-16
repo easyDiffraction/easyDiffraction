@@ -31,7 +31,6 @@ class ProjectControl(QObject):
         :return:
         """
         self.phases_rcif_path = self.generalizePath(phases_rcif_path)
-        self.manager.validSaveState = False
 
         pass
 

@@ -223,7 +223,7 @@ ColumnLayout {
         goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Experimental Data"
             ToolTip.text: qsTr("Go to the next step: Experimental data")
-            enabled: Specific.Variables.projectOpened || Generic.Variables.samplePageFinished
+            enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
             highlighted: Specific.Variables.projectOpened
             onClicked: {
                 Generic.Variables.samplePageFinished = true

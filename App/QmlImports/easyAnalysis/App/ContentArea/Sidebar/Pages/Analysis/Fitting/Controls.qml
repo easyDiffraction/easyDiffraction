@@ -91,8 +91,7 @@ ColumnLayout {
             highlighted: proxy.refinementDone
             ToolTip.text: qsTr("Go to the next step: Summary")
             onClicked: {
-                Generic.Variables.analysisPageFinished = true
-                Generic.Variables.summaryPageFinished = true
+                //Generic.Variables.analysisPageFinished = true
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
             }
             GenericAppElements.GuideWindow {

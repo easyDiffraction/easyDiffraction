@@ -103,9 +103,9 @@ ColumnLayout {
 //                        }
                         Specific.Variables.projectOpened = true
                         Generic.Variables.homePageFinished = true
-                        Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.dataPageFinished = true
+                        Generic.Variables.samplePageFinished = true
+                        Generic.Variables.analysisPageFinished = true
                         Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
                         saveButton.enabled = true
                     }

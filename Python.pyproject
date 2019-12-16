@@ -3,8 +3,7 @@
     "App/easyDiffraction.py",
 
     "App/PyImports/Helpers.py",
-    "App/PyImports/ProjectIO.py",
-    "App/PyImports/ProjectModel.py",
+    "App/PyImports/ProjectSentinel.py",
     "App/PyImports/Proxy.py",
     "App/PyImports/Refinement.py",
     "App/PyImports/StatusObjects.py",

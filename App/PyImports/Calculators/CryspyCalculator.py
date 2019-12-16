@@ -91,17 +91,18 @@ class CryspyCalculator(QObject):
         end_loc = data_segment + phases_rcif_content[data_segment:].find('\n')
         new_phase_name = phases_rcif_content[data_segment+data_segment_length:end_loc].strip()
 
-        # This will replace phase name in EXPERIMENT
-        experiment_segment = self.replacePhaseInSegment(EXPERIMENT_SEGMENT, new_phase_name)
-
-        # This will replace occurences of old phase name in the exp segment
-        experiment_segment = self.replaceDataInSegment(experiment_segment, new_phase_name)
+        experiment_segment = ''
+        if len(self._cryspy_obj.experiments) > 0:
+            experiment_segment = self._cryspy_obj.experiments[0].to_cif
 
         # Concatenate the corrected experiment and the new CIF
-        rcif_content = experiment_segment + rcif_content
+        rcif_content = rcif_content + "\n" + experiment_segment
 
         # This will update the CrysPy object
         self._cryspy_obj.from_cif(rcif_content)
+
+        if len(self._cryspy_obj.experiments) > 0:
+            self._cryspy_obj.experiments[0]._Pd__phase._PdPhase__pd_phase_label[0] = new_phase_name
 
         # This will re-create all local directories
         self.setProjectDictFromCryspyObj()
@@ -197,6 +198,10 @@ class CryspyCalculator(QObject):
 
     def writeMainCif(self, saveDir):
         main_block = self._main_rcif
+        if len(self._cryspy_obj.crystals) > 0:
+            main_block["_phases"].value = 'phases.cif'
+        if len(self._cryspy_obj._RhoChi__experiments) > 0:
+            main_block["_experiments"].value = 'experiments.cif'
         main_block.to_file(os.path.join(saveDir, 'main.cif'))
 
     def writePhaseCif(self, saveDir):
