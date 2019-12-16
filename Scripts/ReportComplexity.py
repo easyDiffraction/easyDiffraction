@@ -16,14 +16,6 @@ def pyFilePaths(input_dir_path):
                 file_paths.append(relative_path)
     return file_paths
 
-def environmentVariable(name, default=None):
-    value = os.getenv(name)
-    if value is not None:
-        return value
-    else:
-        print("- Failed to find environment variable '{0}', using default value '{1}'".format(name, default))
-        return default
-
 if __name__ == "__main__":
     BasicFunctions.printTitle('Report Complexity')
 
@@ -33,7 +25,7 @@ if __name__ == "__main__":
     file_paths = pyFilePaths(app_dir_path)
 
     # if Travis
-    if environmentVariable('TRAVIS_BRANCH'):
+    if BasicFunctions.environmentVariable('TRAVIS_BRANCH'):
         print('Not implemented yet')
 
     # if local machine

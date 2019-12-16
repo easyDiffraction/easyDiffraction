@@ -8,7 +8,7 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 
 [![][35]][30] [![][32]][31]
 
-[![][45]][40] [![][55]][50]
+[![][45]][40] [![][55]][50] [![][61]][62]
 
 [![][28]][21]
 
@@ -42,3 +42,8 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 [31]: https://snapcraft.io/easydiffraction
 [33]: https://build.snapcraft.io/badge/easyDiffraction/easyDiffraction.svg
 [34]: https://build.snapcraft.io/user/easyDiffraction/easyDiffraction
+
+<!---LicenseScan--->
+[61]: https://app.fossa.com/api/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction.svg?type=shield
+[62]: https://app.fossa.com/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction?ref=badge_shield
+

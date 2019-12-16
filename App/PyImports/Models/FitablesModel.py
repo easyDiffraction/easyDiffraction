@@ -4,8 +4,9 @@ from PySide2.QtCore import Qt, QObject, Signal
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 import PyImports.Helpers as Helpers
+from PyImports.Models.BaseModel import BaseModel
 
-class FitablesModel(QObject):
+class FitablesModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         # minor properties
@@ -34,7 +35,7 @@ class FitablesModel(QObject):
             self._roles_list.append(display_role)
             self._roles_list.append(edit_role)
 
-    def _setModelFromProject(self):
+    def _setModelsFromProjectDict(self):
         """Create the initial data list with structure for GUI fitables table."""
         self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
         project_dict = self._calculator.asDict()
@@ -73,10 +74,6 @@ class FitablesModel(QObject):
         if edit_value != display_value:
             self._calculator.setByPath(keys_list, edit_value)
 
-    def onProjectChanged(self):
-        """Define what to do if project dict is changed, e.g. by external library object."""
-        self._setModelFromProject()
-
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
         """Define what to do if model is changed, e.g. from GUI."""
         role = roles[0]
@@ -85,12 +82,3 @@ class FitablesModel(QObject):
             index = top_left_index
             edit_role = role
             self._updateProjectByIndexAndRole(index, edit_role)
-
-    def asModel(self):
-        """Return model."""
-        return self._model
-
-    def setCalculator(self, calculator):
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._calculator = calculator
-        self._setModelFromProject()

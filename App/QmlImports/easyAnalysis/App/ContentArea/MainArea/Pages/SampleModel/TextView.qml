@@ -4,11 +4,9 @@ import easyAnalysis 1.0 as Generic
 import easyDiffraction 1.0 as Specific
 
 //https://forum.qt.io/topic/90101/textarea-does-not-automatically-scroll/5
-
 Rectangle {
-    property bool showContent: false
-
     color: "white"
+    property bool showContent: false
 
     ScrollView {
         anchors.fill: parent
@@ -23,10 +21,8 @@ Rectangle {
             font.pointSize: Generic.Style.fontPointSize
             //antialiasing: true
             wrapMode: Text.NoWrap
-            text: showContent ? Specific.Variables.cif.phases : ""
+            text: showContent ? Specific.Variables.cif_text : ""
         }
     }
 
 }
-
-

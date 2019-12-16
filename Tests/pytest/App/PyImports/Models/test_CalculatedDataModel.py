@@ -18,25 +18,25 @@ def test_CalculatedDataModel():
     m.setCalculator(calculator)
 
 
-    assert isinstance(m._data_model, QStandardItemModel)
+    assert isinstance(m._model, QStandardItemModel)
     assert isinstance(m._headers_model, QStandardItemModel)
     assert isinstance(m._project_dict, dict)
 
     # assure _setModelFromProject got called
-    assert m._data_model.rowCount() == 381
-    assert m._data_model.columnCount() == 4
+    assert m._model.rowCount() == 381
+    assert m._model.columnCount() == 4
 
     assert m._headers_model.rowCount() == 0
     assert m._headers_model.columnCount() == 0
 
     # Test stuff from _setModelFromProject here
-    assert m._data_model.item(0, 0).data(role=Qt.DisplayRole) == 4.0
-    assert m._data_model.item(0, 3).data(role=Qt.DisplayRole) == 438.3046174533981
-    assert m._data_model.item(380, 0).data(role=Qt.DisplayRole) == 80.0
-    assert m._data_model.item(380, 3).data(role=Qt.DisplayRole) == 58.024190593574644
+    assert m._model.item(0, 0).data(role=Qt.DisplayRole) == 4.0
+    assert m._model.item(0, 3).data(role=Qt.DisplayRole) == 438.3046174533981
+    assert m._model.item(380, 0).data(role=Qt.DisplayRole) == 80.0
+    assert m._model.item(380, 3).data(role=Qt.DisplayRole) == 58.024190593574644
 
     # test asModel
-    assert m._data_model == m.asDataModel()
+    assert m._model == m.asModel()
     assert m._headers_model == m.asHeadersModel()
 
 

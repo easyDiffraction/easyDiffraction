@@ -5,6 +5,18 @@ import subprocess
 
 # FUNCTIONS
 
+def osName():
+    platform = sys.platform
+    if platform.startswith('darwin'):
+        return 'osx'
+    elif platform.startswith('lin'):
+        return 'linux'
+    elif platform.startswith('win'):
+        return 'windows'
+    else:
+        print("* Unsupported platform '{0}'".format(platform))
+        return None
+
 def coloredText(message='', style='1', background_color='49m', text_color='39'):
     # http://ozzmaker.com/add-colour-to-text-in-python/
     escape_code = '\033['
@@ -71,3 +83,11 @@ def run(*args, report_success=False, report_errors=True, exit_on_error=True):
         print("- Fail:{0}{1}".format(os.linesep, result.stderr))
     if exit_on_error and result.stderr:
         sys.exit()
+
+def environmentVariable(name, default=None):
+    value = os.getenv(name)
+    if value is not None:
+        return value
+    else:
+        print("- Failed to find environment variable '{0}', using default value '{1}'".format(name, default))
+        return default

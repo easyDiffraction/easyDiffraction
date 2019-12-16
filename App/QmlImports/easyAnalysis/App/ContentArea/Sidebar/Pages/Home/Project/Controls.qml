@@ -204,7 +204,7 @@ ColumnLayout {
                         }
                         TextInput {
                             id: keywordsInput
-                            text: "\'neutron diffraction, powder, 1d\'"
+                            text: "neutron diffraction, powder, 1d"
                             cursorVisible: true
                         }
                     }

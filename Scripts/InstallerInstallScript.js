@@ -47,7 +47,7 @@ Component.prototype.createOperations = function()
     )
   }
 
-  //if (systemInfo.productType === "ubuntu")
+  if (systemInfo.productType === "ubuntu")
   //if (installer.value("os") === "x11")
   {
     component.addOperation(

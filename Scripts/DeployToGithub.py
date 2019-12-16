@@ -6,8 +6,8 @@ import requests
 import shutil
 import yaml # pip install pyyaml
 from uritemplate import URITemplate # pip install uritemplate
-import Project
 import BasicFunctions
+import Project
 
 # CLASSES
 
@@ -223,36 +223,33 @@ class ReleaseConfig:
             "prerelease": self._prerelease
             }
 
-# LOCAL FUNCS
-
-def environmentVariable(name, default=None):
-    value = os.getenv(name)
-    if value is not None:
-        return value
-    else:
-        print("- Failed to find environment variable '{0}', using default value '{1}'".format(name, default))
-        return default
-
 # MAIN
 
 if __name__ == "__main__":
-    BasicFunctions.printTitle('Deploy')
+    BasicFunctions.printTitle('Deploy to GitHub releases')
 
+    # Exit if pull request
+    pull_request = BasicFunctions.environmentVariable('TRAVIS_PULL_REQUEST')
+    if pull_request != 'false':
+        print("* Deployment not needed. It's a pull request No. '{}'".format(pull_request))
+        exit()
+
+    # Load config
     config = Project.Config()
 
     # Init github communication
     owner = config.getVal('github', 'owner')
     repo = config.getVal('github', 'repo')
-    token = environmentVariable('GITHUB_TOKEN')
-    #token = environmentVariable('GITHUB_TOKEN', default='...')
+    token = BasicFunctions.environmentVariable('GITHUB_TOKEN')
+    #token = BasicFunctions.environmentVariable('GITHUB_TOKEN', default='...')
     github = GithubAgent(owner=owner, repo=repo, token=token)
 
     # Create release config
     version = config.getVal('release', 'version')
     date = config.getVal('release', 'date')
     changes = config.getVal('release', 'changes')
-    branch = environmentVariable('TRAVIS_BRANCH')
-    #branch = environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
+    branch = BasicFunctions.environmentVariable('TRAVIS_BRANCH')
+    #branch = BasicFunctions.environmentVariable('TRAVIS_BRANCH', default='upload-artifacts')
     release = ReleaseConfig(version=version, branch=branch, date=date, changes=changes)
 
     # Select desired branch

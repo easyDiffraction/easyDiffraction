@@ -8,6 +8,12 @@ import BasicFunctions
 import Functions
 
 def downloadQtInstallerFramework():
+    config = Project.Config()
+    download_path = config['qtifw']['setup']['download_path']
+    if os.path.exists(download_path):
+        message = "* QtInstallerFramework was already downloaded to {}".format(download_path)
+        print(message)
+        return()
     message = "download QtInstallerFramework"
     try:
         config = Project.Config()
@@ -23,6 +29,9 @@ def downloadQtInstallerFramework():
 
 def osDependentPreparation():
     config = Project.Config()
+    binarycreator_path = config['qtifw']['binarycreator_path']
+    if os.path.exists(binarycreator_path):
+        return()
     os_name = config['os']['name']
     message = "prepare for os '{0}'".format(os_name)
     if os_name == 'osx':
@@ -47,9 +56,15 @@ def osDependentPreparation():
         print(message)
 
 def installQtInstallerFramework():
-    message = "install QtInstallerFramework"
+    config = Project.Config()
+    dir_path = config['qtifw']['dir_path']
+    bin_dir_path = config['qtifw']['bin_dir_path']
+    if os.path.exists(bin_dir_path):
+        message = "* QtInstallerFramework was already installed to {}".format(bin_dir_path)
+        print(message)
+        return()
+    message = "install QtInstallerFramework to '{}'".format(dir_path)
     try:
-        config = Project.Config()
         Functions.installSilently(
             installer=config['qtifw']['setup']['exe_path'],
             silent_script=config['scripts']['silent_install']

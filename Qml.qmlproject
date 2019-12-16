@@ -17,32 +17,27 @@ Project {
     */
 
     /* Include Qt Quick Controls Configuration File & Module Definition qmldir Files*/
-    /*
     Files {
         filter: "qtquickcontrols2.conf;qmldir"
-        //directory: "."
+        directory: "./App"
+        recursive: true
         //files: ["qtquickcontrols2.conf"]
     }
-    */
 
     /* Include other files from current directory and subdirectories */
-    /*
     Files {
-        directory: "."
-        recursive: true
         filter: "*.txt;*.ttf"
+        directory: "./App"
+        recursive: true
     }
-    */
 
     /* List of module and plugin directories passed to QML runtime */
-    /*
     importPaths: [
-        "./Qml/Imports"
+        "./App/QmlImports"
     ]
-    */
 
     Environment {
-        QT_QUICK_CONTROLS_CONF: "Qml/qtquickcontrols2.conf" /* Qt Quick Controls Configuration */
+        QT_QUICK_CONTROLS_CONF: "App/qtquickcontrols2.conf" /* Qt Quick Controls Configuration */
         QT_AUTO_SCREEN_SCALE_FACTOR: "1"                    /* High DPI Support in Qt */
     }
 }

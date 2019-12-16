@@ -18,6 +18,7 @@ from PyImports.Models.AtomAdpsModel import AtomAdpsModel
 from PyImports.Models.AtomMspsModel import AtomMspsModel
 from PyImports.Models.FitablesModel import FitablesModel
 from PyImports.Models.StatusModel import StatusModel
+from PyImports.Models.FileStructureModel import FileStructureModel
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
@@ -30,6 +31,8 @@ class Proxy(QObject):
         super().__init__(parent)
         #
         self._main_rcif_path = None
+        self._phases_rcif_path = None
+        self._experiment_rcif_path = None
         self._calculator = None
         #
         self.project_control = ProjectControl()
@@ -46,11 +49,30 @@ class Proxy(QObject):
         self._atom_msps_model = AtomMspsModel()
         self._fitables_model = FitablesModel()
         self._status_model = StatusModel()
+        self._file_structure_model = FileStructureModel()
 
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
         self._refinement_result = None
+
+    @Slot()
+    def loadPhasesFromFile(self):
+        """
+        Replace internal structure models based on requested content from CIF
+        """
+        self._phases_rcif_path = self.project_control.phases_rcif_path
+        self._calculator.updatePhases(self._phases_rcif_path)
+        self._file_structure_model.setCalculator(self._calculator)
+        # explicit emit required for the view to reload the model content
+        self.projectChanged.emit()
+
+    @Slot()
+    def loadExperimentFromFile(self):
+        """
+        Replace internal experiment models based on requested content from CIF
+        """
+        pass
 
     # Load CIF method, accessible from QML
     @Slot()
@@ -81,9 +103,11 @@ class Proxy(QObject):
         self._atom_msps_model.setCalculator(self._calculator)
         self._fitables_model.setCalculator(self._calculator)
         self._status_model.setCalculator(self._calculator)
+        self._file_structure_model.setCalculator(self._calculator)
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
+
         # We can't link signals as the manager signals emitted before the dict is updated :-(
         self.projectChanged.emit()
 
@@ -118,18 +142,19 @@ class Proxy(QObject):
     projectChanged = Signal()
     project = Property('QVariant', calculatorAsDict, notify=projectChanged)
     cif = Property('QVariant', calculatorAsCifDict, notify=projectChanged)
+    cif_text = Property('QVariant', lambda self: self.model_content(), notify=projectChanged)
     calculatedDataSeries = Property('QVariant', calculatedSeries, notify=projectChanged) #---#
     braggPeaksDataSeries = Property('QVariant', braggPeaksSeries, notify=projectChanged) #---#
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
-    measuredData = Property('QVariant', lambda self: self._measured_data_model.asDataModel(), constant=True)
+    measuredData = Property('QVariant', lambda self: self._measured_data_model.asModel(), constant=True)
     measuredDataSeries = Property('QVariant', lambda self: self._measured_data_series, constant=True)
     measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), constant=True)
-    calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asDataModel(), constant=True)
+    calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asModel(), constant=True)
     calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(),
                                     constant=True)
-    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asDataModel(), constant=True)
+    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asModel(), constant=True)
     braggPeaksTicks = Property('QVariant', lambda self: self._bragg_peaks_model.asTickModel(), constant=True)
     cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
     cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), constant=True)
@@ -139,6 +164,7 @@ class Proxy(QObject):
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
     statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
+    fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
 
     # ##########
     # REFINEMENT
@@ -221,3 +247,9 @@ class Proxy(QObject):
         # Show the generated report in the default browser
         url = os.path.realpath(full_filename)
         Helpers.open_url(url=url)
+
+    def model_content(self):
+        """
+        Return the content of the first data item (structure)
+        """
+        return self._file_structure_model.asPhaseString()

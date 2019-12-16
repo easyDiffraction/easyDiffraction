@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
+import QtQuick.Dialogs 1.3 as Dialogs1
 import QtQuick.Layouts 1.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
@@ -60,12 +61,49 @@ ColumnLayout {
             // Buttons
             GenericAppElements.GridLayout {
                 columns: 2
-
-                GenericAppContentAreaButtons.Add { enabled: false; text: "Add new phase manually" }
-                GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all phases" }
-                GenericAppContentAreaButtons.Import { enabled: false; text: "Import new phase from CIF" }
-                GenericAppContentAreaButtons.Export { enabled: false; text: "Export selected phase to CIF" }
+                GenericAppContentAreaButtons.Add {
+                    enabled: false;
+                    text: "Add new phase manually"
+                    }
+                GenericAppContentAreaButtons.RemoveAll {
+                    id: removeButton;
+                    enabled: false;
+                    text: "Remove all phases" }
+                GenericAppContentAreaButtons.Import {
+                    text: "Import new phase from CIF"
+                    enabled: !proxy.refinementRunning
+                    onClicked: fileDialogLoadPhase.open()
+                    }
+                GenericAppContentAreaButtons.Export {
+                    enabled: false;
+                    text: "Export selected phase to CIF"
+                    }
             }
+            // Open project dialog
+            Dialogs1.FileDialog{
+                id: fileDialogLoadPhase
+                nameFilters: [ "CIF files (*.cif)"]
+                folder: settings.value("lastOpenedProjectFolder", examplesDir)
+                onAccepted: {
+                    settings.setValue("lastOpenedProjectFolder", folder)
+                    projectControl.loadPhases(fileUrl)
+                    fileDialogLoadPhase.close()
+                    var old_analysis_state = Generic.Variables.analysisPageFinished
+                    var old_summary_state = Generic.Variables.summaryPageFinished
+                    //if (projectControl.validCif) {
+                    proxy.loadPhasesFromFile()
+                    Specific.Variables.projectOpened = true
+                    Generic.Variables.homePageFinished = true
+                    Generic.Variables.dataPageFinished = true
+                    Generic.Variables.samplePageFinished = true
+                    Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                    // The remove button will have to be enabled once we start actually adding phases
+                    //removeButton.enabled = true
+                    //}
+                }
+            }
+
         }
     }
 
