@@ -35,13 +35,10 @@ matrix:
           - $HOME/Qt
       env: BADGE=linux
     # macOS
-    - name: "Python 3.6.5 on macOS 10.13 (High Sierra)"
+    - name: "Python 3.7.5 on macOS 10.13 (High Sierra)"
       os: osx
       osx_image: xcode9.4                                                       # xcode11 --- Python 3.7.4 running on macOS 10.14.4
       install:
-        - which python
-        - which python3
-        - python3 -V
         - python3 -m venv $VENV_DIR                                             # create virtual environment
         - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
@@ -56,8 +53,8 @@ matrix:
       os: windows                                                               # Windows 10.0.17134 N/A Build 17134
       filter_secrets: false
       install:
-        - choco install python --version=3.6.5                                  # install python
-        - C:/Python36/python -m venv $VENV_DIR                                  # create virtual environment
+        - choco install python --version=3.7.5                                  # install python
+        - C:/Python37/python -m venv $VENV_DIR                                  # create virtual environment
         #- curl -O https://www.python.org/ftp/python/3.7.5/python-3.7.5.exe
         #- dir
         #- python-3.7.5.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
@@ -69,7 +66,7 @@ matrix:
           - $VENV_DIR
           - $SOFT_DIR
           - /C/Qt
-          - /C/Python36
+          - /C/Python37
       env:
         - BADGE=win
         - PATH=$VENV_DIR/Scripts:$PATH                                          # Travis equivalent of 'update Windows PATH variable'
