@@ -6,12 +6,9 @@ env:
   global:
     # terminal width
     - COLUMNS=100
-    # dir of downloaded soft: Qt Installer Framework setup, Docker image for snapcraft
-    - SOFT_DIR=$TRAVIS_BUILD_DIR/.soft
-    # dir of installed Qt Installer Framework
-    - QTIFW_DIR=$([ $TRAVIS_OS_NAME = 'windows' ] && echo "/C/Qt" || echo "$HOME/Qt")
-    # dir of python virtual environment
+    # dirs of python virtual environment and downloaded soft: Qt Installer Framework setup, Docker image for snapcraft
     - VENV_DIR=$TRAVIS_BUILD_DIR/.venv
+    - SOFT_DIR=$TRAVIS_BUILD_DIR/.soft
     # GITHUB_TOKEN
     - secure: "scbwc6CuiVf7ryKROBNOdbRAr2RyF/rcquGYL5Gsf3CMXukGyT95NNP8KwZLH/MSWg5I9wItb9b0lMxqad3sz28jbr7ARKooC5vfT3A2m5aMN8Y+7QoG3myYirsOjpwDW9zjk7/vjGT1QZh1twr6fg10pLPfZWAGxAbKLTVzcDsvhPu9+9uzvkrZitPc1EhUmjhusF2dnSKqBjYE/dYrz/xHwNGKYSlqkl+CBVBi6T7LC3J6LHUFKNo0QfqkW0EW6hATAWeLXgu9pT917B6BPpwll2oAZT5J9oFbms/szAelzsWBAJedyEIkJ4EzPlk9qokOr61kWFZ+7hkAXfj+Mq7k4VQXorFPWub0sZ+nMtfbAoZ6PO+REpH9BLBQGFwvwpHlp5DvKh+XHtIxFnmm107+AS7vNI94bSbObWDuzbcrwiKZUXNkExjaGQtLI/RV2XeDXIYr6T6SPYW+Ayr7Uutmqv1oUkdqEt1yCxNpsWly09teTac7ZnxgWqewcvr9ayLRC/l9ffAP5PHCErMm67pv8bXEiTRuMzbNTgHxbKOEqtSoEgI1xoU/+J2r+bO6sJs8QzKPNKfQWKyZRu/+KPOkZmKt9yzBQe57frDoEgCaBMGYwFyUyrqBaWKi4xSwcKYfeT3mexQ6pvemfp7+umFU/HAVkHxYLm6MXnu584E="
     # CODE_SIGN_PSWD_DICT
@@ -26,20 +23,30 @@ matrix:
         - sudo add-apt-repository -y ppa:deadsnakes/ppa                         # add python 3.6 repository
         - sudo apt-get -y update                                                # update
         - sudo apt-get -y install python3.6 python3.6-dev python3.6-venv        # install python 3.6
-        - python3.6 -m venv $VENV_DIR                                            # create virtual environment
-        - source $VENV_DIR/bin/activate                                          # activate virtual environment
+        - python3.6 -m venv $VENV_DIR                                           # create virtual environment
+        - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
       services:
         - docker                                                                # for snap store
+      cache:
+        directories:
+          - $VENV_DIR
+          - $SOFT_DIR
+          - $HOME/Qt
       env: BADGE=linux
     # macOS
     - name: "Python 3.6.5 on macOS 10.13 (High Sierra)"
       os: osx
       osx_image: xcode9.4                                                       # xcode11 --- Python 3.7.4 running on macOS 10.14.4
       install:
-        - python3.6 -m venv $VENV_DIR                                            # create virtual environment
-        - source $VENV_DIR/bin/activate                                          # activate virtual environment
+        - python3.6 -m venv $VENV_DIR                                           # create virtual environment
+        - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
+      cache:
+        directories:
+          - $VENV_DIR
+          - $SOFT_DIR
+          - $HOME/Qt
       env: BADGE=osx
     # Windows
     - name: "Python 3.6.5 on Windows 10.0"
@@ -47,12 +54,18 @@ matrix:
       filter_secrets: false
       install:
         - choco install python --version=3.6.5                                  # install python
-        - C:/Python36/python -m venv $VENV_DIR                                   # create virtual environment
-        - $VENV_DIR/Scripts/activate.bat                                         # activate virtual environment
+        - C:/Python36/python -m venv $VENV_DIR                                  # create virtual environment
+        - $VENV_DIR/Scripts/activate.bat                                        # activate virtual environment
         - echo $PATH                                                            # show path variable
+      cache:
+        directories:
+          - $VENV_DIR
+          - $SOFT_DIR
+          - /C/Qt
+          - /C/Python36
       env:
         - BADGE=win
-        - PATH=$TRAVIS_BUILD_DIR/$VENV_DIR/Scripts:$PATH                         # Travis equivalent of 'update Windows PATH variable'
+        - PATH=$VENV_DIR/Scripts:$PATH                                          # Travis equivalent of 'update Windows PATH variable'
 
 #install:
 #  python -m pip install --upgrade pip
