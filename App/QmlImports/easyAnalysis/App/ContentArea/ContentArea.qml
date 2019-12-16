@@ -19,9 +19,9 @@ SwipeView {
     //GenericAppContentArea.Spacer {}
     // -------
 
+    GenericAppContentAreaPages.SampleModel {}
     GenericAppContentAreaPages.ExperimentalData {}
     //GenericAppContentAreaPages.InstrumentModel {}
-    GenericAppContentAreaPages.SampleModel {}
 
     // -------
     //GenericAppContentArea.Spacer {}

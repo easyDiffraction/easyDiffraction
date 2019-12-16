@@ -32,6 +32,10 @@ ColumnLayout{
         ///GenericAppToolbar.Spacer { }
         // -------
 
+        GenericAppToolbarButtons.SampleModel {
+            enabled: Generic.Variables.dataPageFinished
+            onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleModelIndex
+        }
         GenericAppToolbarButtons.ExperimentalData {
             enabled: Generic.Variables.homePageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
@@ -47,10 +51,6 @@ ColumnLayout{
         //    enabled: Generic.Variables.dataPageFinished
         //    onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.InstrumentModelIndex
         //}
-        GenericAppToolbarButtons.SampleModel {
-            enabled: Generic.Variables.dataPageFinished
-            onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleModelIndex
-        }
 
         // -------
         ///GenericAppToolbar.Spacer {}

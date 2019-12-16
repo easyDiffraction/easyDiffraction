@@ -207,13 +207,13 @@ ColumnLayout {
     GenericAppElements.FlowButtons {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.4.-sample-model"
         goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
-            text: "Experimental Data"
-            ToolTip.text: qsTr("Go to the previous step: Experimental data")
+            text: "Home"
+            ToolTip.text: qsTr("Go to the previous step: Home")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the previous step: Experimental data.\n\nAlternatively, you can click on the 'Experimental data' button in toolbar."
+                message: "Click here to go to the previous step: Home.\n\nAlternatively, you can click on the 'Home' button in toolbar."
                 position: "top"
                 guideCurrentIndex: 4
                 toolbarCurrentIndex: Generic.Variables.SampleModelIndex
@@ -221,14 +221,15 @@ ColumnLayout {
             }
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
-            text: "Analysis"
-            ToolTip.text: qsTr("Go to the next step: Analysis")
+            text: "Experimental Data"
+            ToolTip.text: qsTr("Go to the next step: Experimental data")
+            highlighted: Specific.Variables.projectOpened
             onClicked: {
                 Generic.Variables.samplePageFinished = true
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the next step: Structure refinement."
+                message: "Click here to go to the next step: Experimental data."
                 position: "top"
                 guideCurrentIndex: 5
                 toolbarCurrentIndex: Generic.Variables.SampleModelIndex

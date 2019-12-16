@@ -72,13 +72,13 @@ ColumnLayout {
     GenericAppElements.FlowButtons {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.5.-analysis"
         goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
-            text: "Sample Model"
-            ToolTip.text: qsTr("Go to the previous step: Sample model")
+            text: "Experimental Data"
+            ToolTip.text: qsTr("Go to the previous step: Experimental data")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the previous step: Sample Model.\n\nAlternatively, you can click on the 'Sample Model' button in toolbar."
+                message: "Click here to go to the previous step: Experimental data.\n\nAlternatively, you can click on the 'Experimental data' button in toolbar."
                 position: "top"
                 guideCurrentIndex: 4
                 toolbarCurrentIndex: Generic.Variables.AnalysisIndex

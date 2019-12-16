@@ -319,16 +319,15 @@ ColumnLayout {
     GenericAppElements.FlowButtons {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.2.-project"
         goNextButton: GenericAppContentAreaButtons.GoNext {
-            text: "Experimental Data"
-            ToolTip.text: qsTr("Go to the next step: Experimental data")
+            text: "Sample Model"
             enabled: Specific.Variables.projectOpened
-            highlighted: Specific.Variables.projectOpened
+            ToolTip.text: qsTr("Go to the next step: Sample model")
             onClicked: {
-                Generic.Variables.homePageFinished = true
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+                Generic.Variables.dataPageFinished = true
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the next step: Experimental data."
+                message: "Click here to go to the next step: Sample model."
                 position: "top"
                 guideCurrentIndex: 4
                 toolbarCurrentIndex: Generic.Variables.HomeIndex
