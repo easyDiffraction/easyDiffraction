@@ -7,7 +7,7 @@ class BaseModel(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._headers_model = QStandardItemModel()
-        self._data_model = QStandardItemModel()
+        self._model = QStandardItemModel()
         self._project_dict = None
 
     def _setModelsFromProjectDict(self):
@@ -24,7 +24,7 @@ class BaseModel(QObject):
 
     def asModel(self):
         """Return data model."""
-        return self._data_model
+        return self._model
 
     def setCalculator(self, calculator):
         calculator.projectDictChanged.connect(self.onProjectChanged)

@@ -3,7 +3,9 @@ import logging
 from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
-class CellBoxModel(QObject):
+from PyImports.Models.BaseModel import BaseModel
+
+class CellBoxModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._project_dict = None
@@ -12,7 +14,7 @@ class CellBoxModel(QObject):
         self._x_role, self._y_role, self._z_role = [ Qt.UserRole + 1 + i for i in range(3) ]
         self._model.setItemRoleNames({ self._x_role: b'xPos', self._y_role: b'yPos', self._z_role: b'zPos' })
 
-    def _setModelFromProject(self):
+    def _setModelsFromProjectDict(self):
         """Create the model needed for GUI structure chart (unit cell box)."""
         logging.info("+++++++++++++++++++++++++ setData start") # profiling
         for phase_id, phase_dict in self._project_dict['phases'].items():
@@ -56,16 +58,3 @@ class CellBoxModel(QObject):
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
         logging.info("+++++++++++++++++++++++++ setData end") # profiling
-
-    def onProjectChanged(self):
-        """Define what to do if project dict is changed, e.g. by external library object."""
-        self._setModelFromProject()
-
-    def asModel(self):
-        """Return model."""
-        return self._model
-
-    def setCalculator(self, calculator):
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._project_dict = calculator.asDict()
-        self._setModelFromProject()

@@ -4,8 +4,9 @@ from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 import PyImports.Helpers as Helpers
+from PyImports.Models.BaseModel import BaseModel
 
-class AtomAdpsModel(QObject):
+class AtomAdpsModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._project_dict = None
@@ -32,7 +33,7 @@ class AtomAdpsModel(QObject):
             self._u23_role: b'u23'
             })
 
-    def _setModelFromProject(self):
+    def _setModelsFromProjectDict(self):
         """Create the model needed for GUI ..."""
         logging.info("+++++++++++++++++++++++++ setData start") # profiling
         for phase_id, phase_dict in self._project_dict['phases'].items():
@@ -64,16 +65,3 @@ class AtomAdpsModel(QObject):
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
         logging.info("+++++++++++++++++++++++++ setData end") # profiling
-
-    def onProjectChanged(self):
-        """Define what to do if project dict is changed, e.g. by external library object."""
-        self._setModelFromProject()
-
-    def asModel(self):
-        """Return model."""
-        return self._model
-
-    def setCalculator(self, calculator):
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._project_dict = calculator.asDict()
-        self._setModelFromProject()

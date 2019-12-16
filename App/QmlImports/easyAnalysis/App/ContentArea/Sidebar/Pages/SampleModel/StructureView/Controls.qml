@@ -61,41 +61,46 @@ ColumnLayout {
             // Buttons
             GenericAppElements.GridLayout {
                 columns: 2
-
-                GenericAppContentAreaButtons.Add { 
+                GenericAppContentAreaButtons.Add {
+                    enabled: false;
                     text: "Add new phase manually"
-                    enabled: !proxy.refinementRunning
-                    onClicked: fileDialogLoadPhase.open()
                     }
                 GenericAppContentAreaButtons.RemoveAll {
                     id: removeButton;
                     enabled: false;
                     text: "Remove all phases" }
-                GenericAppContentAreaButtons.Import { enabled: false; text: "Import new phase from CIF" }
-                GenericAppContentAreaButtons.Export { enabled: false; text: "Export selected phase to CIF" }
+                GenericAppContentAreaButtons.Import {
+                    text: "Import new phase from CIF"
+                    enabled: !proxy.refinementRunning
+                    onClicked: fileDialogLoadPhase.open()
+                    }
+                GenericAppContentAreaButtons.Export {
+                    enabled: false;
+                    text: "Export selected phase to CIF"
+                    }
             }
             // Open project dialog
             Dialogs1.FileDialog{
                 id: fileDialogLoadPhase
-                nameFilters: [ "CIF files (*.cif)", "Project files (*.zip)"]
-                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                nameFilters: [ "CIF files (*.cif)"]
+                folder: settings.value("lastOpenedProjectFolder", examplesDir)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     projectControl.loadPhases(fileUrl)
                     fileDialogLoadPhase.close()
-                    if (projectControl.validCif) {
-                        proxy.loadPhasesFromFile()
-                        Specific.Variables.projectOpened = true
-                        Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
-                        removeButton.enabled = true
-                    } else {
-                        failOpenDialog.visible = true
-                        Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
-                    }
+                    var old_analysis_state = Generic.Variables.analysisPageFinished
+                    var old_summary_state = Generic.Variables.summaryPageFinished
+                    //if (projectControl.validCif) {
+                    proxy.loadPhasesFromFile()
+                    Specific.Variables.projectOpened = true
+                    Generic.Variables.homePageFinished = true
+                    Generic.Variables.dataPageFinished = true
+                    Generic.Variables.samplePageFinished = true
+                    Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+                    // The remove button will have to be enabled once we start actually adding phases
+                    //removeButton.enabled = true
+                    //}
                 }
             }
 
