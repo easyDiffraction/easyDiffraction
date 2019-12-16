@@ -4,6 +4,9 @@ from PySide2.QtCore import Qt, QObject, QPointF, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 from PySide2.QtCharts import QtCharts
 
+from PyImports.Models.BaseModel import BaseModel
+
+
 class MeasuredDataSeries(QObject):
     def __init__(self, parent=None):
         QObject.__init__(self, parent)
@@ -32,7 +35,6 @@ class MeasuredDataSeries(QObject):
     def updateQmlUpperSeries(self, series):
         series.replace(self._upperSeries)
 
-from PyImports.Models.BaseModel import BaseModel
 
 class MeasuredDataModel(BaseModel):
     def __init__(self, parent=None):
@@ -41,7 +43,6 @@ class MeasuredDataModel(BaseModel):
         self._model = QStandardItemModel()
         self._project_dict = None
 
-    #def _setModelsFromProjectDict(self, project_dict):
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI measured data table and chart."""
         logging.info("+++++++++++++++++++++++++ setData start") # profiling

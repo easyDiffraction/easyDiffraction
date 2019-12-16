@@ -146,7 +146,7 @@ class Proxy(QObject):
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
-    measuredData = Property('QVariant', lambda self: self._measured_data_model.asDataModel(), constant=True)
+    measuredData = Property('QVariant', lambda self: self._measured_data_model.asModel(), constant=True)
     measuredDataSeries = Property('QVariant', lambda self: self._measured_data_series, constant=True)
     measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), constant=True)
     calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asModel(), constant=True)
