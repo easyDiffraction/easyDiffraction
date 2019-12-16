@@ -77,7 +77,7 @@ matrix:
 before_script:
   - python --version
   - pip --version
-  - echo $TRAVIS_OS_NAME
+  - echo $TRAVIS_OS_NAME 
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_PULL_REQUEST
   - echo $TRAVIS_TAG
