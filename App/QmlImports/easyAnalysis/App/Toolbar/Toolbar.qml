@@ -76,7 +76,7 @@ ColumnLayout{
         // -------
 
         GenericAppToolbarButtons.Summary {
-            enabled: proxy.refinementDone || Generic.Variables.isDebug
+            enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && proxy.refinementDone
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
         }
     }

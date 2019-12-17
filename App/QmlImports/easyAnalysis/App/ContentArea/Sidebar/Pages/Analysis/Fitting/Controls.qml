@@ -42,6 +42,7 @@ ColumnLayout {
                     id: pausePlayButton
                     onClicked: {
                         proxy.refine()
+                        Generic.Variables.analysisPageFinished = true
                     }
                     GenericAppElements.GuideWindow {
                         message: "Click here to start or stop fitting."
@@ -87,11 +88,10 @@ ColumnLayout {
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Summary"
-            enabled: proxy.refinementDone
+            enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && proxy.refinementDone
             highlighted: proxy.refinementDone
             ToolTip.text: qsTr("Go to the next step: Summary")
             onClicked: {
-                //Generic.Variables.analysisPageFinished = true
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
             }
             GenericAppElements.GuideWindow {
