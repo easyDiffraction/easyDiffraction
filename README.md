@@ -22,8 +22,8 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 [28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/master/graph/badge.svg
 
 <!---GitHub Latest Release--->
-[30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.7
-[35]: https://img.shields.io/badge/Release-v0.3.7_(25_Nov_2019)-informational.svg?style=flat-square
+[30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.9
+[35]: https://img.shields.io/badge/Release-v0.3.9_(17_Dec_2019)-informational.svg?style=flat-square
 
 <!---User Manual--->
 [40]: https://easydiffraction.github.io/documentation.html
