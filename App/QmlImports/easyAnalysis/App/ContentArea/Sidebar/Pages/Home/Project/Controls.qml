@@ -200,8 +200,10 @@ ColumnLayout {
                         }
                         TextInput {
                             id: titleInput
-                            text: "Undefined"
                             cursorVisible: true
+                            selectByMouse: true
+                            selectionColor: Generic.Style.tableHighlightRowColor
+                            text: "Undefined"
                         }
                     }
                     GenericAppElements.RowLayout {
@@ -210,8 +212,10 @@ ColumnLayout {
                         }
                         TextInput {
                             id: keywordsInput
-                            text: "neutron diffraction, powder, 1d"
                             cursorVisible: true
+                            selectByMouse: true
+                            selectionColor: Generic.Style.tableHighlightRowColor
+                            text: "neutron diffraction, powder, 1d"
                         }
                     }
                 }
