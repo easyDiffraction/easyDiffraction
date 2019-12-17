@@ -648,7 +648,7 @@ ColumnLayout {
 
     // Save chart onRefinementDone
     Timer {
-        interval: 100
+        interval: 250
         running: proxy.refinementDone
         repeat: false
         onTriggered: {
@@ -668,6 +668,7 @@ ColumnLayout {
 
     // Set animation timers to skip animation once, when you see chart for the 1st time.
     // TO DO: find a better way to do that
+    /*
     Timer {
         interval: 100
         running: topChart.visible
@@ -686,6 +687,7 @@ ColumnLayout {
         repeat: false
         onTriggered: bottomChart.animationOptions = globalAnimationOptions
     }
+    */
 
     ////////////////
     // On completed
