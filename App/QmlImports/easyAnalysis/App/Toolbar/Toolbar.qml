@@ -5,6 +5,7 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyAnalysis.App.Toolbar.Buttons 1.0 as GenericAppToolbarButtons
+import easyDiffraction 1.0 as Specific
 
 ColumnLayout{
     id: main
@@ -32,8 +33,12 @@ ColumnLayout{
         ///GenericAppToolbar.Spacer { }
         // -------
 
+        GenericAppToolbarButtons.SampleModel {
+            enabled: Specific.Variables.projectOpened && Generic.Variables.homePageFinished
+            onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleModelIndex
+        }
         GenericAppToolbarButtons.ExperimentalData {
-            enabled: Generic.Variables.homePageFinished
+            enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
             GenericAppElements.GuideWindow {
                 message: "This is a toolbar button of the tab with\ninformation about experimental data."
@@ -47,10 +52,6 @@ ColumnLayout{
         //    enabled: Generic.Variables.dataPageFinished
         //    onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.InstrumentModelIndex
         //}
-        GenericAppToolbarButtons.SampleModel {
-            enabled: Generic.Variables.dataPageFinished
-            onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleModelIndex
-        }
 
         // -------
         ///GenericAppToolbar.Spacer {}
@@ -66,7 +67,7 @@ ColumnLayout{
         // -------
 
         GenericAppToolbarButtons.Analysis {
-            enabled: Generic.Variables.samplePageFinished
+            enabled: Specific.Variables.projectOpened && Generic.Variables.dataPageFinished
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
         }
 
@@ -75,7 +76,7 @@ ColumnLayout{
         // -------
 
         GenericAppToolbarButtons.Summary {
-            enabled: (Generic.Variables.analysisPageFinished && proxy.refinementDone) || Generic.Variables.isDebug
+            enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && proxy.refinementDone
             onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
         }
     }

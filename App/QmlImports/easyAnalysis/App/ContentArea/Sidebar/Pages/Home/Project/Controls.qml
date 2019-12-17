@@ -102,13 +102,14 @@ ColumnLayout {
 //                            saveStateButton.enabled = false
 //                        }
                         Specific.Variables.projectOpened = true
-                        Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
-                        Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.homePageFinished = true
+                        Generic.Variables.dataPageFinished = true
+                        Generic.Variables.samplePageFinished = true
+                        Generic.Variables.analysisPageFinished = true
                         Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
                         saveButton.enabled = true
-                    } else {
+                    }
+                    else {
                         failOpenDialog.visible = true
                         Specific.Variables.projectOpened = false
                         Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
@@ -143,6 +144,11 @@ ColumnLayout {
                     fileDialogCreateProject.close()
                     projectControl.createProject(fileUrl)
                     getProjectInfoDialog.visible = true
+                    Generic.Variables.homePageFinished = true
+                    Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+                    Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
                 }
             }
 
@@ -194,8 +200,10 @@ ColumnLayout {
                         }
                         TextInput {
                             id: titleInput
-                            text: "Undefined"
                             cursorVisible: true
+                            selectByMouse: true
+                            selectionColor: Generic.Style.tableHighlightRowColor
+                            text: "Undefined"
                         }
                     }
                     GenericAppElements.RowLayout {
@@ -204,8 +212,10 @@ ColumnLayout {
                         }
                         TextInput {
                             id: keywordsInput
-                            text: "neutron diffraction, powder, 1d"
                             cursorVisible: true
+                            selectByMouse: true
+                            selectionColor: Generic.Style.tableHighlightRowColor
+                            text: "neutron diffraction, powder, 1d"
                         }
                     }
                 }
@@ -213,6 +223,7 @@ ColumnLayout {
                 onAccepted: {
                     projectControl.writeMain(titleInput.text, keywordsInput.text)
                     proxy.initialize()
+                    proxy.createProjectZip()
                     Specific.Variables.projectOpened = true
                 }
             }
@@ -318,16 +329,14 @@ ColumnLayout {
     GenericAppElements.FlowButtons {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.2.-project"
         goNextButton: GenericAppContentAreaButtons.GoNext {
-            text: "Experimental Data"
-            ToolTip.text: qsTr("Go to the next step: Experimental data")
+            text: "Sample Model"
             enabled: Specific.Variables.projectOpened
-            highlighted: Specific.Variables.projectOpened
+            ToolTip.text: qsTr("Go to the next step: Sample model")
             onClicked: {
-                Generic.Variables.homePageFinished = true
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the next step: Experimental data."
+                message: "Click here to go to the next step: Sample model."
                 position: "top"
                 guideCurrentIndex: 4
                 toolbarCurrentIndex: Generic.Variables.HomeIndex

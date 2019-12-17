@@ -139,5 +139,6 @@ release:
   - Add loading crystal structure from CIF
   - Add loading experimental datasets from CIF
   - Add installer for Linux (Ubuntu)
+  - Add application window icon
   - Change data processing workflow order
   - Improve charts performance

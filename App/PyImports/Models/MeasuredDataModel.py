@@ -6,7 +6,6 @@ from PySide2.QtCharts import QtCharts
 
 from PyImports.Models.BaseModel import BaseModel
 
-
 class MeasuredDataSeries(QObject):
     def __init__(self, parent=None):
         QObject.__init__(self, parent)
@@ -34,7 +33,6 @@ class MeasuredDataSeries(QObject):
     @Slot(QtCharts.QXYSeries)
     def updateQmlUpperSeries(self, series):
         series.replace(self._upperSeries)
-
 
 class MeasuredDataModel(BaseModel):
     def __init__(self, parent=None):

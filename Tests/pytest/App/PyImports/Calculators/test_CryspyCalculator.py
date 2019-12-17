@@ -226,7 +226,7 @@ def test_setProjectDictFromCryspyObj(cal):
     assert isinstance(cal._project_dict['app'], dict)
     assert len(cal._project_dict['app']) == 3
     assert cal._project_dict['app']['name'] == "easyDiffraction"
-    assert cal._project_dict['app']['url'] == "http://easydiffraction.github.io"
+    assert cal._project_dict['app']['url'] == "http://easydiffraction.org"
 
     assert 'calculator' in list(cal._project_dict.keys())
     assert 'info' in list(cal._project_dict.keys())
@@ -296,7 +296,7 @@ def test_updatePhases(cal):
 
     d = cal.asCifDict()
     assert 'data_Fe2Co1O4' in d['phases']
-    assert 'data_Fe2Co1O4' in d['experiments']
+    assert 'data_pnd' in d['experiments']
 
 def test_parseSegment(cal):
     """
@@ -318,4 +318,3 @@ def test_parseSegment(cal):
 
     assert 'Fe3O4' in phase_segment
     assert 'cell_length_a' in phase_segment
-

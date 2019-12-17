@@ -36,6 +36,42 @@ class CryspyCalculator(QObject):
         self._project_dict = {}
         self.setProjectDictFromCryspyObj()
 
+    def updateExps(self, exp_path):
+        """
+        Parse the relevant phases file and update the corresponding model
+        """
+        self._experiments_path = exp_path
+        rcif_content = ""
+
+        # This will read the CIF file
+        if os.path.isfile(self._experiments_path):
+            with open(self._experiments_path, 'r') as f:
+                exp_rcif_content = f.read()
+                rcif_content += exp_rcif_content
+
+        phase_segment = self._cryspy_obj.crystals[0].to_cif
+        experiment_segment = rcif_content
+
+        # find the name of the new phase
+        data_segment = phase_segment.find('data_')  # first instance only
+        data_segment_length = len('data_')
+        end_loc = data_segment + phase_segment[data_segment:].find('\n')
+        phase_name = phase_segment[data_segment + data_segment_length:end_loc].strip()
+
+        # Concatenate the corrected experiment and the new CIF
+        rcif_content = experiment_segment + phase_segment
+
+        # This will update the CrysPy object
+        self._cryspy_obj.from_cif(rcif_content)
+
+        self._cryspy_obj.experiments[0]._Pd__phase._PdPhase__pd_phase_label[0] = phase_name
+
+        # This will re-create all local directories
+        self.setProjectDictFromCryspyObj()
+
+        # This will notify the GUI models changed
+        self.projectDictChanged.emit()
+
     def updatePhases(self, phases_path):
         """
         Parse the relevant phases file and update the corresponding model
@@ -55,17 +91,18 @@ class CryspyCalculator(QObject):
         end_loc = data_segment + phases_rcif_content[data_segment:].find('\n')
         new_phase_name = phases_rcif_content[data_segment+data_segment_length:end_loc].strip()
 
-        # This will replace phase name in EXPERIMENT
-        experiment_segment = self.replacePhaseInSegment(EXPERIMENT_SEGMENT, new_phase_name)
-
-        # This will replace occurences of old phase name in the exp segment
-        experiment_segment = self.replaceDataInSegment(experiment_segment, new_phase_name)
+        experiment_segment = ''
+        if len(self._cryspy_obj.experiments) > 0:
+            experiment_segment = self._cryspy_obj.experiments[0].to_cif
 
         # Concatenate the corrected experiment and the new CIF
-        rcif_content = experiment_segment + rcif_content
+        rcif_content = rcif_content + "\n" + experiment_segment
 
         # This will update the CrysPy object
         self._cryspy_obj.from_cif(rcif_content)
+
+        if len(self._cryspy_obj.experiments) > 0:
+            self._cryspy_obj.experiments[0]._Pd__phase._PdPhase__pd_phase_label[0] = new_phase_name
 
         # This will re-create all local directories
         self.setProjectDictFromCryspyObj()
@@ -159,20 +196,32 @@ class CryspyCalculator(QObject):
 
         return
 
-    def saveCifs(self, saveDir):
+    def writeMainCif(self, saveDir):
         main_block = self._main_rcif
+        if len(self._cryspy_obj.crystals) > 0:
+            main_block["_phases"].value = 'phases.cif'
+        if len(self._cryspy_obj._RhoChi__experiments) > 0:
+            main_block["_experiments"].value = 'experiments.cif'
         main_block.to_file(os.path.join(saveDir, 'main.cif'))
 
+    def writePhaseCif(self, saveDir):
         phases_block = pycifstar.Global()
         # TODO write output for multiple phases
         if len(self._cryspy_obj.crystals) > 0:
             phases_block.take_from_string(self._cryspy_obj.crystals[0].to_cif)
         phases_block.to_file(os.path.join(saveDir, 'phases.cif'))
 
+    def writeExpCif(self, saveDir):
         exp_block = pycifstar.Global()
         if len(self._cryspy_obj._RhoChi__experiments) > 0:
             exp_block.take_from_string(self._cryspy_obj._RhoChi__experiments[0].to_cif)
         exp_block.to_file(os.path.join(saveDir, 'experiments.cif'))
+
+    def saveCifs(self, saveDir):
+        self.writeMainCif(saveDir)
+        self.writePhaseCif(saveDir)
+        self.writeExpCif(saveDir)
+
 
     def setAppDict(self):
         """Set application state"""

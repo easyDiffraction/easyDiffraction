@@ -25,6 +25,15 @@ class FileStructureModel(BaseModel):
             content = str(self._model.item(0).data(role=self._phase_role))
         return content
 
+    def asExperimentString(self):
+        """
+        Returns the content of the experiment data as string
+        """
+        content = ""
+        if self._model.rowCount() > 0:
+            content = str(self._model.item(0).data(role=self._experiment_role))
+        return content
+
     def _setModelsFromProjectDict(self):
         """
         Create the model needed for GUI representation of structure.
@@ -43,12 +52,10 @@ class FileStructureModel(BaseModel):
         # Currently only one phase/experiment, so assigning
         # explicitly. With more components, we need a proper loop
         # as shown below
-        item1 = QStandardItem()
-        item1.setData(phases_cif, self._phase_role)
-        self._model.appendRow(item1)
-        item2 = QStandardItem()
-        item2.setData(exp_cif, self._experiment_role)
-        self._model.appendRow(item2)
+        item = QStandardItem()
+        item.setData(phases_cif, self._phase_role)
+        item.setData(exp_cif, self._experiment_role)
+        self._model.appendRow(item)
 
         #for data_str cif_dict.items():
         #    item = QStandardItem()

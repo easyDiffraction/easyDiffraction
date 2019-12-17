@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
+import QtQuick.Dialogs 1.3 as Dialogs1
 import QtQuick.Layouts 1.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
@@ -35,13 +36,43 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 2
 
-                GenericAppContentAreaButtons.Import { enabled: true; text: "Import data from local drive"; }
+                GenericAppContentAreaButtons.Import {
+                 enabled: !proxy.refinementRunning
+                 text: "Import data from local drive";
+                 onClicked: fileDialogLoadExps.open()
+                }
                 GenericAppContentAreaButtons.Link { enabled: false; text: "Link to data on local drive"; }
                 GenericAppContentAreaButtons.Cloud { enabled: false; id: cloudButton; text: "Import data from SciCat" }
                 GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all data" }
             }
         }
     }
+
+    // Loader
+    Dialogs1.FileDialog{
+        id: fileDialogLoadExps
+        nameFilters: [ "CIF files (*.cif)"]
+        folder: settings.value("lastOpenedProjectFolder", examplesDir)
+        onAccepted: {
+            settings.setValue("lastOpenedProjectFolder", folder)
+            projectControl.loadExperiment(fileUrl)
+            fileDialogLoadExps.close()
+            var old_analysis_state = Generic.Variables.analysisPageFinished
+            var old_summary_state = Generic.Variables.summaryPageFinished
+            //if (projectControl.validCif) {
+            proxy.loadExperimentFromFile()
+            Specific.Variables.projectOpened = true
+            //Generic.Variables.homePageFinished = true
+            //Generic.Variables.samplePageFinished = true
+            Generic.Variables.dataPageFinished = true
+            Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
+            Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
+            // The remove button will have to be enabled once we start actually adding phases
+            //removeButton.enabled = true
+            //}
+        }
+    }
+
 
     // Groupbox
 
@@ -151,13 +182,13 @@ ColumnLayout {
     GenericAppElements.FlowButtons {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.3.-experimental-data"
         goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
-            text: "Home"
-            ToolTip.text: qsTr("Go to the previous step: Home")
+            text: "Sample Model"
+            ToolTip.text: qsTr("Go to the previous step: Sample model")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the previous step: Home.\n\nAlternatively, you can click on the 'Home' button in toolbar."
+                message: "Click here to go to the previous step: Sample Model.\n\nAlternatively, you can click on the 'Sample Model' button in toolbar."
                 position: "top"
                 guideCurrentIndex: 5
                 toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
@@ -165,14 +196,14 @@ ColumnLayout {
             }
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
-            text: "Sample Model"
-            ToolTip.text: qsTr("Go to the next step: Sample model")
+            text: "Analysis"
+            ToolTip.text: qsTr("Go to the next step: Analysis")
+            enabled: Specific.Variables.projectOpened && Generic.Variables.dataPageFinished
             onClicked: {
-                Generic.Variables.dataPageFinished = true
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the next step: Sample model."
+                message: "Click here to go to the next step: Structure refinement."
                 position: "top"
                 guideCurrentIndex: 6
                 toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex

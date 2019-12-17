@@ -35,11 +35,11 @@ matrix:
           - $HOME/Qt
       env: BADGE=linux
     # macOS
-    - name: "Python 3.6.5 on macOS 10.13 (High Sierra)"
+    - name: "Python 3.7.5 on macOS 10.13 (High Sierra)"
       os: osx
       osx_image: xcode9.4                                                       # xcode11 --- Python 3.7.4 running on macOS 10.14.4
       install:
-        - python3.6 -m venv $VENV_DIR                                           # create virtual environment
+        - python3 -m venv $VENV_DIR                                             # create virtual environment
         - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
       cache:
@@ -77,7 +77,7 @@ matrix:
 before_script:
   - python --version
   - pip --version
-  - echo $TRAVIS_OS_NAME
+  - echo $TRAVIS_OS_NAME 
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_PULL_REQUEST
   - echo $TRAVIS_TAG

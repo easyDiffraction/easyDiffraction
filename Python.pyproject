@@ -3,14 +3,15 @@
     "App/easyDiffraction.py",
 
     "App/PyImports/Helpers.py",
-    "App/PyImports/ProjectIO.py",
-    "App/PyImports/ProjectModel.py",
+    "App/PyImports/ProjectSentinel.py",
     "App/PyImports/Proxy.py",
     "App/PyImports/Refinement.py",
     "App/PyImports/StatusObjects.py",
 
     "App/PyImports/Calculators/CryspyCalculator.py",
 
+    "App/PyImports/Models/BaseModel.py",
+    "App/PyImports/Models/FileStructureModel.py",
     "App/PyImports/Models/MeasuredDataModel.py",
     "App/PyImports/Models/AtomSitesModel.py",
     "App/PyImports/Models/AtomAdpsModel.py",
