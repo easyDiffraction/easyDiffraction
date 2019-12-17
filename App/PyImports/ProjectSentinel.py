@@ -20,6 +20,30 @@ class ProjectControl(QObject):
         self._projectFile = None
         self._isValidCif = None
         self.main_rcif_path = None
+        self.phases_rcif_path = None
+        self.experiment_rcif_path = None
+
+    @Slot(str)
+    def loadPhases(self, phases_rcif_path):
+        """
+        Load a structure from a file.
+        :param structure_rcif_path: URI to structure (r)cif file
+        :return:
+        """
+        self.phases_rcif_path = self.generalizePath(phases_rcif_path)
+
+        pass
+
+    @Slot(str)
+    def loadExperiment(self, experiment_rcif_path):
+        """
+        Load an experiment information from a file.
+        :param experiment_rcif_path: URI to experiment (r)cif file
+        :return:
+        """
+        self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
+
+        pass
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
@@ -137,11 +161,21 @@ class ProjectControl(QObject):
         :return:
         """
         self._resetOnInitialize()
-        FILE = urlparse(rcifPath).path
-        if sys.platform.startswith("win"):
-            if FILE[0] == '/':
-                FILE = FILE[1:].replace('/', os.path.sep)
-        self.main_rcif_path = FILE
+        self.main_rcif_path = self.generalizePath(rcifPath)
+
+    def generalizePath(self, rcifPath):
+        """
+        Generalize the filepath to be platform-specific, so all file operations
+        can be performed.
+        :param URI rcfPath: URI to the file
+        :return URI filename: platform specific URI
+        """
+        filename = urlparse(rcifPath).path
+        if not sys.platform.startswith("win"):
+            return filename
+        if filename[0] == '/':
+            filename = filename[1:].replace('/', os.path.sep)
+        return filename
 
     def _resetOnInitialize(self):
         """
@@ -156,6 +190,8 @@ class ProjectControl(QObject):
         self._projectFile = None
         self._isValidCif = None
         self.main_rcif_path = None
+        self.structure_rcif_path = None
+        self.experiment_rcif_path = None
 
     def __exit__(self, exc, value, tb):
         self.tempDir.cleanup()
@@ -289,6 +325,19 @@ def temp_project_dir(filename, targetdir=None):
     return targetdir
 
 
+def create_empty_project(data_dir, saveName):
+
+    extension = saveName[-4:]
+    if extension != '.zip':
+        saveName = saveName + '.zip'
+
+    mustContain = ['main.cif']
+    canContain = []
+
+    write_zip(data_dir, saveName, mustContain, canContain)
+    return saveName
+
+
 def create_project_zip(data_dir, saveName):
     extension = saveName[-4:]
     if extension != '.zip':
@@ -301,6 +350,12 @@ def create_project_zip(data_dir, saveName):
     canContain = ['saved_structure.png',
                   'saved_refinement.png']
 
+    saveName = write_zip(data_dir, saveName, mustContain, canContain)
+
+    return check_project_file(saveName), saveName
+
+
+def write_zip(data_dir, saveName, mustContain, canContain):
     saveName = urlparse(saveName).path
     if sys.platform.startswith("win"):
         if saveName[0] == '/':
@@ -318,8 +373,7 @@ def create_project_zip(data_dir, saveName):
             fullFile = os.path.join(data_dir, file)
             if os.path.isfile(fullFile):
                 zip.write(fullFile, file)
-
-    return check_project_file(saveName), saveName
+    return saveName
 
 
 def writeProject(projectModel, saveName):
@@ -328,3 +382,8 @@ def writeProject(projectModel, saveName):
     projectModel._projectFile = saveName
     if not allOK:
         raise FileNotFoundError
+
+def writeEmptyProject(projectModel, saveName):
+    saveName = create_empty_project(projectModel.tempDir.name, saveName)
+    projectModel._saveSuccess = True
+    projectModel._projectFile = saveName

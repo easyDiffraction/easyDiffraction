@@ -7,6 +7,8 @@ import cryspy
 
 # module for testing
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from PyImports.Calculators.CryspyCalculator import PHASE_SEGMENT, EXPERIMENT_SEGMENT
+
 
 TEST_FILE = "file:Tests/Data/main.cif"
 fitdata_data = [0, 2, 3, 5]
@@ -224,7 +226,7 @@ def test_setProjectDictFromCryspyObj(cal):
     assert isinstance(cal._project_dict['app'], dict)
     assert len(cal._project_dict['app']) == 3
     assert cal._project_dict['app']['name'] == "easyDiffraction"
-    assert cal._project_dict['app']['url'] == "http://easydiffraction.github.io"
+    assert cal._project_dict['app']['url'] == "http://easydiffraction.org"
 
     assert 'calculator' in list(cal._project_dict.keys())
     assert 'info' in list(cal._project_dict.keys())
@@ -279,3 +281,40 @@ def test_refine(cal, mocker, fit_len):
     assert ret['njev'] == 42
     assert ret['nit'] == 2
     assert ret['num_refined_parameters'] == fit_len
+
+def test_updatePhases(cal):
+    """
+    Load another phase file and check if the content is correctly updated
+    """
+    NEW_PHASE_FILE = "file:Tests/Data/phases_2.cif"
+    file_path = QUrl(NEW_PHASE_FILE).toLocalFile()
+
+    cal.updatePhases(file_path)
+
+    assert cal.phasesIds() == ['Fe2Co1O4']
+    assert cal.name() == 'Fe3O4'
+
+    d = cal.asCifDict()
+    assert 'data_Fe2Co1O4' in d['phases']
+    assert 'data_pnd' in d['experiments']
+
+def test_parseSegment(cal):
+    """
+    parsing of the experiment or phase segment
+    """
+    exp_segment = cal._parseSegment(segment=EXPERIMENT_SEGMENT)
+
+    phase_segment = cal._parseSegment(segment=PHASE_SEGMENT)
+
+    bad_segment = cal._parseSegment(segment='poop')
+
+    empty_segment = cal._parseSegment()
+
+    assert bad_segment == ''
+    assert empty_segment == ''
+
+    assert 'Fe3O4' in exp_segment
+    assert 'n_radiation_wavelength' in exp_segment
+
+    assert 'Fe3O4' in phase_segment
+    assert 'cell_length_a' in phase_segment

@@ -22,6 +22,10 @@ apps:
           - wayland
           - x11
           - unity7
+          - desktop
+          - removable-media
+        environment:
+          LIBGL_DRIVERS_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri
 
 parts:
   copy-app-files:

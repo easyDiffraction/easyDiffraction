@@ -3,6 +3,9 @@ project:
   name: easyDiffraction
   dir_path: null
   subdirs:
+    app:
+      name: App
+      path: null
     distribution:
       name: Distribution
       path: null
@@ -31,24 +34,26 @@ app:
   name: easyDiffraction
   organization: easyDiffraction
   url: https://easydiffraction.org
+  description: A scientific software for modelling and analysis of the neutron diffraction data
   icon:
     ext:
       osx: icns
       windows: ico
       linux: png
-  freezed_path: null
-  freezed_ext:
-    osx: '.app'
-    windows: ''
-    linux: ''
+  license:
+    file_name: LICENSE
+    file_path: null
+  freezed:
+    path: null
+    ext:
+      osx: '.app'
+      windows: ''
+      linux: ''
   installer:
+    name_suffix: Setup
     name: null
-    config_dir_path: null
-    config_xml_path: null
-    packages_dir_path: null
-    data_dir_path: null
-    dir_path: null
     exe_name: null
+    dir_path: null
     exe_path: null
 # operating system
 os:
@@ -81,6 +86,11 @@ pyinstaller:
     - shiboken2.abi3.dll
     - MSVCP140.dll
     linux: []
+  missing_plugins:
+    osx: []
+    windows: []
+    linux:
+    - Qt/plugins/xcbglintegrations # libqxcb-egl-integration.so and libqxcb-glx-integration.so
   separator:
     osx: ':'
     windows: ;
@@ -101,13 +111,34 @@ qtifw:
     download_url: null
     download_path: null
     exe_path: null
+  dir_path: null
   bin_dir_path: null
   binarycreator_path: null
   installerbase_path: null
+installer:
+  config_control_script:
+    name: InstallerControlScript.js
+    path: null
+  package_install_script:
+    name: InstallerInstallScript.js
+    path: null
+  dir_name: null
+  dir_path: null
+  config_dir_path: null
+  config_xml_path: null
+  packages_dir_path: null
+  packages_url_path: null
+  packages_data_path: null
+  packages_meta_path: null
+  package_xml_path: null
 # release
 release:
-  version: 0.3.8
-  date: 27 Nov 2019
+  version: 0.3.9
+  date: 17 Dec 2019
   changes: # Get from pull requests description?
-  - Added linux snap deployment
-  - Fix guide windows
+  - Add loading crystal structure from CIF
+  - Add loading experimental datasets from CIF
+  - Add installer for Linux (Ubuntu)
+  - Add application window icon
+  - Change data processing workflow order
+  - Improve charts performance

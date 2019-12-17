@@ -21,6 +21,9 @@ ColumnLayout {
 
     property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pointSize: Generic.Style.fontPointSize })
 
+    property int globalAnimationDuration: 300
+    property var globalAnimationOptions: ChartView.SeriesAnimations //ChartView.AllAnimations //ChartView.NoAnimation
+
     property var tthHklDict: ({})
 
     spacing: 0
@@ -29,14 +32,28 @@ ColumnLayout {
     // Check if data changed
     ////////////////////////
 
-    Text {
-        visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
-        onTextChanged: {
+    Timer {
+        id: projectChangedTimer
+        interval: 100
+        //running: bottomChart.visible
+        repeat: false
+        onTriggered: {
             if (Specific.Variables.projectOpened) {
+                proxy.measuredDataSeries.updateQmlLowerSeries(lowerLineSeries)
+                proxy.measuredDataSeries.updateQmlUpperSeries(upperLineSeries)
+                proxy.calculatedDataSeries.updateQmlCalcSeries(calcSeries)
+                proxy.braggPeaksDataSeries.updateQmlSeries(braggSeries)
+                proxy.calculatedDataSeries.updateQmlLowerDiffSeries(lowerDiffSeries)
+                proxy.calculatedDataSeries.updateQmlUpperDiffSeries(upperDiffSeries)
                 adjustLeftAxesAnchor()
             }
         }
+    }
+
+    Text {
+        visible: false
+        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
+        onTextChanged: projectChangedTimer.restart()
     }
 
     ///////////////////////
@@ -106,9 +123,11 @@ ColumnLayout {
                 width: childrenRect.width
                 height: childrenRect.height
 
-                color: Generic.Style.buttonBkgFinishedColor
-                border.color: Generic.Style.buttonBorderFinishedColor
-                border.width: 1
+                color: Generic.Style.tableHeaderRowColor //Generic.Style.buttonBkgFinishedColor
+                border.color: Generic.Style.mainAreaTabBorderColor //Generic.Style.buttonBorderFinishedColor
+                border.width: Generic.Style.appBorderThickness //1
+
+                opacity: 0.8
 
                 Label {
                     id: plotInfo
@@ -119,7 +138,7 @@ ColumnLayout {
 
                     font.family: Generic.Style.fontFamily
                     font.pointSize: Generic.Style.fontPointSize
-                    color: Generic.Style.buttonTextFinishedColor
+                    color: Generic.Style.tableTextColor //Generic.Style.buttonTextFinishedColor
 
                     text: {
                         const showPars = {
@@ -148,6 +167,7 @@ ColumnLayout {
 
             ChartView {
                 id: topChart
+                //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
                 anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
@@ -157,6 +177,7 @@ ColumnLayout {
                 backgroundColor: "transparent"
                 titleFont: commonFont
 
+                animationDuration: globalAnimationDuration
 
                 // X-axis for measured and calculated data
 
@@ -203,22 +224,30 @@ ColumnLayout {
                     opacity: 0.4
                     borderColor: Qt.darker(Generic.Style.blueColor, 1.1)
                     borderWidth: 1.5
-                    useOpenGL: true
+                    //useOpenGL: true
+
+
 
                     lowerSeries: LineSeries {
+                        id: lowerLineSeries
+                        /*
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.measuredData : null
                             xColumn: 0
                             yColumn: 5
                         }
+                        */
                     }
 
                     upperSeries: LineSeries {
+                        id: upperLineSeries
+                        /*
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.measuredData : null
                             xColumn: 0
                             yColumn: 6
                         }
+                        */
                     }
 
                     onHovered: {
@@ -232,6 +261,7 @@ ColumnLayout {
                         infoToolTip.contentItem.color = Generic.Style.blueColor
                         infoToolTip.background.border.color = Qt.lighter(Generic.Style.blueColor, 1.9)
                     }
+
                 }
 
                 // Calculated curve
@@ -242,13 +272,15 @@ ColumnLayout {
                     axisX: axisX
                     axisY: axisY
                     color: Generic.Style.redColor
-                    width: 2.5
-                    useOpenGL: true
+                    width: 2
+                    //useOpenGL: true
+                    /*
                     VXYModelMapper{
                         model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                         xColumn: 0
                         yColumn: 1
                     }
+                    */
                     onHovered: {
                         const p = topChart.mapToPosition(point)
                         const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
@@ -350,13 +382,15 @@ ColumnLayout {
                 id: middleChart
                 anchors.fill: parent
                 anchors.margins: -extraPadding
-                anchors.topMargin: -3.6*extraPadding
-                anchors.bottomMargin: -4*extraPadding
-                antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
+                anchors.topMargin: -3*extraPadding
+                anchors.bottomMargin: -3*extraPadding
+                //antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false
                 backgroundRoundness: 0
                 backgroundColor: "transparent"
                 titleFont: commonFont
+
+                animationDuration: globalAnimationDuration
 
                 ValueAxis {
                     id: axisXbragg
@@ -374,8 +408,8 @@ ColumnLayout {
                     lineVisible: false
                     labelsVisible: false
                     gridVisible:false
-                    min: -7
-                    max: 15
+                    min: 0
+                    max: 10
                     labelFormat: "%.0f"
                     labelsFont: commonFont
                 }
@@ -401,15 +435,23 @@ ColumnLayout {
                     axisX: axisXbragg
                     axisY: axisYbragg
                     markerShape: ScatterSeries.MarkerShapeRectangle
+                    /*
                     markerSize: 1
                     borderWidth: 0.0001
                     borderColor: "transparent"
                     color: "#333"
+                    */
+                    markerSize: 1
+                    borderWidth: 0.00000001
+                    borderColor: color
+                    color: "#333"
+                    /*
                     VXYModelMapper{
                         model: Specific.Variables.projectOpened ? proxy.braggPeaksTicks : null
                         xColumn: 0
                         yColumn: 1
                     }
+                    */
 
                     /*
                     onHovered: {
@@ -466,6 +508,8 @@ ColumnLayout {
                 backgroundColor: "transparent"
                 titleFont: commonFont
 
+                animationDuration: globalAnimationDuration
+
                 ValueAxis {
                     id: axisXdiff
                     lineVisible: false
@@ -489,8 +533,25 @@ ColumnLayout {
                     titleText: "Iobs - Icalc"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max : 0
+                    min: {
+                        if (Specific.Variables.projectOpened) {
+                            let min = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min
+                            let max = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max
+                            let MAX = Math.max(Math.abs(min), Math.abs(max))
+                            return Math.sign(min) * MAX
+                        }
+                        return 0
+                    }
+                    max: {
+                        if (Specific.Variables.projectOpened) {
+                            let min = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min
+                            let max = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max
+                            let MAX = Math.max(Math.abs(min), Math.abs(max))
+                            return Math.sign(max) * MAX
+                        }
+                        return 1
+                    }
+
                 }
 
                 AreaSeries {
@@ -504,22 +565,26 @@ ColumnLayout {
 
                     upperSeries: LineSeries {
                         id: upperDiffSeries
+                        /*
                         useOpenGL: true
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                             xColumn: 0
                             yColumn: 2
                         }
+                        */
                     }
 
                     lowerSeries: LineSeries {
                         id: lowerDiffSeries
+                        /*
                         useOpenGL: true
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                             xColumn: 0
                             yColumn: 3
                         }
+                        */
                     }
 
                     onHovered: {
@@ -583,7 +648,7 @@ ColumnLayout {
 
     // Save chart onRefinementDone
     Timer {
-        interval: 100
+        interval: 250
         running: proxy.refinementDone
         repeat: false
         onTriggered: {
@@ -599,6 +664,27 @@ ColumnLayout {
                             )
             }
         }
+    }
+
+    // Set animation timers to skip animation once, when you see chart for the 1st time.
+    // TO DO: find a better way to do that
+    Timer {
+        interval: 100
+        running: topChart.visible
+        repeat: false
+        onTriggered: topChart.animationOptions = globalAnimationOptions
+    }
+    Timer {
+        interval: 100
+        running: middleChart.visible
+        repeat: false
+        onTriggered: middleChart.animationOptions = globalAnimationOptions
+    }
+    Timer {
+        interval: 100
+        running: bottomChart.visible
+        repeat: false
+        onTriggered: bottomChart.animationOptions = globalAnimationOptions
     }
 
     ////////////////

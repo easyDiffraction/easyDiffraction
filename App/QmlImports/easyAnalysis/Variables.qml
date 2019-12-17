@@ -34,9 +34,9 @@ QtObject {
     property int toolbarCurrentIndex: -1
     enum ToolbarIndexEnum {
         HomeIndex = 0,
-        ExperimentalDataIndex = 1,
+        SampleModelIndex = 1,
+        ExperimentalDataIndex = 2,
         //InstrumentModelIndex = 2,
-        SampleModelIndex = 2,
         //LinkingIndex = 4,
         AnalysisIndex = 3,
         SummaryIndex = 4

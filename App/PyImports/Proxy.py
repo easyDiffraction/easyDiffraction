@@ -6,8 +6,11 @@ from PySide2.QtCore import QObject, Signal, Slot, Property
 import PyImports.ProjectSentinel
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.Models.MeasuredDataModel import MeasuredDataModel
+from PyImports.Models.MeasuredDataModel import MeasuredDataSeries
 from PyImports.Models.CalculatedDataModel import CalculatedDataModel
+from PyImports.Models.CalculatedDataModel import CalculatedDataSeries #---#
 from PyImports.Models.BraggPeaksModel import BraggPeaksModel
+from PyImports.Models.BraggPeaksModel import BraggPeaksSeries #---#
 from PyImports.Models.CellParametersModel import CellParametersModel
 from PyImports.Models.CellBoxModel import CellBoxModel
 from PyImports.Models.AtomSitesModel import AtomSitesModel
@@ -15,7 +18,8 @@ from PyImports.Models.AtomAdpsModel import AtomAdpsModel
 from PyImports.Models.AtomMspsModel import AtomMspsModel
 from PyImports.Models.FitablesModel import FitablesModel
 from PyImports.Models.StatusModel import StatusModel
-from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict
+from PyImports.Models.FileStructureModel import FileStructureModel
+from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
 
@@ -27,12 +31,17 @@ class Proxy(QObject):
         super().__init__(parent)
         #
         self._main_rcif_path = None
+        self._phases_rcif_path = None
+        self._experiment_rcif_path = None
         self._calculator = None
         #
         self.project_control = ProjectControl()
         self._measured_data_model = MeasuredDataModel()
+        self._measured_data_series = MeasuredDataSeries()
         self._calculated_data_model = CalculatedDataModel()
+        self._calculated_data_series = CalculatedDataSeries() #---#
         self._bragg_peaks_model = BraggPeaksModel()
+        self._bragg_peaks_series = BraggPeaksSeries() #---#
         self._cell_parameters_model = CellParametersModel()
         self._cell_box_model = CellBoxModel()
         self._atom_sites_model = AtomSitesModel()
@@ -40,11 +49,35 @@ class Proxy(QObject):
         self._atom_msps_model = AtomMspsModel()
         self._fitables_model = FitablesModel()
         self._status_model = StatusModel()
+        self._file_structure_model = FileStructureModel()
 
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
         self._refinement_result = None
+
+    @Slot()
+    def loadPhasesFromFile(self):
+        """
+        Replace internal structure models based on requested content from CIF
+        """
+        self._phases_rcif_path = self.project_control.phases_rcif_path
+        self._calculator.updatePhases(self._phases_rcif_path)
+        self._file_structure_model.setCalculator(self._calculator)
+        # explicit emit required for the view to reload the model content
+        self.projectChanged.emit()
+
+    @Slot()
+    def loadExperimentFromFile(self):
+        """
+        Replace internal experiment models based on requested content from CIF
+        """
+        self._experiment_rcif_path = self.project_control.experiment_rcif_path
+        self._calculator.updateExps(self._experiment_rcif_path)
+        self._measured_data_series.updateSeries(self._calculator)
+        self._file_structure_model.setCalculator(self._calculator)
+        # explicit emit required for the view to reload the model content
+        self.projectChanged.emit()
 
     # Load CIF method, accessible from QML
     @Slot()
@@ -54,6 +87,7 @@ class Proxy(QObject):
         #
         self._calculator = CryspyCalculator(self._main_rcif_path)
         self._calculator.projectDictChanged.connect(self.projectChanged)
+        ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
         # This should pick up on non-valid cif files
         if not check_project_dict(self._calculator.asCifDict()):
             # Note that new projects also fall into here, so:
@@ -61,9 +95,11 @@ class Proxy(QObject):
                 self.project_control._isValidCif = False
                 return
         #
-        self._measured_data_model.setCalculator(self._calculator)
+        self._measured_data_series.updateSeries(self._calculator)
         self._calculated_data_model.setCalculator(self._calculator)
+        self._calculated_data_series.updateSeries(self._calculator) #---#
         self._bragg_peaks_model.setCalculator(self._calculator)
+        self._bragg_peaks_series.updateSeries(self._calculator) #---#
         self._cell_parameters_model.setCalculator(self._calculator)
         self._cell_box_model.setCalculator(self._calculator)
         self._atom_sites_model.setCalculator(self._calculator)
@@ -71,11 +107,19 @@ class Proxy(QObject):
         self._atom_msps_model.setCalculator(self._calculator)
         self._fitables_model.setCalculator(self._calculator)
         self._status_model.setCalculator(self._calculator)
+        self._file_structure_model.setCalculator(self._calculator)
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
+
         # We can't link signals as the manager signals emitted before the dict is updated :-(
         self.projectChanged.emit()
+
+
+    @Slot()
+    def createProjectZip(self):
+        self._calculator.writeMainCif(self.project_control.tempDir.name)
+        writeEmptyProject(self.project_control, self.project_control._projectFile)
 
     @Slot(str)
     def saveProject(self, saveName):
@@ -95,20 +139,33 @@ class Proxy(QObject):
     def calculatorAsCifDict(self):
         return self._calculator.asCifDict()
 
+    def calculatedSeries(self):
+        self._calculated_data_series.updateSeries(self._calculator) #---#
+        return self._calculated_data_series
+
+    def braggPeaksSeries(self):
+        self._bragg_peaks_series.updateSeries(self._calculator) #---#
+        return self._bragg_peaks_series
+
     # Notifications of changes for QML GUI about projectDictChanged,
     # which calls another signal projectChanged
     projectChanged = Signal()
-    project = Property('QVariant', lambda self: self.calculatorAsDict(), notify=projectChanged)
-    cif = Property('QVariant', lambda self: self.calculatorAsCifDict(), notify=projectChanged)
+    project = Property('QVariant', calculatorAsDict, notify=projectChanged)
+    cif = Property('QVariant', calculatorAsCifDict, notify=projectChanged)
+    phase_cif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
+    experiment_cif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
+    calculatedDataSeries = Property('QVariant', calculatedSeries, notify=projectChanged) #---#
+    braggPeaksDataSeries = Property('QVariant', braggPeaksSeries, notify=projectChanged) #---#
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
-    measuredData = Property('QVariant', lambda self: self._measured_data_model.asDataModel(), constant=True)
+    measuredData = Property('QVariant', lambda self: self._measured_data_model.asModel(), constant=True)
+    measuredDataSeries = Property('QVariant', lambda self: self._measured_data_series, constant=True)
     measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), constant=True)
-    calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asDataModel(), constant=True)
+    calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asModel(), constant=True)
     calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(),
                                     constant=True)
-    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asDataModel(), constant=True)
+    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asModel(), constant=True)
     braggPeaksTicks = Property('QVariant', lambda self: self._bragg_peaks_model.asTickModel(), constant=True)
     cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
     cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), constant=True)
@@ -118,6 +175,7 @@ class Proxy(QObject):
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
     statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
+    fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
 
     # ##########
     # REFINEMENT

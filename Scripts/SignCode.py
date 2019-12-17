@@ -4,10 +4,10 @@ import os, sys
 import ast
 import zipfile
 import Project
-import Functions
+import BasicFunctions
 
 if __name__ == "__main__":
-    Functions.printTitle('Sign code')
+    BasicFunctions.printTitle('Sign code')
 
     config = Project.Config()
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
         signtool_exe_path = os.path.join('C:', os.sep, 'Program Files (x86)', 'Windows Kits', '10', 'bin', 'x86', 'signtool.exe')
 
         print('* Import certificate')
-        Functions.run(
+        BasicFunctions.run(
             'certutil.exe',
             #'-user',                               # "Current User" Personal store.
             '-p', certificate_password,             # the password for the .pfx file
@@ -48,7 +48,7 @@ if __name__ == "__main__":
             )
 
         print('* Sign code with imported certificate')
-        Functions.run(
+        BasicFunctions.run(
             signtool_exe_path, 'sign',              # info - https://msdn.microsoft.com/en-us/data/ff551778(v=vs.71)
             #'/f', certificate_file_path,           # signing certificate in a file
             #'/p', certificate_password,            # password to use when opening a PFX file
@@ -69,32 +69,32 @@ if __name__ == "__main__":
         identity = 'Developer ID Application: European Spallation Source Eric (W2AG9MPZ43)'
 
         print('* Create keychain')
-        Functions.run(
+        BasicFunctions.run(
             'security', 'create-keychain',
             '-p', keychain_password,
             keychain_name
             )
 
         print('* Set it to be default keychain')
-        Functions.run(
+        BasicFunctions.run(
             'security', 'default-keychain',
             '-s', keychain_name
             )
 
         print('* List keychains')
-        Functions.run(
+        BasicFunctions.run(
             'security', 'list-keychains'
             )
 
         print('* Unlock created keychain')
-        Functions.run(
+        BasicFunctions.run(
             'security', 'unlock-keychain',
             '-p', keychain_password,
             keychain_name
             )
 
         print('* Import certificate to created keychain')
-        Functions.run(
+        BasicFunctions.run(
             'security', 'import',
             certificate_file_path,
             '-k', keychain_name,
@@ -103,13 +103,13 @@ if __name__ == "__main__":
             )
 
         print('* Show certificates')
-        Functions.run(
+        BasicFunctions.run(
             'security', 'find-identity',
             '-v'
             )
 
         print('* Allow codesign to access certificate key from keychain')
-        Functions.run(
+        BasicFunctions.run(
             'security', 'set-key-partition-list',
             '-S', 'apple-tool:,apple:,codesign:',
             '-s',
@@ -117,7 +117,7 @@ if __name__ == "__main__":
             )
 
         print('* Sign code with imported certificate')
-        Functions.run(
+        BasicFunctions.run(
             'codesign',
             '--deep',
             '--force',

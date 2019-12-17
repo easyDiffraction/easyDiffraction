@@ -193,7 +193,7 @@ Rectangle {
 
     // Save chart onRefinementDone
     Timer {
-        interval: 100
+        interval: 250
         running: proxy.refinementDone
         repeat: false
         onTriggered: {
