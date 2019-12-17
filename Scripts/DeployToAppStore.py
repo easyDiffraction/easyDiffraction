@@ -127,4 +127,12 @@ def osDependentDeploy():
 
 if __name__ == "__main__":
     BasicFunctions.printTitle('Deploy to App Store')
+
+    # Exit if pull request
+    pull_request = BasicFunctions.environmentVariable('TRAVIS_PULL_REQUEST')
+    if pull_request != 'false':
+        print("* Deployment not needed. It's a pull request No. '{}'".format(pull_request))
+        exit()
+
+    # Deploy 
     osDependentDeploy()
