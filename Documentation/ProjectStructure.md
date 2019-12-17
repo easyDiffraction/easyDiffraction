@@ -1,4 +1,4 @@
-#Project structure
+# Project structure
 
 * Description of the experiment and sample: CIF files
     * Phases directory with individual cif files for every phase (those files are named the same as the corresponding phase id, which is a unique name of the CIF datablock and user will be able to modify it from GUI)
