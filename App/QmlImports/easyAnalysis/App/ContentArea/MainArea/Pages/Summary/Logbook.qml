@@ -12,11 +12,11 @@ Rectangle {
 
     // Create report onRefinementDone
     Timer {
-        interval: 500
+        interval: 1000
         running: proxy.refinementDone
         repeat: false
         onTriggered: {
-            //print("create report")
+            print("create report")
             const html = writeHTML()
             textArea.text = html
             proxy.store_report(html)
@@ -84,7 +84,7 @@ Rectangle {
             const index = proxy.fitables.index(row_index, 0)
             const label = proxy.fitables.data(index, Qt.UserRole + 2)
             const refine = proxy.fitables.data(index, Qt.UserRole + 7)
-            const value = proxy.fitables.data(index, Qt.UserRole + 3).toFixed(5)
+            const value = refine ? proxy.fitables.data(index, Qt.UserRole + 3).toFixed(5) : ''
             const error = refine ? proxy.fitables.data(index, Qt.UserRole + 4).toFixed(5) : ''
             const fit = refine ? '+' : ''
             s += '<tr>'
