@@ -46,4 +46,3 @@ Please, visit [https://easyDiffraction.org](https://easyDiffraction.org) for mor
 <!---LicenseScan--->
 [61]: https://app.fossa.com/api/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction.svg?type=shield
 [62]: https://app.fossa.com/projects/git%2Bgithub.com%2FeasyDiffraction%2FeasyDiffraction?ref=badge_shield
-
