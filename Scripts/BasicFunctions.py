@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os, sys
+import time
 import subprocess
 
 # FUNCTIONS
@@ -29,6 +30,7 @@ def coloredTitle(title):
     return coloredText(message=title, style='0', background_color=yellow, text_color=black)
 
 def printTitle(title):
+    time.sleep(3)
     #print('{0}***** {1}'.format(os.linesep, title))
     max_len = 80
     fill_len = max_len - len(title)
