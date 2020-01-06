@@ -7,6 +7,7 @@ from datetime import datetime
 import numpy as np
 import cryspy
 import pycifstar
+from cryspy.scripts.cl_rhochi import RhoChi
 
 from PySide2.QtCore import QObject, Signal
 
@@ -173,12 +174,11 @@ class CryspyCalculator(QObject):
         """Create cryspy object from separate rcif files"""
         phase_segment = self._parseSegment(PHASE_SEGMENT)
         full_rcif_content = self._parseSegment(EXPERIMENT_SEGMENT) + phase_segment
-
         # update the phase name global
         self._setPhaseName(phase_segment)
-
-        rho_chi = cryspy.RhoChi()
-        rho_chi.from_cif(full_rcif_content)
+        #rho_chi = cryspy.RhoChi()
+        #rho_chi.from_cif(full_rcif_content)
+        rho_chi = RhoChi().from_cif(full_rcif_content)
         return rho_chi
 
     def _setPhaseName(self, phase_segment):
