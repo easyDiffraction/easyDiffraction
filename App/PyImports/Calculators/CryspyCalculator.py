@@ -773,8 +773,6 @@ class CryspyCalculator(QObject):
             }
             logging.info("measured data points: end")
 
-            print("-------------------------------- 12")
-
     def setCalculationsDictFromCryspyObj(self):
         """Set calculated data (depends on phases and experiments from above)"""
         self._calculations_dict.clear()
@@ -807,33 +805,33 @@ class CryspyCalculator(QObject):
 
             # Calculated data
             logging.info("calc_profile start") # profiling
-            calculated_pattern, bragg_peaks, _ = experiment.calc_profile(experiment.meas.ttheta, self._cryspy_obj.crystals)
+            calculated_pattern, bragg_peaks, _ = experiment.calc_profile(np.array(experiment.meas.ttheta), self._cryspy_obj.crystals)
             logging.info("calc_profile end") # profiling
 
             # Bragg peaks
             offset = self._experiments_dict[experiment.data_name]['offset']['value']
             self._calculations_dict[experiment.data_name]['bragg_peaks'] = {}
             for index, crystal in enumerate(self._cryspy_obj.crystals):
-                self._calculations_dict[experiment.data_name]['bragg_peaks'][crystal.label] = {
-                    'h': bragg_peaks[index].h.tolist(),
-                    'k': bragg_peaks[index].k.tolist(),
-                    'l': bragg_peaks[index].l.tolist(),
-                    'ttheta': (bragg_peaks[index].ttheta + offset).tolist()
+                self._calculations_dict[experiment.data_name]['bragg_peaks'][crystal.data_name] = {
+                    'h': bragg_peaks[index].index_h,
+                    'k': bragg_peaks[index].index_k,
+                    'l': bragg_peaks[index].index_l,
+                    'ttheta': (np.array(bragg_peaks[index].ttheta) + offset).tolist()
                 }
 
             # Calculated diffraction pattern
             logging.info("calculated diffraction pattern: start")
-            x_calc = calculated_pattern.ttheta
-            y_obs_up = experiment.meas.up
-            sy_obs_up = experiment.meas.up_sigma
-            y_obs_down = experiment.meas.down
-            sy_obs_down = experiment.meas.down_sigma
-            y_obs = y_obs_up +  y_obs_down
+            x_calc = np.array(calculated_pattern.ttheta)
+            y_obs_up = np.array(experiment.meas.intensity_up)
+            sy_obs_up = np.array(experiment.meas.intensity_up_sigma)
+            y_obs_down = np.array(experiment.meas.intensity_down)
+            sy_obs_down = np.array(experiment.meas.intensity_down_sigma)
+            y_obs = y_obs_up + y_obs_down
             sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down))
             y_obs_upper = y_obs + sy_obs
             y_obs_lower = y_obs - sy_obs
-            y_calc_up = calculated_pattern.up_total
-            y_calc_down = calculated_pattern.down_total
+            y_calc_up = np.array(calculated_pattern.intensity_up_total)
+            y_calc_down = np.array(calculated_pattern.intensity_down_total)
             y_calc = y_calc_up + y_calc_down
             y_diff_upper = y_obs + sy_obs - y_calc
             y_diff_lower = y_obs - sy_obs - y_calc
