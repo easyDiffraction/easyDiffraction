@@ -340,22 +340,22 @@ class CryspyCalculator(QObject):
                 'header': 'Crystal system',
                 'tooltip': 'The name of the system of geometric crystal classes of space groups (crystal system) to which the space group belongs.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_crystal_system.html',
-                'value': phase.cell.bravais_lattice }
+                'value': phase.space_group.crystal_system }
             self._phases_dict[phase.data_name]['space_group']['space_group_name_H-M_alt'] = {
                 'header': 'Symbol',
                 'tooltip': 'The Hermann-Mauguin symbol of space group.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_name_H-M_alt.html',
-                'value': phase.space_group.spgr_given_name }
+                'value': phase.space_group.name_hm_alt }
             self._phases_dict[phase.data_name]['space_group']['space_group_IT_number'] = {
                 'header': 'Number',
                 'tooltip': 'The number as assigned in International Tables for Crystallography Vol. A.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_crystal_system.html',
-                'value': phase.space_group.spgr_number }
+                'value': phase.space_group.it_number }
             self._phases_dict[phase.data_name]['space_group']['origin_choice'] = {
                 'header': 'Setting',
                 'tooltip': '',
                 'url': '',
-                'value': phase.space_group.spgr_choice }
+                'value': phase.space_group.it_coordinate_system_code }
 
             # Atom sites label
             self._phases_dict[phase.data_name]['atom_site'] = {}
