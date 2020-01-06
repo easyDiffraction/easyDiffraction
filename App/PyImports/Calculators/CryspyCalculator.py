@@ -909,14 +909,13 @@ class CryspyCalculator(QObject):
             # Atom site occupancy
             for label, occupancy in zip(phase.atom_site.label, phase.atom_site.occupancy):
                 occupancy.value = self._phases_dict[phase.data_name]['atom_site'][label]['occupancy']['value']
-                occupancy.refine = self._phases_dict[phase.data_name]['atom_site'][label]['occupancy']['refine']
+                occupancy.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['occupancy']['refine']
 
             # Isotropic ADP
             for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso_or_equiv):
                 b_iso.value = self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv']['value']
-                b_iso.refine = self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv']['refine']
+                b_iso.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv']['refine']
 
-            #
             # Anisotropic ADP
             if phase.atom_site_aniso is not None:
                 for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
@@ -928,12 +927,12 @@ class CryspyCalculator(QObject):
                         u_12.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_12']['value']
                         u_13.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_13']['value']
                         u_23.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_23']['value']
-                        u_11.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_11']['refine']
-                        u_22.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_22']['refine']
-                        u_33.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_33']['refine']
-                        u_12.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_12']['refine']
-                        u_13.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_13']['refine']
-                        u_23.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_23']['refine']
+                        u_11.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_11']['refine']
+                        u_22.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_22']['refine']
+                        u_33.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_33']['refine']
+                        u_12.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_12']['refine']
+                        u_13.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_13']['refine']
+                        u_23.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_23']['refine']
 
             # Anisotropic MSP
             if phase.atom_site_susceptibility is not None:
