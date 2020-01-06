@@ -271,68 +271,68 @@ class CryspyCalculator(QObject):
                 'header': 'a (Å)',
                 'tooltip': 'Unit-cell length of the selected structure in angstroms.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html',
-                'value': phase.cell.a.value,
-                'error': phase.cell.a.sigma,
-                'min': phase.cell.a.value * 0.8,
-                'max': phase.cell.a.value * 1.2,
-                'constraint': phase.cell.a.constraint,
-                'hide': phase.cell.a.constraint_flag,
-                'refine': phase.cell.a.refinement }
+                'value': phase.cell.length_a.value,
+                'error': phase.cell.length_a.sigma,
+                'min': phase.cell.length_a.value * 0.8,
+                'max': phase.cell.length_a.value * 1.2,
+                'constraint': phase.cell.length_a.constraint,
+                'hide': phase.cell.length_a.constraint_flag,
+                'refine': phase.cell.length_a.refinement }
             self._phases_dict[phase.data_name]['cell']['length_b'] = {
                 'header': 'b (Å)',
                 'tooltip': 'Unit-cell length of the selected structure in angstroms.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html',
-                'value': phase.cell.b.value,
-                'error': phase.cell.b.sigma,
-                'min': phase.cell.b.value * 0.8,
-                'max': phase.cell.b.value * 1.2,
-                'constraint': phase.cell.b.constraint,
-                'hide': phase.cell.b.constraint_flag,
-                'refine': phase.cell.b.refinement }
+                'value': phase.cell.length_b.value,
+                'error': phase.cell.length_b.sigma,
+                'min': phase.cell.length_b.value * 0.8,
+                'max': phase.cell.length_b.value * 1.2,
+                'constraint': phase.cell.length_b.constraint,
+                'hide': phase.cell.length_b.constraint_flag,
+                'refine': phase.cell.length_b.refinement }
             self._phases_dict[phase.data_name]['cell']['length_c'] = {
                 'header': 'c (Å)',
                 'tooltip': 'Unit-cell length of the selected structure in angstroms.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html',
-                'value': phase.cell.c.value,
-                'error': phase.cell.c.sigma,
-                'min': phase.cell.c.value * 0.8,
-                'max': phase.cell.c.value * 1.2,
-                'constraint': phase.cell.c.constraint,
-                'hide': phase.cell.c.constraint_flag,
-                'refine': phase.cell.c.refinement }
+                'value': phase.cell.length_c.value,
+                'error': phase.cell.length_c.sigma,
+                'min': phase.cell.length_c.value * 0.8,
+                'max': phase.cell.length_c.value * 1.2,
+                'constraint': phase.cell.length_c.constraint,
+                'hide': phase.cell.length_c.constraint_flag,
+                'refine': phase.cell.length_c.refinement }
             self._phases_dict[phase.data_name]['cell']['angle_alpha'] = {
                 'header': 'alpha (°)',
                 'tooltip': 'Unit-cell angle of the selected structure in degrees.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html',
-                'value': phase.cell.alpha.value,
-                'error': phase.cell.alpha.sigma,
-                'min': phase.cell.alpha.value * 0.8,
-                'max': phase.cell.alpha.value * 1.2,
-                'constraint': phase.cell.alpha.constraint,
-                'hide': phase.cell.alpha.constraint_flag,
-                'refine': phase.cell.alpha.refinement }
+                'value': phase.cell.angle_alpha.value,
+                'error': phase.cell.angle_alpha.sigma,
+                'min': phase.cell.angle_alpha.value * 0.8,
+                'max': phase.cell.angle_alpha.value * 1.2,
+                'constraint': phase.cell.angle_alpha.constraint,
+                'hide': phase.cell.angle_alpha.constraint_flag,
+                'refine': phase.cell.angle_alpha.refinement }
             self._phases_dict[phase.data_name]['cell']['angle_beta'] = {
                 'header': 'beta (°)',
                 'tooltip': 'Unit-cell angle of the selected structure in degrees.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html',
-                'value': phase.cell.beta.value,
-                'error': phase.cell.beta.sigma,
-                'min': phase.cell.beta.value * 0.8,
-                'max': phase.cell.beta.value * 1.2,
-                'constraint': phase.cell.beta.constraint,
-                'hide': phase.cell.beta.constraint_flag,
-                'refine': phase.cell.beta.refinement }
+                'value': phase.cell.angle_beta.value,
+                'error': phase.cell.angle_beta.sigma,
+                'min': phase.cell.angle_beta.value * 0.8,
+                'max': phase.cell.angle_beta.value * 1.2,
+                'constraint': phase.cell.angle_beta.constraint,
+                'hide': phase.cell.angle_beta.constraint_flag,
+                'refine': phase.cell.angle_beta.refinement }
             self._phases_dict[phase.data_name]['cell']['angle_gamma'] = {
                 'header': 'gamma (°)',
                 'tooltip': 'Unit-cell angle of the selected structure in degrees.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html',
-                'value': phase.cell.gamma.value,
-                'error': phase.cell.gamma.sigma,
-                'min': phase.cell.gamma.value * 0.8,
-                'max': phase.cell.gamma.value * 1.2,
-                'constraint': phase.cell.gamma.constraint,
-                'hide': phase.cell.gamma.constraint_flag,
-                'refine': phase.cell.gamma.refinement }
+                'value': phase.cell.angle_gamma.value,
+                'error': phase.cell.angle_gamma.sigma,
+                'min': phase.cell.angle_gamma.value * 0.8,
+                'max': phase.cell.angle_gamma.value * 1.2,
+                'constraint': phase.cell.angle_gamma.constraint,
+                'hide': phase.cell.angle_gamma.constraint_flag,
+                'refine': phase.cell.angle_gamma.refinement }
 
             # Space group
             self._phases_dict[phase.data_name]['space_group'] = {}
@@ -883,12 +883,12 @@ class CryspyCalculator(QObject):
         for phase in self._cryspy_obj.crystals:
 
             # Unit cell parameters
-            phase.cell.a.value = self._phases_dict[phase.data_name]['cell']['length_a']['value']
-            phase.cell.b.value = self._phases_dict[phase.data_name]['cell']['length_b']['value']
-            phase.cell.c.value = self._phases_dict[phase.data_name]['cell']['length_c']['value']
-            phase.cell.a.refinement = self._phases_dict[phase.data_name]['cell']['length_a']['refine']
-            phase.cell.b.refinement = self._phases_dict[phase.data_name]['cell']['length_b']['refine']
-            phase.cell.c.refinement = self._phases_dict[phase.data_name]['cell']['length_c']['refine']
+            phase.cell.length_a.value = self._phases_dict[phase.data_name]['cell']['length_a']['value']
+            phase.cell.length_b.value = self._phases_dict[phase.data_name]['cell']['length_b']['value']
+            phase.cell.length_c.value = self._phases_dict[phase.data_name]['cell']['length_c']['value']
+            phase.cell.length_a.refinement = self._phases_dict[phase.data_name]['cell']['length_a']['refine']
+            phase.cell.length_b.refinement = self._phases_dict[phase.data_name]['cell']['length_b']['refine']
+            phase.cell.length_c.refinement = self._phases_dict[phase.data_name]['cell']['length_c']['refine']
 
             # Atom site coordinates
             for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.x, phase.atom_site.y, phase.atom_site.z):
