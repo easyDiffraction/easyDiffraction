@@ -357,8 +357,6 @@ class CryspyCalculator(QObject):
                 'url': '',
                 'value': phase.space_group.it_coordinate_system_code }
 
-            print("-------------------------------- 1")
-
             # Atom sites label
             self._phases_dict[phase.data_name]['atom_site'] = {}
             for label in phase.atom_site.label:
@@ -376,8 +374,6 @@ class CryspyCalculator(QObject):
                     'tooltip': 'A code to identify the atom species occupying this site.',
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_type_symbol.html',
                     'value': type_symbol }
-
-            print("-------------------------------- 2")
 
             # Atom site coordinates
             for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.fract_x, phase.atom_site.fract_y, phase.atom_site.fract_z):
@@ -423,8 +419,6 @@ class CryspyCalculator(QObject):
                     'url': '',
                     'value': scat_length_neutron }
 
-            print("-------------------------------- 3")
-
             # Atom sites for structure view (all the positions inside unit cell of 1x1x1)
             atom_site_list = [[], [], [], []]
             for x, y, z, scat_length_neutron in zip(phase.atom_site.fract_x, phase.atom_site.fract_y, phase.atom_site.fract_z, phase.atom_site.scat_length_neutron):
@@ -434,6 +428,7 @@ class CryspyCalculator(QObject):
                 atom_site_list[1] += y_array.tolist()
                 atom_site_list[2] += z_array.tolist()
                 atom_site_list[3] += scat_length_neutron_array.tolist()
+            print("B\n", atom_site_list)
             for x, y, z, scat_length_neutron in zip(atom_site_list[0], atom_site_list[1], atom_site_list[2], atom_site_list[3]):
                 if x == 0.0:
                     atom_site_list[0].append(1.0)
@@ -481,7 +476,7 @@ class CryspyCalculator(QObject):
             print("-------------------------------- 4")
 
             # Isotropic ADP
-            for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso):
+            for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso_or_equiv):
                 self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv'] = {
                     'header': 'Biso',
                     'tooltip': 'Isotropic atomic displacement parameter, or equivalent isotropic atomic displacement parameter, B(equiv), in angstroms squared.',
@@ -493,6 +488,8 @@ class CryspyCalculator(QObject):
                     'constraint': b_iso.constraint,
                     'hide': b_iso.constraint_flag,
                     'refine': b_iso.refinement }
+
+            print("-------------------------------- 5")
 
             # Anisotropic ADP
             if phase.atom_site_aniso is not None:
@@ -565,6 +562,8 @@ class CryspyCalculator(QObject):
                         'constraint': u_23.constraint,
                         'hide': u_23.constraint_flag,
                         'refine': u_23.refinement }
+
+            print("-------------------------------- 6")
 
             # Anisotropic MSP
             if phase.atom_site_magnetism_aniso is not None:
