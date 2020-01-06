@@ -428,7 +428,6 @@ class CryspyCalculator(QObject):
                 atom_site_list[1] += y_array.tolist()
                 atom_site_list[2] += z_array.tolist()
                 atom_site_list[3] += scat_length_neutron_array.tolist()
-            print("B\n", atom_site_list)
             for x, y, z, scat_length_neutron in zip(atom_site_list[0], atom_site_list[1], atom_site_list[2], atom_site_list[3]):
                 if x == 0.0:
                     atom_site_list[0].append(1.0)
@@ -473,8 +472,6 @@ class CryspyCalculator(QObject):
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_adp_type.html',
                     'value': adp_type }
 
-            print("-------------------------------- 4")
-
             # Isotropic ADP
             for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso_or_equiv):
                 self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv'] = {
@@ -488,8 +485,6 @@ class CryspyCalculator(QObject):
                     'constraint': b_iso.constraint,
                     'hide': b_iso.constraint_flag,
                     'refine': b_iso.refinement }
-
-            print("-------------------------------- 5")
 
             # Anisotropic ADP
             if phase.atom_site_aniso is not None:
@@ -562,8 +557,6 @@ class CryspyCalculator(QObject):
                         'constraint': u_23.constraint,
                         'hide': u_23.constraint_flag,
                         'refine': u_23.refinement }
-
-            print("-------------------------------- 6")
 
             # Anisotropic MSP
             if phase.atom_site_susceptibility is not None:
@@ -644,6 +637,7 @@ class CryspyCalculator(QObject):
 
     def setExperimentsDictFromCryspyObj(self):
         """Set experiments (Experimental data tab in GUI)"""
+
         self._experiments_dict.clear()
 
         for experiment in self._cryspy_obj.experiments:
@@ -656,18 +650,20 @@ class CryspyCalculator(QObject):
                 'header': 'Wavelength (Å)',
                 'tooltip': '',
                 'url': '',
-                'value': experiment.wavelength }
+                'value': experiment.setup.wavelength }
             self._experiments_dict[experiment.data_name]['offset'] = {
                 'header': '',
                 'tooltip': '',
                 'url': '',
-                'value': experiment.offset.value,
-                'error': experiment.offset.sigma,
-                'min': experiment.offset.value * 0.8,
-                'max': experiment.offset.value * 1.2,
-                'constraint': experiment.offset.constraint,
-                'hide': experiment.offset.constraint_flag,
-                'refine': experiment.offset.refinement }
+                'value': experiment.setup.offset_ttheta.value,
+                'error': experiment.setup.offset_ttheta.sigma,
+                'min': experiment.setup.offset_ttheta.value * 0.8,
+                'max': experiment.setup.offset_ttheta.value * 1.2,
+                'constraint': experiment.setup.offset_ttheta.constraint,
+                'hide': experiment.setup.offset_ttheta.constraint_flag,
+                'refine': experiment.setup.offset_ttheta.refinement }
+
+            print("-------------------------------- 8")
 
             # Scale
             # ONLY 1st scale parameter is currently taken into account!!!
