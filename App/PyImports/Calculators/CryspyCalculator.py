@@ -959,6 +959,8 @@ class CryspyCalculator(QObject):
             # Main parameters
             experiment.setup.offset_ttheta.value = self._experiments_dict[experiment.data_name]['offset']['value']
             experiment.setup.offset_ttheta.refinement = self._experiments_dict[experiment.data_name]['offset']['refine']
+            experiment.setup.wavelength.value = self._experiments_dict[experiment.data_name]['wavelength']['value']
+            experiment.setup.wavelength.refinement = self._experiments_dict[experiment.data_name]['wavelength']['refine']
 
             # Scale
             # ONLY 1st scale parameter is currently taken into account!!!
