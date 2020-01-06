@@ -263,11 +263,11 @@ class CryspyCalculator(QObject):
         for phase in self._cryspy_obj.crystals:
 
             # Phase label
-            self._phases_dict[phase.label] = {}
+            self._phases_dict[phase.data_name] = {}
 
             # Unit cell parameters
-            self._phases_dict[phase.label]['cell'] = {}
-            self._phases_dict[phase.label]['cell']['length_a'] = {
+            self._phases_dict[phase.data_name]['cell'] = {}
+            self._phases_dict[phase.data_name]['cell']['length_a'] = {
                 'header': 'a (Å)',
                 'tooltip': 'Unit-cell length of the selected structure in angstroms.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html',
@@ -278,7 +278,7 @@ class CryspyCalculator(QObject):
                 'constraint': phase.cell.a.constraint,
                 'hide': phase.cell.a.constraint_flag,
                 'refine': phase.cell.a.refinement }
-            self._phases_dict[phase.label]['cell']['length_b'] = {
+            self._phases_dict[phase.data_name]['cell']['length_b'] = {
                 'header': 'b (Å)',
                 'tooltip': 'Unit-cell length of the selected structure in angstroms.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html',
@@ -289,7 +289,7 @@ class CryspyCalculator(QObject):
                 'constraint': phase.cell.b.constraint,
                 'hide': phase.cell.b.constraint_flag,
                 'refine': phase.cell.b.refinement }
-            self._phases_dict[phase.label]['cell']['length_c'] = {
+            self._phases_dict[phase.data_name]['cell']['length_c'] = {
                 'header': 'c (Å)',
                 'tooltip': 'Unit-cell length of the selected structure in angstroms.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html',
@@ -300,7 +300,7 @@ class CryspyCalculator(QObject):
                 'constraint': phase.cell.c.constraint,
                 'hide': phase.cell.c.constraint_flag,
                 'refine': phase.cell.c.refinement }
-            self._phases_dict[phase.label]['cell']['angle_alpha'] = {
+            self._phases_dict[phase.data_name]['cell']['angle_alpha'] = {
                 'header': 'alpha (°)',
                 'tooltip': 'Unit-cell angle of the selected structure in degrees.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html',
@@ -311,7 +311,7 @@ class CryspyCalculator(QObject):
                 'constraint': phase.cell.alpha.constraint,
                 'hide': phase.cell.alpha.constraint_flag,
                 'refine': phase.cell.alpha.refinement }
-            self._phases_dict[phase.label]['cell']['angle_beta'] = {
+            self._phases_dict[phase.data_name]['cell']['angle_beta'] = {
                 'header': 'beta (°)',
                 'tooltip': 'Unit-cell angle of the selected structure in degrees.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html',
@@ -322,7 +322,7 @@ class CryspyCalculator(QObject):
                 'constraint': phase.cell.beta.constraint,
                 'hide': phase.cell.beta.constraint_flag,
                 'refine': phase.cell.beta.refinement }
-            self._phases_dict[phase.label]['cell']['angle_gamma'] = {
+            self._phases_dict[phase.data_name]['cell']['angle_gamma'] = {
                 'header': 'gamma (°)',
                 'tooltip': 'Unit-cell angle of the selected structure in degrees.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html',
@@ -335,33 +335,33 @@ class CryspyCalculator(QObject):
                 'refine': phase.cell.gamma.refinement }
 
             # Space group
-            self._phases_dict[phase.label]['space_group'] = {}
-            self._phases_dict[phase.label]['space_group']['crystal_system'] = {
+            self._phases_dict[phase.data_name]['space_group'] = {}
+            self._phases_dict[phase.data_name]['space_group']['crystal_system'] = {
                 'header': 'Crystal system',
                 'tooltip': 'The name of the system of geometric crystal classes of space groups (crystal system) to which the space group belongs.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_crystal_system.html',
                 'value': phase.cell.bravais_lattice }
-            self._phases_dict[phase.label]['space_group']['space_group_name_H-M_alt'] = {
+            self._phases_dict[phase.data_name]['space_group']['space_group_name_H-M_alt'] = {
                 'header': 'Symbol',
                 'tooltip': 'The Hermann-Mauguin symbol of space group.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_name_H-M_alt.html',
                 'value': phase.space_group.spgr_given_name }
-            self._phases_dict[phase.label]['space_group']['space_group_IT_number'] = {
+            self._phases_dict[phase.data_name]['space_group']['space_group_IT_number'] = {
                 'header': 'Number',
                 'tooltip': 'The number as assigned in International Tables for Crystallography Vol. A.',
                 'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_crystal_system.html',
                 'value': phase.space_group.spgr_number }
-            self._phases_dict[phase.label]['space_group']['origin_choice'] = {
+            self._phases_dict[phase.data_name]['space_group']['origin_choice'] = {
                 'header': 'Setting',
                 'tooltip': '',
                 'url': '',
                 'value': phase.space_group.spgr_choice }
 
             # Atom sites label
-            self._phases_dict[phase.label]['atom_site'] = {}
+            self._phases_dict[phase.data_name]['atom_site'] = {}
             for label in phase.atom_site.label:
-                self._phases_dict[phase.label]['atom_site'][label] = {}
-                #phases_dict[phase.label]['atom_site'][label]['label'] = {
+                self._phases_dict[phase.data_name]['atom_site'][label] = {}
+                #phases_dict[phase.data_name]['atom_site'][label]['label'] = {
                 #'header': 'Label',
                 #'tooltip': 'A unique identifier for a particular site in the crystal.',
                 #'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_label.html',
@@ -369,7 +369,7 @@ class CryspyCalculator(QObject):
 
             # Atom site type symbol
             for label, type_symbol in zip(phase.atom_site.label, phase.atom_site.type_symbol):
-                self._phases_dict[phase.label]['atom_site'][label]['type_symbol'] = {
+                self._phases_dict[phase.data_name]['atom_site'][label]['type_symbol'] = {
                     'header': 'Atom',
                     'tooltip': 'A code to identify the atom species occupying this site.',
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_type_symbol.html',
@@ -377,7 +377,7 @@ class CryspyCalculator(QObject):
 
             # Atom site coordinates
             for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.x, phase.atom_site.y, phase.atom_site.z):
-                self._phases_dict[phase.label]['atom_site'][label]['fract_x'] = {
+                self._phases_dict[phase.data_name]['atom_site'][label]['fract_x'] = {
                     'header': 'x',
                     'tooltip': 'Atom-site coordinate as fractions of the unit cell length.',
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_fract_.html',
@@ -388,7 +388,7 @@ class CryspyCalculator(QObject):
                     'constraint': x.constraint,
                     'hide': x.constraint_flag,
                     'refine': x.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['fract_y'] = {
+                self._phases_dict[phase.data_name]['atom_site'][label]['fract_y'] = {
                     'header': 'y',
                     'tooltip': 'Atom-site coordinate as fractions of the unit cell length.',
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_fract_.html',
@@ -399,7 +399,7 @@ class CryspyCalculator(QObject):
                     'constraint': y.constraint,
                     'hide': y.constraint_flag,
                     'refine': y.refinement }
-                self._phases_dict[phase.label]['atom_site'][label]['fract_z'] = {
+                self._phases_dict[phase.data_name]['atom_site'][label]['fract_z'] = {
                     'header': 'z',
                     'tooltip': 'Atom-site coordinate as fractions of the unit cell length.',
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_fract_.html',
@@ -413,7 +413,7 @@ class CryspyCalculator(QObject):
 
             # Atom site neutron scattering length
             for label, scat_length_neutron in zip(phase.atom_site.label, phase.atom_site.scat_length_neutron):
-                self._phases_dict[phase.label]['atom_site'][label]['scat_length_neutron'] = {
+                self._phases_dict[phase.data_name]['atom_site'][label]['scat_length_neutron'] = {
                     'header': '',
                     'tooltip': '',
                     'url': '',
@@ -444,15 +444,15 @@ class CryspyCalculator(QObject):
                     atom_site_list[1].append(y)
                     atom_site_list[2].append(1.0)
                     atom_site_list[3].append(scat_length_neutron)
-            self._phases_dict[phase.label]['atom_site_list'] = {}
-            self._phases_dict[phase.label]['atom_site_list']['fract_x'] = atom_site_list[0]
-            self._phases_dict[phase.label]['atom_site_list']['fract_y'] = atom_site_list[1]
-            self._phases_dict[phase.label]['atom_site_list']['fract_z'] = atom_site_list[2]
-            self._phases_dict[phase.label]['atom_site_list']['scat_length_neutron'] = atom_site_list[3]
+            self._phases_dict[phase.data_name]['atom_site_list'] = {}
+            self._phases_dict[phase.data_name]['atom_site_list']['fract_x'] = atom_site_list[0]
+            self._phases_dict[phase.data_name]['atom_site_list']['fract_y'] = atom_site_list[1]
+            self._phases_dict[phase.data_name]['atom_site_list']['fract_z'] = atom_site_list[2]
+            self._phases_dict[phase.data_name]['atom_site_list']['scat_length_neutron'] = atom_site_list[3]
 
             # Atom site occupancy
             for label, occupancy in zip(phase.atom_site.label, phase.atom_site.occupancy):
-                self._phases_dict[phase.label]['atom_site'][label]['occupancy'] = {
+                self._phases_dict[phase.data_name]['atom_site'][label]['occupancy'] = {
                     'header': 'Occupancy',
                     'tooltip': 'The fraction of the atom type present at this site.',
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_occupancy.html',
@@ -466,7 +466,7 @@ class CryspyCalculator(QObject):
 
             # Atom site ADP type
             for label, adp_type in zip(phase.atom_site.label, phase.atom_site.adp_type):
-                self._phases_dict[phase.label]['atom_site'][label]['adp_type'] = {
+                self._phases_dict[phase.data_name]['atom_site'][label]['adp_type'] = {
                     'header': 'Type',
                     'tooltip': 'A standard code used to describe the type of atomic displacement parameters used for the site.',
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_adp_type.html',
@@ -474,7 +474,7 @@ class CryspyCalculator(QObject):
 
             # Isotropic ADP
             for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso):
-                self._phases_dict[phase.label]['atom_site'][label]['B_iso_or_equiv'] = {
+                self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv'] = {
                     'header': 'Biso',
                     'tooltip': 'Isotropic atomic displacement parameter, or equivalent isotropic atomic displacement parameter, B(equiv), in angstroms squared.',
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_B_iso_or_equiv.html',
@@ -491,7 +491,7 @@ class CryspyCalculator(QObject):
                 for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
                     phase.atom_site_aniso.u_11, phase.atom_site_aniso.u_22, phase.atom_site_aniso.u_33,
                     phase.atom_site_aniso.u_12, phase.atom_site_aniso.u_13, phase.atom_site_aniso.u_23):
-                    self._phases_dict[phase.label]['atom_site'][label]['u_11'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['u_11'] = {
                         'header': 'U11',
                         'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
                         'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
@@ -502,7 +502,7 @@ class CryspyCalculator(QObject):
                         'constraint': u_11.constraint,
                         'hide': u_11.constraint_flag,
                         'refine': u_11.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['u_22'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['u_22'] = {
                         'header': 'U22',
                         'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
                         'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
@@ -513,7 +513,7 @@ class CryspyCalculator(QObject):
                         'constraint': u_22.constraint,
                         'hide': u_22.constraint_flag,
                         'refine': u_22.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['u_33'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['u_33'] = {
                         'header': 'U33',
                         'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
                         'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
@@ -524,7 +524,7 @@ class CryspyCalculator(QObject):
                         'constraint': u_33.constraint,
                         'hide': u_33.constraint_flag,
                         'refine': u_33.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['u_12'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['u_12'] = {
                         'header': 'U12',
                         'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
                         'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
@@ -535,7 +535,7 @@ class CryspyCalculator(QObject):
                         'constraint': u_12.constraint,
                         'hide': u_12.constraint_flag,
                         'refine': u_12.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['u_13'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['u_13'] = {
                         'header': 'U13',
                         'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
                         'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
@@ -546,7 +546,7 @@ class CryspyCalculator(QObject):
                         'constraint': u_13.constraint,
                         'hide': u_13.constraint_flag,
                         'refine': u_13.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['u_23'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['u_23'] = {
                         'header': 'U23',
                         'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
                         'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
@@ -563,12 +563,12 @@ class CryspyCalculator(QObject):
                 for label, chi_type, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label, phase.atom_site_magnetism_aniso.chi_type,
                     phase.atom_site_magnetism_aniso.chi_11, phase.atom_site_magnetism_aniso.chi_22, phase.atom_site_magnetism_aniso.chi_33,
                     phase.atom_site_magnetism_aniso.chi_12, phase.atom_site_magnetism_aniso.chi_13, phase.atom_site_magnetism_aniso.chi_23):
-                    self._phases_dict[phase.label]['atom_site'][label]['chi_type'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_type'] = {
                        'header': 'Type',
                        'tooltip': '',
                        'url': '',
                        'value': chi_type }
-                    self._phases_dict[phase.label]['atom_site'][label]['chi_11'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_11'] = {
                         'header': 'Chi11',
                         'tooltip': '',
                         'url': '',
@@ -579,7 +579,7 @@ class CryspyCalculator(QObject):
                         'constraint': chi_11.constraint,
                         'hide': chi_11.constraint_flag,
                         'refine': chi_11.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['chi_22'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_22'] = {
                         'header': 'Chi22',
                         'tooltip': '',
                         'url': '',
@@ -590,7 +590,7 @@ class CryspyCalculator(QObject):
                         'constraint': chi_22.constraint,
                         'hide': chi_22.constraint_flag,
                         'refine': chi_22.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['chi_33'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_33'] = {
                         'header': 'Chi33',
                         'tooltip': '',
                         'url': '',
@@ -601,7 +601,7 @@ class CryspyCalculator(QObject):
                         'constraint': chi_33.constraint,
                         'hide': chi_33.constraint_flag,
                         'refine': chi_33.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['chi_12'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_12'] = {
                         'header': 'Chi12',
                         'tooltip': '',
                         'url': '',
@@ -612,7 +612,7 @@ class CryspyCalculator(QObject):
                         'constraint': chi_12.constraint,
                         'hide': chi_12.constraint_flag,
                         'refine': chi_12.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['chi_13'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_13'] = {
                         'header': 'Chi13',
                         'tooltip': '',
                         'url': '',
@@ -623,7 +623,7 @@ class CryspyCalculator(QObject):
                         'constraint': chi_13.constraint,
                         'hide': chi_13.constraint_flag,
                         'refine': chi_13.refinement }
-                    self._phases_dict[phase.label]['atom_site'][label]['chi_23'] = {
+                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_23'] = {
                         'header': 'Chi23',
                         'tooltip': '',
                         'url': '',
@@ -642,15 +642,15 @@ class CryspyCalculator(QObject):
         for experiment in self._cryspy_obj.experiments:
 
             # Experiment label
-            self._experiments_dict[experiment.label] = {}
+            self._experiments_dict[experiment.data_name] = {}
 
             # Main parameters
-            self._experiments_dict[experiment.label]['wavelength'] = {
+            self._experiments_dict[experiment.data_name]['wavelength'] = {
                 'header': 'Wavelength (Å)',
                 'tooltip': '',
                 'url': '',
                 'value': experiment.wavelength }
-            self._experiments_dict[experiment.label]['offset'] = {
+            self._experiments_dict[experiment.data_name]['offset'] = {
                 'header': '',
                 'tooltip': '',
                 'url': '',
@@ -664,8 +664,8 @@ class CryspyCalculator(QObject):
 
             # Scale
             # ONLY 1st scale parameter is currently taken into account!!!
-            self._experiments_dict[experiment.label]['phase'] = {}
-            self._experiments_dict[experiment.label]['phase']['scale'] = {
+            self._experiments_dict[experiment.data_name]['phase'] = {}
+            self._experiments_dict[experiment.data_name]['phase']['scale'] = {
                 'header': '',
                 'tooltip': '',
                 'url': '',
@@ -678,12 +678,12 @@ class CryspyCalculator(QObject):
                 'refine': experiment.phase.scale[0].refinement }
 
             # Background
-            self._experiments_dict[experiment.label]['background'] = {}
+            self._experiments_dict[experiment.data_name]['background'] = {}
             for ttheta, intensity in zip(experiment.background.ttheta, experiment.background.intensity):
                 index = str(ttheta)
-                self._experiments_dict[experiment.label]['background'][index] = {}
-                self._experiments_dict[experiment.label]['background'][index]['ttheta'] = ttheta
-                self._experiments_dict[experiment.label]['background'][index]['intensity'] = {
+                self._experiments_dict[experiment.data_name]['background'][index] = {}
+                self._experiments_dict[experiment.data_name]['background'][index]['ttheta'] = ttheta
+                self._experiments_dict[experiment.data_name]['background'][index]['intensity'] = {
                     'value': intensity.value,
                     'error': intensity.sigma,
                     'min': intensity.value * 0.8,
@@ -693,8 +693,8 @@ class CryspyCalculator(QObject):
                     'refine': intensity.refinement }
 
             # Instrument resolution
-            self._experiments_dict[experiment.label]['resolution'] = {}
-            self._experiments_dict[experiment.label]['resolution']['u'] = {
+            self._experiments_dict[experiment.data_name]['resolution'] = {}
+            self._experiments_dict[experiment.data_name]['resolution']['u'] = {
                 'header': 'U',
                 'tooltip': '',
                 'url': '',
@@ -705,7 +705,7 @@ class CryspyCalculator(QObject):
                 'constraint': experiment.resolution.u.constraint,
                 'hide': experiment.resolution.u.constraint_flag,
                 'refine': experiment.resolution.u.refinement }
-            self._experiments_dict[experiment.label]['resolution']['v'] = {
+            self._experiments_dict[experiment.data_name]['resolution']['v'] = {
                 'header': 'V',
                 'tooltip': '',
                 'url': '',
@@ -716,7 +716,7 @@ class CryspyCalculator(QObject):
                 'constraint': experiment.resolution.v.constraint,
                 'hide': experiment.resolution.v.constraint_flag,
                 'refine': experiment.resolution.v.refinement }
-            self._experiments_dict[experiment.label]['resolution']['w'] = {
+            self._experiments_dict[experiment.data_name]['resolution']['w'] = {
                 'header': 'W',
                 'tooltip': '',
                 'url': '',
@@ -727,7 +727,7 @@ class CryspyCalculator(QObject):
                 'constraint': experiment.resolution.w.constraint,
                 'hide': experiment.resolution.w.constraint_flag,
                 'refine': experiment.resolution.w.refinement }
-            self._experiments_dict[experiment.label]['resolution']['x'] = {
+            self._experiments_dict[experiment.data_name]['resolution']['x'] = {
                 'header': 'X',
                 'tooltip': '',
                 'url': '',
@@ -738,7 +738,7 @@ class CryspyCalculator(QObject):
                 'constraint': experiment.resolution.x.constraint,
                 'hide': experiment.resolution.x.constraint_flag,
                 'refine': experiment.resolution.x.refinement }
-            self._experiments_dict[experiment.label]['resolution']['y'] = {
+            self._experiments_dict[experiment.data_name]['resolution']['y'] = {
                 'header': 'Y',
                 'tooltip': '',
                 'url': '',
@@ -761,7 +761,7 @@ class CryspyCalculator(QObject):
             sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down))
             y_obs_upper = y_obs + sy_obs
             y_obs_lower = y_obs - sy_obs
-            self._experiments_dict[experiment.label]['measured_pattern'] = {
+            self._experiments_dict[experiment.data_name]['measured_pattern'] = {
                 'x': x_obs.tolist(),
                 'y_obs_up': y_obs_up.tolist(),
                 'sy_obs_up': sy_obs_up.tolist(),
@@ -779,7 +779,7 @@ class CryspyCalculator(QObject):
         for experiment in self._cryspy_obj.experiments:
 
             # Experiment label
-            self._calculations_dict[experiment.label] = {}
+            self._calculations_dict[experiment.data_name] = {}
 
             # Calculated chi squared and number of data points used for refinement
             logging.info("calc_chi_sq start") # profiling
@@ -808,10 +808,10 @@ class CryspyCalculator(QObject):
             logging.info("calc_profile end") # profiling
 
             # Bragg peaks
-            offset = self._experiments_dict[experiment.label]['offset']['value']
-            self._calculations_dict[experiment.label]['bragg_peaks'] = {}
+            offset = self._experiments_dict[experiment.data_name]['offset']['value']
+            self._calculations_dict[experiment.data_name]['bragg_peaks'] = {}
             for index, crystal in enumerate(self._cryspy_obj.crystals):
-                self._calculations_dict[experiment.label]['bragg_peaks'][crystal.label] = {
+                self._calculations_dict[experiment.data_name]['bragg_peaks'][crystal.label] = {
                     'h': bragg_peaks[index].h.tolist(),
                     'k': bragg_peaks[index].k.tolist(),
                     'l': bragg_peaks[index].l.tolist(),
@@ -834,7 +834,7 @@ class CryspyCalculator(QObject):
             y_calc = y_calc_up + y_calc_down
             y_diff_upper = y_obs + sy_obs - y_calc
             y_diff_lower = y_obs - sy_obs - y_calc
-            self._calculations_dict[experiment.label]['calculated_pattern'] = {
+            self._calculations_dict[experiment.data_name]['calculated_pattern'] = {
                 'x': x_calc.tolist(),
                 'y_calc': y_calc.tolist(),
                 'y_diff_lower': y_diff_lower.tolist(),
@@ -844,14 +844,14 @@ class CryspyCalculator(QObject):
 
             # Calculated data limits
             # !!!!!!!!!!
-            self._calculations_dict[experiment.label]['limits'] = {}
-            self._calculations_dict[experiment.label]['limits']['main'] = {
+            self._calculations_dict[experiment.data_name]['limits'] = {}
+            self._calculations_dict[experiment.data_name]['limits']['main'] = {
                 'x_min': np.amin(x_calc).item(),
                 'x_max': np.amax(x_calc).item(),
                 'y_min': np.amin([np.amin(y_calc_down), np.amin(y_obs_lower)]).item(),
                 'y_max': np.amax([np.amax(y_calc_up), np.amax(y_obs_upper)]).item()
                 }
-            self._calculations_dict[experiment.label]['limits']['difference'] = {
+            self._calculations_dict[experiment.data_name]['limits']['difference'] = {
                 'y_min': np.amin(y_diff_lower).item(),
                 'y_max': np.amax(y_diff_upper).item()
                 }
@@ -883,31 +883,31 @@ class CryspyCalculator(QObject):
         for phase in self._cryspy_obj.crystals:
 
             # Unit cell parameters
-            phase.cell.a.value = self._phases_dict[phase.label]['cell']['length_a']['value']
-            phase.cell.b.value = self._phases_dict[phase.label]['cell']['length_b']['value']
-            phase.cell.c.value = self._phases_dict[phase.label]['cell']['length_c']['value']
-            phase.cell.a.refinement = self._phases_dict[phase.label]['cell']['length_a']['refine']
-            phase.cell.b.refinement = self._phases_dict[phase.label]['cell']['length_b']['refine']
-            phase.cell.c.refinement = self._phases_dict[phase.label]['cell']['length_c']['refine']
+            phase.cell.a.value = self._phases_dict[phase.data_name]['cell']['length_a']['value']
+            phase.cell.b.value = self._phases_dict[phase.data_name]['cell']['length_b']['value']
+            phase.cell.c.value = self._phases_dict[phase.data_name]['cell']['length_c']['value']
+            phase.cell.a.refinement = self._phases_dict[phase.data_name]['cell']['length_a']['refine']
+            phase.cell.b.refinement = self._phases_dict[phase.data_name]['cell']['length_b']['refine']
+            phase.cell.c.refinement = self._phases_dict[phase.data_name]['cell']['length_c']['refine']
 
             # Atom site coordinates
             for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.x, phase.atom_site.y, phase.atom_site.z):
-                x.value = self._phases_dict[phase.label]['atom_site'][label]['fract_x']['value']
-                y.value = self._phases_dict[phase.label]['atom_site'][label]['fract_y']['value']
-                z.value = self._phases_dict[phase.label]['atom_site'][label]['fract_z']['value']
-                x.refinement = self._phases_dict[phase.label]['atom_site'][label]['fract_x']['refine']
-                y.refinement = self._phases_dict[phase.label]['atom_site'][label]['fract_y']['refine']
-                z.refinement = self._phases_dict[phase.label]['atom_site'][label]['fract_z']['refine']
+                x.value = self._phases_dict[phase.data_name]['atom_site'][label]['fract_x']['value']
+                y.value = self._phases_dict[phase.data_name]['atom_site'][label]['fract_y']['value']
+                z.value = self._phases_dict[phase.data_name]['atom_site'][label]['fract_z']['value']
+                x.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['fract_x']['refine']
+                y.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['fract_y']['refine']
+                z.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['fract_z']['refine']
 
             # Atom site occupancy
             for label, occupancy in zip(phase.atom_site.label, phase.atom_site.occupancy):
-                occupancy.value = self._phases_dict[phase.label]['atom_site'][label]['occupancy']['value']
-                occupancy.refine = self._phases_dict[phase.label]['atom_site'][label]['occupancy']['refine']
+                occupancy.value = self._phases_dict[phase.data_name]['atom_site'][label]['occupancy']['value']
+                occupancy.refine = self._phases_dict[phase.data_name]['atom_site'][label]['occupancy']['refine']
 
             # Isotropic ADP
             for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso):
-                b_iso.value = self._phases_dict[phase.label]['atom_site'][label]['B_iso_or_equiv']['value']
-                b_iso.refine = self._phases_dict[phase.label]['atom_site'][label]['B_iso_or_equiv']['refine']
+                b_iso.value = self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv']['value']
+                b_iso.refine = self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv']['refine']
 
             #
             # Anisotropic ADP
@@ -915,67 +915,67 @@ class CryspyCalculator(QObject):
                 for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
                     phase.atom_site_aniso.u_11, phase.atom_site_aniso.u_22, phase.atom_site_aniso.u_33,
                     phase.atom_site_aniso.u_12, phase.atom_site_aniso.u_13, phase.atom_site_aniso.u_23):
-                        u_11.value = self._phases_dict[phase.label]['atom_site'][label]['u_11']['value']
-                        u_22.value = self._phases_dict[phase.label]['atom_site'][label]['u_22']['value']
-                        u_33.value = self._phases_dict[phase.label]['atom_site'][label]['u_33']['value']
-                        u_12.value = self._phases_dict[phase.label]['atom_site'][label]['u_12']['value']
-                        u_13.value = self._phases_dict[phase.label]['atom_site'][label]['u_13']['value']
-                        u_23.value = self._phases_dict[phase.label]['atom_site'][label]['u_23']['value']
-                        u_11.refine = self._phases_dict[phase.label]['atom_site'][label]['u_11']['refine']
-                        u_22.refine = self._phases_dict[phase.label]['atom_site'][label]['u_22']['refine']
-                        u_33.refine = self._phases_dict[phase.label]['atom_site'][label]['u_33']['refine']
-                        u_12.refine = self._phases_dict[phase.label]['atom_site'][label]['u_12']['refine']
-                        u_13.refine = self._phases_dict[phase.label]['atom_site'][label]['u_13']['refine']
-                        u_23.refine = self._phases_dict[phase.label]['atom_site'][label]['u_23']['refine']
+                        u_11.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_11']['value']
+                        u_22.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_22']['value']
+                        u_33.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_33']['value']
+                        u_12.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_12']['value']
+                        u_13.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_13']['value']
+                        u_23.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_23']['value']
+                        u_11.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_11']['refine']
+                        u_22.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_22']['refine']
+                        u_33.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_33']['refine']
+                        u_12.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_12']['refine']
+                        u_13.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_13']['refine']
+                        u_23.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_23']['refine']
 
             # Anisotropic MSP
             if phase.atom_site_magnetism_aniso is not None:
                 for label, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label,
                     phase.atom_site_magnetism_aniso.chi_11, phase.atom_site_magnetism_aniso.chi_22, phase.atom_site_magnetism_aniso.chi_33,
                     phase.atom_site_magnetism_aniso.chi_12, phase.atom_site_magnetism_aniso.chi_13, phase.atom_site_magnetism_aniso.chi_23):
-                        chi_11.value = self._phases_dict[phase.label]['atom_site'][label]['chi_11']['value']
-                        chi_22.value = self._phases_dict[phase.label]['atom_site'][label]['chi_22']['value']
-                        chi_33.value = self._phases_dict[phase.label]['atom_site'][label]['chi_33']['value']
-                        chi_12.value = self._phases_dict[phase.label]['atom_site'][label]['chi_12']['value']
-                        chi_13.value = self._phases_dict[phase.label]['atom_site'][label]['chi_13']['value']
-                        chi_23.value = self._phases_dict[phase.label]['atom_site'][label]['chi_23']['value']
-                        chi_11.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_11']['refine']
-                        chi_22.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_22']['refine']
-                        chi_33.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_33']['refine']
-                        chi_12.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_12']['refine']
-                        chi_13.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_13']['refine']
-                        chi_23.refinement = self._phases_dict[phase.label]['atom_site'][label]['chi_23']['refine']
+                        chi_11.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_11']['value']
+                        chi_22.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_22']['value']
+                        chi_33.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_33']['value']
+                        chi_12.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_12']['value']
+                        chi_13.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_13']['value']
+                        chi_23.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_23']['value']
+                        chi_11.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_11']['refine']
+                        chi_22.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_22']['refine']
+                        chi_33.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_33']['refine']
+                        chi_12.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_12']['refine']
+                        chi_13.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_13']['refine']
+                        chi_23.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_23']['refine']
 
     def setCryspyObjFromExperiments(self):
         """Set experiments (Experimental data tab in GUI)"""
         for experiment in self._cryspy_obj.experiments:
 
             # Main parameters
-            experiment.offset.value = self._experiments_dict[experiment.label]['offset']['value']
-            experiment.offset.refinement = self._experiments_dict[experiment.label]['offset']['refine']
+            experiment.offset.value = self._experiments_dict[experiment.data_name]['offset']['value']
+            experiment.offset.refinement = self._experiments_dict[experiment.data_name]['offset']['refine']
 
             # Scale
             # ONLY 1st scale parameter is currently taken into account!!!
-            experiment.phase.scale[0].value = self._experiments_dict[experiment.label]['phase']['scale']['value']
-            experiment.phase.scale[0].refinement = self._experiments_dict[experiment.label]['phase']['scale']['refine']
+            experiment.phase.scale[0].value = self._experiments_dict[experiment.data_name]['phase']['scale']['value']
+            experiment.phase.scale[0].refinement = self._experiments_dict[experiment.data_name]['phase']['scale']['refine']
 
             # Background
             for ttheta, intensity in zip(experiment.background.ttheta, experiment.background.intensity):
                 index = str(ttheta)
-                intensity.value = self._experiments_dict[experiment.label]['background'][index]['intensity']['value']
-                intensity.refinement = self._experiments_dict[experiment.label]['background'][index]['intensity']['refine']
+                intensity.value = self._experiments_dict[experiment.data_name]['background'][index]['intensity']['value']
+                intensity.refinement = self._experiments_dict[experiment.data_name]['background'][index]['intensity']['refine']
 
             # Instrument resolution
-            experiment.resolution.u.value = self._experiments_dict[experiment.label]['resolution']['u']['value']
-            experiment.resolution.v.value = self._experiments_dict[experiment.label]['resolution']['v']['value']
-            experiment.resolution.w.value = self._experiments_dict[experiment.label]['resolution']['w']['value']
-            experiment.resolution.x.value = self._experiments_dict[experiment.label]['resolution']['x']['value']
-            experiment.resolution.y.value = self._experiments_dict[experiment.label]['resolution']['y']['value']
-            experiment.resolution.u.refinement = self._experiments_dict[experiment.label]['resolution']['u']['refine']
-            experiment.resolution.v.refinement = self._experiments_dict[experiment.label]['resolution']['v']['refine']
-            experiment.resolution.w.refinement = self._experiments_dict[experiment.label]['resolution']['w']['refine']
-            experiment.resolution.x.refinement = self._experiments_dict[experiment.label]['resolution']['x']['refine']
-            experiment.resolution.y.refinement = self._experiments_dict[experiment.label]['resolution']['y']['refine']
+            experiment.resolution.u.value = self._experiments_dict[experiment.data_name]['resolution']['u']['value']
+            experiment.resolution.v.value = self._experiments_dict[experiment.data_name]['resolution']['v']['value']
+            experiment.resolution.w.value = self._experiments_dict[experiment.data_name]['resolution']['w']['value']
+            experiment.resolution.x.value = self._experiments_dict[experiment.data_name]['resolution']['x']['value']
+            experiment.resolution.y.value = self._experiments_dict[experiment.data_name]['resolution']['y']['value']
+            experiment.resolution.u.refinement = self._experiments_dict[experiment.data_name]['resolution']['u']['refine']
+            experiment.resolution.v.refinement = self._experiments_dict[experiment.data_name]['resolution']['v']['refine']
+            experiment.resolution.w.refinement = self._experiments_dict[experiment.data_name]['resolution']['w']['refine']
+            experiment.resolution.x.refinement = self._experiments_dict[experiment.data_name]['resolution']['x']['refine']
+            experiment.resolution.y.refinement = self._experiments_dict[experiment.data_name]['resolution']['y']['refine']
 
     def setCryspyObjFromProjectDict(self):
         """Set all the cryspy parameters from project dictionary"""
