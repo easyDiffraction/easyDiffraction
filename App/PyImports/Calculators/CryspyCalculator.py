@@ -650,7 +650,13 @@ class CryspyCalculator(QObject):
                 'header': 'Wavelength (Å)',
                 'tooltip': '',
                 'url': '',
-                'value': experiment.setup.wavelength }
+                'value': experiment.setup.wavelength.value,
+                'error': experiment.setup.wavelength.sigma,
+                'min': experiment.setup.wavelength.value * 0.8,
+                'max': experiment.setup.wavelength.value * 1.2,
+                'constraint': experiment.setup.wavelength.constraint,
+                'hide': experiment.setup.wavelength.constraint_flag,
+                'refine': experiment.setup.wavelength.refinement }
             self._experiments_dict[experiment.data_name]['offset'] = {
                 'header': '',
                 'tooltip': '',
