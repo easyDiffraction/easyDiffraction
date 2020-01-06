@@ -958,8 +958,8 @@ class CryspyCalculator(QObject):
         for experiment in self._cryspy_obj.experiments:
 
             # Main parameters
-            experiment.offset.value = self._experiments_dict[experiment.data_name]['offset']['value']
-            experiment.offset.refinement = self._experiments_dict[experiment.data_name]['offset']['refine']
+            experiment.setup.offset_ttheta.value = self._experiments_dict[experiment.data_name]['offset']['value']
+            experiment.setup.offset_ttheta.refinement = self._experiments_dict[experiment.data_name]['offset']['refine']
 
             # Scale
             # ONLY 1st scale parameter is currently taken into account!!!
