@@ -912,7 +912,7 @@ class CryspyCalculator(QObject):
                 occupancy.refine = self._phases_dict[phase.data_name]['atom_site'][label]['occupancy']['refine']
 
             # Isotropic ADP
-            for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso):
+            for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso_or_equiv):
                 b_iso.value = self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv']['value']
                 b_iso.refine = self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv']['refine']
 
