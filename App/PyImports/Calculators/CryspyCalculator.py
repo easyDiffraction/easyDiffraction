@@ -566,10 +566,10 @@ class CryspyCalculator(QObject):
             print("-------------------------------- 6")
 
             # Anisotropic MSP
-            if phase.atom_site_magnetism_aniso is not None:
-                for label, chi_type, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label, phase.atom_site_magnetism_aniso.chi_type,
-                    phase.atom_site_magnetism_aniso.chi_11, phase.atom_site_magnetism_aniso.chi_22, phase.atom_site_magnetism_aniso.chi_33,
-                    phase.atom_site_magnetism_aniso.chi_12, phase.atom_site_magnetism_aniso.chi_13, phase.atom_site_magnetism_aniso.chi_23):
+            if phase.atom_site_susceptibility is not None:
+                for label, chi_type, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_susceptibility.label, phase.atom_site_susceptibility.chi_type,
+                    phase.atom_site_susceptibility.chi_11, phase.atom_site_susceptibility.chi_22, phase.atom_site_susceptibility.chi_33,
+                    phase.atom_site_susceptibility.chi_12, phase.atom_site_susceptibility.chi_13, phase.atom_site_susceptibility.chi_23):
                     self._phases_dict[phase.data_name]['atom_site'][label]['chi_type'] = {
                        'header': 'Type',
                        'tooltip': '',
@@ -936,10 +936,10 @@ class CryspyCalculator(QObject):
                         u_23.refine = self._phases_dict[phase.data_name]['atom_site'][label]['u_23']['refine']
 
             # Anisotropic MSP
-            if phase.atom_site_magnetism_aniso is not None:
-                for label, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_magnetism_aniso.label,
-                    phase.atom_site_magnetism_aniso.chi_11, phase.atom_site_magnetism_aniso.chi_22, phase.atom_site_magnetism_aniso.chi_33,
-                    phase.atom_site_magnetism_aniso.chi_12, phase.atom_site_magnetism_aniso.chi_13, phase.atom_site_magnetism_aniso.chi_23):
+            if phase.atom_site_susceptibility is not None:
+                for label, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_susceptibility.label,
+                    phase.atom_site_susceptibility.chi_11, phase.atom_site_susceptibility.chi_22, phase.atom_site_susceptibility.chi_33,
+                    phase.atom_site_susceptibility.chi_12, phase.atom_site_susceptibility.chi_13, phase.atom_site_susceptibility.chi_23):
                         chi_11.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_11']['value']
                         chi_22.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_22']['value']
                         chi_33.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_33']['value']

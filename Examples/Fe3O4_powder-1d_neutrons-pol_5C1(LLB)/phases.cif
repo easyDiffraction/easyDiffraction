@@ -41,13 +41,13 @@ Fe3A 2.0 1.0
 Fe3B 2.0 1.0
 
 loop_
-_atom_site_magnetism_aniso_label
-_atom_site_magnetism_aniso_chi_type
-_atom_site_magnetism_aniso_chi_11
-_atom_site_magnetism_aniso_chi_22
-_atom_site_magnetism_aniso_chi_33
-_atom_site_magnetism_aniso_chi_12
-_atom_site_magnetism_aniso_chi_13
-_atom_site_magnetism_aniso_chi_23
+_atom_site_susceptibility_label
+_atom_site_susceptibility_chi_type
+_atom_site_susceptibility_chi_11
+_atom_site_susceptibility_chi_12
+_atom_site_susceptibility_chi_13
+_atom_site_susceptibility_chi_22
+_atom_site_susceptibility_chi_23
+_atom_site_susceptibility_chi_33
 Fe3A cani  -0.5() -0.5 -0.5 0.0 0.0 0.0
 Fe3B cani 0.2() 0.2 0.2 0.0 0.0 0.0
