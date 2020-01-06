@@ -663,8 +663,6 @@ class CryspyCalculator(QObject):
                 'hide': experiment.setup.offset_ttheta.constraint_flag,
                 'refine': experiment.setup.offset_ttheta.refinement }
 
-            print("-------------------------------- 8")
-
             # Scale
             # ONLY 1st scale parameter is currently taken into account!!!
             self._experiments_dict[experiment.data_name]['phase'] = {}
@@ -755,12 +753,12 @@ class CryspyCalculator(QObject):
 
             # Measured data points
             logging.info("measured data points: start")
-            x_obs = experiment.meas.ttheta
-            y_obs_up = experiment.meas.up
-            sy_obs_up = experiment.meas.up_sigma
-            y_obs_down = experiment.meas.down
-            sy_obs_down = experiment.meas.down_sigma
-            y_obs = y_obs_up +  y_obs_down
+            x_obs = np.array(experiment.meas.ttheta)
+            y_obs_up = np.array(experiment.meas.intensity_up)
+            sy_obs_up = np.array(experiment.meas.intensity_up_sigma)
+            y_obs_down = np.array(experiment.meas.intensity_down)
+            sy_obs_down = np.array(experiment.meas.intensity_down_sigma)
+            y_obs = y_obs_up + y_obs_down
             sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down))
             y_obs_upper = y_obs + sy_obs
             y_obs_lower = y_obs - sy_obs
@@ -774,6 +772,8 @@ class CryspyCalculator(QObject):
                 'y_obs_lower': y_obs_lower.tolist(),
             }
             logging.info("measured data points: end")
+
+            print("-------------------------------- 12")
 
     def setCalculationsDictFromCryspyObj(self):
         """Set calculated data (depends on phases and experiments from above)"""
