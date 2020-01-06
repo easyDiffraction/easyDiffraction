@@ -357,6 +357,8 @@ class CryspyCalculator(QObject):
                 'url': '',
                 'value': phase.space_group.it_coordinate_system_code }
 
+            print("-------------------------------- 1")
+
             # Atom sites label
             self._phases_dict[phase.data_name]['atom_site'] = {}
             for label in phase.atom_site.label:
@@ -375,8 +377,10 @@ class CryspyCalculator(QObject):
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_type_symbol.html',
                     'value': type_symbol }
 
+            print("-------------------------------- 2")
+
             # Atom site coordinates
-            for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.x, phase.atom_site.y, phase.atom_site.z):
+            for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.fract_x, phase.atom_site.fract_y, phase.atom_site.fract_z):
                 self._phases_dict[phase.data_name]['atom_site'][label]['fract_x'] = {
                     'header': 'x',
                     'tooltip': 'Atom-site coordinate as fractions of the unit cell length.',
@@ -419,9 +423,11 @@ class CryspyCalculator(QObject):
                     'url': '',
                     'value': scat_length_neutron }
 
+            print("-------------------------------- 3")
+
             # Atom sites for structure view (all the positions inside unit cell of 1x1x1)
             atom_site_list = [[], [], [], []]
-            for x, y, z, scat_length_neutron in zip(phase.atom_site.x, phase.atom_site.y, phase.atom_site.z, phase.atom_site.scat_length_neutron):
+            for x, y, z, scat_length_neutron in zip(phase.atom_site.fract_x, phase.atom_site.fract_y, phase.atom_site.fract_z, phase.atom_site.scat_length_neutron):
                 x_array, y_array, z_array, _ = phase.space_group.calc_xyz_mult(x.value, y.value, z.value)
                 scat_length_neutron_array = np.full_like(x_array, scat_length_neutron)
                 atom_site_list[0] += x_array.tolist()
@@ -471,6 +477,8 @@ class CryspyCalculator(QObject):
                     'tooltip': 'A standard code used to describe the type of atomic displacement parameters used for the site.',
                     'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_adp_type.html',
                     'value': adp_type }
+
+            print("-------------------------------- 4")
 
             # Isotropic ADP
             for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso):
@@ -891,7 +899,7 @@ class CryspyCalculator(QObject):
             phase.cell.length_c.refinement = self._phases_dict[phase.data_name]['cell']['length_c']['refine']
 
             # Atom site coordinates
-            for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.x, phase.atom_site.y, phase.atom_site.z):
+            for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.fract_x, phase.atom_site.fract_y, phase.atom_site.fract_z):
                 x.value = self._phases_dict[phase.data_name]['atom_site'][label]['fract_x']['value']
                 y.value = self._phases_dict[phase.data_name]['atom_site'][label]['fract_y']['value']
                 z.value = self._phases_dict[phase.data_name]['atom_site'][label]['fract_z']['value']
