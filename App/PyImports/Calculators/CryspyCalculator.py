@@ -413,19 +413,19 @@ class CryspyCalculator(QObject):
             experiment['resolution']['u']['url'] = ''
 
 
-    def _createObjDict(self, obj):
+    def _createProjDictFromObj(self, obj):
         """ ... """
-        if isinstance(obj, cryspy.common.cl_fitable.Fitable):
-            return {
-                'value': obj.value,
-                'error': obj.sigma,
-                'min': obj.value * 0.8,
-                'max': obj.value * 1.2,
-                'constraint': obj.constraint,
-                'hide': obj.constraint_flag,
-                'refine': obj.refinement
-            }
-        return { 'value': obj }
+        if not isinstance(obj, cryspy.common.cl_fitable.Fitable):
+            return { 'value': obj }
+        return {
+            'value': obj.value,
+            'error': obj.sigma,
+            'min': obj.value * 0.8,
+            'max': obj.value * 1.2,
+            'constraint': obj.constraint,
+            'hide': obj.constraint_flag,
+            'refine': obj.refinement
+        }
 
 
     def setPhasesDictFromCryspyObj(self):
@@ -440,20 +440,20 @@ class CryspyCalculator(QObject):
             # Space group
             project_space_group = project_phase['space_group'] = {}
             calculator_space_group = calculator_phase.space_group
-            project_space_group['crystal_system'] = self._createObjDict(calculator_space_group.crystal_system)
-            project_space_group['space_group_name_H-M_alt'] = self._createObjDict(calculator_space_group.name_hm_ref)
-            project_space_group['space_group_IT_number'] = self._createObjDict(calculator_space_group.it_number)
-            project_space_group['origin_choice'] = self._createObjDict(calculator_space_group.it_coordinate_system_code)
+            project_space_group['crystal_system'] = self._createProjDictFromObj(calculator_space_group.crystal_system)
+            project_space_group['space_group_name_H-M_alt'] = self._createProjDictFromObj(calculator_space_group.name_hm_ref)
+            project_space_group['space_group_IT_number'] = self._createProjDictFromObj(calculator_space_group.it_number)
+            project_space_group['origin_choice'] = self._createProjDictFromObj(calculator_space_group.it_coordinate_system_code)
 
             # Unit cell parameters
             project_cell = project_phase['cell'] = {}
             claculator_cell = calculator_phase.cell
-            project_cell['length_a'] = self._createObjDict(claculator_cell.length_a)
-            project_cell['length_b'] = self._createObjDict(claculator_cell.length_b)
-            project_cell['length_c'] = self._createObjDict(claculator_cell.length_c)
-            project_cell['angle_alpha'] = self._createObjDict(claculator_cell.angle_alpha)
-            project_cell['angle_beta'] = self._createObjDict(claculator_cell.angle_beta)
-            project_cell['angle_gamma'] = self._createObjDict(claculator_cell.angle_gamma)
+            project_cell['length_a'] = self._createProjDictFromObj(claculator_cell.length_a)
+            project_cell['length_b'] = self._createProjDictFromObj(claculator_cell.length_b)
+            project_cell['length_c'] = self._createProjDictFromObj(claculator_cell.length_c)
+            project_cell['angle_alpha'] = self._createProjDictFromObj(claculator_cell.angle_alpha)
+            project_cell['angle_beta'] = self._createProjDictFromObj(claculator_cell.angle_beta)
+            project_cell['angle_gamma'] = self._createProjDictFromObj(claculator_cell.angle_gamma)
 
             # Atom sites
             project_phase['atom_site'] = {}
@@ -462,49 +462,49 @@ class CryspyCalculator(QObject):
                 calculator_atom_site = calculator_phase.atom_site
 
                 # Atom sites symbol
-                project_atom_site['type_symbol'] = self._createObjDict(calculator_atom_site.type_symbol[i])
+                project_atom_site['type_symbol'] = self._createProjDictFromObj(calculator_atom_site.type_symbol[i])
 
                 # Atom site neutron scattering length
-                project_atom_site['scat_length_neutron'] = self._createObjDict(calculator_atom_site.scat_length_neutron[i])
+                project_atom_site['scat_length_neutron'] = self._createProjDictFromObj(calculator_atom_site.scat_length_neutron[i])
 
                 # Atom site coordinates
-                project_atom_site['fract_x'] = self._createObjDict(calculator_atom_site.fract_x[i])
-                project_atom_site['fract_y'] = self._createObjDict(calculator_atom_site.fract_y[i])
-                project_atom_site['fract_z'] = self._createObjDict(calculator_atom_site.fract_z[i])
+                project_atom_site['fract_x'] = self._createProjDictFromObj(calculator_atom_site.fract_x[i])
+                project_atom_site['fract_y'] = self._createProjDictFromObj(calculator_atom_site.fract_y[i])
+                project_atom_site['fract_z'] = self._createProjDictFromObj(calculator_atom_site.fract_z[i])
 
                 # Atom site occupancy
-                project_atom_site['occupancy'] = self._createObjDict(calculator_atom_site.occupancy[i])
+                project_atom_site['occupancy'] = self._createProjDictFromObj(calculator_atom_site.occupancy[i])
 
                 # Atom site ADP type
-                project_atom_site['adp_type'] = self._createObjDict(calculator_atom_site.adp_type[i])
+                project_atom_site['adp_type'] = self._createProjDictFromObj(calculator_atom_site.adp_type[i])
 
                 # Atom site isotropic ADP
-                project_atom_site['B_iso_or_equiv'] = self._createObjDict(calculator_atom_site.b_iso_or_equiv[i])
+                project_atom_site['B_iso_or_equiv'] = self._createProjDictFromObj(calculator_atom_site.b_iso_or_equiv[i])
 
             # Atom site anisotropic ADP
             if calculator_phase.atom_site_aniso is not None:
                 for i, label in enumerate(calculator_phase.atom_site_aniso.label):
                     project_atom_site = project_phase['atom_site'][label]
                     calculator_atom_site = calculator_phase.atom_site_aniso
-                    project_atom_site['u_11'] = self._createObjDict(calculator_atom_site.u_11[i])
-                    project_atom_site['u_22'] = self._createObjDict(calculator_atom_site.u_22[i])
-                    project_atom_site['u_33'] = self._createObjDict(calculator_atom_site.u_33[i])
-                    project_atom_site['u_12'] = self._createObjDict(calculator_atom_site.u_12[i])
-                    project_atom_site['u_13'] = self._createObjDict(calculator_atom_site.u_13[i])
-                    project_atom_site['u_23'] = self._createObjDict(calculator_atom_site.u_23[i])
+                    project_atom_site['u_11'] = self._createProjDictFromObj(calculator_atom_site.u_11[i])
+                    project_atom_site['u_22'] = self._createProjDictFromObj(calculator_atom_site.u_22[i])
+                    project_atom_site['u_33'] = self._createProjDictFromObj(calculator_atom_site.u_33[i])
+                    project_atom_site['u_12'] = self._createProjDictFromObj(calculator_atom_site.u_12[i])
+                    project_atom_site['u_13'] = self._createProjDictFromObj(calculator_atom_site.u_13[i])
+                    project_atom_site['u_23'] = self._createProjDictFromObj(calculator_atom_site.u_23[i])
 
             # Atom site MSP
             if calculator_phase.atom_site_susceptibility is not None:
                 for i, label in enumerate(calculator_phase.atom_site_susceptibility.label):
                     project_atom_site = project_phase['atom_site'][label]
                     calculator_atom_site = calculator_phase.atom_site_susceptibility
-                    project_atom_site['chi_type'] = self._createObjDict(calculator_atom_site.chi_type[i])
-                    project_atom_site['chi_11'] = self._createObjDict(calculator_atom_site.chi_11[i])
-                    project_atom_site['chi_22'] = self._createObjDict(calculator_atom_site.chi_22[i])
-                    project_atom_site['chi_33'] = self._createObjDict(calculator_atom_site.chi_33[i])
-                    project_atom_site['chi_12'] = self._createObjDict(calculator_atom_site.chi_12[i])
-                    project_atom_site['chi_13'] = self._createObjDict(calculator_atom_site.chi_13[i])
-                    project_atom_site['chi_23'] = self._createObjDict(calculator_atom_site.chi_23[i])
+                    project_atom_site['chi_type'] = self._createProjDictFromObj(calculator_atom_site.chi_type[i])
+                    project_atom_site['chi_11'] = self._createProjDictFromObj(calculator_atom_site.chi_11[i])
+                    project_atom_site['chi_22'] = self._createProjDictFromObj(calculator_atom_site.chi_22[i])
+                    project_atom_site['chi_33'] = self._createProjDictFromObj(calculator_atom_site.chi_33[i])
+                    project_atom_site['chi_12'] = self._createProjDictFromObj(calculator_atom_site.chi_12[i])
+                    project_atom_site['chi_13'] = self._createProjDictFromObj(calculator_atom_site.chi_13[i])
+                    project_atom_site['chi_23'] = self._createProjDictFromObj(calculator_atom_site.chi_23[i])
 
             # Atom sites for structure view (all the positions inside unit cell of 1x1x1)
             atom_site_list = [[], [], [], []]
@@ -551,12 +551,12 @@ class CryspyCalculator(QObject):
 
             # Experimental setup
             calculator_setup = calculator_experiment.setup
-            project_experiment['wavelength'] = self._createObjDict(calculator_setup.wavelength)
-            project_experiment['offset'] = self._createObjDict(calculator_setup.offset_ttheta)
+            project_experiment['wavelength'] = self._createProjDictFromObj(calculator_setup.wavelength)
+            project_experiment['offset'] = self._createProjDictFromObj(calculator_setup.offset_ttheta)
 
             # Scale
             project_experiment['phase'] = {}
-            project_experiment['phase']['scale'] = self._createObjDict(calculator_experiment.phase.scale[0]) # ONLY 1st scale parameter is currently taken into account!!!
+            project_experiment['phase']['scale'] = self._createProjDictFromObj(calculator_experiment.phase.scale[0]) # ONLY 1st scale parameter is currently taken into account!!!
 
             # Background
             project_background = project_experiment['background'] = {}
@@ -565,16 +565,16 @@ class CryspyCalculator(QObject):
                 index = str(ttheta)
                 project_background[index] = {}
                 project_background[index]['ttheta'] = ttheta
-                project_background[index]['intensity'] = self._createObjDict(intensity)
+                project_background[index]['intensity'] = self._createProjDictFromObj(intensity)
 
             # Instrument resolution
             project_resolution = project_experiment['resolution'] = {}
             calculator_resolution = calculator_experiment.resolution
-            project_resolution['u'] = self._createObjDict(calculator_resolution.u)
-            project_resolution['v'] = self._createObjDict(calculator_resolution.v)
-            project_resolution['w'] = self._createObjDict(calculator_resolution.w)
-            project_resolution['x'] = self._createObjDict(calculator_resolution.x)
-            project_resolution['y'] = self._createObjDict(calculator_resolution.y)
+            project_resolution['u'] = self._createProjDictFromObj(calculator_resolution.u)
+            project_resolution['v'] = self._createProjDictFromObj(calculator_resolution.v)
+            project_resolution['w'] = self._createProjDictFromObj(calculator_resolution.w)
+            project_resolution['x'] = self._createProjDictFromObj(calculator_resolution.x)
+            project_resolution['y'] = self._createProjDictFromObj(calculator_resolution.y)
 
             # Measured data points
             logging.info("measured data points: start")

@@ -155,10 +155,16 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         title: "Misc"//"Instrument parameters"
         content: GridLayout {
-            columns: 5
+            columns: 8
             columnSpacing: 15
             rowSpacing: 10
             enabled: false
+            Text { text: qsTr("Scale") }
+            GenericAppElements.TextField {
+                text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].phase.scale.value.toFixed(4) : ""
+                units: ""
+            }
+            Text {}
             Text { text: qsTr("Wavelength") }
             GenericAppElements.TextField {
                 text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].wavelength.value.toFixed(4) : ""
