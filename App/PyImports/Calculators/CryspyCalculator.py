@@ -460,18 +460,24 @@ class CryspyCalculator(QObject):
             for i, label in enumerate(calculator_phase.atom_site.label):
                 project_atom_site = project_phase['atom_site'][label] = {}
                 calculator_atom_site = calculator_phase.atom_site
+
                 # Atom sites symbol
                 project_atom_site['type_symbol'] = self._createObjDict(calculator_atom_site.type_symbol[i])
+
                 # Atom site neutron scattering length
                 project_atom_site['scat_length_neutron'] = self._createObjDict(calculator_atom_site.scat_length_neutron[i])
+
                 # Atom site coordinates
                 project_atom_site['fract_x'] = self._createObjDict(calculator_atom_site.fract_x[i])
                 project_atom_site['fract_y'] = self._createObjDict(calculator_atom_site.fract_y[i])
                 project_atom_site['fract_z'] = self._createObjDict(calculator_atom_site.fract_z[i])
+
                 # Atom site occupancy
                 project_atom_site['occupancy'] = self._createObjDict(calculator_atom_site.occupancy[i])
+
                 # Atom site ADP type
                 project_atom_site['adp_type'] = self._createObjDict(calculator_atom_site.adp_type[i])
+
                 # Atom site isotropic ADP
                 project_atom_site['B_iso_or_equiv'] = self._createObjDict(calculator_atom_site.b_iso_or_equiv[i])
 
@@ -701,72 +707,74 @@ class CryspyCalculator(QObject):
             'calculations': self._calculations_dict,
         }
 
+
+    #
+    def _setCalculatorObjFromProjectDict(self, calculator_obj, project_dict):
+        """ ... """
+        if not isinstance(calculator_obj, cryspy.common.cl_fitable.Fitable):
+            return
+        calculator_obj.value = project_dict['value']
+        calculator_obj.refinement = project_dict['refine']
+
+
     def setCryspyObjFromPhases(self):
         """Set phases (sample model tab in GUI)"""
-        for phase in self._cryspy_obj.crystals:
+
+        for calculator_phase in self._cryspy_obj.crystals:
+            calculator_phase_name = calculator_phase.data_name
+            project_phase = self._phases_dict[calculator_phase_name]
 
             # Unit cell parameters
-            phase.cell.length_a.value = self._phases_dict[phase.data_name]['cell']['length_a']['value']
-            phase.cell.length_b.value = self._phases_dict[phase.data_name]['cell']['length_b']['value']
-            phase.cell.length_c.value = self._phases_dict[phase.data_name]['cell']['length_c']['value']
-            phase.cell.length_a.refinement = self._phases_dict[phase.data_name]['cell']['length_a']['refine']
-            phase.cell.length_b.refinement = self._phases_dict[phase.data_name]['cell']['length_b']['refine']
-            phase.cell.length_c.refinement = self._phases_dict[phase.data_name]['cell']['length_c']['refine']
+            calculator_cell = calculator_phase.cell
+            project_cell = project_phase['cell']
+            self._setCalculatorObjFromProjectDict(calculator_cell.length_a, project_cell['length_a'])
+            self._setCalculatorObjFromProjectDict(calculator_cell.length_b, project_cell['length_b'])
+            self._setCalculatorObjFromProjectDict(calculator_cell.length_c, project_cell['length_c'])
+            self._setCalculatorObjFromProjectDict(calculator_cell.angle_alpha, project_cell['angle_alpha'])
+            self._setCalculatorObjFromProjectDict(calculator_cell.angle_beta, project_cell['angle_beta'])
+            self._setCalculatorObjFromProjectDict(calculator_cell.angle_gamma, project_cell['angle_gamma'])
 
-            # Atom site coordinates
-            for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.fract_x, phase.atom_site.fract_y, phase.atom_site.fract_z):
-                x.value = self._phases_dict[phase.data_name]['atom_site'][label]['fract_x']['value']
-                y.value = self._phases_dict[phase.data_name]['atom_site'][label]['fract_y']['value']
-                z.value = self._phases_dict[phase.data_name]['atom_site'][label]['fract_z']['value']
-                x.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['fract_x']['refine']
-                y.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['fract_y']['refine']
-                z.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['fract_z']['refine']
+            # Atom sites
+            for i, label in enumerate(calculator_phase.atom_site.label):
+                calculator_atom_site = calculator_phase.atom_site
+                project_atom_site = project_phase['atom_site'][label]
 
-            # Atom site occupancy
-            for label, occupancy in zip(phase.atom_site.label, phase.atom_site.occupancy):
-                occupancy.value = self._phases_dict[phase.data_name]['atom_site'][label]['occupancy']['value']
-                occupancy.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['occupancy']['refine']
+                # Atom site coordinates
+                self._setCalculatorObjFromProjectDict(calculator_atom_site.fract_x[i], project_atom_site['fract_x'])
+                self._setCalculatorObjFromProjectDict(calculator_atom_site.fract_y[i], project_atom_site['fract_y'])
+                self._setCalculatorObjFromProjectDict(calculator_atom_site.fract_z[i], project_atom_site['fract_z'])
 
-            # Isotropic ADP
-            for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso_or_equiv):
-                b_iso.value = self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv']['value']
-                b_iso.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv']['refine']
+                # Atom site occupancy
+                self._setCalculatorObjFromProjectDict(calculator_atom_site.occupancy[i], project_atom_site['occupancy'])
 
-            # Anisotropic ADP
-            if phase.atom_site_aniso is not None:
-                for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
-                    phase.atom_site_aniso.u_11, phase.atom_site_aniso.u_22, phase.atom_site_aniso.u_33,
-                    phase.atom_site_aniso.u_12, phase.atom_site_aniso.u_13, phase.atom_site_aniso.u_23):
-                        u_11.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_11']['value']
-                        u_22.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_22']['value']
-                        u_33.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_33']['value']
-                        u_12.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_12']['value']
-                        u_13.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_13']['value']
-                        u_23.value = self._phases_dict[phase.data_name]['atom_site'][label]['u_23']['value']
-                        u_11.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_11']['refine']
-                        u_22.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_22']['refine']
-                        u_33.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_33']['refine']
-                        u_12.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_12']['refine']
-                        u_13.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_13']['refine']
-                        u_23.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['u_23']['refine']
+                # Atom site isotropic ADP
+                self._setCalculatorObjFromProjectDict(calculator_atom_site.b_iso_or_equiv[i], project_atom_site['B_iso_or_equiv'])
 
-            # Anisotropic MSP
-            if phase.atom_site_susceptibility is not None:
-                for label, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_susceptibility.label,
-                    phase.atom_site_susceptibility.chi_11, phase.atom_site_susceptibility.chi_22, phase.atom_site_susceptibility.chi_33,
-                    phase.atom_site_susceptibility.chi_12, phase.atom_site_susceptibility.chi_13, phase.atom_site_susceptibility.chi_23):
-                        chi_11.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_11']['value']
-                        chi_22.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_22']['value']
-                        chi_33.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_33']['value']
-                        chi_12.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_12']['value']
-                        chi_13.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_13']['value']
-                        chi_23.value = self._phases_dict[phase.data_name]['atom_site'][label]['chi_23']['value']
-                        chi_11.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_11']['refine']
-                        chi_22.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_22']['refine']
-                        chi_33.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_33']['refine']
-                        chi_12.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_12']['refine']
-                        chi_13.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_13']['refine']
-                        chi_23.refinement = self._phases_dict[phase.data_name]['atom_site'][label]['chi_23']['refine']
+            # Atom site anisotropic ADP
+            if calculator_phase.atom_site_aniso is not None:
+                for i, label in enumerate(calculator_phase.atom_site_aniso.label):
+                    calculator_atom_site = calculator_phase.atom_site_aniso
+                    project_atom_site = project_phase['atom_site'][label]
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.u_11[i], project_atom_site['u_11'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.u_22[i], project_atom_site['u_22'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.u_33[i], project_atom_site['u_33'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.u_12[i], project_atom_site['u_12'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.u_13[i], project_atom_site['u_13'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.u_23[i], project_atom_site['u_23'])
+
+            # Atom site MSP
+            if calculator_phase.atom_site_susceptibility is not None:
+                for i, label in enumerate(calculator_phase.atom_site_susceptibility.label):
+                    calculator_atom_site = calculator_phase.atom_site_susceptibility
+                    project_atom_site = project_phase['atom_site'][label]
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_type[i], project_atom_site['chi_type'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_11[i], project_atom_site['chi_11'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_22[i], project_atom_site['chi_22'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_33[i], project_atom_site['chi_33'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_12[i], project_atom_site['chi_12'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_13[i], project_atom_site['chi_13'])
+                    self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_23[i], project_atom_site['chi_23'])
+
 
     def setCryspyObjFromExperiments(self):
         """Set experiments (Experimental data tab in GUI)"""
