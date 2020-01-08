@@ -21,7 +21,7 @@ ColumnLayout {
 
     property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pointSize: Generic.Style.fontPointSize })
 
-    property int globalAnimationDuration: 300
+    property int globalAnimationDuration: 1000
     property var globalAnimationOptions: ChartView.SeriesAnimations //ChartView.AllAnimations //ChartView.NoAnimation
 
     property var tthHklDict: ({})
