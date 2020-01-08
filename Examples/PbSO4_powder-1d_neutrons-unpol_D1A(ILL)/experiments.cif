@@ -1,38 +1,23 @@
 data_pnd
 
-_diffrn_radiation_wavelength 1.912
-_diffrn_radiation_polarization 0.0
-_diffrn_radiation_efficiency 1.0
-_diffrn_ambient_field 1.0
+_setup_wavelength      1.912
+_setup_field           0.00
+_setup_offset_ttheta -0.1529
 
-_pd_2theta_range_min 10.000
-_pd_2theta_range_max 154.000
-_pd_calib_2theta_offset -0.1529()
+_diffrn_radiation_polarization  0.00
+_diffrn_radiation_efficiency    1.00
 
-_pd_instr_resolution_u 0.155621
+_pd_instr_resolution_u  0.155621
 _pd_instr_resolution_v -0.455924
-_pd_instr_resolution_w 0.419110
-_pd_instr_resolution_x 0.0
-_pd_instr_resolution_y 0.091739
+_pd_instr_resolution_w  0.419110
+_pd_instr_resolution_x  0.0
+_pd_instr_resolution_y  0.091739
 
-_pd_instr_reflex_asymmetry_p1 0.0
-_pd_instr_reflex_asymmetry_p2 0.0
-_pd_instr_reflex_asymmetry_p3 0.0
-_pd_instr_reflex_asymmetry_p4 0.0
-
-_pd_chi2_sum True
-_pd_chi2_diff False
-_pd_chi2_up False
-_pd_chi2_down False
+_range_ttheta_min    10.000
+_range_ttheta_max   154.000
 
 loop_
-_pd_phase_label
-_pd_phase_scale
-_pd_phase_igsize
-PbSO4 0.6465() 0.0
-
-loop_
-_pd_background_2theta
+_pd_background_ttheta
 _pd_background_intensity
  11.0 100.0
  30.0 100.0
@@ -44,7 +29,18 @@ _pd_background_intensity
 153.0 100.0
 
 loop_
-_pd_meas_angle_2theta
+_phase_label
+_phase_scale
+_phase_igsize
+PbSO4 0.6465 0.0
+
+_chi2_sum True
+_chi2_diff False
+_chi2_up False
+_chi2_down False
+
+loop_
+_pd_meas_ttheta
 _pd_meas_intensity_up
 _pd_meas_intensity_up_sigma
 _pd_meas_intensity_down

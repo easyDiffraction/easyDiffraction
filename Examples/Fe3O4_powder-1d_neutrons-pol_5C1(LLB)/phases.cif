@@ -1,14 +1,15 @@
 data_Fe3O4
 
+_space_group_it_number 227
+_space_group_it_coordinate_system_code 2
+ 
 _cell_length_a 8.36212()
 _cell_length_b 8.56212
 _cell_length_c 8.56212
 _cell_angle_alpha 90.0
 _cell_angle_beta  90.0
 _cell_angle_gamma 90.0
-_space_group_it_coordinate_system_code 2
-_space_group_it_number 227
-
+ 
 loop_
 _atom_site_label
 _atom_site_type_symbol

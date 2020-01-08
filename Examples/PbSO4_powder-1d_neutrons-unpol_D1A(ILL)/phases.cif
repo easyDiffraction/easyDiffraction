@@ -1,7 +1,7 @@
 data_PbSO4
 
-_space_group_name_H-M_alt Pnma
-_space_group_it_coordinate_system_code 1
+_space_group_it_number 62
+_space_group_it_coordinate_system_code abc
 
 _cell_length_a      8.4767
 _cell_length_b      5.3967
@@ -19,8 +19,24 @@ _atom_site_fract_z
 _atom_site_adp_type
 _atom_site_B_iso_or_equiv
 _atom_site_occupancy
-Pb  Pb  0.1878()   0.25       0.1684()  uiso  0.0179  1.0
-S   S   0.0654()   0.25       0.6834()  uiso  0.0053  1.0
-O1  O   0.9077()   0.25       0.5953()  uiso  0.0252  1.0
-O2  O   0.1914()   0.25       0.5449()  uiso  0.0186  1.0
-O3  O   0.0795()   0.0283()   0.8102()  uiso  0.0167  1.0
+Pb  Pb  0.1878   0.25     0.1684  Uiso  0.0179  1.0
+S   S   0.0654   0.25     0.6834  Uiso  0.0053  1.0
+O1  O   0.9077   0.25     0.5953  Uiso  0.0252  1.0
+O2  O   0.1914   0.25     0.5449  Uiso  0.0186  1.0
+O3  O   0.0795   0.0283   0.8102  Uiso  0.0167  1.0
+
+loop_
+_atom_site_scat_label
+_atom_site_scat_lande
+Pb 2.000
+
+loop_
+_atom_site_susceptibility_label
+_atom_site_susceptibility_chi_type
+_atom_site_susceptibility_chi_11
+_atom_site_susceptibility_chi_22
+_atom_site_susceptibility_chi_33
+_atom_site_susceptibility_chi_12
+_atom_site_susceptibility_chi_13
+_atom_site_susceptibility_chi_23
+Pb Cani -3.468     -3.468  -3.468   0.000   0.000   0.000
