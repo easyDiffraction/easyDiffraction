@@ -708,7 +708,6 @@ class CryspyCalculator(QObject):
         }
 
 
-    #
     def _setCalculatorObjFromProjectDict(self, calculator_obj, project_dict):
         """ ... """
         if not isinstance(calculator_obj, cryspy.common.cl_fitable.Fitable):
@@ -778,36 +777,35 @@ class CryspyCalculator(QObject):
 
     def setCryspyObjFromExperiments(self):
         """Set experiments (Experimental data tab in GUI)"""
-        for experiment in self._cryspy_obj.experiments:
 
-            # Main parameters
-            experiment.setup.offset_ttheta.value = self._experiments_dict[experiment.data_name]['offset']['value']
-            experiment.setup.offset_ttheta.refinement = self._experiments_dict[experiment.data_name]['offset']['refine']
-            experiment.setup.wavelength.value = self._experiments_dict[experiment.data_name]['wavelength']['value']
-            experiment.setup.wavelength.refinement = self._experiments_dict[experiment.data_name]['wavelength']['refine']
+        for calculator_experiment in self._cryspy_obj.experiments:
+            calculator_experiment_name = calculator_experiment.data_name
+            project_experiment = self._experiments_dict[calculator_experiment_name]
+
+            # Experimental setup
+            calculator_setup = calculator_experiment.setup
+            self._setCalculatorObjFromProjectDict(calculator_setup.wavelength, project_experiment['wavelength'])
+            self._setCalculatorObjFromProjectDict(calculator_setup.offset_ttheta, project_experiment['offset'])
 
             # Scale
-            # ONLY 1st scale parameter is currently taken into account!!!
-            experiment.phase.scale[0].value = self._experiments_dict[experiment.data_name]['phase']['scale']['value']
-            experiment.phase.scale[0].refinement = self._experiments_dict[experiment.data_name]['phase']['scale']['refine']
+            self._setCalculatorObjFromProjectDict(calculator_experiment.phase.scale[0], project_experiment['phase']['scale']) # ONLY 1st scale parameter is currently taken into account!!!
 
             # Background
-            for ttheta, intensity in zip(experiment.background.ttheta, experiment.background.intensity):
+            calculator_background = calculator_experiment.background
+            project_background = project_experiment['background']
+            for ttheta, intensity in zip(calculator_background.ttheta, calculator_background.intensity):
                 index = str(ttheta)
-                intensity.value = self._experiments_dict[experiment.data_name]['background'][index]['intensity']['value']
-                intensity.refinement = self._experiments_dict[experiment.data_name]['background'][index]['intensity']['refine']
+                self._setCalculatorObjFromProjectDict(intensity, project_background[index]['intensity'])
 
             # Instrument resolution
-            experiment.resolution.u.value = self._experiments_dict[experiment.data_name]['resolution']['u']['value']
-            experiment.resolution.v.value = self._experiments_dict[experiment.data_name]['resolution']['v']['value']
-            experiment.resolution.w.value = self._experiments_dict[experiment.data_name]['resolution']['w']['value']
-            experiment.resolution.x.value = self._experiments_dict[experiment.data_name]['resolution']['x']['value']
-            experiment.resolution.y.value = self._experiments_dict[experiment.data_name]['resolution']['y']['value']
-            experiment.resolution.u.refinement = self._experiments_dict[experiment.data_name]['resolution']['u']['refine']
-            experiment.resolution.v.refinement = self._experiments_dict[experiment.data_name]['resolution']['v']['refine']
-            experiment.resolution.w.refinement = self._experiments_dict[experiment.data_name]['resolution']['w']['refine']
-            experiment.resolution.x.refinement = self._experiments_dict[experiment.data_name]['resolution']['x']['refine']
-            experiment.resolution.y.refinement = self._experiments_dict[experiment.data_name]['resolution']['y']['refine']
+            project_resolution = project_experiment['resolution']
+            calculator_resolution = calculator_experiment.resolution
+            self._setCalculatorObjFromProjectDict(calculator_resolution.u, project_resolution['u'])
+            self._setCalculatorObjFromProjectDict(calculator_resolution.v, project_resolution['v'])
+            self._setCalculatorObjFromProjectDict(calculator_resolution.w, project_resolution['w'])
+            self._setCalculatorObjFromProjectDict(calculator_resolution.x, project_resolution['x'])
+            self._setCalculatorObjFromProjectDict(calculator_resolution.y, project_resolution['y'])
+
 
     def setCryspyObjFromProjectDict(self):
         """Set all the cryspy parameters from project dictionary"""
