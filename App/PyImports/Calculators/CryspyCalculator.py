@@ -256,173 +256,199 @@ class CryspyCalculator(QObject):
             'refinement_datetime': ''
         }
 
+    def _addPhasesDescription(self):
+        """ ... """
+        for phase in self._phases_dict.values():
+            # Space group
+            space_group = phase['space_group']
+            space_group['crystal_system']['header'] = 'Crystal system'
+            space_group['crystal_system']['tooltip'] = 'The name of the system of geometric crystal classes of space groups (crystal system) to which the space group belongs.'
+            space_group['crystal_system']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_crystal_system.html'
+            space_group['space_group_name_H-M_alt']['header'] = 'Symbol'
+            space_group['space_group_name_H-M_alt']['tooltip'] = 'The Hermann-Mauguin symbol of space group.'
+            space_group['space_group_name_H-M_alt']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_name_H-M_alt.html'
+            space_group['space_group_IT_number']['header'] = 'Number'
+            space_group['space_group_IT_number']['tooltip'] = 'The number as assigned in International Tables for Crystallography Vol. A.'
+            space_group['space_group_IT_number']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_crystal_system.html'
+            space_group['origin_choice']['header'] = 'Setting'
+            # Unit cell parameters
+            cell = phase['cell']
+            cell['length_a']['header'] = 'a (Å)'
+            cell['length_a']['tooltip'] = 'Unit-cell length of the selected structure in angstroms.'
+            cell['length_a']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html'
+            cell['length_b']['header'] = 'b (Å)'
+            cell['length_b']['tooltip'] = cell['length_a']['tooltip']
+            cell['length_b']['url'] = cell['length_a']['url']
+            cell['length_c']['header'] = 'c (Å)'
+            cell['length_c']['tooltip'] = cell['length_a']['tooltip']
+            cell['length_c']['url'] = cell['length_a']['url']
+            cell['angle_alpha']['header'] = 'alpha (°)'
+            cell['angle_alpha']['tooltip'] = 'Unit-cell angle of the selected structure in degrees.'
+            cell['angle_alpha']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html'
+            cell['angle_beta']['header'] = 'beta (°)'
+            cell['angle_beta']['tooltip'] = cell['angle_alpha']['tooltip']
+            cell['angle_beta']['url'] = cell['angle_alpha']['url']
+            cell['angle_gamma']['header'] = 'gamma (°)'
+            cell['angle_gamma']['tooltip'] = cell['angle_alpha']['tooltip']
+            cell['angle_gamma']['url'] = cell['angle_alpha']['url']
+            # Atom sites
+            for atom_site in phase['atom_site'].values():
+                # Atom sites symbol
+                atom_site['type_symbol']['header'] = 'Atom'
+                atom_site['type_symbol']['tooltip'] = 'A code to identify the atom species occupying this site.'
+                atom_site['type_symbol']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_type_symbol.html'
+                # Atom site neutron scattering length
+                atom_site['scat_length_neutron']['header'] = ''
+                atom_site['scat_length_neutron']['tooltip'] = ''
+                atom_site['scat_length_neutron']['url'] = ''
+                # Atom site coordinates
+                atom_site['fract_x']['header'] = 'x'
+                atom_site['fract_x']['tooltip'] = 'Atom-site coordinate as fractions of the unit cell length.'
+                atom_site['fract_x']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_fract_.html'
+                atom_site['fract_y']['header'] = 'y'
+                atom_site['fract_y']['tooltip'] = atom_site['fract_x']['tooltip']
+                atom_site['fract_y']['url'] = atom_site['fract_x']['url']
+                atom_site['fract_z']['header'] = 'z'
+                atom_site['fract_z']['tooltip'] = atom_site['fract_x']['tooltip']
+                atom_site['fract_z']['url'] = atom_site['fract_x']['url']
+                # Atom site occupancy
+                atom_site['occupancy']['header'] = 'Occupancy'
+                atom_site['occupancy']['tooltip'] = 'The fraction of the atom type present at this site.'
+                atom_site['occupancy']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_occupancy.html'
+                # Atom site ADP type
+                atom_site['adp_type']['header'] = 'Type'
+                atom_site['adp_type']['tooltip'] = 'A standard code used to describe the type of atomic displacement parameters used for the site.'
+                atom_site['adp_type']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_adp_type.html'
+                # Atom site isotropic ADP
+                atom_site['B_iso_or_equiv']['header'] = 'Biso'
+                atom_site['B_iso_or_equiv']['tooltip'] = 'Isotropic atomic displacement parameter, or equivalent isotropic atomic displacement parameter, B(equiv), in angstroms squared.'
+                atom_site['B_iso_or_equiv']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_B_iso_or_equiv.html'
+                # Atom site anisotropic ADP
+                if 'u_11' in atom_site.keys():
+                    atom_site['u_11']['header'] = 'U11'
+                    atom_site['u_11']['tooltip'] = 'Anisotropic atomic displacement component in angstroms squared.'
+                    atom_site['u_11']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html'
+                    atom_site['u_22']['header'] = 'U22'
+                    atom_site['u_22']['tooltip'] = atom_site['u_11']['tooltip']
+                    atom_site['u_22']['url'] = atom_site['u_11']['url']
+                    atom_site['u_33']['header'] = 'U33'
+                    atom_site['u_33']['tooltip'] = atom_site['u_11']['tooltip']
+                    atom_site['u_33']['url'] = atom_site['u_11']['url']
+                    atom_site['u_12']['header'] = 'U12'
+                    atom_site['u_12']['tooltip'] = atom_site['u_11']['tooltip']
+                    atom_site['u_12']['url'] = atom_site['u_11']['url']
+                    atom_site['u_13']['header'] = 'U13'
+                    atom_site['u_13']['tooltip'] = atom_site['u_11']['tooltip']
+                    atom_site['u_13']['url'] = atom_site['u_11']['url']
+                    atom_site['u_23']['header'] = 'U23'
+                    atom_site['u_23']['tooltip'] = atom_site['u_11']['tooltip']
+                    atom_site['u_23']['url'] = atom_site['u_11']['url']
+                # Atom site MSP
+                if 'chi_11' in atom_site.keys():
+                    atom_site['chi_type']['header'] = 'Type'
+                    atom_site['chi_type']['tooltip'] = ''
+                    atom_site['chi_type']['url'] = ''
+                    atom_site['chi_11']['header'] = 'Chi11'
+                    atom_site['chi_11']['tooltip'] = ''
+                    atom_site['chi_11']['url'] = ''
+                    atom_site['chi_22']['header'] = 'Chi22'
+                    atom_site['chi_22']['tooltip'] = atom_site['chi_11']['tooltip']
+                    atom_site['chi_22']['url'] = atom_site['chi_11']['url']
+                    atom_site['chi_33']['header'] = 'Chi33'
+                    atom_site['chi_33']['tooltip'] = atom_site['chi_11']['tooltip']
+                    atom_site['chi_33']['url'] = atom_site['chi_11']['url']
+                    atom_site['chi_12']['header'] = 'Chi12'
+                    atom_site['chi_12']['tooltip'] = atom_site['chi_11']['tooltip']
+                    atom_site['chi_12']['url'] = atom_site['chi_11']['url']
+                    atom_site['chi_13']['header'] = 'Chi13'
+                    atom_site['chi_13']['tooltip'] = atom_site['chi_11']['tooltip']
+                    atom_site['chi_13']['url'] = atom_site['chi_11']['url']
+                    atom_site['chi_23']['header'] = 'Chi23'
+                    atom_site['chi_23']['tooltip'] = atom_site['chi_11']['tooltip']
+                    atom_site['chi_23']['url'] = atom_site['chi_11']['url']
+
+    def _createObjDict(self, obj):
+        """ ... """
+        if isinstance(obj, cryspy.common.cl_fitable.Fitable):
+            return {
+                'value': obj.value,
+                'error': obj.sigma,
+                'min': obj.value * 0.8,
+                'max': obj.value * 1.2,
+                'constraint': obj.constraint,
+                'hide': obj.constraint_flag,
+                'refine': obj.refinement
+            }
+        return {'value': obj}
+
     def setPhasesDictFromCryspyObj(self):
         """Set phases (sample model tab in GUI)"""
         self._phases_dict.clear()
-
-        for phase in self._cryspy_obj.crystals:
-
-            # Phase label
-            self._phases_dict[phase.data_name] = {}
-
-            # Unit cell parameters
-            self._phases_dict[phase.data_name]['cell'] = {}
-            self._phases_dict[phase.data_name]['cell']['length_a'] = {
-                'header': 'a (Å)',
-                'tooltip': 'Unit-cell length of the selected structure in angstroms.',
-                'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html',
-                'value': phase.cell.length_a.value,
-                'error': phase.cell.length_a.sigma,
-                'min': phase.cell.length_a.value * 0.8,
-                'max': phase.cell.length_a.value * 1.2,
-                'constraint': phase.cell.length_a.constraint,
-                'hide': phase.cell.length_a.constraint_flag,
-                'refine': phase.cell.length_a.refinement }
-            self._phases_dict[phase.data_name]['cell']['length_b'] = {
-                'header': 'b (Å)',
-                'tooltip': 'Unit-cell length of the selected structure in angstroms.',
-                'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html',
-                'value': phase.cell.length_b.value,
-                'error': phase.cell.length_b.sigma,
-                'min': phase.cell.length_b.value * 0.8,
-                'max': phase.cell.length_b.value * 1.2,
-                'constraint': phase.cell.length_b.constraint,
-                'hide': phase.cell.length_b.constraint_flag,
-                'refine': phase.cell.length_b.refinement }
-            self._phases_dict[phase.data_name]['cell']['length_c'] = {
-                'header': 'c (Å)',
-                'tooltip': 'Unit-cell length of the selected structure in angstroms.',
-                'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html',
-                'value': phase.cell.length_c.value,
-                'error': phase.cell.length_c.sigma,
-                'min': phase.cell.length_c.value * 0.8,
-                'max': phase.cell.length_c.value * 1.2,
-                'constraint': phase.cell.length_c.constraint,
-                'hide': phase.cell.length_c.constraint_flag,
-                'refine': phase.cell.length_c.refinement }
-            self._phases_dict[phase.data_name]['cell']['angle_alpha'] = {
-                'header': 'alpha (°)',
-                'tooltip': 'Unit-cell angle of the selected structure in degrees.',
-                'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html',
-                'value': phase.cell.angle_alpha.value,
-                'error': phase.cell.angle_alpha.sigma,
-                'min': phase.cell.angle_alpha.value * 0.8,
-                'max': phase.cell.angle_alpha.value * 1.2,
-                'constraint': phase.cell.angle_alpha.constraint,
-                'hide': phase.cell.angle_alpha.constraint_flag,
-                'refine': phase.cell.angle_alpha.refinement }
-            self._phases_dict[phase.data_name]['cell']['angle_beta'] = {
-                'header': 'beta (°)',
-                'tooltip': 'Unit-cell angle of the selected structure in degrees.',
-                'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html',
-                'value': phase.cell.angle_beta.value,
-                'error': phase.cell.angle_beta.sigma,
-                'min': phase.cell.angle_beta.value * 0.8,
-                'max': phase.cell.angle_beta.value * 1.2,
-                'constraint': phase.cell.angle_beta.constraint,
-                'hide': phase.cell.angle_beta.constraint_flag,
-                'refine': phase.cell.angle_beta.refinement }
-            self._phases_dict[phase.data_name]['cell']['angle_gamma'] = {
-                'header': 'gamma (°)',
-                'tooltip': 'Unit-cell angle of the selected structure in degrees.',
-                'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html',
-                'value': phase.cell.angle_gamma.value,
-                'error': phase.cell.angle_gamma.sigma,
-                'min': phase.cell.angle_gamma.value * 0.8,
-                'max': phase.cell.angle_gamma.value * 1.2,
-                'constraint': phase.cell.angle_gamma.constraint,
-                'hide': phase.cell.angle_gamma.constraint_flag,
-                'refine': phase.cell.angle_gamma.refinement }
-
+        for calculator_phase in self._cryspy_obj.crystals:
+            calculator_phase_name = calculator_phase.data_name
+            self._phases_dict[calculator_phase_name] = {}
             # Space group
-            self._phases_dict[phase.data_name]['space_group'] = {}
-            self._phases_dict[phase.data_name]['space_group']['crystal_system'] = {
-                'header': 'Crystal system',
-                'tooltip': 'The name of the system of geometric crystal classes of space groups (crystal system) to which the space group belongs.',
-                'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_crystal_system.html',
-                'value': phase.space_group.crystal_system }
-            self._phases_dict[phase.data_name]['space_group']['space_group_name_H-M_alt'] = {
-                'header': 'Symbol',
-                'tooltip': 'The Hermann-Mauguin symbol of space group.',
-                'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_name_H-M_alt.html',
-                'value': phase.space_group.name_hm_alt }
-            self._phases_dict[phase.data_name]['space_group']['space_group_IT_number'] = {
-                'header': 'Number',
-                'tooltip': 'The number as assigned in International Tables for Crystallography Vol. A.',
-                'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_crystal_system.html',
-                'value': phase.space_group.it_number }
-            self._phases_dict[phase.data_name]['space_group']['origin_choice'] = {
-                'header': 'Setting',
-                'tooltip': '',
-                'url': '',
-                'value': phase.space_group.it_coordinate_system_code }
-
-            # Atom sites label
-            self._phases_dict[phase.data_name]['atom_site'] = {}
-            for label in phase.atom_site.label:
-                self._phases_dict[phase.data_name]['atom_site'][label] = {}
-                #phases_dict[phase.data_name]['atom_site'][label]['label'] = {
-                #'header': 'Label',
-                #'tooltip': 'A unique identifier for a particular site in the crystal.',
-                #'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_label.html',
-                #}
-
-            # Atom site type symbol
-            for label, type_symbol in zip(phase.atom_site.label, phase.atom_site.type_symbol):
-                self._phases_dict[phase.data_name]['atom_site'][label]['type_symbol'] = {
-                    'header': 'Atom',
-                    'tooltip': 'A code to identify the atom species occupying this site.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_type_symbol.html',
-                    'value': type_symbol }
-
-            # Atom site coordinates
-            for label, x, y, z in zip(phase.atom_site.label, phase.atom_site.fract_x, phase.atom_site.fract_y, phase.atom_site.fract_z):
-                self._phases_dict[phase.data_name]['atom_site'][label]['fract_x'] = {
-                    'header': 'x',
-                    'tooltip': 'Atom-site coordinate as fractions of the unit cell length.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_fract_.html',
-                    'value': x.value,
-                    'error': x.sigma,
-                    'min': x.value * 0.8,
-                    'max': x.value * 1.2,
-                    'constraint': x.constraint,
-                    'hide': x.constraint_flag,
-                    'refine': x.refinement }
-                self._phases_dict[phase.data_name]['atom_site'][label]['fract_y'] = {
-                    'header': 'y',
-                    'tooltip': 'Atom-site coordinate as fractions of the unit cell length.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_fract_.html',
-                    'value': y.value,
-                    'error': y.sigma,
-                    'min': y.value * 0.8,
-                    'max': y.value * 1.2,
-                    'constraint': y.constraint,
-                    'hide': y.constraint_flag,
-                    'refine': y.refinement }
-                self._phases_dict[phase.data_name]['atom_site'][label]['fract_z'] = {
-                    'header': 'z',
-                    'tooltip': 'Atom-site coordinate as fractions of the unit cell length.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_fract_.html',
-                    'value': z.value,
-                    'error': z.sigma,
-                    'min': z.value * 0.8,
-                    'max': z.value * 1.2,
-                    'constraint': z.constraint,
-                    'hide': z.constraint_flag,
-                    'refine': z.refinement }
-
-            # Atom site neutron scattering length
-            for label, scat_length_neutron in zip(phase.atom_site.label, phase.atom_site.scat_length_neutron):
-                self._phases_dict[phase.data_name]['atom_site'][label]['scat_length_neutron'] = {
-                    'header': '',
-                    'tooltip': '',
-                    'url': '',
-                    'value': scat_length_neutron }
-
+            project_space_group = self._phases_dict[calculator_phase_name]['space_group'] = {}
+            calculator_space_group = calculator_phase.space_group
+            project_space_group['crystal_system'] = self._createObjDict(calculator_space_group.crystal_system)
+            project_space_group['space_group_name_H-M_alt'] = self._createObjDict(calculator_space_group.name_hm_ref)
+            project_space_group['space_group_IT_number'] = self._createObjDict(calculator_space_group.it_number)
+            project_space_group['origin_choice'] = self._createObjDict(calculator_space_group.it_coordinate_system_code)
+            # Unit cell parameters
+            project_cell = self._phases_dict[calculator_phase_name]['cell'] = {}
+            claculator_cell = calculator_phase.cell
+            project_cell['length_a'] = self._createObjDict(claculator_cell.length_a)
+            project_cell['length_b'] = self._createObjDict(claculator_cell.length_b)
+            project_cell['length_c'] = self._createObjDict(claculator_cell.length_c)
+            project_cell['angle_alpha'] = self._createObjDict(claculator_cell.angle_alpha)
+            project_cell['angle_beta'] = self._createObjDict(claculator_cell.angle_beta)
+            project_cell['angle_gamma'] = self._createObjDict(claculator_cell.angle_gamma)
+            # Atom sites
+            self._phases_dict[calculator_phase_name]['atom_site'] = {}
+            for i, label in enumerate(calculator_phase.atom_site.label):
+                project_atom_site = self._phases_dict[calculator_phase_name]['atom_site'][label] = {}
+                calculator_atom_site = calculator_phase.atom_site
+                # Atom sites symbol
+                project_atom_site['type_symbol'] = self._createObjDict(calculator_atom_site.type_symbol[i])
+                # Atom site neutron scattering length
+                project_atom_site['scat_length_neutron'] = self._createObjDict(calculator_atom_site.scat_length_neutron[i])
+                # Atom site coordinates
+                project_atom_site['fract_x'] = self._createObjDict(calculator_atom_site.fract_x[i])
+                project_atom_site['fract_y'] = self._createObjDict(calculator_atom_site.fract_y[i])
+                project_atom_site['fract_z'] = self._createObjDict(calculator_atom_site.fract_z[i])
+                # Atom site occupancy
+                project_atom_site['occupancy'] = self._createObjDict(calculator_atom_site.occupancy[i])
+                # Atom site ADP type
+                project_atom_site['adp_type'] = self._createObjDict(calculator_atom_site.adp_type[i])
+                # Atom site isotropic ADP
+                project_atom_site['B_iso_or_equiv'] = self._createObjDict(calculator_atom_site.b_iso_or_equiv[i])
+            # Atom site anisotropic ADP
+            if calculator_phase.atom_site_aniso is not None:
+                for i, label in enumerate(calculator_phase.atom_site_aniso.label):
+                    project_atom_site = self._phases_dict[calculator_phase_name]['atom_site'][label]
+                    calculator_atom_site = calculator_phase.atom_site_aniso
+                    project_atom_site['u_11'] = self._createObjDict(calculator_atom_site.u_11[i])
+                    project_atom_site['u_22'] = self._createObjDict(calculator_atom_site.u_22[i])
+                    project_atom_site['u_33'] = self._createObjDict(calculator_atom_site.u_33[i])
+                    project_atom_site['u_12'] = self._createObjDict(calculator_atom_site.u_12[i])
+                    project_atom_site['u_13'] = self._createObjDict(calculator_atom_site.u_13[i])
+                    project_atom_site['u_23'] = self._createObjDict(calculator_atom_site.u_23[i])
+            # Atom site MSP
+            if calculator_phase.atom_site_susceptibility is not None:
+                for i, label in enumerate(calculator_phase.atom_site_susceptibility.label):
+                    project_atom_site = self._phases_dict[calculator_phase_name]['atom_site'][label]
+                    calculator_atom_site = calculator_phase.atom_site_susceptibility
+                    project_atom_site['chi_type'] = self._createObjDict(calculator_atom_site.chi_type[i])
+                    project_atom_site['chi_11'] = self._createObjDict(calculator_atom_site.chi_11[i])
+                    project_atom_site['chi_22'] = self._createObjDict(calculator_atom_site.chi_22[i])
+                    project_atom_site['chi_33'] = self._createObjDict(calculator_atom_site.chi_33[i])
+                    project_atom_site['chi_12'] = self._createObjDict(calculator_atom_site.chi_12[i])
+                    project_atom_site['chi_13'] = self._createObjDict(calculator_atom_site.chi_13[i])
+                    project_atom_site['chi_23'] = self._createObjDict(calculator_atom_site.chi_23[i])
             # Atom sites for structure view (all the positions inside unit cell of 1x1x1)
             atom_site_list = [[], [], [], []]
-            for x, y, z, scat_length_neutron in zip(phase.atom_site.fract_x, phase.atom_site.fract_y, phase.atom_site.fract_z, phase.atom_site.scat_length_neutron):
-                x_array, y_array, z_array, _ = phase.space_group.calc_xyz_mult(x.value, y.value, z.value)
+            for x, y, z, scat_length_neutron in zip(calculator_phase.atom_site.fract_x, calculator_phase.atom_site.fract_y, calculator_phase.atom_site.fract_z, calculator_phase.atom_site.scat_length_neutron):
+                x_array, y_array, z_array, _ = calculator_phase.space_group.calc_xyz_mult(x.value, y.value, z.value)
                 scat_length_neutron_array = np.full_like(x_array, scat_length_neutron)
                 atom_site_list[0] += x_array.tolist()
                 atom_site_list[1] += y_array.tolist()
@@ -444,196 +470,13 @@ class CryspyCalculator(QObject):
                     atom_site_list[1].append(y)
                     atom_site_list[2].append(1.0)
                     atom_site_list[3].append(scat_length_neutron)
-            self._phases_dict[phase.data_name]['atom_site_list'] = {}
-            self._phases_dict[phase.data_name]['atom_site_list']['fract_x'] = atom_site_list[0]
-            self._phases_dict[phase.data_name]['atom_site_list']['fract_y'] = atom_site_list[1]
-            self._phases_dict[phase.data_name]['atom_site_list']['fract_z'] = atom_site_list[2]
-            self._phases_dict[phase.data_name]['atom_site_list']['scat_length_neutron'] = atom_site_list[3]
+            self._phases_dict[calculator_phase_name]['atom_site_list'] = {}
+            self._phases_dict[calculator_phase_name]['atom_site_list']['fract_x'] = atom_site_list[0]
+            self._phases_dict[calculator_phase_name]['atom_site_list']['fract_y'] = atom_site_list[1]
+            self._phases_dict[calculator_phase_name]['atom_site_list']['fract_z'] = atom_site_list[2]
+            self._phases_dict[calculator_phase_name]['atom_site_list']['scat_length_neutron'] = atom_site_list[3]
+        self._addPhasesDescription()
 
-            # Atom site occupancy
-            for label, occupancy in zip(phase.atom_site.label, phase.atom_site.occupancy):
-                self._phases_dict[phase.data_name]['atom_site'][label]['occupancy'] = {
-                    'header': 'Occupancy',
-                    'tooltip': 'The fraction of the atom type present at this site.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_occupancy.html',
-                    'value': occupancy.value,
-                    'error': occupancy.sigma,
-                    'min': occupancy.value * 0.8,
-                    'max': occupancy.value * 1.2,
-                    'constraint': occupancy.constraint,
-                    'hide': occupancy.constraint_flag,
-                    'refine': occupancy.refinement }
-
-            # Atom site ADP type
-            for label, adp_type in zip(phase.atom_site.label, phase.atom_site.adp_type):
-                self._phases_dict[phase.data_name]['atom_site'][label]['adp_type'] = {
-                    'header': 'Type',
-                    'tooltip': 'A standard code used to describe the type of atomic displacement parameters used for the site.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_adp_type.html',
-                    'value': adp_type }
-
-            # Isotropic ADP
-            for label, b_iso in zip(phase.atom_site.label, phase.atom_site.b_iso_or_equiv):
-                self._phases_dict[phase.data_name]['atom_site'][label]['B_iso_or_equiv'] = {
-                    'header': 'Biso',
-                    'tooltip': 'Isotropic atomic displacement parameter, or equivalent isotropic atomic displacement parameter, B(equiv), in angstroms squared.',
-                    'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_B_iso_or_equiv.html',
-                    'value': b_iso.value,
-                    'error': b_iso.sigma,
-                    'min': b_iso.value * 0.8,
-                    'max': b_iso.value * 1.2,
-                    'constraint': b_iso.constraint,
-                    'hide': b_iso.constraint_flag,
-                    'refine': b_iso.refinement }
-
-            # Anisotropic ADP
-            if phase.atom_site_aniso is not None:
-                for label, u_11, u_22, u_33, u_12, u_13, u_23 in zip(phase.atom_site_aniso.label,
-                    phase.atom_site_aniso.u_11, phase.atom_site_aniso.u_22, phase.atom_site_aniso.u_33,
-                    phase.atom_site_aniso.u_12, phase.atom_site_aniso.u_13, phase.atom_site_aniso.u_23):
-                    self._phases_dict[phase.data_name]['atom_site'][label]['u_11'] = {
-                        'header': 'U11',
-                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                        'value': u_11.value,
-                        'error': u_11.sigma,
-                        'min': u_11.value * 0.8,
-                        'max': u_11.value * 1.2,
-                        'constraint': u_11.constraint,
-                        'hide': u_11.constraint_flag,
-                        'refine': u_11.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['u_22'] = {
-                        'header': 'U22',
-                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                        'value': u_22.value,
-                        'error': u_22.sigma,
-                        'min': u_22.value * 0.8,
-                        'max': u_22.value * 1.2,
-                        'constraint': u_22.constraint,
-                        'hide': u_22.constraint_flag,
-                        'refine': u_22.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['u_33'] = {
-                        'header': 'U33',
-                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                        'value': u_33.value,
-                        'error': u_33.sigma,
-                        'min': u_33.value * 0.8,
-                        'max': u_33.value * 1.2,
-                        'constraint': u_33.constraint,
-                        'hide': u_33.constraint_flag,
-                        'refine': u_33.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['u_12'] = {
-                        'header': 'U12',
-                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                        'value': u_12.value,
-                        'error': u_12.sigma,
-                        'min': u_12.value * 0.8,
-                        'max': u_12.value * 1.2,
-                        'constraint': u_12.constraint,
-                        'hide': u_12.constraint_flag,
-                        'refine': u_12.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['u_13'] = {
-                        'header': 'U13',
-                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                        'value': u_13.value,
-                        'error': u_13.sigma,
-                        'min': u_13.value * 0.8,
-                        'max': u_13.value * 1.2,
-                        'constraint': u_13.constraint,
-                        'hide': u_13.constraint_flag,
-                        'refine': u_13.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['u_23'] = {
-                        'header': 'U23',
-                        'tooltip': 'Anisotropic atomic displacement component in angstroms squared.',
-                        'url': 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html',
-                        'value': u_23.value,
-                        'error': u_23.sigma,
-                        'min': u_23.value * 0.8,
-                        'max': u_23.value * 1.2,
-                        'constraint': u_23.constraint,
-                        'hide': u_23.constraint_flag,
-                        'refine': u_23.refinement }
-
-            # Anisotropic MSP
-            if phase.atom_site_susceptibility is not None:
-                for label, chi_type, chi_11, chi_22, chi_33, chi_12, chi_13, chi_23 in zip(phase.atom_site_susceptibility.label, phase.atom_site_susceptibility.chi_type,
-                    phase.atom_site_susceptibility.chi_11, phase.atom_site_susceptibility.chi_22, phase.atom_site_susceptibility.chi_33,
-                    phase.atom_site_susceptibility.chi_12, phase.atom_site_susceptibility.chi_13, phase.atom_site_susceptibility.chi_23):
-                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_type'] = {
-                       'header': 'Type',
-                       'tooltip': '',
-                       'url': '',
-                       'value': chi_type }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_11'] = {
-                        'header': 'Chi11',
-                        'tooltip': '',
-                        'url': '',
-                        'value': chi_11.value,
-                        'error': chi_11.sigma,
-                        'min': chi_11.value * 0.8,
-                        'max': chi_11.value * 1.2,
-                        'constraint': chi_11.constraint,
-                        'hide': chi_11.constraint_flag,
-                        'refine': chi_11.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_22'] = {
-                        'header': 'Chi22',
-                        'tooltip': '',
-                        'url': '',
-                        'value': chi_22.value,
-                        'error': chi_22.sigma,
-                        'min': chi_22.value * 0.8,
-                        'max': chi_22.value * 1.2,
-                        'constraint': chi_22.constraint,
-                        'hide': chi_22.constraint_flag,
-                        'refine': chi_22.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_33'] = {
-                        'header': 'Chi33',
-                        'tooltip': '',
-                        'url': '',
-                        'value': chi_33.value,
-                        'error': chi_33.sigma,
-                        'min': chi_33.value * 0.8,
-                        'max': chi_33.value * 1.2,
-                        'constraint': chi_33.constraint,
-                        'hide': chi_33.constraint_flag,
-                        'refine': chi_33.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_12'] = {
-                        'header': 'Chi12',
-                        'tooltip': '',
-                        'url': '',
-                        'value': chi_12.value,
-                        'error': chi_12.sigma,
-                        'min': chi_12.value * 0.8,
-                        'max': chi_12.value * 1.2,
-                        'constraint': chi_12.constraint,
-                        'hide': chi_12.constraint_flag,
-                        'refine': chi_12.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_13'] = {
-                        'header': 'Chi13',
-                        'tooltip': '',
-                        'url': '',
-                        'value': chi_13.value,
-                        'error': chi_13.sigma,
-                        'min': chi_13.value * 0.8,
-                        'max': chi_13.value * 1.2,
-                        'constraint': chi_13.constraint,
-                        'hide': chi_13.constraint_flag,
-                        'refine': chi_13.refinement }
-                    self._phases_dict[phase.data_name]['atom_site'][label]['chi_23'] = {
-                        'header': 'Chi23',
-                        'tooltip': '',
-                        'url': '',
-                        'value': chi_23.value,
-                        'error': chi_23.sigma,
-                        'min': chi_23.value * 0.8,
-                        'max': chi_23.value * 1.2,
-                        'constraint': chi_23.constraint,
-                        'hide': chi_23.constraint_flag,
-                        'refine': chi_23.refinement }
 
     def setExperimentsDictFromCryspyObj(self):
         """Set experiments (Experimental data tab in GUI)"""
