@@ -45,7 +45,7 @@ class AtomAdpsModel(BaseModel):
                 data.append({
                     self._label_role: atom_id,
                     self._type_role: Helpers.nested_get(atom_dict, ['adp_type', 'value']),
-                    self._uiso_role: Helpers.nested_get(atom_dict, ['B_iso_or_equiv', 'value']),
+                    self._uiso_role: Helpers.nested_get(atom_dict, ['U_iso_or_equiv', 'value']),
                     self._u11_role: Helpers.nested_get(atom_dict, ['u_11', 'value']),
                     self._u22_role: Helpers.nested_get(atom_dict, ['u_22', 'value']),
                     self._u33_role: Helpers.nested_get(atom_dict, ['u_33', 'value']),

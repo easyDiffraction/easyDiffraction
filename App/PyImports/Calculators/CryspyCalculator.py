@@ -332,9 +332,12 @@ class CryspyCalculator(QObject):
                 atom_site['adp_type']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_adp_type.html'
 
                 # Atom site isotropic ADP
-                atom_site['B_iso_or_equiv']['header'] = 'Biso'
-                atom_site['B_iso_or_equiv']['tooltip'] = 'Isotropic atomic displacement parameter, or equivalent isotropic atomic displacement parameter, B(equiv), in angstroms squared.'
-                atom_site['B_iso_or_equiv']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_B_iso_or_equiv.html'
+                #atom_site['B_iso_or_equiv']['header'] = 'Biso'
+                #atom_site['B_iso_or_equiv']['tooltip'] = 'Isotropic atomic displacement parameter, or equivalent isotropic atomic displacement parameter, B(equiv), in angstroms squared.'
+                #atom_site['B_iso_or_equiv']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_B_iso_or_equiv.html'
+                atom_site['U_iso_or_equiv']['header'] = 'Uiso'
+                atom_site['U_iso_or_equiv']['tooltip'] = 'Isotropic atomic displacement parameter, or equivalent isotropic atomic displacement parameter, U(equiv), in angstroms squared.'
+                atom_site['U_iso_or_equiv']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_U_iso_or_equiv.html'
 
                 # Atom site anisotropic ADP
                 if 'u_11' in atom_site.keys():
@@ -479,7 +482,7 @@ class CryspyCalculator(QObject):
                 project_atom_site['adp_type'] = self._createProjDictFromObj(calculator_atom_site.adp_type[i])
 
                 # Atom site isotropic ADP
-                project_atom_site['B_iso_or_equiv'] = self._createProjDictFromObj(calculator_atom_site.b_iso_or_equiv[i])
+                project_atom_site['U_iso_or_equiv'] = self._createProjDictFromObj(calculator_atom_site.u_iso_or_equiv[i])
 
             # Atom site anisotropic ADP
             if calculator_phase.atom_site_aniso is not None:
@@ -578,21 +581,26 @@ class CryspyCalculator(QObject):
 
             # Measured data points
             logging.info("measured data points: start")
+            #logging.info(calculator_experiment.meas)
             x_obs = np.array(calculator_experiment.meas.ttheta)
-            y_obs_up = np.array(calculator_experiment.meas.intensity_up)
-            sy_obs_up = np.array(calculator_experiment.meas.intensity_up_sigma)
-            y_obs_down = np.array(calculator_experiment.meas.intensity_down)
-            sy_obs_down = np.array(calculator_experiment.meas.intensity_down_sigma)
-            y_obs = y_obs_up + y_obs_down
-            sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down))
+            if calculator_experiment.meas.intensity[0] is not None:
+                y_obs =  np.array(calculator_experiment.meas.intensity)
+                sy_obs =  np.array(calculator_experiment.meas.intensity_sigma)
+            elif calculator_experiment.meas.intensity_up[0] is not None:
+                y_obs_up = np.array(calculator_experiment.meas.intensity_up)
+                sy_obs_up = np.array(calculator_experiment.meas.intensity_up_sigma)
+                y_obs_down = np.array(calculator_experiment.meas.intensity_down)
+                sy_obs_down = np.array(calculator_experiment.meas.intensity_down_sigma)
+                y_obs = y_obs_up + y_obs_down
+                sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down))
             y_obs_upper = y_obs + sy_obs
             y_obs_lower = y_obs - sy_obs
             self._experiments_dict[calculator_experiment_name]['measured_pattern'] = {
                 'x': x_obs.tolist(),
-                'y_obs_up': y_obs_up.tolist(),
-                'sy_obs_up': sy_obs_up.tolist(),
-                'y_obs_down': y_obs_down.tolist(),
-                'sy_obs_down': sy_obs_down.tolist(),
+                #'y_obs_up': y_obs_up.tolist(),
+                #'sy_obs_up': sy_obs_up.tolist(),
+                #'y_obs_down': y_obs_down.tolist(),
+                #'sy_obs_down': sy_obs_down.tolist(),
                 'y_obs_upper': y_obs_upper.tolist(),
                 'y_obs_lower': y_obs_lower.tolist(),
             }
@@ -603,18 +611,21 @@ class CryspyCalculator(QObject):
 
     def setCalculationsDictFromCryspyObj(self):
         """Set calculated data (depends on phases and experiments from above)"""
+
         self._calculations_dict.clear()
 
-        for experiment in self._cryspy_obj.experiments:
+        for calculator_experiment in self._cryspy_obj.experiments:
+            calculator_experiment_name = calculator_experiment.data_name
+            project_experiment = self._calculations_dict[calculator_experiment_name] = {}
 
             # Experiment label
-            self._calculations_dict[experiment.data_name] = {}
+            self._calculations_dict[calculator_experiment_name] = {}
 
             # Calculated chi squared and number of data points used for refinement
             logging.info("calc_chi_sq start") # profiling
             chi_sq = 0.0
             n_res = 1
-            chi_sq, n_res = experiment.calc_chi_sq(self._cryspy_obj.crystals)
+            chi_sq, n_res = calculator_experiment.calc_chi_sq(self._cryspy_obj.crystals)
             logging.info("calc_chi_sq end") # profiling
 
             self.final_chi_square = chi_sq / n_res
@@ -633,14 +644,14 @@ class CryspyCalculator(QObject):
 
             # Calculated data
             logging.info("calc_profile start") # profiling
-            calculated_pattern, bragg_peaks, _ = experiment.calc_profile(np.array(experiment.meas.ttheta), self._cryspy_obj.crystals)
+            calculated_pattern, bragg_peaks, _ = calculator_experiment.calc_profile(np.array(calculator_experiment.meas.ttheta), self._cryspy_obj.crystals)
             logging.info("calc_profile end") # profiling
 
             # Bragg peaks
-            offset = self._experiments_dict[experiment.data_name]['offset']['value']
-            self._calculations_dict[experiment.data_name]['bragg_peaks'] = {}
+            offset = self._experiments_dict[calculator_experiment_name]['offset']['value']
+            self._calculations_dict[calculator_experiment_name]['bragg_peaks'] = {}
             for index, crystal in enumerate(self._cryspy_obj.crystals):
-                self._calculations_dict[experiment.data_name]['bragg_peaks'][crystal.data_name] = {
+                self._calculations_dict[calculator_experiment_name]['bragg_peaks'][crystal.data_name] = {
                     'h': bragg_peaks[index].index_h,
                     'k': bragg_peaks[index].index_k,
                     'l': bragg_peaks[index].index_l,
@@ -649,21 +660,30 @@ class CryspyCalculator(QObject):
 
             # Calculated diffraction pattern
             logging.info("calculated diffraction pattern: start")
+            #logging.info(calculated_pattern)
             x_calc = np.array(calculated_pattern.ttheta)
-            y_obs_up = np.array(experiment.meas.intensity_up)
-            sy_obs_up = np.array(experiment.meas.intensity_up_sigma)
-            y_obs_down = np.array(experiment.meas.intensity_down)
-            sy_obs_down = np.array(experiment.meas.intensity_down_sigma)
-            y_obs = y_obs_up + y_obs_down
-            sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down))
+            if calculator_experiment.meas.intensity[0] is not None:
+                y_obs =  np.array(calculator_experiment.meas.intensity)
+                sy_obs =  np.array(calculator_experiment.meas.intensity_sigma)
+                ###y_calc = np.array(calculated_pattern.intensity_total)
+                y_calc_up = np.array(calculated_pattern.intensity_up_total)
+                ###y_calc_down = np.array(calculated_pattern.intensity_down_total)
+                y_calc = y_calc_up ###+ y_calc_down
+            elif calculator_experiment.meas.intensity_up[0] is not None:
+                y_obs_up = np.array(calculator_experiment.meas.intensity_up)
+                sy_obs_up = np.array(calculator_experiment.meas.intensity_up_sigma)
+                y_obs_down = np.array(calculator_experiment.meas.intensity_down)
+                sy_obs_down = np.array(calculator_experiment.meas.intensity_down_sigma)
+                y_obs = y_obs_up + y_obs_down
+                sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down))
+                y_calc_up = np.array(calculated_pattern.intensity_up_total)
+                y_calc_down = np.array(calculated_pattern.intensity_down_total)
+                y_calc = y_calc_up + y_calc_down
             y_obs_upper = y_obs + sy_obs
             y_obs_lower = y_obs - sy_obs
-            y_calc_up = np.array(calculated_pattern.intensity_up_total)
-            y_calc_down = np.array(calculated_pattern.intensity_down_total)
-            y_calc = y_calc_up + y_calc_down
             y_diff_upper = y_obs + sy_obs - y_calc
             y_diff_lower = y_obs - sy_obs - y_calc
-            self._calculations_dict[experiment.data_name]['calculated_pattern'] = {
+            self._calculations_dict[calculator_experiment_name]['calculated_pattern'] = {
                 'x': x_calc.tolist(),
                 'y_calc': y_calc.tolist(),
                 'y_diff_lower': y_diff_lower.tolist(),
@@ -672,15 +692,16 @@ class CryspyCalculator(QObject):
             logging.info("calculated diffraction pattern: end")
 
             # Calculated data limits
-            # !!!!!!!!!!
-            self._calculations_dict[experiment.data_name]['limits'] = {}
-            self._calculations_dict[experiment.data_name]['limits']['main'] = {
+            self._calculations_dict[calculator_experiment_name]['limits'] = {}
+            self._calculations_dict[calculator_experiment_name]['limits']['main'] = {
                 'x_min': np.amin(x_calc).item(),
                 'x_max': np.amax(x_calc).item(),
-                'y_min': np.amin([np.amin(y_calc_down), np.amin(y_obs_lower)]).item(),
-                'y_max': np.amax([np.amax(y_calc_up), np.amax(y_obs_upper)]).item()
+                #'y_min': np.amin([np.amin(y_calc_down), np.amin(y_obs_lower)]).item(),
+                #'y_max': np.amax([np.amax(y_calc_up), np.amax(y_obs_upper)]).item()
+                'y_min': np.amin([np.amin(y_calc), np.amin(y_obs_lower)]).item(),
+                'y_max': np.amax([np.amax(y_calc), np.amax(y_obs_upper)]).item()
                 }
-            self._calculations_dict[experiment.data_name]['limits']['difference'] = {
+            self._calculations_dict[calculator_experiment_name]['limits']['difference'] = {
                 'y_min': np.amin(y_diff_lower).item(),
                 'y_max': np.amax(y_diff_upper).item()
                 }
@@ -747,7 +768,7 @@ class CryspyCalculator(QObject):
                 self._setCalculatorObjFromProjectDict(calculator_atom_site.occupancy[i], project_atom_site['occupancy'])
 
                 # Atom site isotropic ADP
-                self._setCalculatorObjFromProjectDict(calculator_atom_site.b_iso_or_equiv[i], project_atom_site['B_iso_or_equiv'])
+                self._setCalculatorObjFromProjectDict(calculator_atom_site.u_iso_or_equiv[i], project_atom_site['U_iso_or_equiv'])
 
             # Atom site anisotropic ADP
             if calculator_phase.atom_site_aniso is not None:
