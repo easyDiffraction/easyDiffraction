@@ -3,7 +3,7 @@
  
 CRYSTAL
 TITLE
-   PbSO4 D1A(ILL),Rietveld Round Robin, R.J. Hill,JApC 25,589(1992)
+   PbSO4 D1A(ILL), Rietveld Round Robin, R.J. Hill, JApC 25, 589 (1992)
  
 IMPORT_STRUCTURE
 pbso4.cif
@@ -12,10 +12,9 @@ IMPORT_DENSITY 1
 +1.000000E+000 pbso4.pgrid
  
 BOUND
- -0.25 1.25 -0.15 1.15 -0.15 1.15                                           
+    -0.1      1.1      -0.1      1.1      -0.1     1.1 
   0   0   0   0  0
 SBOND
-  1  S   O   0 2.2  0  1  0  0  1
   0 0 0 0
  
 STYLE
