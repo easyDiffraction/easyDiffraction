@@ -436,6 +436,11 @@ class CryspyCalculator(QObject):
 
         self._phases_dict.clear()
 
+        if not isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi):
+            return
+
+        self._cryspy_obj.apply_constraint()
+
         for calculator_phase in self._cryspy_obj.crystals:
             calculator_phase_name = calculator_phase.data_name
             project_phase = self._phases_dict[calculator_phase_name] = {}
@@ -708,7 +713,6 @@ class CryspyCalculator(QObject):
 
     def setProjectDictFromCryspyObj(self):
         """Combine all the data to one project dictionary"""
-        self._cryspy_obj.apply_constraint()
         self.setAppDict()
         self.setCalculatorDict()
         self.setInfoDict()
