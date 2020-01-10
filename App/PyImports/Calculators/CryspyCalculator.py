@@ -93,16 +93,14 @@ class CryspyCalculator(QObject):
         new_phase_name = phases_rcif_content[data_segment+data_segment_length:end_loc].strip()
 
         experiment_segment = ''
-        if len(self._cryspy_obj.experiments) > 0:
+        if isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi) and len(self._cryspy_obj.experiments) > 0:
+            #
             experiment_segment = self._cryspy_obj.experiments[0].to_cif
-
-        # Concatenate the corrected experiment and the new CIF
-        rcif_content = rcif_content + "\n" + experiment_segment
-
-        # This will update the CrysPy object
-        self._cryspy_obj.from_cif(rcif_content)
-
-        if len(self._cryspy_obj.experiments) > 0:
+            # Concatenate the corrected experiment and the new CIF
+            rcif_content = rcif_content + "\n" + experiment_segment
+            # This will update the CrysPy object
+            self._cryspy_obj.from_cif(rcif_content)
+            #
             self._cryspy_obj.experiments[0]._Pd__phase._PdPhase__pd_phase_label[0] = new_phase_name
 
         # This will re-create all local directories
@@ -194,9 +192,9 @@ class CryspyCalculator(QObject):
         end_loc = data_segment + phase_segment[data_segment:].find('\n')
         self._phase_name = phase_segment[data_segment+data_keyword_length:end_loc].strip()
 
-        return
-
     def writeMainCif(self, saveDir):
+        if not isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi):
+            return
         main_block = self._main_rcif
         if len(self._cryspy_obj.crystals) > 0:
             main_block["_phases"].value = 'phases.cif'
@@ -205,6 +203,8 @@ class CryspyCalculator(QObject):
         main_block.to_file(os.path.join(saveDir, 'main.cif'))
 
     def writePhaseCif(self, saveDir):
+        if not isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi):
+            return
         phases_block = pycifstar.Global()
         # TODO write output for multiple phases
         if len(self._cryspy_obj.crystals) > 0:
@@ -212,6 +212,8 @@ class CryspyCalculator(QObject):
         phases_block.to_file(os.path.join(saveDir, 'phases.cif'))
 
     def writeExpCif(self, saveDir):
+        if not isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi):
+            return
         exp_block = pycifstar.Global()
         if len(self._cryspy_obj._RhoChi__experiments) > 0:
             exp_block.take_from_string(self._cryspy_obj._RhoChi__experiments[0].to_cif)
