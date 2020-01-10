@@ -434,10 +434,10 @@ class CryspyCalculator(QObject):
     def setPhasesDictFromCryspyObj(self):
         """Set phases (sample model tab in GUI)"""
 
-        self._phases_dict.clear()
-
         if not isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi):
             return
+
+        self._phases_dict.clear()
 
         self._cryspy_obj.apply_constraint()
 
@@ -550,6 +550,9 @@ class CryspyCalculator(QObject):
 
     def setExperimentsDictFromCryspyObj(self):
         """Set experiments (Experimental data tab in GUI)"""
+
+        if not isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi):
+            return
 
         self._experiments_dict.clear()
 
