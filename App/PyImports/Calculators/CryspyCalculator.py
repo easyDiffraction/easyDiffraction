@@ -592,28 +592,29 @@ class CryspyCalculator(QObject):
             # Measured data points
             logging.info("measured data points: start")
             #logging.info(calculator_experiment.meas)
+            measured_pattern = self._experiments_dict[calculator_experiment_name]['measured_pattern'] = {}
             x_obs = np.array(calculator_experiment.meas.ttheta)
+            measured_pattern['x'] = x_obs.tolist()
             if calculator_experiment.meas.intensity[0] is not None:
                 y_obs =  np.array(calculator_experiment.meas.intensity)
                 sy_obs =  np.array(calculator_experiment.meas.intensity_sigma)
+                measured_pattern['y_obs'] = y_obs.tolist()
+                measured_pattern['sy_obs'] = sy_obs.tolist()
             elif calculator_experiment.meas.intensity_up[0] is not None:
                 y_obs_up = np.array(calculator_experiment.meas.intensity_up)
                 sy_obs_up = np.array(calculator_experiment.meas.intensity_up_sigma)
                 y_obs_down = np.array(calculator_experiment.meas.intensity_down)
                 sy_obs_down = np.array(calculator_experiment.meas.intensity_down_sigma)
+                measured_pattern['y_obs_up'] = y_obs_up.tolist()
+                measured_pattern['sy_obs_up'] = sy_obs_up.tolist()
+                measured_pattern['y_obs_down'] = y_obs_down.tolist()
+                measured_pattern['sy_obs_down'] = sy_obs_down.tolist()
                 y_obs = y_obs_up + y_obs_down
                 sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down))
             y_obs_upper = y_obs + sy_obs
             y_obs_lower = y_obs - sy_obs
-            self._experiments_dict[calculator_experiment_name]['measured_pattern'] = {
-                'x': x_obs.tolist(),
-                #'y_obs_up': y_obs_up.tolist(),
-                #'sy_obs_up': sy_obs_up.tolist(),
-                #'y_obs_down': y_obs_down.tolist(),
-                #'sy_obs_down': sy_obs_down.tolist(),
-                'y_obs_upper': y_obs_upper.tolist(),
-                'y_obs_lower': y_obs_lower.tolist(),
-            }
+            measured_pattern['y_obs_upper'] = y_obs_upper.tolist()
+            measured_pattern['y_obs_lower'] = y_obs_lower.tolist()
             logging.info("measured data points: end")
 
         self._addExperimentsDescription()
@@ -892,9 +893,7 @@ class CryspyCalculator(QObject):
         phases = {}
         if isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi):
             if len(self._cryspy_obj.experiments) > 0:
-                logging.info(type(self._cryspy_obj.experiments))
-                logging.info(type(self._cryspy_obj.experiments[0]))
-                logging.info(self._cryspy_obj.experiments[0].to_cif())
+                ##logging.info(self._cryspy_obj.experiments[0].to_cif())
                 #experiments = "data_" + self._cryspy_obj.experiments[0].data_name + "\n" + self._cryspy_obj.experiments[0].params_to_cif + "\n" + self._cryspy_obj.experiments[0].data_to_cif # maybe meas_to_cif
                 #calculations = self._cryspy_obj.experiments[0].calc_to_cif
                 #experiments = '' # temporarily disable, because not implemented yet in cryspy 0.2.0

@@ -75,6 +75,7 @@ class Proxy(QObject):
         self._experiment_rcif_path = self.project_control.experiment_rcif_path
         self._calculator.updateExps(self._experiment_rcif_path)
         self._measured_data_series.updateSeries(self._calculator)
+        self._measured_data_model.setCalculator(self._calculator)
         self._file_structure_model.setCalculator(self._calculator)
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
@@ -96,6 +97,7 @@ class Proxy(QObject):
                 return
         #
         self._measured_data_series.updateSeries(self._calculator)
+        self._measured_data_model.setCalculator(self._calculator)
         self._calculated_data_model.setCalculator(self._calculator)
         self._calculated_data_series.updateSeries(self._calculator) #---#
         self._bragg_peaks_model.setCalculator(self._calculator)
