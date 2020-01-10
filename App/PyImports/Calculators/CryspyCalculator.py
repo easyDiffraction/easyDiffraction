@@ -620,6 +620,9 @@ class CryspyCalculator(QObject):
     def setCalculationsDictFromCryspyObj(self):
         """Set calculated data (depends on phases and experiments from above)"""
 
+        if not isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi):
+            return
+
         self._calculations_dict.clear()
 
         for calculator_experiment in self._cryspy_obj.experiments:
@@ -885,13 +888,14 @@ class CryspyCalculator(QObject):
         experiments = ""
         calculations = ""
         phases = ""
-        if len(self._cryspy_obj.experiments) > 0:
-            #experiments = "data_" + self._cryspy_obj.experiments[0].data_name + "\n" + self._cryspy_obj.experiments[0].params_to_cif + "\n" + self._cryspy_obj.experiments[0].data_to_cif # maybe meas_to_cif
-            #calculations = self._cryspy_obj.experiments[0].calc_to_cif
-            experiments = '' # temporarily disable, because not implemented yet in cryspy 0.2.0
-            calculations = '' # temporarily disable, because not implemented yet in cryspy 0.2.0
-        if len(self._cryspy_obj.crystals) > 0:
-            phases = self._cryspy_obj.crystals[0].to_cif()
+        if isinstance(self._cryspy_obj, cryspy.scripts.cl_rhochi.RhoChi):
+            if len(self._cryspy_obj.experiments) > 0:
+                #experiments = "data_" + self._cryspy_obj.experiments[0].data_name + "\n" + self._cryspy_obj.experiments[0].params_to_cif + "\n" + self._cryspy_obj.experiments[0].data_to_cif # maybe meas_to_cif
+                #calculations = self._cryspy_obj.experiments[0].calc_to_cif
+                experiments = '' # temporarily disable, because not implemented yet in cryspy 0.2.0
+                calculations = '' # temporarily disable, because not implemented yet in cryspy 0.2.0
+            if len(self._cryspy_obj.crystals) > 0:
+                phases = self._cryspy_obj.crystals[0].to_cif()
         return {
             'phases': phases,
             'experiments': experiments,
