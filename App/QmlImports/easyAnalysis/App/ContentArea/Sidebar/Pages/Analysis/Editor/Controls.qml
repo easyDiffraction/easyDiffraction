@@ -52,46 +52,6 @@ ColumnLayout {
     /////////
     // Spacer
     /////////
-
     Item { Layout.fillHeight: true }
-
-    // Groupbox
-
-    GenericAppElements.FlowButtons {
-        documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.5.-analysis"
-        goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
-            text: "Sample Model"
-            ToolTip.text: qsTr("Go to the previous step: Sample model")
-            onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
-            }
-            GenericAppElements.GuideWindow {
-                message: "Click here to go to the previous step: Sample Model.\n\nAlternatively, you can click on the 'Sample Model' button in toolbar."
-                position: "top"
-                guideCurrentIndex: 4
-                toolbarCurrentIndex: Generic.Variables.AnalysisIndex
-                guidesCount: Generic.Variables.AnalysisGuidesCount
-            }
-        }
-        goNextButton: GenericAppContentAreaButtons.GoNext {
-            text: "Summary"
-            enabled: proxy.refinementDone
-            highlighted: proxy.refinementDone
-            ToolTip.text: qsTr("Go to the next step: Summary")
-            onClicked: {
-                Generic.Variables.analysisPageFinished = true
-                Generic.Variables.summaryPageFinished = true
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
-            }
-            GenericAppElements.GuideWindow {
-                message: "Click here to go to the next step: Summary.\n\nThis button will be enabled after fitting is done."
-                position: "top"
-                guideCurrentIndex: 5
-                toolbarCurrentIndex: Generic.Variables.AnalysisIndex
-                guidesCount: Generic.Variables.AnalysisGuidesCount
-            }
-        }
-    }
-
 }
 
