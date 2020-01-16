@@ -103,7 +103,6 @@ ColumnLayout {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
                 }
             }
-            GenericAppContentAreaButtons.SaveState {}
             GenericAppContentAreaButtons.Help {}
             GenericAppContentAreaButtons.Bug {}
         }

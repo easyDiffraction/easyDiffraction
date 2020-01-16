@@ -8,7 +8,7 @@ import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 GenericAppContentArea.Button {
     id: button
 
-    enabled: false // Disable until properly implemented
+    enabled: projectManager.validSaveState
 
     Layout.fillWidth: false
     implicitWidth: implicitHeight
@@ -30,7 +30,7 @@ GenericAppContentArea.Button {
     }
 
     background: Rectangle {
-        implicitHeight: Generic.Style.buttonHeight
+        implicitHeight: Generic.Style.toolbarButtonHeight
         color: backgroundColor()
         border.color: borderColor()
         radius: Generic.Style.toolbarButtonRadius
@@ -52,7 +52,7 @@ GenericAppContentArea.Button {
 
     function backgroundColor() {
         if (!button.enabled)
-            return Generic.Style.buttonBkgDisabledColor
+            return Generic.Style.toolbarButtonBkgDisabledColor
         var color1 = button.checked ? "salmon" : Generic.Style.buttonBkgEnabledColor
         var color2 = Generic.Style.buttonBkgBlendColor
         var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0

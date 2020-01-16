@@ -20,6 +20,8 @@ TabButton {
 
     ToolTip.visible: ToolTip.text !== "" ? hovered : false
 
+    width: Generic.Style.toolbarButtonWidth
+
     contentItem: IconLabel {
         id: buttonIcon
         spacing: button.spacing
@@ -69,7 +71,7 @@ TabButton {
 
     function backgroundColor() {
         if (!button.enabled)
-            return Generic.Style.buttonBkgDisabledColor
+            return Generic.Style.toolbarButtonBkgDisabledColor
         var color1 = button.checked ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgFinishedColor
         var color2 = Generic.Style.buttonBkgBlendColor
         var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0

@@ -5,81 +5,91 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyAnalysis.App.Toolbar.Buttons 1.0 as GenericAppToolbarButtons
+import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout{
     id: main
     spacing: 0
-    Layout.fillWidth: true
-    Layout.preferredHeight: Generic.Style.toolbarHeight
 
-    TabBar {
-        id: tabBar
-        spacing: Generic.Style.toolbarSpacing
-        Layout.fillWidth: true
-        Layout.leftMargin: Generic.Style.toolbarSpacing
-        Layout.rightMargin: Generic.Style.toolbarSpacing
-        background: Rectangle { color: "transparent" }
+    Rectangle {
+      Layout.fillWidth: true
+      height: Generic.Style.toolbarHeight
+      color: "#ddd"
 
-        currentIndex: Generic.Variables.toolbarCurrentIndex
+      TabBar {
+          id: tabBar
+          anchors.centerIn: parent
+          spacing: Generic.Style.toolbarSpacing
+          background: Rectangle { color: "transparent" }
 
-        onCurrentIndexChanged: Generic.Variables.guideCurrentIndex = 0
+          currentIndex: Generic.Variables.toolbarCurrentIndex
 
-        GenericAppToolbarButtons.Home {
-            onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
-        }
+          onCurrentIndexChanged: Generic.Variables.guideCurrentIndex = 0
 
-        // -------
-        ///GenericAppToolbar.Spacer { }
-        // -------
+          GenericAppToolbarButtons.Home {
+              onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
+          }
 
-        GenericAppToolbarButtons.SampleModel {
-            enabled: Specific.Variables.projectOpened && Generic.Variables.homePageFinished
-            onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleModelIndex
-        }
-        GenericAppToolbarButtons.ExperimentalData {
-            enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
-            onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
-            GenericAppElements.GuideWindow {
-                message: "This is a toolbar button of the tab with\ninformation about experimental data."
-                position: "bottom"
-                guideCurrentIndex: 6
-                toolbarCurrentIndex: Generic.Variables.HomeIndex
-                guidesCount: Generic.Variables.HomeGuidesCount
-            }
-        }
-        //GenericAppToolbarButtons.InstrumentModel {
-        //    enabled: Generic.Variables.dataPageFinished
-        //    onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.InstrumentModelIndex
-        //}
+          // -------
+          ///GenericAppToolbar.Spacer { }
+          // -------
 
-        // -------
-        ///GenericAppToolbar.Spacer {}
-        // -------
+          GenericAppToolbarButtons.SampleModel {
+              enabled: Specific.Variables.projectOpened && Generic.Variables.homePageFinished
+              onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleModelIndex
+          }
+          GenericAppToolbarButtons.ExperimentalData {
+              enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
+              onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+              GenericAppElements.GuideWindow {
+                  message: "This is a toolbar button of the tab with\ninformation about experimental data."
+                  position: "bottom"
+                  guideCurrentIndex: 6
+                  toolbarCurrentIndex: Generic.Variables.HomeIndex
+                  guidesCount: Generic.Variables.HomeGuidesCount
+              }
+          }
+          //GenericAppToolbarButtons.InstrumentModel {
+          //    enabled: Generic.Variables.dataPageFinished
+          //    onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.InstrumentModelIndex
+          //}
 
-        //GenericAppToolbarButtons.Linking {
-        //    enabled: Generic.Variables.samplePageFinished
-        //    onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.LinkingIndex
-        //}
+          // -------
+          ///GenericAppToolbar.Spacer {}
+          // -------
 
-        // -------
-        ///GenericAppToolbar.Spacer {}
-        // -------
+          //GenericAppToolbarButtons.Linking {
+          //    enabled: Generic.Variables.samplePageFinished
+          //    onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.LinkingIndex
+          //}
 
-        GenericAppToolbarButtons.Analysis {
-            enabled: Specific.Variables.projectOpened && Generic.Variables.dataPageFinished
-            onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
-        }
+          // -------
+          ///GenericAppToolbar.Spacer {}
+          // -------
 
-        // -------
-        ///GenericAppToolbar.Spacer {}
-        // -------
+          GenericAppToolbarButtons.Analysis {
+              enabled: Specific.Variables.projectOpened && Generic.Variables.dataPageFinished
+              onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
+          }
 
-        GenericAppToolbarButtons.Summary {
-            enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && proxy.refinementDone
-            onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
-        }
+          // -------
+          ///GenericAppToolbar.Spacer {}
+          // -------
+
+          GenericAppToolbarButtons.Summary {
+              enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && proxy.refinementDone
+              onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
+          }
+      }
+
+      GenericAppContentAreaButtons.SaveState {
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.margins: Generic.Style.toolbarSpacing
+      }
+
     }
 
-    GenericAppElements.HorizontalBorder {}
+    GenericAppElements.HorizontalBorder { color: "#d2d2d2" }
 }
