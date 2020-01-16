@@ -64,6 +64,7 @@ class CalculatedDataModel(BaseModel):
             for colum_index, (data_id, data_list) in enumerate(experiment_dict['calculated_pattern'].items()):
                 index = self._headers_model.index(0, colum_index)
                 self._headers_model.setData(index, data_id, Qt.DisplayRole)
+
                 for row_index, value in enumerate(data_list):
                     index = self._model.index(row_index, colum_index)
                     self._model.setData(index, value, Qt.DisplayRole)
@@ -73,7 +74,3 @@ class CalculatedDataModel(BaseModel):
             self._model.layoutChanged.emit()
             self._headers_model.layoutChanged.emit()
         logging.info("+++++++++++++++++++++++++ setData end") # profiling
-
-    def asHeadersModel(self):
-        """Return headers model."""
-        return self._headers_model

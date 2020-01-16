@@ -52,6 +52,7 @@ class MeasuredDataModel(BaseModel):
             row_count = len(list(experiment_dict['measured_pattern'].items())[0][1])
             self._model.setColumnCount(column_count)
             self._model.setRowCount(row_count)
+            self._headers_model.clear()
             self._headers_model.setColumnCount(column_count)
             self._headers_model.setRowCount(1)
             #
@@ -61,6 +62,7 @@ class MeasuredDataModel(BaseModel):
                 for row_index, value in enumerate(data_list):
                     index = self._model.index(row_index, colum_index)
                     self._model.setData(index, value, Qt.DisplayRole)
+
             #
             self._model.blockSignals(False)
             self._headers_model.blockSignals(False)
