@@ -17,7 +17,7 @@ class FitablesModel(BaseModel):
         self._calculator = None
         self._model = QStandardItemModel()
         # set role names
-        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine']
+        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'units']
         self._roles_list = []
         self._roles_dict = {}
         self._setRolesListAndDict()

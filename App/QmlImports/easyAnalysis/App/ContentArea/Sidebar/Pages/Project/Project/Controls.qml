@@ -43,7 +43,7 @@ ColumnLayout {
 
             GenericAppContentAreaButtons.Open {
                 id: openButton
-                text: qsTr("Open another project")
+                text: qsTr("Open an existing project")
                 enabled: !proxy.refinementRunning
 
                 onClicked: fileDialogLoadProject.open()

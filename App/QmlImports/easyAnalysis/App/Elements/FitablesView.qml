@@ -24,17 +24,19 @@ Column {
         const numberColumnWidth = 40
         const refineColumnWidth = cellHeight * 1.5
         const flexibleColumnsWidth = allColumnWidth - numberColumnWidth - refineColumnWidth
-        const flexibleColumnsCount = 3
+        const flexibleColumnsCount = 4
         if (column === 1)
             return numberColumnWidth
         else if (column === 2)
-            return 2 * flexibleColumnsWidth / flexibleColumnsCount
+            return 2.7 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 3)
             return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 4)
             return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 5)
             return refineColumnWidth
+        else if (column === 6)
+            return 0.3 * flexibleColumnsWidth / flexibleColumnsCount
         else return 0
     }
 
@@ -94,6 +96,15 @@ Column {
                             text: "Value"
                         }
                         Text {
+                            width: cellWidthProvider(6)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignLeft
+                            leftPadding: font.pixelSize
+                            rightPadding: leftPadding
+                            text: ""
+                        }
+                        Text {
                             width: cellWidthProvider(4)
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
@@ -134,6 +145,9 @@ Column {
                     function foregroundColor() {
                         return index === contentListView.currentIndex ? highlightedRowForegroundColor : rowForegroundColor
                     }
+                    function foregroundColor2() {
+                        return index === contentListView.currentIndex ? highlightedRowForegroundColor : "#999"
+                    }
                     function backgroundColor() {
                         if (index === contentListView.currentIndex)
                             return highlightedRowBackgroundColor
@@ -165,7 +179,6 @@ Column {
                             color: foregroundColor()
                         }
                         TextInput {
-                            id: qwe
                             width: cellWidthProvider(3)
                             height: parent.height
                             enabled: !proxy.refinementRunning
@@ -179,6 +192,16 @@ Column {
                                 valueEdit = text
                                 slider.value = text
                             }
+                        }
+                        Text {
+                            width: cellWidthProvider(6)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignLeft
+                            leftPadding: font.pixelSize
+                            rightPadding: leftPadding
+                            text: units
+                            color: foregroundColor2()
                         }
                         Text {
                             width: cellWidthProvider(4)

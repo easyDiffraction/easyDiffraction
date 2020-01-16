@@ -282,21 +282,27 @@ class CryspyCalculator(QObject):
             # Unit cell parameters
             cell = phase['cell']
             cell['length_a']['header'] = 'a (Å)'
+            cell['length_a']['units'] = 'Å'
             cell['length_a']['tooltip'] = 'Unit-cell length of the selected structure in angstroms.'
             cell['length_a']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_length_.html'
             cell['length_b']['header'] = 'b (Å)'
+            cell['length_b']['units'] = 'Å'
             cell['length_b']['tooltip'] = cell['length_a']['tooltip']
             cell['length_b']['url'] = cell['length_a']['url']
             cell['length_c']['header'] = 'c (Å)'
+            cell['length_c']['units'] = 'Å'
             cell['length_c']['tooltip'] = cell['length_a']['tooltip']
             cell['length_c']['url'] = cell['length_a']['url']
             cell['angle_alpha']['header'] = 'alpha (°)'
+            cell['angle_alpha']['units'] = '°'
             cell['angle_alpha']['tooltip'] = 'Unit-cell angle of the selected structure in degrees.'
             cell['angle_alpha']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Icell_angle_.html'
             cell['angle_beta']['header'] = 'beta (°)'
+            cell['angle_beta']['units'] = '°'
             cell['angle_beta']['tooltip'] = cell['angle_alpha']['tooltip']
             cell['angle_beta']['url'] = cell['angle_alpha']['url']
             cell['angle_gamma']['header'] = 'gamma (°)'
+            cell['angle_gamma']['units'] = '°'
             cell['angle_gamma']['tooltip'] = cell['angle_alpha']['tooltip']
             cell['angle_gamma']['url'] = cell['angle_alpha']['url']
 
@@ -314,17 +320,21 @@ class CryspyCalculator(QObject):
 
                 # Atom site coordinates
                 atom_site['fract_x']['header'] = 'x'
+                atom_site['fract_x']['units'] = ''
                 atom_site['fract_x']['tooltip'] = 'Atom-site coordinate as fractions of the unit cell length.'
                 atom_site['fract_x']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_fract_.html'
                 atom_site['fract_y']['header'] = 'y'
+                atom_site['fract_y']['units'] = ''
                 atom_site['fract_y']['tooltip'] = atom_site['fract_x']['tooltip']
                 atom_site['fract_y']['url'] = atom_site['fract_x']['url']
                 atom_site['fract_z']['header'] = 'z'
+                atom_site['fract_z']['units'] = ''
                 atom_site['fract_z']['tooltip'] = atom_site['fract_x']['tooltip']
                 atom_site['fract_z']['url'] = atom_site['fract_x']['url']
 
                 # Atom site occupancy
                 atom_site['occupancy']['header'] = 'Occupancy'
+                atom_site['occupancy']['units'] = ''
                 atom_site['occupancy']['tooltip'] = 'The fraction of the atom type present at this site.'
                 atom_site['occupancy']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_occupancy.html'
 
@@ -338,27 +348,34 @@ class CryspyCalculator(QObject):
                 #atom_site['B_iso_or_equiv']['tooltip'] = 'Isotropic atomic displacement parameter, or equivalent isotropic atomic displacement parameter, B(equiv), in angstroms squared.'
                 #atom_site['B_iso_or_equiv']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_B_iso_or_equiv.html'
                 atom_site['U_iso_or_equiv']['header'] = 'Uiso'
+                atom_site['U_iso_or_equiv']['units'] = 'Å²'
                 atom_site['U_iso_or_equiv']['tooltip'] = 'Isotropic atomic displacement parameter, or equivalent isotropic atomic displacement parameter, U(equiv), in angstroms squared.'
                 atom_site['U_iso_or_equiv']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_U_iso_or_equiv.html'
 
                 # Atom site anisotropic ADP
                 if 'u_11' in atom_site.keys():
                     atom_site['u_11']['header'] = 'U11'
+                    atom_site['u_11']['units'] = 'Å²'
                     atom_site['u_11']['tooltip'] = 'Anisotropic atomic displacement component in angstroms squared.'
                     atom_site['u_11']['url'] = 'https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_aniso_U_.html'
                     atom_site['u_22']['header'] = 'U22'
+                    atom_site['u_11']['units'] = 'Å²'
                     atom_site['u_22']['tooltip'] = atom_site['u_11']['tooltip']
                     atom_site['u_22']['url'] = atom_site['u_11']['url']
                     atom_site['u_33']['header'] = 'U33'
+                    atom_site['u_11']['units'] = 'Å²'
                     atom_site['u_33']['tooltip'] = atom_site['u_11']['tooltip']
                     atom_site['u_33']['url'] = atom_site['u_11']['url']
                     atom_site['u_12']['header'] = 'U12'
+                    atom_site['u_11']['units'] = 'Å²'
                     atom_site['u_12']['tooltip'] = atom_site['u_11']['tooltip']
                     atom_site['u_12']['url'] = atom_site['u_11']['url']
                     atom_site['u_13']['header'] = 'U13'
+                    atom_site['u_11']['units'] = 'Å²'
                     atom_site['u_13']['tooltip'] = atom_site['u_11']['tooltip']
                     atom_site['u_13']['url'] = atom_site['u_11']['url']
                     atom_site['u_23']['header'] = 'U23'
+                    atom_site['u_11']['units'] = 'Å²'
                     atom_site['u_23']['tooltip'] = atom_site['u_11']['tooltip']
                     atom_site['u_23']['url'] = atom_site['u_11']['url']
 
@@ -368,21 +385,27 @@ class CryspyCalculator(QObject):
                     atom_site['chi_type']['tooltip'] = ''
                     atom_site['chi_type']['url'] = ''
                     atom_site['chi_11']['header'] = 'Chi11'
+                    atom_site['chi_11']['units'] = 'μB/T'
                     atom_site['chi_11']['tooltip'] = ''
                     atom_site['chi_11']['url'] = ''
                     atom_site['chi_22']['header'] = 'Chi22'
+                    atom_site['chi_22']['units'] = 'μB/T'
                     atom_site['chi_22']['tooltip'] = atom_site['chi_11']['tooltip']
                     atom_site['chi_22']['url'] = atom_site['chi_11']['url']
                     atom_site['chi_33']['header'] = 'Chi33'
+                    atom_site['chi_33']['units'] = 'μB/T'
                     atom_site['chi_33']['tooltip'] = atom_site['chi_11']['tooltip']
                     atom_site['chi_33']['url'] = atom_site['chi_11']['url']
                     atom_site['chi_12']['header'] = 'Chi12'
+                    atom_site['chi_12']['units'] = 'μB/T'
                     atom_site['chi_12']['tooltip'] = atom_site['chi_11']['tooltip']
                     atom_site['chi_12']['url'] = atom_site['chi_11']['url']
                     atom_site['chi_13']['header'] = 'Chi13'
+                    atom_site['chi_13']['units'] = 'μB/T'
                     atom_site['chi_13']['tooltip'] = atom_site['chi_11']['tooltip']
                     atom_site['chi_13']['url'] = atom_site['chi_11']['url']
                     atom_site['chi_23']['header'] = 'Chi23'
+                    atom_site['chi_23']['units'] = 'μB/T'
                     atom_site['chi_23']['tooltip'] = atom_site['chi_11']['tooltip']
                     atom_site['chi_23']['url'] = atom_site['chi_11']['url']
 
@@ -394,28 +417,35 @@ class CryspyCalculator(QObject):
 
             # Experimental setup
             experiment['wavelength']['header'] = 'Wavelength (Å)'
+            experiment['wavelength']['units'] = 'Å'
             experiment['wavelength']['tooltip'] = ''
             experiment['wavelength']['url'] = ''
             experiment['offset']['header'] = ''
+            experiment['offset']['units'] = '°'
             experiment['offset']['tooltip'] = ''
             experiment['offset']['url'] = ''
 
             # Instrument resolution
             experiment['resolution']['u']['header'] = 'U'
+            experiment['resolution']['u']['units']  = ''
             experiment['resolution']['u']['tooltip'] = ''
             experiment['resolution']['u']['url'] = ''
-            experiment['resolution']['u']['header'] = 'V'
-            experiment['resolution']['u']['tooltip'] = ''
-            experiment['resolution']['u']['url'] = ''
-            experiment['resolution']['u']['header'] = 'W'
-            experiment['resolution']['u']['tooltip'] = ''
-            experiment['resolution']['u']['url'] = ''
-            experiment['resolution']['u']['header'] = 'X'
-            experiment['resolution']['u']['tooltip'] = ''
-            experiment['resolution']['u']['url'] = ''
-            experiment['resolution']['u']['header'] = 'Y'
-            experiment['resolution']['u']['tooltip'] = ''
-            experiment['resolution']['u']['url'] = ''
+            experiment['resolution']['v']['header'] = 'V'
+            experiment['resolution']['v']['units']  = ''
+            experiment['resolution']['v']['tooltip'] = ''
+            experiment['resolution']['v']['url'] = ''
+            experiment['resolution']['w']['header'] = 'W'
+            experiment['resolution']['w']['units']  = ''
+            experiment['resolution']['w']['tooltip'] = ''
+            experiment['resolution']['w']['url'] = ''
+            experiment['resolution']['x']['header'] = 'X'
+            experiment['resolution']['x']['units']  = ''
+            experiment['resolution']['x']['tooltip'] = ''
+            experiment['resolution']['x']['url'] = ''
+            experiment['resolution']['y']['header'] = 'Y'
+            experiment['resolution']['y']['units']  = ''
+            experiment['resolution']['y']['tooltip'] = ''
+            experiment['resolution']['y']['url'] = ''
 
 
     def _createProjDictFromObj(self, obj):
