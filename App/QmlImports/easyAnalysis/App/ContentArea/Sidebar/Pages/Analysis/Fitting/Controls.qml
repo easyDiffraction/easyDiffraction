@@ -35,8 +35,8 @@ ColumnLayout {
             }
 
             // Buttons
-            GenericAppElements.GridLayout {
-                columns: 2
+            GenericAppElements.RowLayout {
+                //columns: 2
 
                 GenericAppContentAreaButtons.PausePlay {
                     id: pausePlayButton
@@ -62,6 +62,16 @@ ColumnLayout {
                 CheckBox { enabled: false; checked: true; text: "Auto-accept" }
                 */
 
+                GenericAppContentAreaButtons.Undo {
+                  onClicked: {
+                    print("Undo button clicked")
+                  }
+                }
+                GenericAppContentAreaButtons.Redo {
+                  onClicked: {
+                    print("Redo button clicked")
+                  }
+                }
             }
         }
     }

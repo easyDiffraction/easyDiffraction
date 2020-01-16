@@ -18,3 +18,5 @@ Clone 1.0 Clone.qml
 Save 1.0 Save.qml
 Open 1.0 Open.qml
 Create 1.0 Create.qml
+Undo 1.0 Undo.qml
+Redo 1.0 Redo.qml
