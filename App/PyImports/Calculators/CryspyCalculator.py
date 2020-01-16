@@ -935,8 +935,8 @@ class CryspyCalculator(QObject):
 
     def refine(self):
         """refinement ..."""
-        scipy_refinement_res = self._cryspy_obj.refine()
-        #logging.info(scipy_refinement_res)
+        refinement_res = self._cryspy_obj.refine()
+        scipy_refinement_res = refinement_res['res']
         self.setProjectDictFromCryspyObj()
         self.projectDictChanged.emit()
         try:
@@ -950,4 +950,8 @@ class CryspyCalculator(QObject):
                 #"final_chi_sq":float(scipy_refinement_res.fun),
             }
         except:
-             return { "refinement_message":"Unknow problems during refinement" }
+            if scipy_refinement_res is None:
+                return { "refinement_message":"No parameters selected for refinement" }
+            else:
+                return { "refinement_message":"Unknow problems during refinement" }
+
