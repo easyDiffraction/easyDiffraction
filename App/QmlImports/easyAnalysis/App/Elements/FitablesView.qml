@@ -28,7 +28,7 @@ Column {
         if (column === 1)
             return numberColumnWidth
         else if (column === 2)
-            return 2.7 * flexibleColumnsWidth / flexibleColumnsCount
+            return 2.6 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 3)
             return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 4)
@@ -36,7 +36,7 @@ Column {
         else if (column === 5)
             return refineColumnWidth
         else if (column === 6)
-            return 0.3 * flexibleColumnsWidth / flexibleColumnsCount
+            return 0.4 * flexibleColumnsWidth / flexibleColumnsCount
         else return 0
     }
 
@@ -67,6 +67,7 @@ Column {
 
                     Row {
                         anchors.fill: parent
+                        spacing: 0
 
                         Text {
                             width: cellWidthProvider(1)
@@ -92,7 +93,7 @@ Column {
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            rightPadding: 0
                             text: "Value"
                         }
                         Text {
@@ -100,8 +101,8 @@ Column {
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignLeft
-                            leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            leftPadding: font.pixelSize * 0.5
+                            rightPadding: font.pixelSize
                             text: ""
                         }
                         Text {
@@ -157,6 +158,7 @@ Column {
 
                     Row {
                         anchors.fill: parent
+                        spacing: 0
 
                         Text {
                             width: cellWidthProvider(1)
@@ -185,7 +187,7 @@ Column {
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            rightPadding: 0
                             text: typeof value === 'number' ? value.toFixed(4) : value
                             color: foregroundColor()
                             onEditingFinished: {
@@ -198,8 +200,8 @@ Column {
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignLeft
-                            leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            leftPadding: font.pixelSize * 0.5
+                            rightPadding: font.pixelSize
                             text: units
                             color: foregroundColor2()
                         }
