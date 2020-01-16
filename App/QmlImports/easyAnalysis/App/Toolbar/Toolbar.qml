@@ -17,6 +17,12 @@ ColumnLayout{
       height: Generic.Style.toolbarHeight
       color: "#ddd"
 
+      GenericAppContentAreaButtons.Home {
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.margins: Generic.Style.toolbarSpacing
+      }
+
       TabBar {
           id: tabBar
           anchors.centerIn: parent
@@ -27,8 +33,8 @@ ColumnLayout{
 
           onCurrentIndexChanged: Generic.Variables.guideCurrentIndex = 0
 
-          GenericAppToolbarButtons.Home {
-              onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
+          GenericAppToolbarButtons.Project {
+              onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
           }
 
           // -------
@@ -46,8 +52,8 @@ ColumnLayout{
                   message: "This is a toolbar button of the tab with\ninformation about experimental data."
                   position: "bottom"
                   guideCurrentIndex: 6
-                  toolbarCurrentIndex: Generic.Variables.HomeIndex
-                  guidesCount: Generic.Variables.HomeGuidesCount
+                  toolbarCurrentIndex: Generic.Variables.ProjectIndex
+                  guidesCount: Generic.Variables.ProjectGuidesCount
               }
           }
           //GenericAppToolbarButtons.InstrumentModel {

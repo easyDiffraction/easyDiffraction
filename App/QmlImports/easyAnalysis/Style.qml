@@ -56,7 +56,7 @@ QtObject {
     readonly property color tableHighlightBorderColor: Qt.lighter(tableHighlightRowColor, 1.2)
 
     // Toolbar
-    readonly property int toolbarButtonWidth: 170
+    readonly property int toolbarButtonWidth: 150
     readonly property int toolbarButtonHeight: 40
     readonly property int toolbarButtonRadius: 4
     readonly property int toolbarSpacerSize: 10
@@ -66,6 +66,8 @@ QtObject {
     readonly property color toolbarBkgColor: "transparent"
 
     readonly property color toolbarButtonBkgDisabledColor: appBkgColor
+    readonly property color toolbarButtonBkgEnabledColor: "#fff"
+    readonly property color toolbarButtonBkgBlendColor: "#e1e1e1"
 
     readonly property color buttonBkgDisabledColor: "#e1e1e1"
     readonly property color buttonBkgEnabledColor: "#e1e1e1"//"#666"

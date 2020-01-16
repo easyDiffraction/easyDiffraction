@@ -37,8 +37,8 @@ Rectangle {
             message: "Brief project details will be shown in the main area."
             position: "right"
             guideCurrentIndex: 1
-            toolbarCurrentIndex: Generic.Variables.HomeIndex
-            guidesCount: Generic.Variables.HomeGuidesCount
+            toolbarCurrentIndex: Generic.Variables.ProjectIndex
+            guidesCount: Generic.Variables.ProjectGuidesCount
         }
     }
 

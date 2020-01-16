@@ -35,8 +35,8 @@ ColumnLayout {
                     message: "Create a new project."
                     position: "left"
                     guideCurrentIndex: 2
-                    toolbarCurrentIndex: Generic.Variables.HomeIndex
-                    guidesCount: Generic.Variables.HomeGuidesCount
+                    toolbarCurrentIndex: Generic.Variables.ProjectIndex
+                    guidesCount: Generic.Variables.ProjectGuidesCount
                 }
                 */
             }
@@ -52,8 +52,8 @@ ColumnLayout {
                     message: "Click here to open existing project."
                     position: "left"
                     guideCurrentIndex: 0
-                    toolbarCurrentIndex: Generic.Variables.HomeIndex
-                    guidesCount: Generic.Variables.HomeGuidesCount
+                    toolbarCurrentIndex: Generic.Variables.ProjectIndex
+                    guidesCount: Generic.Variables.ProjectGuidesCount
                 }
             }
 
@@ -74,8 +74,8 @@ ColumnLayout {
                     message: "Click here to save a project."
                     position: "left"
                     guideCurrentIndex: 0
-                    toolbarCurrentIndex: Generic.Variables.HomeIndex
-                    guidesCount: Generic.Variables.HomeGuidesCount
+                    toolbarCurrentIndex: Generic.Variables.ProjectIndex
+                    guidesCount: Generic.Variables.ProjectGuidesCount
                 }
                 */
 
@@ -262,8 +262,8 @@ ColumnLayout {
             message: "The sidebar groups can be folded and unfolded.\n\nClick on the group name to unfold the group.\n\nDisabled groups are not implemented yet."
             position: "left"
             guideCurrentIndex: 2
-            toolbarCurrentIndex: Generic.Variables.HomeIndex
-            guidesCount: Generic.Variables.HomeGuidesCount
+            toolbarCurrentIndex: Generic.Variables.ProjectIndex
+            guidesCount: Generic.Variables.ProjectGuidesCount
         }
     }
 
@@ -315,8 +315,8 @@ ColumnLayout {
             message: "Application user guides and animated intro\ncan be disabled or enabled here."
             position: "left"
             guideCurrentIndex: 3
-            toolbarCurrentIndex: Generic.Variables.HomeIndex
-            guidesCount: Generic.Variables.HomeGuidesCount
+            toolbarCurrentIndex: Generic.Variables.ProjectIndex
+            guidesCount: Generic.Variables.ProjectGuidesCount
         }
     }
 
@@ -339,8 +339,8 @@ ColumnLayout {
                 message: "Click here to go to the next step: Sample model."
                 position: "top"
                 guideCurrentIndex: 4
-                toolbarCurrentIndex: Generic.Variables.HomeIndex
-                guidesCount: Generic.Variables.HomeGuidesCount
+                toolbarCurrentIndex: Generic.Variables.ProjectIndex
+                guidesCount: Generic.Variables.ProjectGuidesCount
             }
         }
     }

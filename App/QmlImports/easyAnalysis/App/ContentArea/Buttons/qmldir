@@ -10,6 +10,7 @@ Import 1.0 Import.qml
 Remove 1.0 Remove.qml
 RemoveAll 1.0 RemoveAll.qml
 SaveState 1.0 SaveState.qml
+Home 1.0 Home.qml
 ParameterType 1.0 ParameterType.qml
 PausePlay 1.0 PausePlay.qml
 Accept 1.0 Accept.qml

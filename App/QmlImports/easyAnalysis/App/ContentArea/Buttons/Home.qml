@@ -8,16 +8,14 @@ import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 GenericAppContentArea.Button {
     id: button
 
-    enabled: projectManager.validSaveState
-
     Layout.fillWidth: false
     implicitWidth: implicitHeight
 
-    checkable: true
-    checked: false
+    checkable: false
 
-    icon.source: Generic.Variables.thirdPartyIconsPath + "save.svg"
-    ToolTip.text: qsTr("Save current state of the project")
+    icon.source: Generic.Variables.thirdPartyIconsPath + "home.svg"
+
+    ToolTip.text: qsTr("Home page")
 
     contentItem: IconLabel {
         spacing: button.spacing
@@ -26,7 +24,7 @@ GenericAppContentArea.Button {
         icon: button.icon
         text: button.text
         font: button.font
-        color: textColor() //button.enabled ? Generic.Style.buttonTextEnabledColor : Generic.Style.buttonTextDisabledColor
+        color: textColor()
     }
 
     background: Rectangle {
@@ -36,7 +34,9 @@ GenericAppContentArea.Button {
         radius: Generic.Style.toolbarButtonRadius
     }
 
-    onClicked: checked = false
+    onClicked: {
+      print("Home button clicked")
+    }
 
     function iconColor() {
         if (!button.enabled)
@@ -47,17 +47,16 @@ GenericAppContentArea.Button {
     function borderColor() {
         if (!button.enabled)
             return Generic.Style.appBorderColor
-        return button.checked ? "salmon" : Generic.Style.appBorderColor
+        return Generic.Style.appBorderColor
     }
 
     function backgroundColor() {
         if (!button.enabled)
             return Generic.Style.toolbarButtonBkgDisabledColor
-        var color1 = button.checked ? "salmon" : Generic.Style.toolbarButtonBkgEnabledColor
+        var color1 = Generic.Style.toolbarButtonBkgEnabledColor
         var color2 = Generic.Style.toolbarButtonBkgBlendColor
         var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
         return Color.blend(color1, color2, alpha)
     }
 }
-
 

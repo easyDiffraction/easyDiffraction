@@ -4,9 +4,9 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 
 GenericAppToolbar.Button {
-    icon.source: Generic.Variables.thirdPartyIconsPath + "home.svg"
-    text: qsTr("Home")
-    ToolTip.text: qsTr("Home page")
+    icon.source: Generic.Variables.thirdPartyIconsPath + "clipboard-list.svg"
+    text: qsTr("Project")
+    ToolTip.text: qsTr("Project description page")
     //finished: Generic.Variables.homePageFinished
 }
 

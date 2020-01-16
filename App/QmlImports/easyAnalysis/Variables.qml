@@ -33,7 +33,7 @@ QtObject {
     // Content area
     property int toolbarCurrentIndex: -1
     enum ToolbarIndexEnum {
-        HomeIndex = 0,
+        ProjectIndex = 0,
         SampleModelIndex = 1,
         ExperimentalDataIndex = 2,
         //InstrumentModelIndex = 2,
@@ -45,7 +45,7 @@ QtObject {
     // User guides
     property int guideCurrentIndex: 0
     enum GuideCountEnum {
-        HomeGuidesCount = 5,
+        ProjectGuidesCount = 5,
         ExperimentalDataGuidesCount = 7,
         SampleModelGuidesCount = 6,
         AnalysisGuidesCount = 6,
