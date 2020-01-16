@@ -2,7 +2,7 @@ data_pd
 
 _setup_wavelength      0.84
 _setup_field           1.00
-_setup_offset_ttheta -0.385404
+_setup_offset_2theta -0.385404
 
 _diffrn_radiation_polarization -0.87
 _diffrn_radiation_efficiency    1.00
@@ -13,16 +13,16 @@ _pd_instr_resolution_w  0.5763
 _pd_instr_resolution_x  0.0
 _pd_instr_resolution_y  0.0
 
-_range_ttheta_min     4.000
-_range_ttheta_max    80.000
+_range_2theta_min     4.000
+_range_2theta_max    80.000
 
 loop_
-_exclude_ttheta_min
-_exclude_ttheta_max
+_exclude_2theta_min
+_exclude_2theta_max
 0.0 1.0
 
 loop_
-_pd_background_ttheta
+_pd_background_2theta
 _pd_background_intensity
  4.5 256.0
 40.0 158.0
@@ -40,7 +40,7 @@ _chi2_up False
 _chi2_down False
 
 loop_
-_pd_meas_ttheta
+_pd_meas_2theta
 _pd_meas_intensity_up
 _pd_meas_intensity_up_sigma
 _pd_meas_intensity_down

@@ -1,7 +1,7 @@
 data_pd
 
 _setup_wavelength      1.912
-_setup_offset_ttheta  -0.13846
+_setup_offset_2theta  -0.13846
 
 _pd_instr_resolution_u  0.122083
 _pd_instr_resolution_v -0.335931
@@ -10,7 +10,7 @@ _pd_instr_resolution_x  0.0
 _pd_instr_resolution_y  0.148719
 
 loop_
-_pd_background_ttheta
+_pd_background_2theta
 _pd_background_intensity
  11.0000       209.6064
  15.0000       197.7444
@@ -30,7 +30,7 @@ _phase_igsize
 PbSO4 1.1328 0.0
 
 loop_
-_pd_meas_ttheta
+_pd_meas_2theta
 _pd_meas_intensity
 _pd_meas_intensity_sigma
      10.00    220.00     14.83
