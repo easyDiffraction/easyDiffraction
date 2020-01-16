@@ -221,8 +221,8 @@ ColumnLayout {
             }
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
-            text: "Experimental Data"
-            ToolTip.text: qsTr("Go to the next step: Experimental data")
+            text: "Experiment"
+            ToolTip.text: qsTr("Go to the next step: Experiment")
             enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
             highlighted: Specific.Variables.projectOpened
             onClicked: {
@@ -230,7 +230,7 @@ ColumnLayout {
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the next step: Experimental data."
+                message: "Click here to go to the next step: Experiment."
                 position: "top"
                 guideCurrentIndex: 5
                 toolbarCurrentIndex: Generic.Variables.SampleModelIndex
