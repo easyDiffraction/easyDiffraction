@@ -52,13 +52,15 @@ ColumnLayout {
                         guidesCount: Generic.Variables.AnalysisGuidesCount
                     }
                 }
-                CheckBox { enabled: false; checked: false; text: "Auto-update" }
 
+                /*
+                CheckBox { enabled: false; checked: false; text: "Auto-update" }
                 GenericAppContentAreaButtons.Accept {
                     enabled: false
                     text: "Accept refined parameters"
                 }
                 CheckBox { enabled: false; checked: true; text: "Auto-accept" }
+                */
 
             }
         }
