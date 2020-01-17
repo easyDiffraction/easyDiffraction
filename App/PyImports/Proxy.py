@@ -156,6 +156,7 @@ class Proxy(QObject):
     cif = Property('QVariant', calculatorAsCifDict, notify=projectChanged)
     phase_cif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experiment_cif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
+    calculation_cif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
     calculatedDataSeries = Property('QVariant', calculatedSeries, notify=projectChanged) #---#
     braggPeaksDataSeries = Property('QVariant', braggPeaksSeries, notify=projectChanged) #---#
 
