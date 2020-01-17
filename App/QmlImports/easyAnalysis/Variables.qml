@@ -9,6 +9,7 @@ QtObject {
 
     // Main
     property int showIntro: 1 // bool doesn't work on windows
+    property int homepageVisible: 1 // bool doesn't work on windows
     property int showGuide: 1 // bool doesn't work on windows
     property int appMinWindowWidth: 1280
     property int appMinWindowHeight: 760
@@ -31,7 +32,7 @@ QtObject {
     readonly property string qmlElementsPath: qmlImportsDir + "/easyAnalysis/App/Elements/"
 
     // Content area
-    property int toolbarCurrentIndex: -1
+    property int toolbarCurrentIndex: 0 // Start on project tab
     enum ToolbarIndexEnum {
         ProjectIndex = 0,
         SampleModelIndex = 1,

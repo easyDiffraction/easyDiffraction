@@ -14,7 +14,7 @@ Dialog {
     property int repeatFontSize: Generic.Style.systemFontPointSize + 1
 
     id: dialog
-    visible: true
+    visible: Generic.Variables.homepageVisible
     anchors.centerIn: parent
     width: parent.width
     height: parent.height
@@ -126,7 +126,7 @@ Dialog {
                 ToolTip.text: "Fitting of diffraction data"
                 onClicked: {
                     dialog.close()
-                    Generic.Variables.toolbarCurrentIndex = 0
+                    Generic.Variables.homepageVisible = 0
                 }
             }
         }

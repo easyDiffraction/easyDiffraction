@@ -35,7 +35,7 @@ GenericAppContentArea.Button {
     }
 
     onClicked: {
-      print("Home button clicked")
+      Generic.Variables.homepageVisible = 1
     }
 
     function iconColor() {
