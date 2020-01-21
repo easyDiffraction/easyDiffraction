@@ -13,9 +13,9 @@ GenericAppContentArea.Button {
 
     checkable: false
 
-    icon.source: Generic.Variables.thirdPartyIconsPath + "home.svg"
+    icon.source: Generic.Variables.thirdPartyIconsPath + "cog.svg"
 
-    ToolTip.text: qsTr("Home page")
+    ToolTip.text: qsTr("Application preferences")
 
     contentItem: IconLabel {
         spacing: button.spacing
