@@ -56,7 +56,7 @@ QtObject {
     }
 
     // States
-    property bool homePageFinished: false
+    property bool projectPageFinished: false
     property bool dataPageFinished: false
     property bool samplePageFinished: false
     property bool analysisPageFinished: false

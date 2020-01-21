@@ -46,7 +46,7 @@ ColumnLayout{
           // -------
 
           GenericAppToolbarButtons.SampleModel {
-              enabled: Specific.Variables.projectOpened && Generic.Variables.homePageFinished
+              enabled: Specific.Variables.projectOpened && Generic.Variables.projectPageFinished
               onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleModelIndex
           }
           GenericAppToolbarButtons.ExperimentalData {

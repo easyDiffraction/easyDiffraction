@@ -7,7 +7,7 @@ GenericAppToolbar.Button {
     icon.source: Generic.Variables.thirdPartyIconsPath + "home.svg"
     text: qsTr("Home")
     ToolTip.text: qsTr("Home page")
-    //finished: Generic.Variables.homePageFinished
+    //finished: Generic.Variables.projectPageFinished
 }
 
 

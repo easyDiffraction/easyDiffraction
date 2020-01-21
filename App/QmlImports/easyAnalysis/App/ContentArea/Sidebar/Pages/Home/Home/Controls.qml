@@ -102,7 +102,7 @@ ColumnLayout {
 //                            saveStateButton.enabled = false
 //                        }
                         Specific.Variables.projectOpened = true
-                        Generic.Variables.homePageFinished = true
+                        Generic.Variables.projectPageFinished = true
                         Generic.Variables.dataPageFinished = true
                         Generic.Variables.samplePageFinished = true
                         Generic.Variables.analysisPageFinished = true
@@ -112,7 +112,7 @@ ColumnLayout {
                     else {
                         failOpenDialog.visible = true
                         Specific.Variables.projectOpened = false
-                        Generic.Variables.homePageFinished = Generic.Variables.isDebug ? true : false
+                        Generic.Variables.projectPageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
                         Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
@@ -144,7 +144,7 @@ ColumnLayout {
                     fileDialogCreateProject.close()
                     projectControl.createProject(fileUrl)
                     getProjectInfoDialog.visible = true
-                    Generic.Variables.homePageFinished = true
+                    Generic.Variables.projectPageFinished = true
                     Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false

@@ -62,7 +62,7 @@ ColumnLayout {
             //if (projectControl.validCif) {
             proxy.loadExperimentFromFile()
             Specific.Variables.projectOpened = true
-            //Generic.Variables.homePageFinished = true
+            //Generic.Variables.projectPageFinished = true
             //Generic.Variables.samplePageFinished = true
             Generic.Variables.dataPageFinished = true
             Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false

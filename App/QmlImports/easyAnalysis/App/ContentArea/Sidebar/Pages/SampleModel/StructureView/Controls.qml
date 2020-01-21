@@ -93,7 +93,7 @@ ColumnLayout {
                     //if (projectControl.validCif) {
                     proxy.loadPhasesFromFile()
                     Specific.Variables.projectOpened = true
-                    //Generic.Variables.homePageFinished = true
+                    //Generic.Variables.projectPageFinished = true
                     Generic.Variables.samplePageFinished = true
                     //Generic.Variables.dataPageFinished = false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
