@@ -26,8 +26,8 @@ ApplicationWindow {
     font.family: Generic.Style.fontFamily
     font.pointSize: Generic.Style.fontPointSize
 
-    // Introduction animation
-    GenericApp.Intro {}
+    // Application preferences
+    GenericAppElements.AppPreferences{}
 
     // Application menubar
     ///GenericAppMenubar.Menubar {}

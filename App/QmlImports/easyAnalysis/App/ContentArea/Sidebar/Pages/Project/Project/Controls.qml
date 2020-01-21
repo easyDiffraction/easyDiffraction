@@ -295,6 +295,7 @@ ColumnLayout {
 
     // Groupbox
 
+    /*
     GenericAppElements.GroupBox {
         title: "Program Preferences"
         content: GenericAppElements.ColumnLayout {
@@ -319,6 +320,7 @@ ColumnLayout {
             guidesCount: Generic.Variables.ProjectGuidesCount
         }
     }
+    */
 
     // Spacer
 
@@ -338,7 +340,7 @@ ColumnLayout {
             GenericAppElements.GuideWindow {
                 message: "Click here to go to the next step: Sample."
                 position: "top"
-                guideCurrentIndex: 4
+                guideCurrentIndex: 3
                 toolbarCurrentIndex: Generic.Variables.ProjectIndex
                 guidesCount: Generic.Variables.ProjectGuidesCount
             }

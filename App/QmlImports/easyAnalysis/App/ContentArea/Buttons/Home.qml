@@ -35,7 +35,7 @@ GenericAppContentArea.Button {
     }
 
     onClicked: {
-      Generic.Variables.homepageVisible = 1
+      Generic.Variables.showPreferences = 1
     }
 
     function iconColor() {

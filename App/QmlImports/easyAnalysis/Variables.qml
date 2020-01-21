@@ -7,6 +7,7 @@ QtObject {
     property int showIntro: 1 // bool doesn't work on windows
     property int homepageVisible: 1 // bool doesn't work on windows
     property int showGuide: 1 // bool doesn't work on windows
+    property int showPreferences: 0
     property int appMinWindowWidth: 1280
     property int appMinWindowHeight: 760
     property int appWindowWidth: appMinWindowWidth
@@ -42,7 +43,7 @@ QtObject {
     property int guideCurrentIndex: 0
     enum GuideCountEnum {
         HomeGuidesCount = 0,
-        ProjectGuidesCount = 5,
+        ProjectGuidesCount = 4,
         SampleGuidesCount = 6,
         ExperimentGuidesCount = 7,
         AnalysisGuidesCount = 6,
