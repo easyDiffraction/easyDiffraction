@@ -38,6 +38,7 @@ ColumnLayout{
           }
 
           GenericAppToolbarButtons.Project {
+              enabled: Generic.Variables.homePageFinished
               onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
           }
 

@@ -135,6 +135,7 @@ Rectangle {
                     //dialog.close() // Only needed in dialog version
                     Generic.Variables.homepageVisible = 0
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
+                    Generic.Variables.homePageFinished = true
                 }
             }
         }
