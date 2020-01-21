@@ -65,12 +65,6 @@ QtObject {
     property bool analysisPageFinished: isDebug ? true : false
     property bool summaryPageFinished: isDebug ? true : false
 
-    // Data arrays
-    property var xPeaks: []
-    property var xObs: []
-    property var yObs: []
-    property var syObs: []
-    property var yCalc: []
-    property var yPreCalc: []
+
 
 }
