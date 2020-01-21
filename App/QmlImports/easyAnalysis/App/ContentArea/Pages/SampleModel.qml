@@ -21,8 +21,8 @@ GenericAppElements.ContentAreaStack {
                 message: "This tab button allows to see the phase\ndetails as plain text (CIF)."
                 position: "bottom"
                 guideCurrentIndex: 2
-                toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                guidesCount: Generic.Variables.SampleModelGuidesCount
+                toolbarCurrentIndex: Generic.Variables.SampleIndex
+                guidesCount: Generic.Variables.SampleGuidesCount
             }
         }
     }

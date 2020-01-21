@@ -88,7 +88,7 @@ ColumnLayout {
             text: "Experiment"
             ToolTip.text: qsTr("Go to the previous step: Experiment")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentIndex
             }
             GenericAppElements.GuideWindow {
                 message: "Click here to go to the previous step: Experiment.\n\nAlternatively, you can click on the 'Experiment' button in toolbar."

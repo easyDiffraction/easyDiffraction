@@ -1,9 +1,5 @@
 pragma Singleton
 import QtQuick 2.12
-import QtQuick.Window 2.12
-//import Qt.labs.settings 1.1
-
-import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 
 QtObject {
 
@@ -32,14 +28,12 @@ QtObject {
     readonly property string qmlElementsPath: qmlImportsDir + "/easyAnalysis/App/Elements/"
 
     // Content area
-    property int toolbarCurrentIndex: 0 // Start on project tab
+    property int toolbarCurrentIndex: 0 // App starts on home tab
     enum ToolbarIndexEnum {
         HomeIndex = 0,
         ProjectIndex = 1,
-        SampleModelIndex = 2,
-        ExperimentalDataIndex = 3,
-        //InstrumentModelIndex = 2,
-        //LinkingIndex = 4,
+        SampleIndex = 2,
+        ExperimentIndex = 3,
         AnalysisIndex = 4,
         SummaryIndex = 5
     }
@@ -49,19 +43,17 @@ QtObject {
     enum GuideCountEnum {
         HomeGuidesCount = 0,
         ProjectGuidesCount = 5,
-        ExperimentalDataGuidesCount = 7,
-        SampleModelGuidesCount = 6,
+        SampleGuidesCount = 6,
+        ExperimentGuidesCount = 7,
         AnalysisGuidesCount = 6,
         SummaryGuidesCount = 4
     }
 
-    // States
+    // Tolbar tab states
+    property bool homePageFinished: false
     property bool projectPageFinished: false
     property bool dataPageFinished: false
     property bool samplePageFinished: false
     property bool analysisPageFinished: false
     property bool summaryPageFinished: false
-
-
-
 }

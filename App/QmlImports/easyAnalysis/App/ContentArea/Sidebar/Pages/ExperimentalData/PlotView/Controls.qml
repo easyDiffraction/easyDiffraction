@@ -27,8 +27,8 @@ ColumnLayout {
                     message: "Here you can see labels of the experimental data."
                     position: "left"
                     guideCurrentIndex: 0
-                    toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                    guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                    toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+                    guidesCount: Generic.Variables.ExperimentGuidesCount
                 }
             }
 
@@ -108,8 +108,8 @@ ColumnLayout {
             message: "The sidebar groups contain details related to the experiment.\n\nClick on the group name to unfold the group."
             position: "left"
             guideCurrentIndex: 4
-            toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-            guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+            toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+            guidesCount: Generic.Variables.ExperimentGuidesCount
         }
     }
 
@@ -191,14 +191,14 @@ ColumnLayout {
             text: "Sample"
             ToolTip.text: qsTr("Go to the previous step: Sample")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleIndex
             }
             GenericAppElements.GuideWindow {
                 message: "Click here to go to the previous step: Sample.\n\nAlternatively, you can click on the 'Sample' button in toolbar."
                 position: "top"
                 guideCurrentIndex: 5
-                toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+                guidesCount: Generic.Variables.ExperimentGuidesCount
             }
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
@@ -212,8 +212,8 @@ ColumnLayout {
                 message: "Click here to go to the next step: Structure refinement."
                 position: "top"
                 guideCurrentIndex: 6
-                toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+                guidesCount: Generic.Variables.ExperimentGuidesCount
             }
         }
     }

@@ -20,8 +20,8 @@ GenericAppElements.ContentAreaStack {
                 message: "This tab button switches to the table\nview of the measured data."
                 position: "bottom"
                 guideCurrentIndex: 2
-                toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+                guidesCount: Generic.Variables.ExperimentGuidesCount
             }
         }
         GenericMainArea.TabButton {
@@ -31,8 +31,8 @@ GenericAppElements.ContentAreaStack {
                 message: "This tab button allows to see the\nmeasured data as plain text."
                 position: "bottom"
                 guideCurrentIndex: 3
-                toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+                guidesCount: Generic.Variables.ExperimentGuidesCount
             }
         }
     }

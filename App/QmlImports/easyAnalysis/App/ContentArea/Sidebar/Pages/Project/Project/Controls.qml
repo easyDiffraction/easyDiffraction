@@ -333,7 +333,7 @@ ColumnLayout {
             enabled: Specific.Variables.projectOpened
             ToolTip.text: qsTr("Go to the next step: Sample")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleIndex
             }
             GenericAppElements.GuideWindow {
                 message: "Click here to go to the next step: Sample."
