@@ -11,7 +11,7 @@ GenericAppElements.ChartView {
         message: "Measured data points are plotted in the main area."
         position: "right"
         guideCurrentIndex: 1
-        toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-        guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+        toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+        guidesCount: Generic.Variables.ExperimentGuidesCount
     }
 }

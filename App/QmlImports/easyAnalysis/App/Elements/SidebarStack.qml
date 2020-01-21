@@ -30,6 +30,7 @@ ColumnLayout {
         // tabs bottom border
         GenericAppElements.HorizontalBorder { height: tabBarContent ? Generic.Style.appBorderThickness : 0 }
     }
+    
 
     // Sidebar area without tabs
     StackLayout {

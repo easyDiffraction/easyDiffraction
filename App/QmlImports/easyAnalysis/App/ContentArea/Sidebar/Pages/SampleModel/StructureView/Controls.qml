@@ -53,8 +53,8 @@ ColumnLayout {
                     message: "Here you can see labels of the structural phases."
                     position: "left"
                     guideCurrentIndex: 0
-                    toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                    guidesCount: Generic.Variables.SampleModelGuidesCount
+                    toolbarCurrentIndex: Generic.Variables.SampleIndex
+                    guidesCount: Generic.Variables.SampleGuidesCount
                 }
             }
 
@@ -93,7 +93,7 @@ ColumnLayout {
                     //if (projectControl.validCif) {
                     proxy.loadPhasesFromFile()
                     Specific.Variables.projectOpened = true
-                    //Generic.Variables.homePageFinished = true
+                    //Generic.Variables.projectPageFinished = true
                     Generic.Variables.samplePageFinished = true
                     //Generic.Variables.dataPageFinished = false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
@@ -144,8 +144,8 @@ ColumnLayout {
             message: "The sidebar groups contain details related to the sample model.\n\nClick on the group name to unfold the group."
             position: "left"
             guideCurrentIndex: 3
-            toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-            guidesCount: Generic.Variables.SampleModelGuidesCount
+            toolbarCurrentIndex: Generic.Variables.SampleIndex
+            guidesCount: Generic.Variables.SampleGuidesCount
         }
     }
 
@@ -216,8 +216,8 @@ ColumnLayout {
                 message: "Click here to go to the previous step: Project.\n\nAlternatively, you can click on the 'Project' button in toolbar."
                 position: "top"
                 guideCurrentIndex: 4
-                toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                guidesCount: Generic.Variables.SampleModelGuidesCount
+                toolbarCurrentIndex: Generic.Variables.SampleIndex
+                guidesCount: Generic.Variables.SampleGuidesCount
             }
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
@@ -227,14 +227,14 @@ ColumnLayout {
             highlighted: Specific.Variables.projectOpened
             onClicked: {
                 Generic.Variables.samplePageFinished = true
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentIndex
             }
             GenericAppElements.GuideWindow {
                 message: "Click here to go to the next step: Experiment."
                 position: "top"
                 guideCurrentIndex: 5
-                toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                guidesCount: Generic.Variables.SampleModelGuidesCount
+                toolbarCurrentIndex: Generic.Variables.SampleIndex
+                guidesCount: Generic.Variables.SampleGuidesCount
             }
         }
     }

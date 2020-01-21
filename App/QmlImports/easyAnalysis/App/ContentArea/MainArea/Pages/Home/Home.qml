@@ -1,26 +1,32 @@
 import QtQuick 2.12
+
+// Added from intro
 import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
+
 import QtQuick.Layouts 1.12
-//import Qt.labs.settings 1.0
 import easyAnalysis 1.0 as Generic
-import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
+import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyDiffraction 1.0 as Specific
 
-Dialog {
+// Added from intro
+import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
+
+Rectangle {
+    property int margin: 20
     property int animationDuration: Generic.Variables.showIntro ? Generic.Variables.introAnimationDuration : 0
     property int appNameFontSize: Generic.Style.systemFontPointSize * 4
     property int appVersionFontSize: Generic.Style.systemFontPointSize + 3
     property int repeatFontSize: Generic.Style.systemFontPointSize + 1
 
-    id: dialog
-    //visible: Generic.Variables.homepageVisible
-    visible: false
-    anchors.centerIn: parent
-    width: parent.width
-    height: parent.height
-    background: Rectangle { color: "white" }
+    id: mainRectangle
 
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+
+    //color: Generic.Style.appBkgColor
+    color: "white"
+    
     Component.onCompleted: {
         animo.restart()
         //console.log("systemFontPointSize: ", Generic.Style.systemFontPointSize)
@@ -126,8 +132,9 @@ Dialog {
                 text: "Analysis"
                 ToolTip.text: "Fitting of diffraction data"
                 onClicked: {
-                    dialog.close()
+                    //dialog.close() // Only needed in dialog version
                     Generic.Variables.homepageVisible = 0
+                    Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
                 }
             }
         }
@@ -171,6 +178,39 @@ Dialog {
         }
     }
 
+    // Reset intro
+    function resetIntro() {
+        making.opacity = 0
+        diffraction.opacity = 0
+        dam.opacity = 0
+        easy.opacity = 0
+
+        easy.color = "#666"
+        diffraction.color = "#666"
+
+        easy.font.family = Generic.Style.introCondencedRegularFontFamily
+        diffraction.text = "diffraction"
+
+        making.x = 0
+        diffraction.x = making.width
+        dam.x = making.width + diffraction.width
+        easy.x = making.width + diffraction.width + dam.width
+
+        //modellingButton.width = 0
+        //analysisButton.width = 0
+        //modellingButton.text = ""
+        //analysisButton.text = ""
+        modellingButton.opacity = 0
+        analysisButton.opacity = 0
+
+        appIcon.opacity = 0
+        appVersion.opacity = 0
+        documentation.opacity = 0
+
+        disableButton.opacity = 1
+        skipButton.opacity = 1
+    }
+    
     // Buttons at the bottom
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -232,39 +272,6 @@ Dialog {
         */
     }
 
-    // Reset intro
-    function resetIntro() {
-        making.opacity = 0
-        diffraction.opacity = 0
-        dam.opacity = 0
-        easy.opacity = 0
-
-        easy.color = "#666"
-        diffraction.color = "#666"
-
-        easy.font.family = Generic.Style.introCondencedRegularFontFamily
-        diffraction.text = "diffraction"
-
-        making.x = 0
-        diffraction.x = making.width
-        dam.x = making.width + diffraction.width
-        easy.x = making.width + diffraction.width + dam.width
-
-        //modellingButton.width = 0
-        //analysisButton.width = 0
-        //modellingButton.text = ""
-        //analysisButton.text = ""
-        modellingButton.opacity = 0
-        analysisButton.opacity = 0
-
-        appIcon.opacity = 0
-        appVersion.opacity = 0
-        documentation.opacity = 0
-
-        disableButton.opacity = 1
-        skipButton.opacity = 1
-    }
-
     ////////////
     // Animation
     ////////////
@@ -318,17 +325,7 @@ Dialog {
             PropertyAnimation { easing.type: Easing.InExpo; target: skipButton; property: "opacity"; to: 0; duration: animationDuration }
         }
     }
-
-
-
 }
-
-
-
-
-
-
-
 
 
 
