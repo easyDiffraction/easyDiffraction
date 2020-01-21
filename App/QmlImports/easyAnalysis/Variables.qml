@@ -56,14 +56,11 @@ QtObject {
     }
 
     // States
-    property bool isDebug: false
-    property bool homePageFinished: isDebug ? true : false
-    property bool dataPageFinished: isDebug ? true : false
-    property bool samplePageFinished: isDebug ? true : false
-    //property bool instrumentPageFinished: false
-    //property bool linkingPageFinished: false
-    property bool analysisPageFinished: isDebug ? true : false
-    property bool summaryPageFinished: isDebug ? true : false
+    property bool homePageFinished: false
+    property bool dataPageFinished: false
+    property bool samplePageFinished: false
+    property bool analysisPageFinished: false
+    property bool summaryPageFinished: false
 
 
 
