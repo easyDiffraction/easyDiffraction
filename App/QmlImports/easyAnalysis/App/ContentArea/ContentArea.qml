@@ -13,6 +13,8 @@ SwipeView {
 
     currentIndex: Generic.Variables.toolbarCurrentIndex
 
+    GenericAppContentAreaPages.Home {}
+
     GenericAppContentAreaPages.Project {}
 
     // -------

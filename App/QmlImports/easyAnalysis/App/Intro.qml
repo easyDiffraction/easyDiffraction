@@ -14,7 +14,8 @@ Dialog {
     property int repeatFontSize: Generic.Style.systemFontPointSize + 1
 
     id: dialog
-    visible: Generic.Variables.homepageVisible
+    //visible: Generic.Variables.homepageVisible
+    visible: false
     anchors.centerIn: parent
     width: parent.width
     height: parent.height

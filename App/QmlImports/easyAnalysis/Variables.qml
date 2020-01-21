@@ -34,18 +34,20 @@ QtObject {
     // Content area
     property int toolbarCurrentIndex: 0 // Start on project tab
     enum ToolbarIndexEnum {
-        ProjectIndex = 0,
-        SampleModelIndex = 1,
-        ExperimentalDataIndex = 2,
+        HomeIndex = 0,
+        ProjectIndex = 1,
+        SampleModelIndex = 2,
+        ExperimentalDataIndex = 3,
         //InstrumentModelIndex = 2,
         //LinkingIndex = 4,
-        AnalysisIndex = 3,
-        SummaryIndex = 4
+        AnalysisIndex = 4,
+        SummaryIndex = 5
     }
 
     // User guides
     property int guideCurrentIndex: 0
     enum GuideCountEnum {
+        HomeGuidesCount = 0,
         ProjectGuidesCount = 5,
         ExperimentalDataGuidesCount = 7,
         SampleModelGuidesCount = 6,

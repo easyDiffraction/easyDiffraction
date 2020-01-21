@@ -15,7 +15,6 @@ Rectangle {
     color: Generic.Style.appBkgColor
 
     // State 1: No Project Created/Opened
-
     Column {
         visible: !Specific.Variables.projectOpened
 
@@ -43,7 +42,6 @@ Rectangle {
     }
 
     // State 2: Project Created/Opened
-
     Column {
         visible: Specific.Variables.projectOpened
 
