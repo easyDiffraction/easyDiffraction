@@ -2,4 +2,3 @@ module ContentArea
 ContentArea 1.0 ContentArea.qml
 Button 1.0 Button.qml
 TabButton 1.0 TabButton.qml
-Spacer 1.0 Spacer.qml

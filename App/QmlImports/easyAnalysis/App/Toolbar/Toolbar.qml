@@ -42,14 +42,11 @@ ColumnLayout{
               onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
           }
 
-          // -------
-          ///GenericAppToolbar.Spacer { }
-          // -------
-
           GenericAppToolbarButtons.SampleModel {
               enabled: Specific.Variables.projectOpened && Generic.Variables.projectPageFinished
               onClicked: Generic.Variables.toolbarCurrentIndex  = Generic.Variables.SampleIndex
           }
+
           GenericAppToolbarButtons.ExperimentalData {
               enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
               onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentIndex
@@ -61,32 +58,11 @@ ColumnLayout{
                   guidesCount: Generic.Variables.ProjectGuidesCount
               }
           }
-          //GenericAppToolbarButtons.InstrumentModel {
-          //    enabled: Generic.Variables.dataPageFinished
-          //    onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.InstrumentModelIndex
-          //}
-
-          // -------
-          ///GenericAppToolbar.Spacer {}
-          // -------
-
-          //GenericAppToolbarButtons.Linking {
-          //    enabled: Generic.Variables.samplePageFinished
-          //    onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.LinkingIndex
-          //}
-
-          // -------
-          ///GenericAppToolbar.Spacer {}
-          // -------
 
           GenericAppToolbarButtons.Analysis {
               enabled: Specific.Variables.projectOpened && Generic.Variables.dataPageFinished
               onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
           }
-
-          // -------
-          ///GenericAppToolbar.Spacer {}
-          // -------
 
           GenericAppToolbarButtons.Summary {
               enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && proxy.refinementDone
