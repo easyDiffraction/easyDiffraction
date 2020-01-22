@@ -52,6 +52,7 @@ class MeasuredDataModel(BaseModel):
             row_count = len(list(experiment_dict['measured_pattern'].items())[0][1])
             self._model.setColumnCount(column_count)
             self._model.setRowCount(row_count)
+            self._headers_model.clear()
             self._headers_model.setColumnCount(column_count)
             self._headers_model.setRowCount(1)
             #

@@ -73,7 +73,3 @@ class CalculatedDataModel(BaseModel):
             self._model.layoutChanged.emit()
             self._headers_model.layoutChanged.emit()
         logging.info("+++++++++++++++++++++++++ setData end") # profiling
-
-    def asHeadersModel(self):
-        """Return headers model."""
-        return self._headers_model

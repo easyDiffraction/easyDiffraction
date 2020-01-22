@@ -25,10 +25,13 @@ def test_FileStructureModel():
 
     phaseRole = Qt.UserRole + 1
     expRole = Qt.UserRole + 2
+    calcRole = Qt.UserRole + 3
 
-    assert len(m._model.roleNames()) == 2
+    assert len(m._model.roleNames()) == 3
     assert m._model.roleNames()[phaseRole] == b"phasesRole"
     assert str(m._model.roleNames()[expRole]) == "b'experimentsRole'"
+    assert str(m._model.roleNames()[calcRole]) == "b'calculationsRole'"
 
     assert 'data_Fe3O4' in m._model.item(0, 0).data(role=phaseRole)
     assert 'data_pnd' in m._model.item(0, 0).data(role=expRole)
+    assert '_refln_index_k' in m._model.item(0, 0).data(role=calcRole)

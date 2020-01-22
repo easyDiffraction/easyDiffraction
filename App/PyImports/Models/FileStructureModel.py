@@ -11,9 +11,11 @@ class FileStructureModel(BaseModel):
         # set roles
         self._phase_role = Qt.UserRole + 1
         self._experiment_role = Qt.UserRole + 2
+        self._calculation_role = Qt.UserRole + 3
         self._model.setItemRoleNames({
             self._phase_role: b'phasesRole',
             self._experiment_role: b'experimentsRole',
+            self._calculation_role: b'calculationsRole',
             })
 
     def asPhaseString(self):
@@ -34,6 +36,15 @@ class FileStructureModel(BaseModel):
             content = str(self._model.item(0).data(role=self._experiment_role))
         return content
 
+    def asCalculationString(self):
+        """
+        Returns the content of the calculation data as string
+        """
+        content = ""
+        if self._model.rowCount() > 0:
+            content = str(self._model.item(0).data(role=self._calculation_role))
+        return content
+
     def _setModelsFromProjectDict(self):
         """
         Create the model needed for GUI representation of structure.
@@ -48,6 +59,7 @@ class FileStructureModel(BaseModel):
 
         phases_cif = cif_dict['phases']
         exp_cif = cif_dict['experiments']
+        calc_cif = cif_dict['calculations']
 
         # Currently only one phase/experiment, so assigning
         # explicitly. With more components, we need a proper loop
@@ -55,6 +67,7 @@ class FileStructureModel(BaseModel):
         item = QStandardItem()
         item.setData(phases_cif, self._phase_role)
         item.setData(exp_cif, self._experiment_role)
+        item.setData(calc_cif, self._calculation_role)
         self._model.appendRow(item)
 
         #for data_str cif_dict.items():
