@@ -5,7 +5,6 @@ import QtQuick.Window 2.12
 import Qt.labs.settings 1.1
 
 import easyAnalysis 1.0 as Generic
-import easyAnalysis.App 1.0 as GenericApp
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.Menubar 1.0 as GenericAppMenubar
