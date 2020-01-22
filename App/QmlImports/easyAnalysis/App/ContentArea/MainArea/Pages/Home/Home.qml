@@ -1,22 +1,18 @@
 import QtQuick 2.12
-
-// Added from intro
 import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
-
 import QtQuick.Layouts 1.12
+
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
-import easyDiffraction 1.0 as Specific
-
-// Added from intro
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
+import easyDiffraction 1.0 as Specific
 
 Rectangle {
     property int margin: 20
     property int animationDuration: Generic.Variables.showIntro ? Generic.Variables.introAnimationDuration : 0
     property int appNameFontSize: Generic.Style.systemFontPointSize * 4
-    property int appVersionFontSize: Generic.Style.systemFontPointSize + 3
+    property int appVersionFontSize: Generic.Style.systemFontPointSize + 1
     property int repeatFontSize: Generic.Style.systemFontPointSize + 1
 
     id: mainRectangle
@@ -27,11 +23,7 @@ Rectangle {
     //color: Generic.Style.appBkgColor
     color: "white"
     
-    Component.onCompleted: {
-        animo.restart()
-        //console.log("systemFontPointSize: ", Generic.Style.systemFontPointSize)
-        //console.log("systemFontPointSize: ", Generic.Style.systemFontFamily)
-    }
+    Component.onCompleted: animo.restart()
 
     Column {
         anchors.centerIn: parent
@@ -109,17 +101,11 @@ Rectangle {
                 checked: true
                 autoExclusive: false
                 width: 150
-                font.bold: true
+                buttonBorderDisabledColor: "#eee"
+                //font.bold: true
                 text: "Modelling"
                 ToolTip.text: "Simulation of diffraction data"
-                onClicked: {
-                    //console.log("3--", proxy.cell_length_a())
-                    //text = proxy.cell_length_a()
-                    //checked = true
-                }
-                Component.onCompleted: {
-                    //console.log("2--", proxy.cell_length_a())
-                }
+                onClicked: print("Not implemented yet")
             }
             GenericAppToolbar.Button { width: 1; opacity: 0 }
             GenericAppToolbar.Button {
@@ -128,7 +114,7 @@ Rectangle {
                 checked: true
                 autoExclusive: false
                 width: 150
-                font.bold: true
+                //font.bold: true
                 text: "Analysis"
                 ToolTip.text: "Fitting of diffraction data"
                 onClicked: {
@@ -141,16 +127,49 @@ Rectangle {
             }
         }
 
+        // Spacer
+        Item { height: 10; width: 1 }
+
         // Documentation
-        Row {
-            id: documentation
+        Column {
+            id: links
             anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 0
+            spacing: 5
             opacity: 0
 
             Text {
                 width: modellingButton.width
-                font.pointSize: Generic.Style.fontPointSize - 1
+                font.pointSize: Generic.Style.fontPointSize
+                font.family: Generic.Style.fontFamily
+                horizontalAlignment: Text.AlignHCenter
+                color: Generic.Style.blueColor
+                text: "About easyDiffraction"
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/documentation.html")
+                }
+            }
+
+            Text {
+                width: analysisButton.width
+                font.pointSize: Generic.Style.fontPointSize
+                font.family: Generic.Style.fontFamily
+                horizontalAlignment: Text.AlignHCenter
+                color: Generic.Style.blueColor
+                text: "Get Started Video Tutorial"
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/tutorials_start.html")
+                }
+            }
+
+            Text {
+                width: modellingButton.width
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
@@ -164,19 +183,20 @@ Rectangle {
             }
 
             Text {
-                width: analysisButton.width
-                font.pointSize: Generic.Style.fontPointSize - 1
+                width: modellingButton.width
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
-                text: "Get Started Video Tutorial"
+                text: "Get in Touch Online"
 
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/tutorials_start.html")
+                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/contact.html")
                 }
             }
+
         }
     }
 
@@ -207,7 +227,7 @@ Rectangle {
 
         appIcon.opacity = 0
         appVersion.opacity = 0
-        documentation.opacity = 0
+        links.opacity = 0
 
         disableButton.opacity = 1
         skipButton.opacity = 1
@@ -321,7 +341,7 @@ Rectangle {
             //PropertyAnimation { target: analysisButton;  property: "width"; to: 150; duration: animationDuration*0.3 } //animationDuration }
             PropertyAnimation { easing.type: Easing.InExpo; target: modellingButton; property: "opacity"; to: 1; duration: animationDuration }
             PropertyAnimation { easing.type: Easing.InExpo; target: analysisButton; property: "opacity"; to: 1; duration: animationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: documentation; property: "opacity"; to: 1; duration: animationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: links; property: "opacity"; to: 1; duration: animationDuration }
 
             PropertyAnimation { easing.type: Easing.InExpo; target: disableButton; property: "opacity"; to: 0; duration: animationDuration }
             PropertyAnimation { easing.type: Easing.InExpo; target: skipButton; property: "opacity"; to: 0; duration: animationDuration }

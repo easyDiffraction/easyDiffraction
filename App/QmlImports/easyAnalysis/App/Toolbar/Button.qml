@@ -11,6 +11,8 @@ TabButton {
     property int blinkingAnimationDuration: 500
     property int colorAnimationDuration: 250
 
+    property string buttonBorderDisabledColor: Generic.Style.buttonBorderDisabledColor
+
     autoExclusive: true
 
     icon.width: Generic.Style.toolbarButtonHeight / 2
@@ -80,7 +82,7 @@ TabButton {
 
     function borderColor() {
         if (!button.enabled)
-            return Generic.Style.buttonBorderDisabledColor
+            return buttonBorderDisabledColor
         if (button.checked)
             return Generic.Style.buttonBorderHighlightedColor
         return Generic.Style.buttonBorderFinishedColor
