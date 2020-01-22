@@ -78,5 +78,5 @@ ColumnLayout{
 
     }
 
-    GenericAppElements.HorizontalBorder { color: "#d2d2d2" }
+    GenericAppElements.HorizontalBorder { color: Generic.Style.toolbarBottomBorderColor }
 }
