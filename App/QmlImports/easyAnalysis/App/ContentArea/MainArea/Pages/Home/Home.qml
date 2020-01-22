@@ -133,8 +133,10 @@ Rectangle {
                 ToolTip.text: "Fitting of diffraction data"
                 onClicked: {
                     //dialog.close() // Only needed in dialog version
+                    analysisButton.checked = true
                     Generic.Variables.homepageVisible = 0
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
+                    Generic.Variables.homePageFinished = true
                 }
             }
         }
