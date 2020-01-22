@@ -4,10 +4,9 @@ import QtQuick 2.12
 QtObject {
 
     // Application
-    readonly property int appBorderThickness: 1
     readonly property color appBkgColor: "#f5f5f5"
     readonly property color appBorderColor: "gainsboro"
-
+    readonly property int appBorderThickness: 1
     readonly property int buttonHeight: 34
     readonly property int buttonRadius: 4
 

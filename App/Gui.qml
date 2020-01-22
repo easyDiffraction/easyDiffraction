@@ -9,27 +9,24 @@ import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.Menubar 1.0 as GenericAppMenubar
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
-import easyAnalysis.Logic 1.0 as GenericLogic
 import easyDiffraction 1.0 as Specific
 
 ApplicationWindow {
     id: window
 
     visible: true
-    color: Generic.Style.appBkgColor
-    title: Specific.Settings.appName
-
     minimumWidth: Generic.Variables.appMinWindowWidth
     minimumHeight: Generic.Variables.appMinWindowHeight
-
+    title: Specific.Settings.appName
+    color: Generic.Style.appBkgColor
     font.family: Generic.Style.fontFamily
     font.pointSize: Generic.Style.fontPointSize
 
-    // Application preferences
+    // Application preferences dialog (disabled by default)
     GenericAppElements.AppPreferences{}
 
-    // Application menubar
-    ///GenericAppMenubar.Menubar {}
+    // Application menubar (not implemented yet)
+    //GenericAppMenubar.Menubar {}
 
     // Application window layout
     ColumnLayout {
@@ -48,8 +45,8 @@ ApplicationWindow {
         property alias height: window.height
     }
 
+    // Load persistent settings when window is created
     Component.onCompleted: {
-        // Load persistent settings
         Generic.Variables.showIntro = settings.value("showIntro", Generic.Variables.showIntro)
         Generic.Variables.showGuide = settings.value("showGuide", Generic.Variables.showGuide)
         Generic.Variables.appWindowWidth = settings.value("appWindowWidth", Generic.Variables.appWindowWidth)
@@ -62,8 +59,8 @@ ApplicationWindow {
         window.y = Generic.Variables.appWindowY
     }
 
+    // Save persistent settings when app window is closed
     Component.onDestruction: {
-        // Save persistent settings
         settings.setValue("showIntro", Generic.Variables.showIntro)
         settings.setValue("showGuide", Generic.Variables.showGuide)
         settings.setValue("appWindowWidth", window.width)
@@ -72,6 +69,7 @@ ApplicationWindow {
         settings.setValue("appWindowY", window.y)
     }
 
+    // Temporary solution to update main area width
     onWidthChanged: Generic.Variables.mainAreaWidth = width - Generic.Style.appBorderThickness - Generic.Style.sidebarWidth
 }
 

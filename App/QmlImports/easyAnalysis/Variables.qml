@@ -4,10 +4,10 @@ import QtQuick 2.12
 QtObject {
 
     // Main
-    property int showIntro: 1 // bool doesn't work on windows
+    property int showIntro: 1       // bool doesn't work on windows
     property int homepageVisible: 1 // bool doesn't work on windows
-    property int showGuide: 1 // bool doesn't work on windows
-    property int showPreferences: 0
+    property int showGuide: 1       // bool doesn't work on windows
+    property int showPreferences: 0 // bool doesn't work on windows
     property int appMinWindowWidth: 1280
     property int appMinWindowHeight: 760
     property int appWindowWidth: appMinWindowWidth
