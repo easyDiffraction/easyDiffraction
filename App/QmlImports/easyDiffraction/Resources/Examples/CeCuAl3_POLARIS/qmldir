@@ -1,4 +1,4 @@
-module easyDiffraction.Resources.Examples.CeCuAl3_POLARIS
+module CeCuAl3_POLARIS
 ObsMinusEsdLineSeries 1.0 ObsMinusEsdLineSeries.qml
 ObsPlusEsdLineSeries 1.0 ObsPlusEsdLineSeries.qml
 ObsLineSeries 1.0 ObsLineSeries.qml

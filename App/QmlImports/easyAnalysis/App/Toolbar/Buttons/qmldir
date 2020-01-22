@@ -1,4 +1,4 @@
-module easyAnalysis.App.Toolbar.Buttons
+module Buttons
 Home 1.0 Home.qml
 Project 1.0 Project.qml
 ExperimentalData 1.0 ExperimentalData.qml

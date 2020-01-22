@@ -1,4 +1,4 @@
-module easyAnalysis.App.ContentArea.Buttons
+module Buttons
 Add 1.0 Add.qml
 Cloud 1.0 Cloud.qml
 Export 1.0 Export.qml

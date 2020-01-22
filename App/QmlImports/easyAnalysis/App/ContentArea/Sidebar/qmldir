@@ -1,2 +1,2 @@
-module easyAnalysis.App.ContentArea.Sidebar
+module Sidebar
 TabButton 1.0 TabButton.qml
