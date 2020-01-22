@@ -25,6 +25,38 @@ Rectangle {
     
     Component.onCompleted: animo.restart()
 
+
+
+
+    Dialog {
+        id: aboutDialog
+        visible: false
+        modal: true
+        anchors.centerIn: parent
+        width: parent.width / 2
+        height: parent.height / 2
+
+        standardButtons: Dialog.Close
+
+        ScrollView {
+          anchors.fill: parent
+
+          TextArea {
+            anchors.fill: parent
+
+            text: "nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo "
+            wrapMode: TextEdit.WordWrap
+          }
+
+        }
+
+        onAccepted: console.log("Ok clicked")
+        onRejected: console.log("Cancel clicked")
+    }
+
+
+
+
     Column {
         anchors.centerIn: parent
         width: parent.width
@@ -148,7 +180,7 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/documentation.html")
+                    onClicked: aboutDialog.visible = true
                 }
             }
 
