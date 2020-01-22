@@ -49,7 +49,7 @@ Dialog {
         topPadding: 20
         spacing: 30
 
-        // Exit preferences button
+        // Exit preferences link
 
         Text {
             font.pointSize: Generic.Style.fontPointSize
@@ -60,11 +60,7 @@ Dialog {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: {
-                    exitAnimation.running = true
-                    //Generic.Variables.showPreferences = 0
-                    //dialog.close()
-                }
+                onClicked: exitAnimation.running = true
             }
         }
 
