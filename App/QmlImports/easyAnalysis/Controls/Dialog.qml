@@ -21,6 +21,7 @@ Dialog {
     anchors.centerIn: parent
     modal: true
     dim: false // dimming is done via 'hiddenPopup'
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
     // Background properties
     background: Rectangle {
