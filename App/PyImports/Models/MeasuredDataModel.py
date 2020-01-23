@@ -6,41 +6,53 @@ from PySide2.QtCharts import QtCharts
 
 from PyImports.Models.BaseModel import BaseModel
 
-class MeasuredDataSeries(QObject):
-    def __init__(self, parent=None):
-        QObject.__init__(self, parent)
-        self._upperSeries = []
-        self._lowerSeries = []
-
-    def updateSeries(self, calculator):
-        logging.info("+++++++++++++++++++++++++ start") # profiling
-        project_dict = calculator.asDict()
-        self._upperSeries.clear()
-        self._lowerSeries.clear()
-        for experiment_id, experiment_dict in project_dict['experiments'].items():
-            x_list = experiment_dict['measured_pattern']['x']
-            y_obs_lower_list = experiment_dict['measured_pattern']['y_obs_lower']
-            y_obs_upper_list = experiment_dict['measured_pattern']['y_obs_upper']
-            for x, y_obs_lower, y_obs_upper in zip(x_list, y_obs_lower_list, y_obs_upper_list):
-                self._lowerSeries.append(QPointF(x, y_obs_lower))
-                self._upperSeries.append(QPointF(x, y_obs_upper))
-        logging.info("+++++++++++++++++++++++++ end") # profiling
-
-    @Slot(QtCharts.QXYSeries)
-    def updateQmlLowerSeries(self, series):
-        series.replace(self._lowerSeries)
-
-    @Slot(QtCharts.QXYSeries)
-    def updateQmlUpperSeries(self, series):
-        series.replace(self._upperSeries)
-
 class MeasuredDataModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._headers_model = QStandardItemModel()
         self._model = QStandardItemModel()
         self._project_dict = None
+        self._upperSeries = []
+        self._lowerSeries = []
+    
+    def updateSeries(self, calculator):
+        logging.info("+++++++++++++++++++++++++ start") # profiling
+        project_dict = calculator.asDict()
+        self._upperSeries.clear()
+        self._lowerSeries.clear()
+        
+        x_list = []
+        y_obs_lower_list = []
+        y_obs_upper_list = []
+        
+        # Get values from model
+        for row_index in range(self._model.rowCount()):
+            index = self._model.index(row_index, 0) # x in column 0
+            x_list.append(self._model.data(index))
+        
+        for row_index in range(self._model.rowCount()):
+            index = self._model.index(row_index, 1) # x in column 1
+            y_obs_lower_list.append(self._model.data(index))
+        
+        for row_index in range(self._model.rowCount()):
+            index = self._model.index(row_index, 3) # x in column 3
+            y_obs_upper_list.append(self._model.data(index))
 
+        # Insert data into the Series format with QPointF's
+        for x, y_obs_lower, y_obs_upper in zip(x_list, y_obs_lower_list, y_obs_upper_list):
+            self._lowerSeries.append(QPointF(x, y_obs_lower))
+            self._upperSeries.append(QPointF(x, y_obs_upper))
+
+        logging.info("+++++++++++++++++++++++++ end") # profiling
+
+    @Slot(QtCharts.QXYSeries)
+    def updateQmlLowerSeries(self, series):
+        series.replace(self._lowerSeries)
+    
+    @Slot(QtCharts.QXYSeries)
+    def updateQmlUpperSeries(self, series):
+        series.replace(self._upperSeries)
+    
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI measured data table and chart."""
         logging.info("+++++++++++++++++++++++++ setData start") # profiling
