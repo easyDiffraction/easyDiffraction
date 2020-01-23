@@ -1,154 +1,97 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
-import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 
-Dialog {
-    id: dialog
-
+GenericControls.Dialog {
     visible: Generic.Variables.showPreferences
-    anchors.centerIn: parent
-    modal: true
-
-    background: Rectangle {
-        color: "white"
-        border.color: "#888"
-        radius: 3
-    }
-
-    enter: Transition {
-        NumberAnimation { easing.type: Easing.OutBack; property: "scale"; from: 0.0; to: 1.0; duration: 500 }
-    }
-    /*
-    exit: Transition {
-        SequentialAnimation {
-            PropertyAction { property: "dim"; value: true }
-            ParallelAnimation {
-                NumberAnimation { easing.type: Easing.InBack; property: "scale"; from: 1.0; to: 0.0; duration: 500 }
-                NumberAnimation { easing.type: Easing.InOutExpo; property: "opacity"; from: 1.0; to: 0.0; duration: 500 }
-            }
-            PropertyAction { property: "dim"; value: false }
-        }
-    }
-    */
-    SequentialAnimation {
-        id: exitAnimation
-        running: false
-        NumberAnimation { target: dialog; easing.type: Easing.InBack; property: "scale"; from: 1.0; to: 0.0; duration: 500 }
-        PropertyAction { target: dialog; property: "visible"; value: false }
-    }
-
-    closePolicy: Popup.NoAutoClose
-
-    onClosed: Generic.Variables.showPreferences = 0
+    title: "Preferences"
 
     Column {
-        anchors.centerIn: parent
-        padding: 30
-        topPadding: 20
-        spacing: 30
+        padding: 20
+        spacing: 15
 
-        // Exit preferences link
+        // General preferences
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize
+            font.pointSize: Generic.Style.fontPointSize + 5
             font.family: Generic.Style.fontFamily
-            color: Generic.Style.blueColor
-            text: "Exit preferences"
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: exitAnimation.running = true
-            }
+            color: "#444"
+            text: "General"
         }
 
-        // Preferences
+        GenericAppElements.CheckBox {
+            text: qsTr("Show Animated Intro")
+            checked: Generic.Variables.showIntro
+            onCheckedChanged: Generic.Variables.showIntro = checked
+        }
 
-        Column {
-            spacing: 15
+        GenericAppElements.CheckBox {
+            text: qsTr("Show User Guides")
+            checked: Generic.Variables.showGuide
+            onCheckStateChanged: Generic.Variables.showGuide = checked
+        }
 
-            // General preferences
+        // Spacer
 
-            Text {
-                font.pointSize: Generic.Style.fontPointSize + 5
-                font.family: Generic.Style.fontFamily
-                color: "#444"
-                text: "General"
-            }
+        Item { height: 15; width: 1 }
 
-            GenericAppElements.CheckBox {
-                text: qsTr("Show Animated Intro")
-                checked: Generic.Variables.showIntro
-                onCheckedChanged: Generic.Variables.showIntro = checked
-            }
+        // Update preferences
 
-            GenericAppElements.CheckBox {
-                text: qsTr("Show User Guides")
-                checked: Generic.Variables.showGuide
-                onCheckStateChanged: Generic.Variables.showGuide = checked
-            }
+        Text {
+            font.pointSize: Generic.Style.fontPointSize + 5
+            font.family: Generic.Style.fontFamily
+            color: "#444"
+            text: "Update"
+        }
 
-            // Spacer
+        GenericAppElements.CheckBox {
+            enabled: false
+            text: qsTr("Automatically check for updates")
+            checked: false
+        }
 
-            Item { height: 15; width: 1 }
+        // Spacer
 
-            // Update
+        Item { height: 15; width: 1 }
 
-            Text {
-                font.pointSize: Generic.Style.fontPointSize + 5
-                font.family: Generic.Style.fontFamily
-                color: "#444"
-                text: "Update"
-            }
+        // Language preferences
 
-            GenericAppElements.CheckBox {
-                enabled: false
-                text: qsTr("Automatically check for updates")
-                checked: false
-            }
+        Text {
+            font.pointSize: Generic.Style.fontPointSize + 5
+            font.family: Generic.Style.fontFamily
+            color: "#444"
+            text: "Language"
+        }
 
-            // Spacer
+        GenericAppElements.ComboBox {
+            width: 250
+            enabled: false
+            model: ["English", "German", "French"]
+        }
 
-            Item { height: 15; width: 1 }
+        // Spacer
 
-            // Language
+        Item { height: 15; width: 1 }
 
-            Text {
-                font.pointSize: Generic.Style.fontPointSize + 5
-                font.family: Generic.Style.fontFamily
-                color: "#444"
-                text: "Language"
-            }
+        // Theme preferences
 
-            GenericAppElements.ComboBox {
-                width: 250
-                enabled: false
-                model: ["English", "German", "French"]
-            }
+        Text {
+            font.pointSize: Generic.Style.fontPointSize + 5
+            font.family: Generic.Style.fontFamily
+            color: "#444"
+            text: "Theme"
+        }
 
-            // Spacer
-
-            Item { height: 15; width: 1 }
-
-            // Language
-
-            Text {
-                font.pointSize: Generic.Style.fontPointSize + 5
-                font.family: Generic.Style.fontFamily
-                color: "#444"
-                text: "Theme"
-            }
-
-            GenericAppElements.ComboBox {
-                width: 250
-                enabled: false
-                model: ["Light", "Dark"]
-            }
-
+        GenericAppElements.ComboBox {
+            width: 250
+            enabled: false
+            model: ["Light", "Dark"]
         }
     }
 }
+
 
 
