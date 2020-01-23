@@ -13,7 +13,6 @@ ColoredCell 1.0 ColoredCell.qml
 CellComboBox 1.0 CellComboBox.qml
 ComboBox 1.0 ComboBox.qml
 GuideWindow 1.0 GuideWindow.qml
-IntroWindow 1.0 IntroWindow.qml
 AppUrlArea 1.0 AppUrlArea.qml
 ChartView 1.0 ChartView.qml
 StructureView 1.0 StructureView.qml
