@@ -26,28 +26,22 @@ Rectangle {
     
     Component.onCompleted: animo.restart()
 
-
+    // About dialog
     GenericControls.Dialog {
         id: aboutDialog
         title: "About"
-        width: 400
-        height: 300
 
         Column {
             padding: 20
             spacing: 15
-            anchors.fill: parent
 
             ScrollView {
-                anchors.fill: parent
+                width: 400
 
                 TextArea {
-                  anchors.fill: parent
-
-                  text: "nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo "
-                  wrapMode: TextEdit.WordWrap
+                    wrapMode: TextEdit.WordWrap
+                    text: "nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo "
                 }
-
             }
         }
     }
