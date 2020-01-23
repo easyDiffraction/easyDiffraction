@@ -4,6 +4,7 @@ import QtQuick.Controls.impl 2.12
 import QtQuick.Layouts 1.12
 
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyDiffraction 1.0 as Specific
@@ -26,35 +27,30 @@ Rectangle {
     Component.onCompleted: animo.restart()
 
 
-
-
-    Dialog {
+    GenericControls.Dialog {
         id: aboutDialog
-        visible: false
-        modal: true
-        anchors.centerIn: parent
-        width: parent.width / 2
-        height: parent.height / 2
+        title: "About"
+        width: 400
+        height: 300
 
-        standardButtons: Dialog.Close
-
-        ScrollView {
-          anchors.fill: parent
-
-          TextArea {
+        Column {
+            padding: 20
+            spacing: 15
             anchors.fill: parent
 
-            text: "nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo "
-            wrapMode: TextEdit.WordWrap
-          }
+            ScrollView {
+                anchors.fill: parent
 
+                TextArea {
+                  anchors.fill: parent
+
+                  text: "nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo "
+                  wrapMode: TextEdit.WordWrap
+                }
+
+            }
         }
-
-        onAccepted: console.log("Ok clicked")
-        onRejected: console.log("Cancel clicked")
     }
-
-
 
 
     Column {
