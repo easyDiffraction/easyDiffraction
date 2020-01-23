@@ -4,6 +4,7 @@ import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Layouts 1.12
 
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
@@ -118,30 +119,30 @@ ColumnLayout {
 
     // Info dialog (after refinement)
 
-    Dialog {
-        id: info
-        parent: Overlay.overlay
-        anchors.centerIn: parent
-        modal: true
+    GenericControls.Dialog {
         visible: proxy.refinementDone
+        title: "Refinement Results"
 
-        Label {
-            id: infoLabel
-            anchors.centerIn: parent
-            text: {
-                if (!proxy.refinementDone)
-                    return ""
-                const res = proxy.refinementResult
-                Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
-                Generic.Variables.numRefinedPars = res.num_refined_parameters ? res.num_refined_parameters : Generic.Variables.numRefinedPars
-                let s = `${res.refinement_message}`
-                s += res.final_chi_sq ? `\n\nGoodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
-                s += res.num_refined_parameters ? `\nNum. refined parameters: ${res.num_refined_parameters}` : ""
-                //s += res.nfev ? `\nNumber of evaluations of the objective functions: ${res.nfev}` : ""
-                //s += res.nit ? `\nNumber of iterations performed by the optimizer: ${res.nit}` : ""
-                //s += res.started_chi_sq ? `\nStarted goodness-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(2)}` : ""
-                //s += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
-                return s
+        Column {
+            padding: 20
+            spacing: 15
+
+            Text {
+                text: {
+                    if (!proxy.refinementDone)
+                        return ""
+                    const res = proxy.refinementResult
+                    Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
+                    Generic.Variables.numRefinedPars = res.num_refined_parameters ? res.num_refined_parameters : Generic.Variables.numRefinedPars
+                    let s = `${res.refinement_message}`
+                    s += res.final_chi_sq ? `\n\nGoodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
+                    s += res.num_refined_parameters ? `\nNum. refined parameters: ${res.num_refined_parameters}` : ""
+                    //s += res.nfev ? `\nNumber of evaluations of the objective functions: ${res.nfev}` : ""
+                    //s += res.nit ? `\nNumber of iterations performed by the optimizer: ${res.nit}` : ""
+                    //s += res.started_chi_sq ? `\nStarted goodness-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(2)}` : ""
+                    //s += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
+                    return s
+                }
             }
         }
     }
