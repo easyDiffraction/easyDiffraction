@@ -174,7 +174,7 @@ class CryspyCalculator:
 
         self._cryspy_obj.apply_constraint()
 
-        logging.info(self._cryspy_obj.crystals)
+        #logging.info(self._cryspy_obj.crystals)
 
         for calculator_phase in self._cryspy_obj.crystals:
             calculator_phase_name = calculator_phase.data_name

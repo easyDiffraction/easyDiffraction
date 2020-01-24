@@ -89,10 +89,10 @@ class Proxy(QObject):
         logging.info("")
         self._main_rcif_path = self.project_control.main_rcif_path
         self._calculator = CryspyCalculator(self._main_rcif_path)
-        logging.info(self._calculator.asCifDict())
+        #logging.info(self._calculator.asCifDict())
         self._calculator_interface = CalculatorInterface(self._calculator)
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
-        logging.info(self._calculator_interface.asCifDict())
+        #logging.info(self._calculator_interface.asCifDict())
         ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
         # This should pick up on non-valid cif files
         #if not check_project_dict(self._calculator.asCifDict()):
@@ -141,11 +141,11 @@ class Proxy(QObject):
     # QML Properties
     # ##############
     def calculatorAsDict(self):
-        logging.info(self._calculator_interface.asDict())
+        ###logging.info(self._calculator_interface.asDict())
         return self._calculator_interface.asDict()
 
     def calculatorAsCifDict(self):
-        logging.info(self._calculator_interface.asCifDict())
+        ###logging.info(self._calculator_interface.asCifDict())
         return self._calculator_interface.asCifDict()
 
     def calculatedSeries(self):
