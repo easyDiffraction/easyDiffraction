@@ -72,7 +72,6 @@ class Proxy(QObject):
         """
         self._experiment_rcif_path = self.project_control.experiment_rcif_path
         self._calculator.updateExps(self._experiment_rcif_path)
-        self._measured_data_model.updateSeries(self._calculator)
         self._measured_data_model.setCalculator(self._calculator)
         self._file_structure_model.setCalculator(self._calculator)
         # explicit emit required for the view to reload the model content
@@ -97,7 +96,6 @@ class Proxy(QObject):
     
         #
         self._measured_data_model.setCalculator(self._calculator) # Required to setCalculator before updateSeries first call
-        self._measured_data_model.updateSeries(self._calculator)
         self._calculated_data_model.setCalculator(self._calculator)
         self._calculated_data_series.updateSeries(self._calculator) #---#
         self._bragg_peaks_model.setCalculator(self._calculator)
@@ -162,9 +160,7 @@ class Proxy(QObject):
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
-    measuredData = Property('QVariant', lambda self: self._measured_data_model.asModel(), constant=True)
-    measuredDataSeries = Property('QVariant', lambda self: self._measured_data_model, constant=True)
-    measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), constant=True)
+    measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
     calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asModel(), constant=True)
     calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(),
                                     constant=True)
