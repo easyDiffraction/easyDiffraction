@@ -41,17 +41,17 @@ class AtomMspsModel(BaseModel):
             self._model.blockSignals(True)
             # set list of atoms
             data = []
-            for atom_id, atom_dict in phase_dict['atom_site'].items():
+            for atom_id, atom_dict in phase_dict['atoms'].items():
                 data.append({
                     self._label_role: atom_id,
-                    self._type_role: Helpers.nested_get(atom_dict, ['chi_type', 'value']),
-                    self._chiiso_role: Helpers.nested_get(atom_dict, ['chiiso', 'value']),
-                    self._chi11_role: Helpers.nested_get(atom_dict, ['chi_11', 'value']),
-                    self._chi22_role: Helpers.nested_get(atom_dict, ['chi_22', 'value']),
-                    self._chi33_role: Helpers.nested_get(atom_dict, ['chi_33', 'value']),
-                    self._chi12_role: Helpers.nested_get(atom_dict, ['chi_12', 'value']),
-                    self._chi13_role: Helpers.nested_get(atom_dict, ['chi_13', 'value']),
-                    self._chi23_role: Helpers.nested_get(atom_dict, ['chi_23', 'value']),
+                    self._type_role: Helpers.nested_get(atom_dict, ['chi_type', 'store', 'value']),
+                    self._chiiso_role: Helpers.nested_get(atom_dict, ['chiiso', 'store', 'value']),
+                    self._chi11_role: Helpers.nested_get(atom_dict, ['chi_11', 'store', 'value']),
+                    self._chi22_role: Helpers.nested_get(atom_dict, ['chi_22', 'store', 'value']),
+                    self._chi33_role: Helpers.nested_get(atom_dict, ['chi_33', 'store', 'value']),
+                    self._chi12_role: Helpers.nested_get(atom_dict, ['chi_12', 'store', 'value']),
+                    self._chi13_role: Helpers.nested_get(atom_dict, ['chi_13', 'store', 'value']),
+                    self._chi23_role: Helpers.nested_get(atom_dict, ['chi_23', 'store', 'value']),
                     })
             # set model size
             self._model.setColumnCount(1)

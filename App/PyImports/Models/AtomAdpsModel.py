@@ -41,17 +41,17 @@ class AtomAdpsModel(BaseModel):
             self._model.blockSignals(True)
             # set list of atoms
             data = []
-            for atom_id, atom_dict in phase_dict['atom_site'].items():
+            for atom_id, atom_dict in phase_dict['atoms'].items():
                 data.append({
                     self._label_role: atom_id,
-                    self._type_role: Helpers.nested_get(atom_dict, ['adp_type', 'value']),
-                    self._uiso_role: Helpers.nested_get(atom_dict, ['U_iso_or_equiv', 'value']),
-                    self._u11_role: Helpers.nested_get(atom_dict, ['u_11', 'value']),
-                    self._u22_role: Helpers.nested_get(atom_dict, ['u_22', 'value']),
-                    self._u33_role: Helpers.nested_get(atom_dict, ['u_33', 'value']),
-                    self._u12_role: Helpers.nested_get(atom_dict, ['u_12', 'value']),
-                    self._u13_role: Helpers.nested_get(atom_dict, ['u_13', 'value']),
-                    self._u23_role: Helpers.nested_get(atom_dict, ['u_23', 'value']),
+                    self._type_role: Helpers.nested_get(atom_dict, ['adp_type', 'store', 'value']),
+                    self._uiso_role: Helpers.nested_get(atom_dict, ['U_iso_or_equiv', 'store', 'value']),
+                    self._u11_role: Helpers.nested_get(atom_dict, ['u_11', 'store', 'value']),
+                    self._u22_role: Helpers.nested_get(atom_dict, ['u_22', 'store', 'value']),
+                    self._u33_role: Helpers.nested_get(atom_dict, ['u_33', 'store', 'value']),
+                    self._u12_role: Helpers.nested_get(atom_dict, ['u_12', 'store', 'value']),
+                    self._u13_role: Helpers.nested_get(atom_dict, ['u_13', 'store', 'value']),
+                    self._u23_role: Helpers.nested_get(atom_dict, ['u_23', 'store', 'value']),
                     })
             # set model size
             self._model.setColumnCount(1)
