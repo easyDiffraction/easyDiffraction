@@ -140,20 +140,23 @@ class CalculatorInterface(QObject):
     def updatePhases(self, emit: bool = True):
         phases = self.calculator.getPhases()
 
-        for key, val in phases.items():
-            logging.info(key)
-            logging.info(dict(val))
-
+        #for key, val in phases.items():
+        #    logging.info(key)
+        #    logging.info(dict(val))
 
         k, v = self.project_dict['phases'].dictComparison(phases)
-        k = [key.insert(0, 'phases') for key in k]
+        #logging.info(k)
+
+        #k = [key.insert(0, 'phases') for key in k]
+        for key in k:
+            key.insert(0, 'phases')
+        #logging.info(k)
+
         self.project_dict.bulkUpdate(k, v, 'Bulk update of phases')
         self.projectDictChanged.emit()
 
-        logging.info(dict(phases))
-        logging.info(self.project_dict)
-        logging.info(k)
-        logging.info(v)
+        #logging.info(k)
+        #logging.info(v)
 
         # This will notify the GUI models changed
         if emit:
