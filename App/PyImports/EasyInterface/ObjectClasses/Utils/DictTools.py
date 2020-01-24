@@ -148,29 +148,27 @@ class PathDict(UserDict):
 
         diff = DeepDiff(this_dict, another_dict)
 
-        logging.info(this_dict)
-        logging.info(another_dict)
-        logging.info(diff)
+        #logging.info(this_dict)
+        #logging.info(another_dict)
+        #logging.info(diff)
 
         key_list = []
         value_list = []
 
         if 'dictionary_item_added' in diff:
             for item in diff['dictionary_item_added']:
-                logging.info(item)
+                #logging.info(item)
                 string_path = item.replace("root", "").replace('][', ",")
-                logging.info(string_path)
+                #logging.info(string_path)
                 list_path = literal_eval(string_path)
-                logging.info(list_path)
-
+                #logging.info(list_path)
+                #logging.info(type(list_path))
+                new_value = another_dict[list_path[0]]
+                #logging.info(new_value)
                 key_list.append(list_path)
-                value_list.append(item)
-        #
-        logging.info(key_list)
-        logging.info(value_list)
+                value_list.append(new_value)
 
         required_key_list = ['type_changes', 'values_changed']
-        logging.info(diff['dictionary_item_added'])
         for required_key in required_key_list:
             if required_key not in diff:
                 continue
@@ -180,6 +178,11 @@ class PathDict(UserDict):
                 new_value = values['new_value']
                 key_list.append(list_path)
                 value_list.append(new_value)
+
+        #logging.info(key_list)
+        #logging.info(value_list)
+        #logging.info(this_dict)
+        #logging.info(another_dict)
 
         return key_list, value_list
 
