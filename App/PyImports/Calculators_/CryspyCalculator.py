@@ -17,7 +17,7 @@ EXPERIMENT_SEGMENT = "_experiments"
 class CryspyCalculator(QObject):
     def __init__(self, main_rcif_path, parent=None):
         super().__init__(parent)
-        logging.info("")
+        logging.info(":::")
         # internal dicts
         self._app_dict = {}
         self._calculator_dict = {}

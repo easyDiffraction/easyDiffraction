@@ -4,7 +4,6 @@ import logging
 from PySide2.QtCore import QObject, Signal, Slot, Property
 
 import PyImports.ProjectSentinel
-from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.Models.MeasuredDataModel import MeasuredDataModel
 from PyImports.Models.MeasuredDataModel import MeasuredDataSeries
 from PyImports.Models.CalculatedDataModel import CalculatedDataModel
@@ -23,6 +22,9 @@ from PyImports.ProjectSentinel import ProjectControl, writeProject, check_projec
 from PyImports.Refinement import Refiner
 import PyImports.Helpers as Helpers
 
+###from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from PyImports.EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from PyImports.EasyInterface.Interface import CalculatorInterface
 
 class Proxy(QObject):
 
@@ -34,6 +36,7 @@ class Proxy(QObject):
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
         self._calculator = None
+        self._calculator_interface = None
         #
         self.project_control = ProjectControl()
         self._measured_data_model = MeasuredDataModel()
@@ -85,31 +88,33 @@ class Proxy(QObject):
     def initialize(self):
         logging.info("")
         self._main_rcif_path = self.project_control.main_rcif_path
-        #
         self._calculator = CryspyCalculator(self._main_rcif_path)
-        self._calculator.projectDictChanged.connect(self.projectChanged)
+        logging.info(self._calculator.asCifDict())
+        self._calculator_interface = CalculatorInterface(self._calculator)
+        self._calculator_interface.projectDictChanged.connect(self.projectChanged)
+        logging.info(self._calculator_interface.asCifDict())
         ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
         # This should pick up on non-valid cif files
-        if not check_project_dict(self._calculator.asCifDict()):
-            # Note that new projects also fall into here, so:
-            if not self._calculator.name():
-                self.project_control._isValidCif = False
-                return
+        #if not check_project_dict(self._calculator.asCifDict()):
+        #    # Note that new projects also fall into here, so:
+        #    if not self._calculator.name():
+        #        self.project_control._isValidCif = False
+        #        return
         #
-        self._measured_data_series.updateSeries(self._calculator)
-        self._measured_data_model.setCalculator(self._calculator)
-        self._calculated_data_model.setCalculator(self._calculator)
-        self._calculated_data_series.updateSeries(self._calculator) #---#
-        self._bragg_peaks_model.setCalculator(self._calculator)
-        self._bragg_peaks_series.updateSeries(self._calculator) #---#
-        self._cell_parameters_model.setCalculator(self._calculator)
-        self._cell_box_model.setCalculator(self._calculator)
-        self._atom_sites_model.setCalculator(self._calculator)
-        self._atom_adps_model.setCalculator(self._calculator)
-        self._atom_msps_model.setCalculator(self._calculator)
-        self._fitables_model.setCalculator(self._calculator)
-        self._status_model.setCalculator(self._calculator)
-        self._file_structure_model.setCalculator(self._calculator)
+        self._measured_data_series.updateSeries(self._calculator_interface)
+        self._measured_data_model.setCalculator(self._calculator_interface)
+        self._calculated_data_model.setCalculator(self._calculator_interface)
+        self._calculated_data_series.updateSeries(self._calculator_interface) #---#
+        self._bragg_peaks_model.setCalculator(self._calculator_interface)
+        self._bragg_peaks_series.updateSeries(self._calculator_interface) #---#
+        self._cell_parameters_model.setCalculator(self._calculator_interface)
+        self._cell_box_model.setCalculator(self._calculator_interface)
+        self._atom_sites_model.setCalculator(self._calculator_interface)
+        self._atom_adps_model.setCalculator(self._calculator_interface)
+        self._atom_msps_model.setCalculator(self._calculator_interface)
+        self._fitables_model.setCalculator(self._calculator_interface)
+        self._status_model.setCalculator(self._calculator_interface)
+        self._file_structure_model.setCalculator(self._calculator_interface)
         #
         self._refine_thread = Refiner(self._calculator, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
@@ -136,17 +141,19 @@ class Proxy(QObject):
     # QML Properties
     # ##############
     def calculatorAsDict(self):
-        return self._calculator.asDict()
+        logging.info(self._calculator_interface.asDict())
+        return self._calculator_interface.asDict()
 
     def calculatorAsCifDict(self):
-        return self._calculator.asCifDict()
+        logging.info(self._calculator_interface.asCifDict())
+        return self._calculator_interface.asCifDict()
 
     def calculatedSeries(self):
-        self._calculated_data_series.updateSeries(self._calculator) #---#
+        self._calculated_data_series.updateSeries(self._calculator_interface) #---#
         return self._calculated_data_series
 
     def braggPeaksSeries(self):
-        self._bragg_peaks_series.updateSeries(self._calculator) #---#
+        self._bragg_peaks_series.updateSeries(self._calculator_interface) #---#
         return self._bragg_peaks_series
 
     # Notifications of changes for QML GUI about projectDictChanged,

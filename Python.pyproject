@@ -23,6 +23,20 @@
     "App/PyImports/Models/FitablesModel.py",
     "App/PyImports/Models/StatusModel.py",
 
+    "App/PyImports/EasyInterface/Interface.py",
+    "App/PyImports/EasyInterface/ObjectClasses/units.py",
+    "App/PyImports/EasyInterface/ObjectClasses/DataObj/Calculation.py",
+    "App/PyImports/EasyInterface/ObjectClasses/DataObj/Experiment.py",
+    "App/PyImports/EasyInterface/ObjectClasses/PhaseObj/Atom.py",
+    "App/PyImports/EasyInterface/ObjectClasses/PhaseObj/Cell.py",
+    "App/PyImports/EasyInterface/ObjectClasses/PhaseObj/Phase.py",
+    "App/PyImports/EasyInterface/ObjectClasses/PhaseObj/SpaceGroup.py",
+    "App/PyImports/EasyInterface/ObjectClasses/Utils/BaseClasses.py",
+    "App/PyImports/EasyInterface/ObjectClasses/Utils/DictTools.py",
+    "App/PyImports/EasyInterface/ObjectClasses/Utils/InfoObjs.py",
+    "App/PyImports/EasyInterface/Calculators/CryspyCalculator.py",
+    "App/PyImports/EasyInterface/Calculators/CryspyCalculator.py",
+
     "App/Gui.qml",
 
     "App/QmlResource.qrc"
