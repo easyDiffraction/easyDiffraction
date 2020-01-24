@@ -187,12 +187,12 @@ class CryspyCalculator:
                                               calculator_phase.space_group.it_coordinate_system_code)
 
             # Unit cell parameters
-            unit_cell = Cell.fromPars(calculator_phase.cell.length_a,
-                                      calculator_phase.cell.length_b,
-                                      calculator_phase.cell.length_c,
-                                      calculator_phase.cell.angle_alpha,
-                                      calculator_phase.cell.angle_beta,
-                                      calculator_phase.cell.angle_gamma)
+            unit_cell = Cell.fromPars(calculator_phase.cell.length_a.value,
+                                      calculator_phase.cell.length_b.value,
+                                      calculator_phase.cell.length_c.value,
+                                      calculator_phase.cell.angle_alpha.value,
+                                      calculator_phase.cell.angle_beta.value,
+                                      calculator_phase.cell.angle_gamma.value)
 
             phase = Phase.fromPars(calculator_phase_name, space_group, unit_cell)
             logging.info(phase)
@@ -209,41 +209,41 @@ class CryspyCalculator:
                 scat_length_neutron = calculator_atom_site.scat_length_neutron[i]
 
                 # Atom site coordinates
-                fract_x = calculator_atom_site.fract_x[i]
-                fract_y = calculator_atom_site.fract_y[i]
-                fract_z = calculator_atom_site.fract_z[i]
+                fract_x = calculator_atom_site.fract_x[i].value
+                fract_y = calculator_atom_site.fract_y[i].value
+                fract_z = calculator_atom_site.fract_z[i].value
 
                 # Atom site occupancy
-                occupancy = calculator_atom_site.occupancy[i]
+                occupancy = calculator_atom_site.occupancy[i].value
 
                 # Atom site ADP type
                 adp_type = calculator_atom_site.adp_type[i]
 
                 # Atom site isotropic ADP
-                U_iso_or_equiv = calculator_atom_site.u_iso_or_equiv[i]
+                U_iso_or_equiv = calculator_atom_site.u_iso_or_equiv[i].value
 
                 # Atom site anisotropic ADP
                 adp = None
                 if calculator_phase.atom_site_aniso is not None:
                     if i <= len(calculator_phase.atom_site_aniso.u_11):
-                        adp = [calculator_phase.atom_site_aniso.u_11[i],
-                               calculator_phase.atom_site_aniso.u_22[i],
-                               calculator_phase.atom_site_aniso.u_33[i],
-                               calculator_phase.atom_site_aniso.u_12[i],
-                               calculator_phase.atom_site_aniso.u_13[i],
-                               calculator_phase.atom_site_aniso.u_23[i]]
+                        adp = [calculator_phase.atom_site_aniso.u_11[i].value,
+                               calculator_phase.atom_site_aniso.u_22[i].value,
+                               calculator_phase.atom_site_aniso.u_33[i].value,
+                               calculator_phase.atom_site_aniso.u_12[i].value,
+                               calculator_phase.atom_site_aniso.u_13[i].value,
+                               calculator_phase.atom_site_aniso.u_23[i].value]
 
                 # Atom site MSP
                 msp = None
                 if calculator_phase.atom_site_susceptibility is not None:
                     if i < len(calculator_phase.atom_site_susceptibility.chi_type):
                         msp = [calculator_phase.atom_site_susceptibility.chi_type[i],
-                               calculator_phase.atom_site_susceptibility.chi_11[i],
-                               calculator_phase.atom_site_susceptibility.chi_22[i],
-                               calculator_phase.atom_site_susceptibility.chi_33[i],
-                               calculator_phase.atom_site_susceptibility.chi_12[i],
-                               calculator_phase.atom_site_susceptibility.chi_13[i],
-                               calculator_phase.atom_site_susceptibility.chi_23[i]]
+                               calculator_phase.atom_site_susceptibility.chi_11[i].value,
+                               calculator_phase.atom_site_susceptibility.chi_22[i].value,
+                               calculator_phase.atom_site_susceptibility.chi_33[i].value,
+                               calculator_phase.atom_site_susceptibility.chi_12[i].value,
+                               calculator_phase.atom_site_susceptibility.chi_13[i].value,
+                               calculator_phase.atom_site_susceptibility.chi_23[i].value]
 
                 # Add an atom to atoms
                 atoms.append(Atom.fromPars(label, type_symbol, scat_length_neutron,
@@ -282,11 +282,11 @@ class CryspyCalculator:
 
             # Instrument resolution
             calculator_resolution = calculator_experiment.resolution
-            resolution = Resolution.fromPars(calculator_resolution.u,
-                                             calculator_resolution.v,
-                                             calculator_resolution.w,
-                                             calculator_resolution.x,
-                                             calculator_resolution.y)
+            resolution = Resolution.fromPars(calculator_resolution.u.value,
+                                             calculator_resolution.v.value,
+                                             calculator_resolution.w.value,
+                                             calculator_resolution.x.value,
+                                             calculator_resolution.y.value)
 
             # Measured data points
             x_obs = np.array(calculator_experiment.meas.ttheta).tolist()
