@@ -26,10 +26,10 @@ class BaseModel(QObject):
         """Return data model."""
         return self._model
 
-    def setCalculator(self, calculator):
-        calculator.projectDictChanged.connect(self.onProjectChanged)
-        self._calculator = calculator
-        self._project_dict = calculator.asDict()
+    def setCalculator(self, calculator_interface):
+        calculator_interface.projectDictChanged.connect(self.onProjectChanged)
+        self.calculator_interface = calculator_interface
+        self._project_dict = calculator_interface.project_dict
         self._setModelsFromProjectDict()
 
 

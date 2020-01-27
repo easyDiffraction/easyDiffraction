@@ -1,33 +1,27 @@
-import os
-
 import logging
-
-from typing import Union, List
+import os
 from datetime import datetime
+from typing import List
 
 import numpy as np
+from PySide2.QtCore import QObject, Signal
 
-from .ObjectClasses.Utils.DictTools import UndoableDict
-#from .ObjectClasses.DataObj import *
-#from .ObjectClasses.PhaseObj import *
-from .ObjectClasses.PhaseObj.Atom import *
-from .ObjectClasses.PhaseObj.Cell import *
-from .ObjectClasses.PhaseObj.Phase import *
-from .ObjectClasses.PhaseObj.SpaceGroup import *
 from .ObjectClasses.DataObj.Calculation import *
 from .ObjectClasses.DataObj.Experiment import *
-
+# from .ObjectClasses.DataObj import *
+# from .ObjectClasses.PhaseObj import *
+from .ObjectClasses.PhaseObj.Phase import *
+from .ObjectClasses.Utils.DictTools import UndoableDict
 from .ObjectClasses.Utils.InfoObjs import App, Calculator, Info
-from .Calculators.CryspyCalculator import CryspyCalculator
-
-from PySide2.QtCore import QObject, Signal
 
 
 class ProjectDict(UndoableDict):
     """
     This class deals with the creation and modification of the main project dictionary
     """
-    def __init__(self, app: App, calculator: Calculator, info: Info, phases: Phases, experiments: Experiments, calculations: Calculations):
+
+    def __init__(self, app: App, calculator: Calculator, info: Info, phases: Phases, experiments: Experiments,
+                 calculations: Calculations):
         """
         Create the main project dictionary from base classes
         :param app: Details of the EasyDiffraction app
@@ -36,7 +30,8 @@ class ProjectDict(UndoableDict):
         :param phases: Crystolographic phases in the system
         :param experiments: Experimental data store in the system
         """
-        super().__init__(app=app, calculator=calculator, info=info, phases=phases, experiments=experiments, calculations=calculations)
+        super().__init__(app=app, calculator=calculator, info=info, phases=phases, experiments=experiments,
+                         calculations=calculations)
 
     @classmethod
     def default(cls) -> 'ProjectDict':
@@ -75,7 +70,7 @@ class ProjectDict(UndoableDict):
 
 
 class CalculatorInterface(QObject):
-    def __init__(self, calculator: Union[CryspyCalculator], parent=None):
+    def __init__(self, calculator, parent=None):
         super().__init__(parent)
         logging.info("---")
         self.project_dict = ProjectDict.default()
@@ -85,7 +80,18 @@ class CalculatorInterface(QObject):
         logging.info(self.calculator)
         self.setProjectFromCalculator()
 
+        # Set the calculator info
+        # TODO this should be a non-logged update
+        CALCULATOR_INFO = self.calculator.calculatorInfo()
+        for key in CALCULATOR_INFO.keys():
+            self.project_dict.setItemByPath(['calculator', key], CALCULATOR_INFO[key])
+
     projectDictChanged = Signal()
+
+    def __repr__(self) -> str:
+        return "EasyDiffraction interface with calculator: {} - {}".format(
+            self.project_dict['calculator']['name'],
+            self.project_dict['calculator']['version'])
 
     def setProjectFromCalculator(self):
         #TODO initiate buld update here
@@ -93,7 +99,9 @@ class CalculatorInterface(QObject):
         self.updateExperiments(emit=False)
         self.updateCalculations(emit=False)
         self.project_dict.setItemByPath(['info', 'modified_datetime'],
-                                        datetime.fromtimestamp(os.path.getmtime(self.calculator._main_rcif_path)).strftime('%d %b %Y, %H:%M:%S'))
+                                        datetime.fromtimestamp(
+                                            os.path.getmtime(self.calculator._main_rcif_path)).strftime(
+                                            '%d %b %Y, %H:%M:%S'))
         self.project_dict.setItemByPath(['info', 'refinement_datetime'], str(np.datetime64('now')))
 
         _, n_res = self.calculator.getChiSq()
@@ -123,19 +131,19 @@ class CalculatorInterface(QObject):
         # This will notify the GUI models changed
         self.projectDictChanged.emit()
 
-    def writeMainCif(self, saveDir: str):
-        self.calculator.writeMainCif(saveDir)
+    def writeMainCif(self, save_dir: str):
+        self.calculator.writeMainCif(save_dir)
 
-    def writePhaseCif(self, saveDir: str):
-        self.calculator.writePhaseCif(saveDir)
+    def writePhaseCif(self, save_dir: str):
+        self.calculator.writePhaseCif(save_dir)
 
-    def writeExpCif(self, saveDir: str):
-        self.calculator.writeExpCif(saveDir)
+    def writeExpCif(self, save_dir: str):
+        self.calculator.writeExpCif(save_dir)
 
-    def saveCifs(self, saveDir: str):
-        self.writeMainCif(saveDir)
-        self.writePhaseCif(saveDir)
-        self.writeExpCif(saveDir)
+    def saveCifs(self, save_dir: str):
+        self.writeMainCif(save_dir)
+        self.writePhaseCif(save_dir)
+        self.writeExpCif(save_dir)
 
     def updatePhases(self, emit: bool = True):
         phases = self.calculator.getPhases()
@@ -184,21 +192,35 @@ class CalculatorInterface(QObject):
         if emit:
             self.projectDictChanged.emit()
 
-    def setPhases(self):
+    def setPhases(self, phases=None):
         """Set phases (sample model tab in GUI)"""
+        if isinstance(phases, Phase):
+            new_phase_name = phases['name']
+            self.project_dict.setItemByPath(['phases', new_phase_name], phases)
+        elif isinstance(phases, Phases):
+            self.project_dict.bulkUpdate([['phases', item] for item in list(phases.keys())],
+                                         [phases[key] for key in phases.keys()],
+                                         "Setting new phases")
         self.calculator.setPhases(self.project_dict['phases'])
 
-    def setExperiments(self):
+    def setExperiments(self, experiments=None):
         """Set experiments (Experimental data tab in GUI)"""
+        if isinstance(experiments, Experiment):
+            new_exp_name = experiments['name']
+            self.project_dict.setItemByPath(['experiments', new_exp_name], experiments)
+        elif isinstance(experiments, Experiments):
+            self.project_dict.bulkUpdate([['experiments', item] for item in list(experiments.keys())],
+                                         [experiments[key] for key in experiments.keys()],
+                                         "Setting new experiments")
         self.calculator.setExperiments(self.project_dict['experiments'])
 
     def setCalculatorFromProject(self):
-        self.calculator.setObjFromProjectDict(self.project_dict['phases'], self.project_dict['experiments'])
+        self.calculator.setObjFromProjectDicts(self.project_dict['phases'], self.project_dict['experiments'])
 
-    def getByPath(self, keys: list):
+    def getDictByPath(self, keys: list):
         return self.project_dict.getItemByPath(keys)
 
-    def setByPath(self, keys: list, value):
+    def setDictByPath(self, keys: list, value):
         self.project_dict.setItemByPath(keys, value)
         self.setCalculatorFromProject()
         self.projectDictChanged.emit()
@@ -254,6 +276,7 @@ class CalculatorInterface(QObject):
                 return {
                     "refinement_message": "Unknown problems during refinement"
                 }
+
     @property
     def final_chi_square(self) -> float:
         return self.calculator.final_chi_square

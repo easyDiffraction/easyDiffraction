@@ -3,8 +3,6 @@ import logging
 
 from typing import Tuple
 
-import numpy as np
-
 import cryspy
 import pycifstar
 
@@ -24,6 +22,12 @@ from cryspy.scripts.cl_rhochi import RhoChi
 PHASE_SEGMENT = "_phases"
 EXPERIMENT_SEGMENT = "_experiments"
 
+CALCULATOR_INFO = {
+    'name': 'CrysPy',
+    'version': '0.2.0',
+    'url': 'https://github.com/ikibalin/cryspy'
+}
+
 
 class CryspyCalculator:
     def __init__(self, main_rcif_path: str):
@@ -33,6 +37,9 @@ class CryspyCalculator:
         self._phase_name = ""
         self._experiments_path = ""
         self._cryspy_obj = self._createCryspyObj()
+
+    def calculatorInfo(self) -> dict:
+        return CALCULATOR_INFO
 
     def _createCryspyObj(self):
         """Create cryspy object from separate rcif files"""
@@ -164,6 +171,22 @@ class CryspyCalculator:
         self.writePhaseCif(saveDir)
         self.writeExpCif(saveDir)
 
+    @staticmethod
+    def _createProjItemFromObj(func, keys: list, obj_list: list):
+        """ ... """
+        retVals = func(
+            *[item.value if isinstance(item, cryspy.common.cl_fitable.Fitable) else item for item in obj_list])
+        for index, key in enumerate(keys):
+            if not isinstance(obj_list[index], cryspy.common.cl_fitable.Fitable):
+                continue
+            elif isinstance(retVals[key], PathDict):
+                continue
+            retVals.setItemByPath([key, 'store', 'error'], obj_list[index].sigma)
+            retVals.setItemByPath([key, 'store', 'constraint'], obj_list[index].constraint)
+            retVals.setItemByPath([key, 'store', 'hide'], obj_list[index].constraint_flag)
+            retVals.setItemByPath([key, 'store', 'refine'], obj_list[index].refinement)
+        return retVals
+
     def getPhases(self) -> Phases:
         """Set phases (sample model tab in GUI)"""
 
@@ -181,18 +204,21 @@ class CryspyCalculator:
             logging.info(calculator_phase_name)
 
             # Space group
-            space_group = SpaceGroup.fromPars(calculator_phase.space_group.crystal_system,
-                                              calculator_phase.space_group.name_hm_ref,
-                                              calculator_phase.space_group.it_number,
-                                              calculator_phase.space_group.it_coordinate_system_code)
+            space_group = self._createProjItemFromObj(SpaceGroup.fromPars,
+                                                      ['crystal_system', 'space_group_name_HM_alt',
+                                                       'space_group_IT_number', 'origin_choice'],
+                                                      [calculator_phase.space_group.crystal_system,
+                                                       calculator_phase.space_group.name_hm_ref,
+                                                       calculator_phase.space_group.it_number,
+                                                       calculator_phase.space_group.it_coordinate_system_code])
 
             # Unit cell parameters
-            unit_cell = Cell.fromPars(calculator_phase.cell.length_a.value,
-                                      calculator_phase.cell.length_b.value,
-                                      calculator_phase.cell.length_c.value,
-                                      calculator_phase.cell.angle_alpha.value,
-                                      calculator_phase.cell.angle_beta.value,
-                                      calculator_phase.cell.angle_gamma.value)
+            unit_cell = self._createProjItemFromObj(Cell.fromPars, ['length_a', 'length_b', 'length_c',
+                                                                    'angle_alpha', 'angle_beta', 'angle_gamma'],
+                                                    [calculator_phase.cell.length_a, calculator_phase.cell.length_b,
+                                                     calculator_phase.cell.length_c, calculator_phase.cell.angle_alpha,
+                                                     calculator_phase.cell.angle_beta,
+                                                     calculator_phase.cell.angle_gamma])
 
             phase = Phase.fromPars(calculator_phase_name, space_group, unit_cell)
             logging.info(phase)
@@ -209,46 +235,59 @@ class CryspyCalculator:
                 scat_length_neutron = calculator_atom_site.scat_length_neutron[i]
 
                 # Atom site coordinates
-                fract_x = calculator_atom_site.fract_x[i].value
-                fract_y = calculator_atom_site.fract_y[i].value
-                fract_z = calculator_atom_site.fract_z[i].value
+                fract_x = calculator_atom_site.fract_x[i]
+                fract_y = calculator_atom_site.fract_y[i]
+                fract_z = calculator_atom_site.fract_z[i]
 
                 # Atom site occupancy
-                occupancy = calculator_atom_site.occupancy[i].value
+                occupancy = calculator_atom_site.occupancy[i]
 
                 # Atom site ADP type
                 adp_type = calculator_atom_site.adp_type[i]
 
                 # Atom site isotropic ADP
-                U_iso_or_equiv = calculator_atom_site.u_iso_or_equiv[i].value
+                U_iso_or_equiv = calculator_atom_site.u_iso_or_equiv[i]
 
                 # Atom site anisotropic ADP
                 adp = None
                 if calculator_phase.atom_site_aniso is not None:
                     if i <= len(calculator_phase.atom_site_aniso.u_11):
-                        adp = [calculator_phase.atom_site_aniso.u_11[i].value,
-                               calculator_phase.atom_site_aniso.u_22[i].value,
-                               calculator_phase.atom_site_aniso.u_33[i].value,
-                               calculator_phase.atom_site_aniso.u_12[i].value,
-                               calculator_phase.atom_site_aniso.u_13[i].value,
-                               calculator_phase.atom_site_aniso.u_23[i].value]
+                        adp = [calculator_phase.atom_site_aniso.u_11[i],
+                               calculator_phase.atom_site_aniso.u_22[i],
+                               calculator_phase.atom_site_aniso.u_33[i],
+                               calculator_phase.atom_site_aniso.u_12[i],
+                               calculator_phase.atom_site_aniso.u_13[i],
+                               calculator_phase.atom_site_aniso.u_23[i]]
+                        adp = self._createProjItemFromObj(ADP.fromPars,
+                                                          ['u_11', 'u_22', 'u_33',
+                                                           'u_12', 'u_13', 'u_23'],
+                                                          adp)
 
                 # Atom site MSP
                 msp = None
                 if calculator_phase.atom_site_susceptibility is not None:
                     if i < len(calculator_phase.atom_site_susceptibility.chi_type):
                         msp = [calculator_phase.atom_site_susceptibility.chi_type[i],
-                               calculator_phase.atom_site_susceptibility.chi_11[i].value,
-                               calculator_phase.atom_site_susceptibility.chi_22[i].value,
-                               calculator_phase.atom_site_susceptibility.chi_33[i].value,
-                               calculator_phase.atom_site_susceptibility.chi_12[i].value,
-                               calculator_phase.atom_site_susceptibility.chi_13[i].value,
-                               calculator_phase.atom_site_susceptibility.chi_23[i].value]
+                               calculator_phase.atom_site_susceptibility.chi_11[i],
+                               calculator_phase.atom_site_susceptibility.chi_22[i],
+                               calculator_phase.atom_site_susceptibility.chi_33[i],
+                               calculator_phase.atom_site_susceptibility.chi_12[i],
+                               calculator_phase.atom_site_susceptibility.chi_13[i],
+                               calculator_phase.atom_site_susceptibility.chi_23[i]]
+                        msp = self._createProjItemFromObj(MSP.fromPars,
+                                                          ['MSPtype', 'chi_11', 'chi_22', 'chi_33',
+                                                           'chi_12', 'chi_13', 'chi_23'],
+                                                          msp)
 
                 # Add an atom to atoms
-                atoms.append(Atom.fromPars(label, type_symbol, scat_length_neutron,
-                                             fract_x, fract_y, fract_z, occupancy, adp_type,
-                                             U_iso_or_equiv, adp, msp))
+                atoms.append(self._createProjItemFromObj(
+                    Atom.fromPars,
+                    ['atom_site_label', 'type_symbol', 'scat_length_neutron',
+                     'fract_x', 'fract_y', 'fract_z', 'occupancy', 'adp_type',
+                     'U_iso_or_equiv'],
+                    [label, type_symbol, scat_length_neutron,
+                     fract_x, fract_y, fract_z, occupancy, adp_type,
+                     U_iso_or_equiv, adp, msp]))
             atoms = Atoms(atoms)
 
             for key in atoms:
@@ -277,16 +316,20 @@ class CryspyCalculator:
             calculator_background = calculator_experiment.background
             backgrounds = []
             for ttheta, intensity in zip(calculator_background.ttheta, calculator_background.intensity):
-                backgrounds.append(Background.fromPars(ttheta, intensity))
+                backgrounds.append(self._createProjItemFromObj(Background.fromPars,
+                                                               ['ttheta', 'intensity'],
+                                                               [ttheta, intensity]))
             backgrounds = Backgrounds(backgrounds)
 
             # Instrument resolution
             calculator_resolution = calculator_experiment.resolution
-            resolution = Resolution.fromPars(calculator_resolution.u.value,
-                                             calculator_resolution.v.value,
-                                             calculator_resolution.w.value,
-                                             calculator_resolution.x.value,
-                                             calculator_resolution.y.value)
+            resolution = self._createProjItemFromObj(Resolution.fromPars,
+                                                     ['u', 'v', 'w', 'x', 'y'],
+                                                     [calculator_resolution.u,
+                                                      calculator_resolution.v,
+                                                      calculator_resolution.w,
+                                                      calculator_resolution.x,
+                                                      calculator_resolution.y])
 
             # Measured data points
             x_obs = np.array(calculator_experiment.meas.ttheta).tolist()
@@ -309,8 +352,11 @@ class CryspyCalculator:
 
             data = MeasuredPattern(x_obs, y_obs, sy_obs, y_obs_up, sy_obs_up, y_obs_down, sy_obs_down)
 
-            experiment = Experiment.fromPars(calculator_experiment_name, wavelength, offset,
-                                             scale, backgrounds, resolution, data)
+            experiment = self._createProjItemFromObj(Experiment.fromPars,
+                                                     ['name', 'wavelength', 'offset', 'phase', 'background',
+                                                      'resolution', 'measured_pattern'],
+                                                     [calculator_experiment_name, wavelength, offset, scale,
+                                                      backgrounds, resolution, data])
             experiments.append(experiment)
         return Experiments(experiments)
 
@@ -374,12 +420,24 @@ class CryspyCalculator:
         calculations = Calculations(calculations)
         return calculations
 
-
-    def _setCalculatorObjFromProjectDict(self, item: cryspy.common.cl_fitable.Fitable, data: Base):
+    @staticmethod
+    def _setCalculatorObjFromProjectDict(item: cryspy.common.cl_fitable.Fitable, data: Base):
         if not isinstance(item, cryspy.common.cl_fitable.Fitable):
             return
         item.value = data.value
         item.refinement = data['store']['refine']
+
+    @staticmethod
+    def _createProjDictFromObj(item: 'PathDict', obj: cryspy.common.cl_fitable.Fitable):
+        """ ... """
+        item.setItemByPath(['store', 'value'], obj)
+        if not isinstance(obj, cryspy.common.cl_fitable.Fitable):
+            item.setItemByPath(['store', 'value'], obj)
+        item.setItemByPath(['store', 'value'], obj.value)
+        item.setItemByPath(['store', 'error'], obj.value)
+        item.setItemByPath(['store', 'constraint'], obj.value)
+        item.setItemByPath(['store', 'hide'], obj.value)
+        item.setItemByPath(['store', 'refine'], obj.value)
 
     def setPhases(self, phases: Phases):
         """Set phases (sample model tab in GUI)"""
@@ -492,7 +550,7 @@ class CryspyCalculator:
             else:
                 raise NotImplementedError
 
-    def setObjFromProjectDict(self, phases: Phases, experiments: Experiments):
+    def setObjFromProjectDicts(self, phases: Phases, experiments: Experiments):
         """Set all the cryspy parameters from project dictionary"""
         self.setPhases(phases)
         self.setExperiments(experiments)
