@@ -1,7 +1,7 @@
 import pytest
 import logging
+import dictdiffer
 from ast import literal_eval
-from deepdiff import DeepDiff
 from typing import Union, Any, NoReturn, List, Iterable, Tuple
 from collections import UserDict
 from copy import deepcopy
@@ -132,59 +132,39 @@ class PathDict(UserDict):
                 base_dict[key] = item.asDict()
         return base_dict
 
-    def dictComparison(self, new_dict: Union['PathDict', dict]) -> Tuple[list, list]:
+    def dictComparison(self, another_dict: Union['PathDict', dict]) -> Tuple[list, list]:
         """
         Compare self to a dictionary or PathDict and return the update path and value
         :param another_dict: dict or PathDict to compare self to
         :return: path and value updates for self to become newDict
         """
 
-        if not isinstance(new_dict, (PathDict, dict)):
+        if not isinstance(another_dict, (PathDict, dict)):
             raise TypeError
-
-        this_dict = self.asDict()
-        if isinstance(new_dict, PathDict):
-            another_dict = new_dict.asDict()
-        else:
-            another_dict = new_dict
-
-        diff = DeepDiff(this_dict, another_dict)
-
-        #logging.info(this_dict)
-        #logging.info(another_dict)
-        #logging.info(diff)
 
         key_list = []
         value_list = []
 
-        if 'dictionary_item_added' in diff:
-            for item in diff['dictionary_item_added']:
-                #logging.info(item)
-                string_path = item.replace("root", "").replace('][', ",")
-                #logging.info(string_path)
-                list_path = literal_eval(string_path)
-                #logging.info(list_path)
-                #logging.info(type(list_path))
-                new_value = new_dict[list_path[0]]
-                #logging.info(new_value)
-                key_list.append(list_path)
-                value_list.append(new_value)
+        for item in dictdiffer.diff(self, another_dict):
+            type = item[0]
+            path = item[1]
+            changes = item[2]
 
-        required_key_list = ['type_changes', 'values_changed']
-        for required_key in required_key_list:
-            if required_key not in diff:
+            if isinstance(path, str):
+                path = path.split(".")
+
+            if type == 'change':
+                new_value = changes[1]
+            elif type == 'add':
+                new_value = changes[0][1]
+                path.append(changes[0][0])
+                if path[0] == '':
+                    del path[0]
+            elif type == 'remove':
                 continue
-            for path, values in diff[required_key].items():
-                string_path = path.replace("root", "").replace('][', ",")
-                list_path = literal_eval(string_path)
-                new_value = values['new_value']
-                key_list.append(list_path)
-                value_list.append(new_value)
 
-        #logging.info(key_list)
-        #logging.info(value_list)
-        #logging.info(this_dict)
-        #logging.info(another_dict)
+            key_list.append(path)
+            value_list.append(new_value)
 
         return key_list, value_list
 
@@ -309,5 +289,41 @@ if __name__ == "__main__":
 
     d1 = PathDict(dict(a=1, b=2, c=dict(d=3, e=dict(f=4, g=5))))
     d2 = {'a': 1, 'b': 2, 'c': {'d': 333, 'e': {'f': 4, 'g': 555}}}
-    print("B", d1.dictComparison(d2))
+    print("c", d1.dictComparison(d2))
+
+    d1 = PathDict(dict(a=1, b=2, c=dict(d=3, e=dict(f=4, g=5))))
+    d2 = PathDict(dict(a=1, b=2, c=dict(d=3, e=dict(f=4))))
+    print("D", d1.dictComparison(d2))
+
+    d1 = PathDict(dict(a=1, b=2, c=dict(d=3, e=dict(g=5))))
+    d2 = PathDict(dict(a=1, b=2, c=dict(d=3, e=dict(f=4, g=5))))
+    print("E", d1.dictComparison(d2))
+
+    d1 = PathDict({ 'a': 1, 'b': 2, 'c': PathDict({ 'd': 3, 'e': PathDict({ 'f': 4 }) }) })
+    d2 = PathDict({ 'a': 1, 'b': 2, 'c': PathDict({ 'd': 3, 'e': PathDict({ 'f': 4, 'g': 5 }) }) })
+    print("F", d1.dictComparison(d2))
+
+    d1 = PathDict({ 'a': 1, 'b': 2 })
+    d2 = PathDict({ 'a': 1, 'b': 2, 'c': PathDict({ 'd': 3, 'e': PathDict({ 'f': 4, 'g': 5 }) }) })
+    print("G", d1.dictComparison(d2))
+
+    d1 = PathDict({ 'a': 1, 'b': 2, 'm': 0  })
+    d2 = PathDict({ 'a': 9, 'c': PathDict({ 'd': 3, 'e': PathDict({ 'f': 4, 'g': 5 }) }), 'm': 1 })
+    print("H", d1.dictComparison(d2))
+
+    d1 = PathDict({ 'a': 9, 'c': { 'd': 3, 'e 1': { 'f': 4, 'g': 5 } }, 'm': 1, 'o': { 'p': { 'q': 8, 'r.2': 0 } } })
+    d2 = { 'a': 99, 'c': { 'd': 3, 'e 1': { 'f': 4, 'g': 55, 'h': 66 } }, 'm': 11, 'o': { 'p': { 'r.2': 2 } } }
+    print("K", d1.dictComparison(d2))
+
+    d1 = PathDict({ 'a': 9, 'c': PathDict({ 'd': 3, 'e 1': PathDict({ 'f': 4, 'g': 5 }) }), 'm': 1, 'o': PathDict({ 'p': PathDict({ 'q': 8, 'r.2': 0 }) }) })
+    d2 = PathDict({ 'a': 99, 'c': PathDict({ 'd': 3, 'e 1': PathDict({ 'f': 4, 'g': 55, 'h': 66 }) }), 'm': 11, 'o': PathDict({ 'p': PathDict({ 'r.2': 2 }) }) })
+    print("M", d1.dictComparison(d2))
+
+    d1 = PathDict({ 'a': 9, 'c': PathDict({ 'd': 3, 'e 1': PathDict({ 'f': 4, 'g': 5 }) }), 'm': 1, 'o': PathDict({ 'p': PathDict({ 'q': 8, 'r.2': 0 }) }) })
+    d2 = PathDict({ 'aa': PathDict(alpha=1, beta=2), 'a': 99, 'c': PathDict({ 'd': 3, 'e 1': PathDict({ 'f': 4, 'g': 55, 'h': 66 }) }), 'm': 11, 'o': PathDict({ 'p': PathDict({ 'r.2': 2 }) }) })
+    print("N", d1.dictComparison(d2))
+    k, v = d1.dictComparison(d2)
+    for item in v:
+        print(item, type(item))
+
 
