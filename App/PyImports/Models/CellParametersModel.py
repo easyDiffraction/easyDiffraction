@@ -33,12 +33,12 @@ class CellParametersModel(BaseModel):
             # set helper data list
             data = []
             data.append({
-                self._a_role: Helpers.nested_get(phase_dict, ['cell', 'length_a', 'value']),
-                self._b_role: Helpers.nested_get(phase_dict, ['cell', 'length_b', 'value']),
-                self._c_role: Helpers.nested_get(phase_dict, ['cell', 'length_c', 'value']),
-                self._alpha_role: Helpers.nested_get(phase_dict, ['cell', 'angle_alpha', 'value']),
-                self._beta_role: Helpers.nested_get(phase_dict, ['cell', 'angle_beta', 'value']),
-                self._gamma_role: Helpers.nested_get(phase_dict, ['cell', 'angle_gamma', 'value']),
+                self._a_role: phase_dict.getItemByPath(['cell', 'length_a']).value,
+                self._b_role: phase_dict.getItemByPath(['cell', 'length_b']).value,
+                self._c_role: phase_dict.getItemByPath(['cell', 'length_c']).value,
+                self._alpha_role: phase_dict.getItemByPath(['cell', 'angle_alpha']).value,
+                self._beta_role: phase_dict.getItemByPath(['cell', 'angle_beta']).value,
+                self._gamma_role: phase_dict.getItemByPath(['cell', 'angle_gamma']).value,
             })
             # set model size
             self._model.setColumnCount(1)

@@ -86,13 +86,13 @@ class StatusModel(BaseModel):
 
         # Set chi squared
         try:
-            self._interestedList.setItemValue('chiSq', round(project_dict['info']['chi_squared']['value'], 2))
+            self._interestedList.setItemValue('chiSq', round(project_dict['info']['chi_squared'].value, 2))
         except KeyError:
             self._interestedList.setItemValue('chiSq', 0)
 
 
         # Get number of parameters
-        numPars = Helpers.get_num_refine_pars(project_dict)
+        numPars = Helpers.get_num_refine_pars(project_dict.asDict())
 
         # Set the other parameters.
         self._interestedList.setItemValue('numPars', numPars)

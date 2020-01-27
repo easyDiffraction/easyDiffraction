@@ -21,9 +21,9 @@ class CellBoxModel(BaseModel):
             # block model signals
             self._model.blockSignals(True)
             # get lattice parameters
-            a = phase_dict['cell']['length_a']['store']['value']
-            b = phase_dict['cell']['length_b']['store']['value']
-            c = phase_dict['cell']['length_c']['store']['value']
+            a = phase_dict.getItemByPath(['cell', 'length_a']).value
+            b = phase_dict.getItemByPath(['cell', 'length_b']).value
+            c = phase_dict.getItemByPath(['cell', 'length_c']).value
             # get number of dots along different axes
             dots_per_angstrom = 30
             dots_along_a = int(a * dots_per_angstrom)

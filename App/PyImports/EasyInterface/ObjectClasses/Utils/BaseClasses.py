@@ -11,7 +11,7 @@ class Data(PathDict):
     def __init__(self, value: Optional[Any] = None, unit: Optional[Union[str, Unit]] = ''):
         if not isinstance(unit, Unit):
             unit = Unit(unit)
-        super().__init__(value=value, unit=unit, error=None, constraint=None, hide=None, refine=None)
+        super().__init__(value=value, unit=unit, error=0, constraint=None, hide=True, refine=False)
 
     def __repr__(self) -> str:
         return '{}'.format(self['value'])

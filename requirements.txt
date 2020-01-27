@@ -1,3 +1,3 @@
 cryspy>=0.2.0
 pyside2
-deepdiff
+dictdiffer

@@ -187,15 +187,17 @@ class Atom(PathDict):
         fract_y = Base(fract_y, ATOM_DETAILS['fract']['default'][1])
         fract_z = Base(fract_z, ATOM_DETAILS['fract']['default'][1])
 
-        if ADp is not None:
-            ADp = ADP.fromPars(*ADp)
-        else:
-            ADp = ADP.default()
+        if not isinstance(ADp, ADP):
+            if ADp is not None:
+                ADp = ADP.fromPars(*ADp)
+            else:
+                ADp = ADP.default()
 
-        if MSp is not None:
-            MSp = MSP.fromPars(*MSp)
-        else:
-            MSp = MSP.default()
+        if not isinstance(MSp, MSP):
+            if MSp is not None:
+                MSp = MSP.fromPars(*MSp)
+            else:
+                MSp = MSP.default()
 
         return cls(atom_site_label, type_symbol, scat_length_neutron, fract_x, fract_y, fract_z,
                    occupancy, adp_type, U_iso_or_equiv, ADp, MSp)

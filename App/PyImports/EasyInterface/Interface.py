@@ -68,6 +68,17 @@ class ProjectDict(UndoableDict):
             calculations = Calculations(calculations)
         return cls(app, calculator, info, phases, experiments, calculations)
 
+    def getFittables(self):
+        def get_keys(d, to_find):
+            for a, b in d.items():
+                if to_find in b:
+                    yield a
+                if isinstance(b, dict):
+                    yield from get_keys(b, to_find)
+
+        print(list(get_keys(self, 'refine')))
+        return get_keys(self, 'refine')
+
 
 class CalculatorInterface(QObject):
     def __init__(self, calculator, parent=None):
@@ -104,8 +115,8 @@ class CalculatorInterface(QObject):
                                             '%d %b %Y, %H:%M:%S'))
         self.project_dict.setItemByPath(['info', 'refinement_datetime'], str(np.datetime64('now')))
 
-        _, n_res = self.calculator.getChiSq()
-        final_chi_square = self.final_chi_square
+        final_chi_square, n_res = self.calculator.getChiSq()
+        final_chi_square = final_chi_square/n_res
 
         self.project_dict.setItemByPath(['info', 'n_res', 'store', 'value'], n_res)
         self.project_dict.setItemByPath(['info', 'chi_squared', 'store', 'value'], final_chi_square)
@@ -153,6 +164,10 @@ class CalculatorInterface(QObject):
         #    logging.info(dict(val))
 
         k, v = self.project_dict['phases'].dictComparison(phases)
+
+        if not k:
+            return
+
         #logging.info(k)
 
         #k = [key.insert(0, 'phases') for key in k]
@@ -175,6 +190,9 @@ class CalculatorInterface(QObject):
         experiments = self.calculator.getExperiments()
 
         k, v = self.project_dict['experiments'].dictComparison(experiments)
+
+        if not k:
+            return
         k = [['experiments', *key] for key in k]
 
         k.append(['info', 'experiment_ids'])
@@ -190,6 +208,10 @@ class CalculatorInterface(QObject):
         calculations = self.calculator.getCalculations()
 
         k, v = self.project_dict['calculations'].dictComparison(calculations)
+
+        if not k:
+            return
+
         k = [['calculations', *key] for key in k]
         self.project_dict.bulkUpdate(k, v, 'Bulk update of calculations')
 

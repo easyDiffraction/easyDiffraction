@@ -41,9 +41,9 @@ class FitablesModel(BaseModel):
         project_dict = self._project_dict
         # set column
         column = []
-        for path in Helpers.find_in_obj(project_dict, 'refine'):
+        for path in Helpers.find_in_obj(project_dict.asDict(), 'refine'):
             keys_list = path[:-1]
-            hide = Helpers.nested_get(project_dict, keys_list + ['hide'])
+            hide = project_dict.getItemByPath(keys_list + ['hide'])
             if hide:
                 continue
             item = QStandardItem()
@@ -54,7 +54,13 @@ class FitablesModel(BaseModel):
                 if role_name == 'path':
                     value = keys_list
                 elif role_name == 'label':
-                    value = ' '.join(keys_list)
+                    value = ' '.join(keys_list[:-1])
+                elif role_name == 'value':
+                    value = project_dict.getItemByPath(keys_list[:-1]).value
+                elif role_name == 'min':
+                    value = project_dict.getItemByPath(keys_list).min
+                elif role_name == 'max':
+                    value = project_dict.getItemByPath(keys_list).max
                 else:
                     value = Helpers.nested_get(project_dict, keys_list + [role_name])
                 item.setData(value, role)
@@ -72,7 +78,7 @@ class FitablesModel(BaseModel):
         edit_value = self._model.data(index, edit_role)
         display_value = self._model.data(index, display_role)
         if edit_value != display_value:
-            self._calculator.setByPath(keys_list, edit_value)
+            self._calculator_interface.setDictByPath(keys_list, edit_value)
 
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
         """Define what to do if model is changed, e.g. from GUI."""

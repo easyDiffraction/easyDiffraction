@@ -179,12 +179,11 @@ class CryspyCalculator:
         for index, key in enumerate(keys):
             if not isinstance(obj_list[index], cryspy.common.cl_fitable.Fitable):
                 continue
-            elif isinstance(retVals[key], PathDict):
-                continue
-            retVals.setItemByPath([key, 'store', 'error'], obj_list[index].sigma)
-            retVals.setItemByPath([key, 'store', 'constraint'], obj_list[index].constraint)
-            retVals.setItemByPath([key, 'store', 'hide'], obj_list[index].constraint_flag)
-            retVals.setItemByPath([key, 'store', 'refine'], obj_list[index].refinement)
+            elif isinstance(retVals[key], Base):
+                retVals.setItemByPath([key, 'store', 'error'], obj_list[index].sigma)
+                retVals.setItemByPath([key, 'store', 'constraint'], obj_list[index].constraint)
+                retVals.setItemByPath([key, 'store', 'hide'], obj_list[index].constraint_flag)
+                retVals.setItemByPath([key, 'store', 'refine'], obj_list[index].refinement)
         return retVals
 
     def getPhases(self) -> Phases:
@@ -464,7 +463,7 @@ class CryspyCalculator:
                 # Atom sites
                 for i, label in enumerate(calculator_phase.atom_site.label):
                     calculator_atom_site = calculator_phase.atom_site
-                    project_atom_site = project_phase['atom_site'][label]
+                    project_atom_site = project_phase['atoms'][label]
 
                     # Atom site coordinates
                     self._setCalculatorObjFromProjectDict(calculator_atom_site.fract_x[i], project_atom_site['fract_x'])
@@ -483,7 +482,7 @@ class CryspyCalculator:
                 if calculator_phase.atom_site_aniso is not None:
                     for i, label in enumerate(calculator_phase.atom_site_aniso.label):
                         calculator_atom_site = calculator_phase.atom_site_aniso
-                        project_atom_site = project_phase['atom_site'][label]
+                        project_atom_site = project_phase['atoms'][label]['ADP']
                         self._setCalculatorObjFromProjectDict(calculator_atom_site.u_11[i], project_atom_site['u_11'])
                         self._setCalculatorObjFromProjectDict(calculator_atom_site.u_22[i], project_atom_site['u_22'])
                         self._setCalculatorObjFromProjectDict(calculator_atom_site.u_33[i], project_atom_site['u_33'])
@@ -495,9 +494,9 @@ class CryspyCalculator:
                 if calculator_phase.atom_site_susceptibility is not None:
                     for i, label in enumerate(calculator_phase.atom_site_susceptibility.label):
                         calculator_atom_site = calculator_phase.atom_site_susceptibility
-                        project_atom_site = project_phase['atom_site'][label]
+                        project_atom_site = project_phase['atoms'][label]['MSP']
                         self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_type[i],
-                                                              project_atom_site['chi_type'])
+                                                              project_atom_site['type'])
                         self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_11[i],
                                                               project_atom_site['chi_11'])
                         self._setCalculatorObjFromProjectDict(calculator_atom_site.chi_22[i],
@@ -521,7 +520,7 @@ class CryspyCalculator:
             if experiment_name in cryspy_experiment_names:
 
                 cryspy_experiment_index = cryspy_experiment_names.index(experiment_name)
-                calculator_experiment = self._cryspy_obj.crystals[cryspy_experiment_index]
+                calculator_experiment = self._cryspy_obj.experiments[cryspy_experiment_index]
                 project_experiment = experiments[experiment_name]
 
                 # Experimental setup

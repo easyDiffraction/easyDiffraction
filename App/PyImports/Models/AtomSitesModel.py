@@ -38,12 +38,12 @@ class AtomSitesModel(BaseModel):
             data = []
             for atom_id, atom_dict in phase_dict['atoms'].items():
                 label = atom_id
-                atom = atom_dict['type_symbol']['store']['value']
-                color = atom_dict['scat_length_neutron']['store']['value']
-                x = atom_dict['fract_x']['store']['value']
-                y = atom_dict['fract_x']['store']['value']
-                z = atom_dict['fract_x']['store']['value']
-                occupancy = atom_dict['occupancy']['store']['value']
+                atom = atom_dict['type_symbol'].value
+                color = atom_dict['scat_length_neutron'].value.real
+                x = atom_dict['fract_x'].value
+                y = atom_dict['fract_x'].value
+                z = atom_dict['fract_x'].value
+                occupancy = atom_dict['occupancy'].value
                 data.append({
                     self._label_role: label,
                     self._atom_role: atom,

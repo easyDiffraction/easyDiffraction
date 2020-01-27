@@ -109,10 +109,13 @@ class PathDict(UserDict):
         """Returns a value in a nested object by key sequence."""
         item = self
         for key in keys:
-            if key in item.keys():
+            if isinstance(item, list):
                 item = item[key]
             else:
-                return default
+                if key in item.keys():
+                    item = item[key]
+                else:
+                    return default
         return item
 
     def getItem(self, key: Union[str, list], default=None):
@@ -156,8 +159,11 @@ class PathDict(UserDict):
             if type == 'change':
                 new_value = changes[1]
             elif type == 'add':
-                new_value = changes[0][1]
-                path.append(changes[0][0])
+                if not isinstance(changes[0][0], int):
+                    path.append(changes[0][0])
+                    new_value = changes[0][1]
+                else:
+                    new_value = another_dict.getItemByPath(path)
                 if path[0] == '':
                     del path[0]
             elif type == 'remove':
@@ -326,4 +332,9 @@ if __name__ == "__main__":
     for item in v:
         print(item, type(item))
 
+    d1 = PathDict(a=[1, 2, 3], b={'c': 2})
+    d2 = PathDict(a=[1, 2, 3, 4], b={'c': 2, 'd': 4, 3: 5})
+    print("O", d1.dictComparison(d2))
+    print(list(dictdiffer.diff(d1, d2)))
+    # k, v = d1.dictComparison(d2)
 

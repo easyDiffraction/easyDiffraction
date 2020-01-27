@@ -44,14 +44,14 @@ class AtomAdpsModel(BaseModel):
             for atom_id, atom_dict in phase_dict['atoms'].items():
                 data.append({
                     self._label_role: atom_id,
-                    self._type_role: atom_dict.getItemByPath(['adp_type', 'store', 'value']),
-                    self._uiso_role: atom_dict.getItemByPath(['U_iso_or_equiv', 'store', 'value']),
-                    self._u11_role: atom_dict.getItemByPath(['u_11', 'store', 'value']),
-                    self._u22_role: atom_dict.getItemByPath(['u_22', 'store', 'value']),
-                    self._u33_role: atom_dict.getItemByPath(['u_33', 'store', 'value']),
-                    self._u12_role: atom_dict.getItemByPath(['u_12', 'store', 'value']),
-                    self._u13_role: atom_dict.getItemByPath(['u_13', 'store', 'value']),
-                    self._u23_role: atom_dict.getItemByPath(['u_23', 'store', 'value']),
+                    self._type_role: atom_dict.getItemByPath(['adp_type']).value,
+                    self._uiso_role: atom_dict.getItemByPath(['U_iso_or_equiv']).value,
+                    self._u11_role: atom_dict.getItemByPath(['ADP', 'u_11']).value,
+                    self._u22_role: atom_dict.getItemByPath(['ADP', 'u_22']).value,
+                    self._u33_role: atom_dict.getItemByPath(['ADP', 'u_33']).value,
+                    self._u12_role: atom_dict.getItemByPath(['ADP', 'u_12']).value,
+                    self._u13_role: atom_dict.getItemByPath(['ADP', 'u_13']).value,
+                    self._u23_role: atom_dict.getItemByPath(['ADP', 'u_23']).value,
                     })
             # set model size
             self._model.setColumnCount(1)
