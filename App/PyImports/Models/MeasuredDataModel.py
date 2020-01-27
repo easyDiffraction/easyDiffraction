@@ -12,15 +12,15 @@ class MeasuredDataSeries(QObject):
         self._upperSeries = []
         self._lowerSeries = []
 
-    def updateSeries(self, calculator):
+    def updateSeries(self, calculator_interface):
         logging.info("+++++++++++++++++++++++++ start") # profiling
-        project_dict = calculator.asDict()
+        project_dict = calculator_interface.project_dict
         self._upperSeries.clear()
         self._lowerSeries.clear()
         for experiment_id, experiment_dict in project_dict['experiments'].items():
             x_list = experiment_dict['measured_pattern']['x']
-            y_obs_lower_list = experiment_dict['measured_pattern']['y_obs_lower']
-            y_obs_upper_list = experiment_dict['measured_pattern']['y_obs_upper']
+            y_obs_lower_list = experiment_dict['measured_pattern'].y_obs_lower
+            y_obs_upper_list = experiment_dict['measured_pattern'].y_obs_upper
             for x, y_obs_lower, y_obs_upper in zip(x_list, y_obs_lower_list, y_obs_upper_list):
                 self._lowerSeries.append(QPointF(x, y_obs_lower))
                 self._upperSeries.append(QPointF(x, y_obs_upper))

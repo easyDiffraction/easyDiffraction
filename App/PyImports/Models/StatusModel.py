@@ -82,7 +82,7 @@ class StatusModel(BaseModel):
 
     def _updateStatusList(self):
         """Update the values of the Item List"""
-        project_dict = self._calculator.asDict()
+        project_dict = self._project_dict
 
         # Set chi squared
         try:

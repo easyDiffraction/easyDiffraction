@@ -38,7 +38,7 @@ class FitablesModel(BaseModel):
     def _setModelsFromProjectDict(self):
         """Create the initial data list with structure for GUI fitables table."""
         self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
-        project_dict = self._calculator.asDict()
+        project_dict = self._project_dict
         # set column
         column = []
         for path in Helpers.find_in_obj(project_dict, 'refine'):

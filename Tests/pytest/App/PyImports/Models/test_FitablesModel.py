@@ -15,7 +15,7 @@ def test_FitablesModelModel():
     calculator = CryspyCalculator(file_path)
 
     m = Model.FitablesModel()
-    m.setCalculator(calculator)
+    m.setCalculatorInterface(calculator)
 
     assert isinstance(m._model, QStandardItemModel)
 
@@ -57,7 +57,7 @@ def test_FitablesModelModel_bad_calculator():
     # null calculator
     with pytest.raises(AttributeError):
         m = Model.FitablesModel()
-        m.setCalculator(calculator)
+        m.setCalculatorInterface(calculator)
 
     # empty file
     #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()

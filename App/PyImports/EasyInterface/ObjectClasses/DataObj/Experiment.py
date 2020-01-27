@@ -215,20 +215,20 @@ class MeasuredPattern(PathDict):
             return True
 
     @property
-    def y_obs_upper(self):
+    def y_obs_upper(self) -> list:
         """
         Upper data confidence bound
         :return: value of upper confidence bound
         """
-        return self['y_obs'] + self['sy_obs']
+        return (np.array(self['y_obs']) + np.array(self['sy_obs'])).tolist()
 
     @property
-    def y_obs_lower(self):
+    def y_obs_lower(self) -> list:
         """
         Lower data confidence bound
         :return: value of lower confidence bound
         """
-        return self['y_obs'] - self['sy_obs']
+        return (np.array(self['y_obs']) - np.array(self['sy_obs'])).tolist()
 
     @classmethod
     def default(cls, polarised: bool = False):

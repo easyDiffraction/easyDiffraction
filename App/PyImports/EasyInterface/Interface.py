@@ -156,12 +156,13 @@ class CalculatorInterface(QObject):
         #logging.info(k)
 
         #k = [key.insert(0, 'phases') for key in k]
-        for key in k:
-            key.insert(0, 'phases')
+        k = [['phases', *key] for key in k]
         #logging.info(k)
 
+        k.append(['info', 'phase_ids'])
+        v.append(list(phases.keys()))
+
         self.project_dict.bulkUpdate(k, v, 'Bulk update of phases')
-        self.projectDictChanged.emit()
 
         #logging.info(k)
         #logging.info(v)
@@ -174,7 +175,11 @@ class CalculatorInterface(QObject):
         experiments = self.calculator.getExperiments()
 
         k, v = self.project_dict['experiments'].dictComparison(experiments)
-        k = [key.insert(0, 'experiments') for key in k]
+        k = [['experiments', *key] for key in k]
+
+        k.append(['info', 'experiment_ids'])
+        v.append(list(experiments.keys()))
+
         self.project_dict.bulkUpdate(k, v, 'Bulk update of experiments')
 
         # This will notify the GUI models changed
@@ -185,7 +190,7 @@ class CalculatorInterface(QObject):
         calculations = self.calculator.getCalculations()
 
         k, v = self.project_dict['calculations'].dictComparison(calculations)
-        k = [key.insert(0, 'calculations') for key in k]
+        k = [['calculations', *key] for key in k]
         self.project_dict.bulkUpdate(k, v, 'Bulk update of calculations')
 
         # This will notify the GUI models changed

@@ -343,12 +343,14 @@ class CryspyCalculator:
                 y_obs = np.array(calculator_experiment.meas.intensity).tolist()
                 sy_obs = np.array(calculator_experiment.meas.intensity_sigma).tolist()
             elif calculator_experiment.meas.intensity_up[0] is not None:
-                y_obs_up = np.array(calculator_experiment.meas.intensity_up).tolist()
+                y_obs_up = np.array(calculator_experiment.meas.intensity_up)
                 sy_obs_up = np.array(calculator_experiment.meas.intensity_up_sigma).tolist()
-                y_obs_down = np.array(calculator_experiment.meas.intensity_down).tolist()
+                y_obs_down = np.array(calculator_experiment.meas.intensity_down)
                 sy_obs_down = np.array(calculator_experiment.meas.intensity_down_sigma).tolist()
-                y_obs = y_obs_up + y_obs_down
-                sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down))
+                y_obs = (y_obs_up + y_obs_down).tolist()
+                y_obs_up = y_obs_up.tolist()
+                y_obs_down = y_obs_down.tolist()
+                sy_obs = np.sqrt(np.square(sy_obs_up) + np.square(sy_obs_down)).tolist()
 
             data = MeasuredPattern(x_obs, y_obs, sy_obs, y_obs_up, sy_obs_up, y_obs_down, sy_obs_down)
 

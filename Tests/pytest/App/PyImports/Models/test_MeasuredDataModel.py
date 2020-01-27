@@ -15,7 +15,7 @@ def test_MeasuredDataModel():
     calculator = CryspyCalculator(file_path)
 
     m = Model.MeasuredDataModel()
-    m.setCalculator(calculator)
+    m.setCalculatorInterface(calculator)
 
 
     assert isinstance(m._model, QStandardItemModel)
@@ -54,4 +54,4 @@ def test_MeasuredDataModel_bad_calculator():
     # null calculator
     with pytest.raises(AttributeError):
         m = Model.MeasuredDataModel()
-        m.setCalculator(calculator)
+        m.setCalculatorInterface(calculator)

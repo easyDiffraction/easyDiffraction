@@ -79,7 +79,7 @@ class Calculation(PathDict):
         return cls(name, bragg_peaks, calculated_pattern, limits)
 
     def __repr__(self):
-        return 'Pattern [{}] with {} Bragg peaks'.format(self['name'], len(self['bragg_peaks']['h']))
+        return 'Pattern [{}] with {} phases'.format(self['name'], len(self['bragg_peaks']))
 
 
 class Calculations(PathDict):

@@ -9,6 +9,7 @@ class BaseModel(QObject):
         self._headers_model = QStandardItemModel()
         self._model = QStandardItemModel()
         self._project_dict = None
+        self._calculator_interface = None
 
     def _setModelsFromProjectDict(self):
         """ Pure virtual data setter """
@@ -26,9 +27,9 @@ class BaseModel(QObject):
         """Return data model."""
         return self._model
 
-    def setCalculator(self, calculator_interface):
+    def setCalculatorInterface(self, calculator_interface):
         calculator_interface.projectDictChanged.connect(self.onProjectChanged)
-        self.calculator_interface = calculator_interface
+        self._calculator_interface = calculator_interface
         self._project_dict = calculator_interface.project_dict
         self._setModelsFromProjectDict()
 

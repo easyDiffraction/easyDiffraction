@@ -15,7 +15,7 @@ def test_AtomMspsModel():
     calculator = CryspyCalculator(file_path)
 
     m = Model.AtomMspsModel()
-    m.setCalculator(calculator)
+    m.setCalculatorInterface(calculator)
 
     assert isinstance(m._model, QStandardItemModel)
     assert isinstance(m._project_dict, dict)
@@ -68,7 +68,7 @@ def test_AtomMspsModel_bad_calculator():
     # null calculator
     with pytest.raises(AttributeError):
         m = Model.AtomMspsModel()
-        m.setCalculator(calculator)
+        m.setCalculatorInterface(calculator)
 
     # empty file
     #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()

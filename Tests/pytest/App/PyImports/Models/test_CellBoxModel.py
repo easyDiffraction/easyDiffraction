@@ -15,7 +15,7 @@ def test_CellBoxModelModel():
     calculator = CryspyCalculator(file_path)
 
     m = Model.CellBoxModel()
-    m.setCalculator(calculator)
+    m.setCalculatorInterface(calculator)
 
 
     assert m._x_role == 257
@@ -51,7 +51,7 @@ def test_CellBoxModel_bad_calculator():
     # null calculator
     with pytest.raises(AttributeError):
         m = Model.CellBoxModel()
-        m.setCalculator(calculator)
+        m.setCalculatorInterface(calculator)
 
     # null file
     file_path = None

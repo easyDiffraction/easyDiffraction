@@ -50,7 +50,7 @@ class FileStructureModel(BaseModel):
         Create the model needed for GUI representation of structure.
         """
 
-        cif_dict = self._calculator.asCifDict()
+        cif_dict = self._calculator_interface.asCifDict()
         # Important - clear the model, so subsequent calls deal with empty
         self._model.clear()
 

@@ -132,19 +132,21 @@ class PathDict(UserDict):
                 base_dict[key] = item.asDict()
         return base_dict
 
-    def dictComparison(self, another_dict: Union['PathDict', dict]) -> Tuple[list, list]:
+    def dictComparison(self, new_dict: Union['PathDict', dict]) -> Tuple[list, list]:
         """
         Compare self to a dictionary or PathDict and return the update path and value
         :param another_dict: dict or PathDict to compare self to
         :return: path and value updates for self to become newDict
         """
 
-        if not isinstance(another_dict, (PathDict, dict)):
+        if not isinstance(new_dict, (PathDict, dict)):
             raise TypeError
 
         this_dict = self.asDict()
-        if isinstance(another_dict, PathDict):
-            another_dict = another_dict.asDict()
+        if isinstance(new_dict, PathDict):
+            another_dict = new_dict.asDict()
+        else:
+            another_dict = new_dict
 
         diff = DeepDiff(this_dict, another_dict)
 
@@ -163,7 +165,7 @@ class PathDict(UserDict):
                 list_path = literal_eval(string_path)
                 #logging.info(list_path)
                 #logging.info(type(list_path))
-                new_value = another_dict[list_path[0]]
+                new_value = new_dict[list_path[0]]
                 #logging.info(new_value)
                 key_list.append(list_path)
                 value_list.append(new_value)

@@ -35,7 +35,6 @@ class Proxy(QObject):
         self._main_rcif_path = None
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
-        self._calculator = None
         self._calculator_interface = None
         #
         self.project_control = ProjectControl()
@@ -65,8 +64,8 @@ class Proxy(QObject):
         Replace internal structure models based on requested content from CIF
         """
         self._phases_rcif_path = self.project_control.phases_rcif_path
-        self._calculator.updatePhases(self._phases_rcif_path)
-        self._file_structure_model.setCalculator(self._calculator)
+        self._calculator_interface.updatePhaseDefinition(self._phases_rcif_path)
+        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
 
@@ -76,10 +75,10 @@ class Proxy(QObject):
         Replace internal experiment models based on requested content from CIF
         """
         self._experiment_rcif_path = self.project_control.experiment_rcif_path
-        self._calculator.updateExps(self._experiment_rcif_path)
-        self._measured_data_series.updateSeries(self._calculator)
-        self._measured_data_model.setCalculator(self._calculator)
-        self._file_structure_model.setCalculator(self._calculator)
+        self._calculator_interface.updateExpsDefinition(self._experiment_rcif_path)
+        self._measured_data_series.updateSeries(self._calculator_interface)
+        self._measured_data_model.setCalculatorInterface(self._calculator_interface)
+        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
 
@@ -88,9 +87,10 @@ class Proxy(QObject):
     def initialize(self):
         logging.info("")
         self._main_rcif_path = self.project_control.main_rcif_path
-        self._calculator = CryspyCalculator(self._main_rcif_path)
         #logging.info(self._calculator.asCifDict())
-        self._calculator_interface = CalculatorInterface(self._calculator)
+        self._calculator_interface = CalculatorInterface(
+            CryspyCalculator(self._main_rcif_path)
+        )
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         #logging.info(self._calculator_interface.asCifDict())
         ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
@@ -102,21 +102,21 @@ class Proxy(QObject):
         #        return
         #
         self._measured_data_series.updateSeries(self._calculator_interface)
-        self._measured_data_model.setCalculator(self._calculator_interface)
-        self._calculated_data_model.setCalculator(self._calculator_interface)
+        self._measured_data_model.setCalculatorInterface(self._calculator_interface)
+        self._calculated_data_model.setCalculatorInterface(self._calculator_interface)
         self._calculated_data_series.updateSeries(self._calculator_interface) #---#
-        self._bragg_peaks_model.setCalculator(self._calculator_interface)
+        self._bragg_peaks_model.setCalculatorInterface(self._calculator_interface)
         self._bragg_peaks_series.updateSeries(self._calculator_interface) #---#
-        self._cell_parameters_model.setCalculator(self._calculator_interface)
-        self._cell_box_model.setCalculator(self._calculator_interface)
-        self._atom_sites_model.setCalculator(self._calculator_interface)
-        self._atom_adps_model.setCalculator(self._calculator_interface)
-        self._atom_msps_model.setCalculator(self._calculator_interface)
-        self._fitables_model.setCalculator(self._calculator_interface)
-        self._status_model.setCalculator(self._calculator_interface)
-        self._file_structure_model.setCalculator(self._calculator_interface)
+        self._cell_parameters_model.setCalculatorInterface(self._calculator_interface)
+        self._cell_box_model.setCalculatorInterface(self._calculator_interface)
+        self._atom_sites_model.setCalculatorInterface(self._calculator_interface)
+        self._atom_adps_model.setCalculatorInterface(self._calculator_interface)
+        self._atom_msps_model.setCalculatorInterface(self._calculator_interface)
+        self._fitables_model.setCalculatorInterface(self._calculator_interface)
+        self._status_model.setCalculatorInterface(self._calculator_interface)
+        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         #
-        self._refine_thread = Refiner(self._calculator, 'refine')
+        self._refine_thread = Refiner(self._calculator_interface, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
 
         # We can't link signals as the manager signals emitted before the dict is updated :-(
@@ -125,12 +125,12 @@ class Proxy(QObject):
 
     @Slot()
     def createProjectZip(self):
-        self._calculator.writeMainCif(self.project_control.tempDir.name)
+        self._calculator_interface.writeMainCif(self.project_control.tempDir.name)
         writeEmptyProject(self.project_control, self.project_control._projectFile)
 
     @Slot(str)
     def saveProject(self, saveName):
-        self._calculator.saveCifs(self.project_control.tempDir.name)
+        self._calculator_interface.saveCifs(self.project_control.tempDir.name)
         writeProject(self.project_control, saveName)
 
     @Slot()
@@ -159,8 +159,8 @@ class Proxy(QObject):
     # Notifications of changes for QML GUI about projectDictChanged,
     # which calls another signal projectChanged
     projectChanged = Signal()
-    project = Property('QVariant', calculatorAsDict, notify=projectChanged)
-    cif = Property('QVariant', calculatorAsCifDict, notify=projectChanged)
+    project = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
+    cif = Property('QVariant', lambda self: self._calculator_interface.asCifDict(), notify=projectChanged)
     phase_cif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experiment_cif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculation_cif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)

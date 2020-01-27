@@ -15,7 +15,7 @@ def test_CalculatedDataModel():
     calculator = CryspyCalculator(file_path)
 
     m = Model.CalculatedDataModel()
-    m.setCalculator(calculator)
+    m.setCalculatorInterface(calculator)
 
 
     assert isinstance(m._model, QStandardItemModel)
@@ -47,7 +47,7 @@ def test_CalculatedDataModel_bad_calculator():
     # null calculator
     with pytest.raises(AttributeError):
         m = Model.CalculatedDataModel()
-        m.setCalculator(calculator)
+        m.setCalculatorInterface(calculator)
 
     # empty file
     #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()

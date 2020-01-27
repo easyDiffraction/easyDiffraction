@@ -15,7 +15,7 @@ def test_FileStructureModel():
     calculator = CryspyCalculator(file_path)
 
     m = Model.FileStructureModel()
-    m.setCalculator(calculator)
+    m.setCalculatorInterface(calculator)
 
     assert isinstance(m._model, QStandardItemModel)
 
