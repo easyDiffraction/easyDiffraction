@@ -39,8 +39,8 @@ ColumnLayout {
         repeat: false
         onTriggered: {
             if (Specific.Variables.projectOpened) {
-                proxy.measuredDataSeries.updateQmlLowerSeries(lowerLineSeries)
-                proxy.measuredDataSeries.updateQmlUpperSeries(upperLineSeries)
+                //proxy.measuredDataSeries.updateQmlLowerSeries(lowerLineSeries)    // Can be removed now!
+                //proxy.measuredDataSeries.updateQmlUpperSeries(upperLineSeries)    // Can be removed now!
                 proxy.calculatedDataSeries.updateQmlCalcSeries(calcSeries)
                 proxy.braggPeaksDataSeries.updateQmlSeries(braggSeries)
                 proxy.calculatedDataSeries.updateQmlLowerDiffSeries(lowerDiffSeries)
@@ -67,43 +67,6 @@ ColumnLayout {
         //////////////////////
         // Top chart container
         //////////////////////
-//        ListView {
-//            id: plotInfo2
-//            x: 100
-//            y: 100
-//            width: 500
-//            height: 500
-//            spacing: 5
-//
-//            model: Specific.Variables.projectOpened ? proxy.chartInfo : null
-//
-//            delegate: Rectangle {
-//                width: 50
-//                height: parent.height
-//                color: 'transparent'
-//                Row {
-//                    height: parent.height
-//                    spacing: 5
-//
-//                    Text {
-//                        height: parent.height
-//                        verticalAlignment: Text.AlignVCenter
-//                        font.family: Generic.Style.fontFamily
-//                        font.pointSize: Generic.Style.fontPointSize - 1
-//                        color: Generic.Style.buttonTextDisabledColor
-//                        text: label
-//                    }
-//                    Text {
-//                        height: parent.height
-//                        verticalAlignment: Text.AlignVCenter
-//                        font.family: Generic.Style.fontFamily
-//                        font.pointSize: Generic.Style.fontPointSize - 1
-//                        color: Generic.Style.buttonTextDisabledColor
-//                        text: value
-//                    }
-//                }
-//            }
-//        }
         Rectangle {
             id: topChartContainer
             Layout.fillWidth: true
@@ -230,6 +193,7 @@ ColumnLayout {
 
                     lowerSeries: LineSeries {
                         id: lowerLineSeries
+                        // Old approach (slow): use QStandartItemModel-base model updated on python side
                         /*
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.measuredData : null
@@ -237,10 +201,13 @@ ColumnLayout {
                             yColumn: 5
                         }
                         */
+                        // New approach (fast): pass a reference to LineSeries to python for updating
+                        Component.onCompleted: proxy.measuredData.setLowerSeries(lowerLineSeries)
                     }
 
                     upperSeries: LineSeries {
                         id: upperLineSeries
+                        // Old approach (slow): use QStandartItemModel-base model updated on python side
                         /*
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.measuredData : null
@@ -248,6 +215,8 @@ ColumnLayout {
                             yColumn: 6
                         }
                         */
+                        // New approach (fast): pass a reference to LineSeries to python for updating
+                        Component.onCompleted: proxy.measuredData.setUpperSeries(upperLineSeries)
                     }
 
                     onHovered: {
