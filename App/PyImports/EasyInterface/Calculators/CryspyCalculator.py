@@ -6,8 +6,8 @@ from typing import Tuple
 import cryspy
 import pycifstar
 
-#from ..ObjectClasses.PhaseObj import *
-#from ..ObjectClasses.DataObj import *
+# from ..ObjectClasses.PhaseObj import *
+# from ..ObjectClasses.DataObj import *
 from ..ObjectClasses.PhaseObj.Atom import *
 from ..ObjectClasses.PhaseObj.Cell import *
 from ..ObjectClasses.PhaseObj.Phase import *
@@ -17,7 +17,6 @@ from ..ObjectClasses.DataObj.Experiment import *
 from ..ObjectClasses.Utils.BaseClasses import Base
 
 from cryspy.scripts.cl_rhochi import RhoChi
-
 
 PHASE_SEGMENT = "_phases"
 EXPERIMENT_SEGMENT = "_experiments"
@@ -196,7 +195,7 @@ class CryspyCalculator:
 
         self._cryspy_obj.apply_constraint()
 
-        #logging.info(self._cryspy_obj.crystals)
+        # logging.info(self._cryspy_obj.crystals)
 
         for calculator_phase in self._cryspy_obj.crystals:
             calculator_phase_name = calculator_phase.data_name
@@ -205,12 +204,11 @@ class CryspyCalculator:
             # Space group
             space_group = self._createProjItemFromObj(SpaceGroup.fromPars,
                                                       ['crystal_system', 'space_group_name_HM_alt',
-                                                       'space_group_IT_number', 'origin_choice', 'calc_xyz_mult'],
+                                                       'space_group_IT_number', 'origin_choice'],
                                                       [calculator_phase.space_group.crystal_system,
                                                        calculator_phase.space_group.name_hm_ref,
                                                        calculator_phase.space_group.it_number,
-                                                       calculator_phase.space_group.it_coordinate_system_code,
-                                                       None])
+                                                       calculator_phase.space_group.it_coordinate_system_code])
 
             # Unit cell parameters
             unit_cell = self._createProjItemFromObj(Cell.fromPars, ['length_a', 'length_b', 'length_c',
@@ -292,6 +290,41 @@ class CryspyCalculator:
 
             for key in atoms:
                 phase['atoms'][key] = atoms[key]
+
+            atom_site_list = [[], [], [], []]
+            # Atom sites for structure view (all the positions inside unit cell of 1x1x1)
+            for x, y, z, scat_length_neutron in zip(calculator_phase.atom_site.fract_x,
+                                                    calculator_phase.atom_site.fract_y,
+                                                    calculator_phase.atom_site.fract_z,
+                                                    calculator_phase.atom_site.scat_length_neutron):
+                x_array, y_array, z_array, _ = calculator_phase.space_group.calc_xyz_mult(x.value, y.value, z.value)
+                scat_length_neutron_array = np.full_like(x_array, scat_length_neutron)
+                atom_site_list[0] += x_array.tolist()
+                atom_site_list[1] += y_array.tolist()
+                atom_site_list[2] += z_array.tolist()
+                atom_site_list[3] += scat_length_neutron_array.tolist()
+            for x, y, z, scat_length_neutron in zip(atom_site_list[0], atom_site_list[1], atom_site_list[2],
+                                                    atom_site_list[3]):
+                if x == 0.0:
+                    atom_site_list[0].append(1.0)
+                    atom_site_list[1].append(y)
+                    atom_site_list[2].append(z)
+                    atom_site_list[3].append(scat_length_neutron)
+                if y == 0.0:
+                    atom_site_list[0].append(x)
+                    atom_site_list[1].append(1.0)
+                    atom_site_list[2].append(z)
+                    atom_site_list[3].append(scat_length_neutron)
+                if z == 0.0:
+                    atom_site_list[0].append(x)
+                    atom_site_list[1].append(y)
+                    atom_site_list[2].append(1.0)
+                    atom_site_list[3].append(scat_length_neutron)
+
+            phase.setItemByPath(['sites', 'fract_x'], atom_site_list[0])
+            phase.setItemByPath(['sites', 'fract_y'], atom_site_list[1])
+            phase.setItemByPath(['sites', 'fract_z'], atom_site_list[2])
+            phase.setItemByPath(['sites', 'scat_length_neutron'], atom_site_list[3])
             phases.append(phase)
 
         logging.info(phases)
@@ -416,7 +449,7 @@ class CryspyCalculator:
 
             limits = Limits(y_obs_lower, y_obs_upper, y_diff_upper, y_diff_lower, x_calc, y_calc)
             calculated_pattern = CalculatedPattern(x_calc, y_calc, y_diff_lower, y_diff_upper)
-            
+
             calculations.append(Calculation(calculator_experiment_name,
                                             bragg_peaks, calculated_pattern, limits))
         calculations = Calculations(calculations)
@@ -586,10 +619,10 @@ class CryspyCalculator:
     def getChiSq(self) -> Tuple[float, float]:
         chi_sq = 0.0
         n_res = 1
-        #TODO this is bull, why is it like this!!!! :-(
+        # TODO this is bull, why is it like this!!!! :-(
         for calculator_experiment in self._cryspy_obj.experiments:
-            chi_sq, n_res = calculator_experiment.calc_chi_sq(self._cryspy_obj.crystals)   
-        
+            chi_sq, n_res = calculator_experiment.calc_chi_sq(self._cryspy_obj.crystals)
+
         return chi_sq, n_res
 
     @property

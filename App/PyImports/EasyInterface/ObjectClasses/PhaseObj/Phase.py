@@ -10,7 +10,7 @@ class Phase(PathDict):
     """
     Container for crysolographic phase information
     """
-    def __init__(self, name: str, spacegroup: SpaceGroup, cell: Cell, atoms: Union[Atom, dict, Atoms]):
+    def __init__(self, name: str, spacegroup: SpaceGroup, cell: Cell, atoms: Union[Atom, dict, Atoms], sites):
         """
         Constructor for a crysolographic phase
         :param name: The name of the crystolographic phase
@@ -23,7 +23,7 @@ class Phase(PathDict):
                 atoms['atom_site_label']: atoms,
             }
         atoms = Atoms(atoms)
-        super().__init__(phasename=name, spacegroup=spacegroup, cell=cell, atoms=atoms)
+        super().__init__(phasename=name, spacegroup=spacegroup, cell=cell, atoms=atoms, sites=sites)
 
     @classmethod
     def default(cls, name: str) -> 'Phase':
@@ -34,12 +34,14 @@ class Phase(PathDict):
         cell = Cell.default()
         spg = SpaceGroup.default()
         atom = {}
-        return cls(name, spacegroup=spg, cell=cell, atoms=atom)
+        sites = dict(fract_x=[], fract_y=[], fract_z=[], scat_length_neutron=[])
+        return cls(name, spacegroup=spg, cell=cell, atoms=atom, sites=sites)
 
     @classmethod
     def fromPars(cls, name, spacegroup: SpaceGroup, cell: Cell) -> 'Phase':
         atom = {}
-        return cls(name, spacegroup, cell, atom)
+        sites = dict(fract_x=[], fract_y=[], fract_z=[], scat_length_neutron=[])
+        return cls(name, spacegroup, cell, atom, sites)
 
     def __str__(self):
         return '{}\n{}\n{}\n'.format(str(self['spacegroup']), str(self['cell']), str(self['atoms']))

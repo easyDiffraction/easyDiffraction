@@ -31,7 +31,7 @@ Rectangle {
             if (Specific.Variables.projectOpened) {
                 // Create dictionary b_scattering:color
                 // At the moment only get 1st phase.
-                const atom_site_list = Specific.Variables.project.spacegroup.atom_site_list(Specific.Variables.project.info.phase_ids[0])
+                const atom_site_list = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].sites
                 const bscatList = Array.from(new Set(atom_site_list.scat_length_neutron))
                 let bscatColorDict = {}
                 for (let i = 0; i < bscatList.length; i++ ) {
