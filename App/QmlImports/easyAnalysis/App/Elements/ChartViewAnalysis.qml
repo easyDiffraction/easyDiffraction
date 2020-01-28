@@ -39,12 +39,6 @@ ColumnLayout {
         repeat: false
         onTriggered: {
             if (Specific.Variables.projectOpened) {
-                //proxy.measuredDataSeries.updateQmlLowerSeries(lowerLineSeries)    // Can be removed now!
-                //proxy.measuredDataSeries.updateQmlUpperSeries(upperLineSeries)    // Can be removed now!
-                //proxy.calculatedDataSeries.updateQmlCalcSeries(calcSeries)
-                proxy.braggPeaksDataSeries.updateQmlSeries(braggSeries)
-                //proxy.calculatedDataSeries.updateQmlLowerDiffSeries(lowerDiffSeries)
-                //proxy.calculatedDataSeries.updateQmlUpperDiffSeries(upperDiffSeries)
                 adjustLeftAxesAnchor()
             }
         }
@@ -202,7 +196,7 @@ ColumnLayout {
                         }
                         */
                         // New approach (fast): pass a reference to LineSeries to python for updating
-                        Component.onCompleted: proxy.measuredData.setLowerSeries(lowerLineSeries)
+                        Component.onCompleted: Specific.Variables.measuredData.setLowerSeries(lowerLineSeries)
                     }
 
                     upperSeries: LineSeries {
@@ -216,7 +210,7 @@ ColumnLayout {
                         }
                         */
                         // New approach (fast): pass a reference to LineSeries to python for updating
-                        Component.onCompleted: proxy.measuredData.setUpperSeries(upperLineSeries)
+                        Component.onCompleted: Specific.Variables.measuredData.setUpperSeries(upperLineSeries)
                     }
 
                     onHovered: {
@@ -253,7 +247,7 @@ ColumnLayout {
                     }
                     */
                     // New approach (fast): pass a reference to LineSeries to python for updating
-                    Component.onCompleted: proxy.calculatedData.setCalcSeries(calcSeries)
+                    Component.onCompleted: Specific.Variables.calculatedData.setCalcSeries(calcSeries)
 
                     onHovered: {
                         const p = topChart.mapToPosition(point)
@@ -419,6 +413,8 @@ ColumnLayout {
                     borderWidth: 0.00000001
                     borderColor: color
                     color: "#333"
+
+                    // Old approach (slow): use QStandartItemModel-base model updated on python side
                     /*
                     VXYModelMapper{
                         model: Specific.Variables.projectOpened ? proxy.braggPeaksTicks : null
@@ -426,6 +422,8 @@ ColumnLayout {
                         yColumn: 1
                     }
                     */
+                    // New approach (fast): pass a reference to LineSeries to python for updating
+                    Component.onCompleted: Specific.Variables.braggPeaks.setSeries(braggSeries)
 
                     /*
                     onHovered: {

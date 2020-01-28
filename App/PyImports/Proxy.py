@@ -6,13 +6,13 @@ from PySide2.QtCore import QObject, Signal, Slot, Property
 from PyImports.DisplayModels.MeasuredDataModel import MeasuredDataModel
 from PyImports.DisplayModels.CalculatedDataModel import CalculatedDataModel
 from PyImports.DisplayModels.BraggPeaksModel import BraggPeaksModel
-from PyImports.DisplayModels.BraggPeaksModel import BraggPeaksSeries #---#
 from PyImports.DisplayModels.CellParametersModel import CellParametersModel
 from PyImports.DisplayModels.CellBoxModel import CellBoxModel
 from PyImports.DisplayModels.AtomSitesModel import AtomSitesModel
 from PyImports.DisplayModels.AtomAdpsModel import AtomAdpsModel
 from PyImports.DisplayModels.AtomMspsModel import AtomMspsModel
 from PyImports.DisplayModels.FitablesModel import FitablesModel
+
 from PyImports.DisplayModels.StatusModel import StatusModel
 from PyImports.DisplayModels.FileStructureModel import FileStructureModel
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
@@ -37,7 +37,6 @@ class Proxy(QObject):
         self._measured_data_model = MeasuredDataModel()
         self._calculated_data_model = CalculatedDataModel()
         self._bragg_peaks_model = BraggPeaksModel()
-        self._bragg_peaks_series = BraggPeaksSeries() #---#
         self._cell_parameters_model = CellParametersModel()
         self._cell_box_model = CellBoxModel()
         self._atom_sites_model = AtomSitesModel()
@@ -98,7 +97,6 @@ class Proxy(QObject):
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._calculated_data_model.setCalculatorInterface(self._calculator_interface)
         self._bragg_peaks_model.setCalculatorInterface(self._calculator_interface)
-        self._bragg_peaks_series.updateSeries(self._calculator_interface) #---#
         self._cell_parameters_model.setCalculatorInterface(self._calculator_interface)
         self._cell_box_model.setCalculatorInterface(self._calculator_interface)
         self._atom_sites_model.setCalculatorInterface(self._calculator_interface)
@@ -140,9 +138,6 @@ class Proxy(QObject):
         ###logging.info(self._calculator_interface.asCifDict())
         return self._calculator_interface.asCifDict()
 
-    def braggPeaksSeries(self):
-        self._bragg_peaks_series.updateSeries(self._calculator_interface) #---#
-        return self._bragg_peaks_series
 
     # Notifications of changes for QML GUI about projectDictChanged,
     # which calls another signal projectChanged
@@ -152,14 +147,12 @@ class Proxy(QObject):
     phase_cif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experiment_cif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculation_cif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
-    braggPeaksDataSeries = Property('QVariant', braggPeaksSeries, notify=projectChanged) #---#
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
     measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
     calculatedData = Property('QVariant', lambda self: self._calculated_data_model, constant=True)
-    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asModel(), constant=True)
-    braggPeaksTicks = Property('QVariant', lambda self: self._bragg_peaks_model.asTickModel(), constant=True)
+    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model, constant=True)
     cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
     cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), constant=True)
     atomSites = Property('QVariant', lambda self: self._atom_sites_model.asModel(), constant=True)

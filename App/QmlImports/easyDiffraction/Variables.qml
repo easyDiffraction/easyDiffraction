@@ -8,9 +8,14 @@ QtObject {
     property var project: projectOpened ? proxy.project : null
     property var cif: projectOpened ? proxy.fileStructure : null
     property var phase_cif: projectOpened ? proxy.phase_cif : null
-    property var measured_data: projectOpened ? proxy.measuredData.asModel() : null
-    property var measured_data_header: projectOpened ? proxy.measuredData.asHeadersModel() : null
-    property var calculated_data: projectOpened ? proxy.calculatedData.asModel() : null
+
+    property var measuredData: proxy.measuredData
+    property var measuredDataHeaderModel: projectOpened ? proxy.measuredData.asHeadersModel() : null
+    property var measuredDataModel: projectOpened ? proxy.measuredData.asModel() : null
+
+    property var calculatedData: proxy.calculatedData
+    property var braggPeaks: proxy.braggPeaks
+
     property var experiment_cif: projectOpened ? proxy.experiment_cif : null
     property var calculation_cif: projectOpened ? proxy.calculation_cif : null
 }

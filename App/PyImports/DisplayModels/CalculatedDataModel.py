@@ -19,9 +19,9 @@ class CalculatedDataModel(BaseModel):
         """
         logging.info("-> start")
 
-        for experiment_id, experiment_dict in self._project_dict['calculations'].items():
-            column_count = len(experiment_dict['calculated_pattern'].items())
-            row_count = len(list(experiment_dict['calculated_pattern'].items())[0][1])
+        for calc_dict in self._project_dict['calculations'].values():
+            column_count = len(calc_dict['calculated_pattern'].items())
+            row_count = len(list(calc_dict['calculated_pattern'].items())[0][1])
 
             self._model.blockSignals(True)
             self._headers_model.blockSignals(True)
@@ -34,8 +34,8 @@ class CalculatedDataModel(BaseModel):
             self._headers_model.setColumnCount(column_count)
             self._headers_model.setRowCount(1)
 
-            # Add all the columns from experiment_dict['calculated_pattern'] to self._model
-            for colum_index, (data_id, data_list) in enumerate(experiment_dict['calculated_pattern'].items()):
+            # Add all the columns from calc_dict['calculated_pattern'] to self._model
+            for colum_index, (data_id, data_list) in enumerate(calc_dict['calculated_pattern'].items()):
                 index = self._headers_model.index(0, colum_index)
                 self._headers_model.setData(index, data_id, Qt.DisplayRole)
                 for row_index, value in enumerate(data_list):

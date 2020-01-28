@@ -173,7 +173,7 @@ ColumnLayout {
                         }
                         */
                         // New approach (fast): pass a reference to LineSeries to python for updating
-                        Component.onCompleted: proxy.measuredData.setLowerSeries(lowerLineSeries)
+                        Component.onCompleted: Specific.Variables.measuredData.setLowerSeries(lowerLineSeries)
                     }
 
                     upperSeries: LineSeries {
@@ -187,7 +187,7 @@ ColumnLayout {
                         }
                         */
                         // New approach (fast): pass a reference to LineSeries to python for updating
-                        Component.onCompleted: proxy.measuredData.setUpperSeries(upperLineSeries)
+                        Component.onCompleted: Specific.Variables.measuredData.setUpperSeries(upperLineSeries)
                     }
 
                     onHovered: {
