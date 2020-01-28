@@ -392,7 +392,7 @@ class CryspyCalculator:
                                                       backgrounds, resolution, data])
             experiments.append(experiment)
 
-        logging.info(experiments)
+        #logging.info(experiments)
         logging.info(Experiments(experiments))
 
         return Experiments(experiments)
