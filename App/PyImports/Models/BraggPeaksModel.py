@@ -12,7 +12,7 @@ class BraggPeaksSeries(QObject):
         self._series = []
 
     def updateSeries(self, calculator):
-        logging.info("---> start")
+        logging.info("=====> start")
         project_dict = calculator.asDict()
         self._series.clear()
         for experiment_id, experiment_dict in project_dict['calculations'].items():

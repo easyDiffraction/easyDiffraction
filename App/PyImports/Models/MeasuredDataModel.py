@@ -13,7 +13,7 @@ class MeasuredDataSeries(QObject):
         self._lowerSeries = []
 
     def updateSeries(self, calculator_interface):
-        logging.info("---> start")
+        logging.info("=====> start")
         project_dict = calculator_interface.project_dict
         self._upperSeries.clear()
         self._lowerSeries.clear()
