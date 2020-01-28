@@ -135,9 +135,10 @@ class PathDict(UserDict):
                 base_dict[key] = item.asDict()
         return base_dict
 
-    def dictComparison(self, another_dict: Union['PathDict', dict]) -> Tuple[list, list]:
+    def dictComparison(self, another_dict: Union['PathDict', dict], ignore=None) -> Tuple[list, list]:
         """
         Compare self to a dictionary or PathDict and return the update path and value
+        :param ignore: What to ignore e.g. set(['a']))
         :param another_dict: dict or PathDict to compare self to
         :return: path and value updates for self to become newDict
         """
@@ -148,7 +149,7 @@ class PathDict(UserDict):
         key_list = []
         value_list = []
 
-        for item in dictdiffer.diff(self, another_dict):
+        for item in dictdiffer.diff(self, another_dict, ignore=ignore):
             type = item[0]
             path = item[1]
             changes = item[2]

@@ -30,16 +30,18 @@ Rectangle {
         onTextChanged: {
             if (Specific.Variables.projectOpened) {
                 // Create dictionary b_scattering:color
-                const bscatList = Array.from(new Set(Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.scat_length_neutron))
+                // At the moment only get 1st phase.
+                const atom_site_list = Specific.Variables.project.spacegroup.atom_site_list(Specific.Variables.project.info.phase_ids[0])
+                const bscatList = Array.from(new Set(atom_site_list.scat_length_neutron))
                 let bscatColorDict = {}
                 for (let i = 0; i < bscatList.length; i++ ) {
                     bscatColorDict[bscatList[i]] = Generic.Style.atomColorList[i]
                 }
 
                 // Unit cell parameters
-                const a = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_a.value
-                const b = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_b.value
-                const c = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_c.value
+                const a = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_a.store.value
+                const b = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_b.store.value
+                const c = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_c.store.value
 
                 // Remove old atom scatters, but unit cell box (number 1)
                 for (let i = 1, len = chart.seriesList.length; i < len; i++) {
@@ -47,19 +49,19 @@ Rectangle {
                 }
 
                 // Populate chart with atoms. Every atom is an individual scatter serie
-                for (let i = 0, len = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.fract_x.length; i < len; i++ ) {
+                for (let i = 0, len = atom_site_list.fract_x.length; i < len; i++ ) {
                     var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml")
                     if (component.status === Component.Ready) {
                         var series = component.createObject()
                         if (series === null) {
                             console.log("Error creating object")
                         } else {
-                            series.atomSize = Math.abs(Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.scat_length_neutron[i]) * 0.4
-                            series.atomColor = bscatColorDict[Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.scat_length_neutron[i]]
+                            series.atomSize = Math.abs(atom_site_list.scat_length_neutron[i]) * 0.4
+                            series.atomColor = bscatColorDict[atom_site_list.scat_length_neutron[i]]
                             series.atomModel.append({
-                                x: Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.fract_x[i] * a,
-                                y: Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.fract_y[i] * b,
-                                z: Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.fract_z[i] * c
+                                x: atom_site_list.fract_x[i] * a,
+                                y: atom_site_list.fract_y[i] * b,
+                                z: atom_site_list.fract_z[i] * c
                             })
                         }
                         chart.addSeries(series)

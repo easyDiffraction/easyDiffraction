@@ -3,13 +3,10 @@ import os
 from datetime import datetime
 from typing import List
 
-import numpy as np
-from PySide2.QtCore import QObject, Signal
+from PySide2.QtCore import QObject, Signal, Slot
 
 from .ObjectClasses.DataObj.Calculation import *
 from .ObjectClasses.DataObj.Experiment import *
-# from .ObjectClasses.DataObj import *
-# from .ObjectClasses.PhaseObj import *
 from .ObjectClasses.PhaseObj.Phase import *
 from .ObjectClasses.Utils.DictTools import UndoableDict
 from .ObjectClasses.Utils.InfoObjs import App, Calculator, Info
@@ -68,16 +65,49 @@ class ProjectDict(UndoableDict):
             calculations = Calculations(calculations)
         return cls(app, calculator, info, phases, experiments, calculations)
 
-    def getFittables(self):
-        def get_keys(d, to_find):
-            for a, b in d.items():
-                if to_find in b:
-                    yield a
-                if isinstance(b, dict):
-                    yield from get_keys(b, to_find)
+    @Slot(str)
+    def atom_site_list(self, in_phase=None):
 
-        print(list(get_keys(self, 'refine')))
-        return get_keys(self, 'refine')
+        def make_list(phase):
+            # Atom sites for structure view (all the positions inside unit cell of 1x1x1)
+            atom_site_list = [[], [], [], []]
+            for x, y, z, scat_length_neutron in zip(self.getItemByPath(['atoms', phase, 'fract_x']).value,
+                                                    self.getItemByPath(['atoms', phase, 'fract_y']).value,
+                                                    self.getItemByPath(['atoms', phase, 'fract_z']).value,
+                                                    self.getItemByPath(['atoms', phase, 'scat_length_neutron']).value):
+                x_array, y_array, z_array, _ = self['spacegroup'].calc_xyz_mult(x.value, y.value, z.value)
+                scat_length_neutron_array = np.full_like(x_array, scat_length_neutron)
+                atom_site_list[0] += x_array.tolist()
+                atom_site_list[1] += y_array.tolist()
+                atom_site_list[2] += z_array.tolist()
+                atom_site_list[3] += scat_length_neutron_array.tolist()
+            for x, y, z, scat_length_neutron in zip(atom_site_list[0], atom_site_list[1], atom_site_list[2], atom_site_list[3]):
+                if x == 0.0:
+                    atom_site_list[0].append(1.0)
+                    atom_site_list[1].append(y)
+                    atom_site_list[2].append(z)
+                    atom_site_list[3].append(scat_length_neutron)
+                if y == 0.0:
+                    atom_site_list[0].append(x)
+                    atom_site_list[1].append(1.0)
+                    atom_site_list[2].append(z)
+                    atom_site_list[3].append(scat_length_neutron)
+                if z == 0.0:
+                    atom_site_list[0].append(x)
+                    atom_site_list[1].append(y)
+                    atom_site_list[2].append(1.0)
+                    atom_site_list[3].append(scat_length_neutron)
+            return dict(fract_x=atom_site_list[0], fract_y=atom_site_list[1], fract_z=atom_site_list[2],
+                        scat_length_neutron=atom_site_list[3])
+
+        if in_phase is None:
+            atom_store = dict()
+            for phase in self['phases'].keys():
+                atom_store[phase] = dict() # make_list(phase)
+        else:
+            atom_store = dict() #make_list(in_phase)
+        return atom_store
+
 
 
 class CalculatorInterface(QObject):
@@ -163,7 +193,7 @@ class CalculatorInterface(QObject):
         #    logging.info(key)
         #    logging.info(dict(val))
 
-        k, v = self.project_dict['phases'].dictComparison(phases)
+        k, v = self.project_dict['phases'].dictComparison(phases, ignore=set(['calc_xyz_mult']))
 
         if not k:
             return

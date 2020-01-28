@@ -1,3 +1,5 @@
+from typing import Callable
+
 from ..Utils.DictTools import PathDict
 from ..Utils.BaseClasses import Base
 
@@ -31,9 +33,9 @@ SG_DETAILS = {
 
 
 class SpaceGroup(PathDict):
-    def __init__(self, crystal_system: Base, space_group_name_HM_alt: Base, space_group_IT_number: Base, origin_choice: Base):
+    def __init__(self, crystal_system: Base, space_group_name_HM_alt: Base, space_group_IT_number: Base, origin_choice: Base, calc_xyz_mult: Callable):
         super().__init__(crystal_system=crystal_system, space_group_name_HM_alt=space_group_name_HM_alt,
-                         space_group_IT_number=space_group_IT_number, origin_choice=origin_choice)
+                         space_group_IT_number=space_group_IT_number, origin_choice=origin_choice, calc_xyz_mult=calc_xyz_mult)
 
         self.setItemByPath(['crystal_system', 'header'], SG_DETAILS['crystal_system']['header'])
         self.setItemByPath(['crystal_system', 'tooltip'], SG_DETAILS['crystal_system']['tooltip'])
@@ -60,15 +62,16 @@ class SpaceGroup(PathDict):
         space_group_name_HM_alt = Base(*SG_DETAILS['space_group_name_HM_alt']['default'])
         space_group_IT_number = Base(*SG_DETAILS['space_group_IT_number']['default'])
         origin_choice = Base(*SG_DETAILS['origin_choice']['default'])
-        return cls(crystal_system, space_group_name_HM_alt, space_group_IT_number, origin_choice)
+        calc_xyz_mult = None
+        return cls(crystal_system, space_group_name_HM_alt, space_group_IT_number, origin_choice, calc_xyz_mult)
 
     @classmethod
     def fromPars(cls, crystal_system: str, space_group_name_HM_alt: str, space_group_IT_number: int,
-                 origin_choice: str) -> 'SpaceGroup':
+                 origin_choice: str, calc_xyz_mult:Callable) -> 'SpaceGroup':
         crystal_system = Base(crystal_system, SG_DETAILS['crystal_system']['default'][1])
         space_group_name_HM_alt = Base(space_group_name_HM_alt, SG_DETAILS['space_group_name_HM_alt']['default'][1])
         space_group_IT_number = Base(space_group_IT_number, SG_DETAILS['space_group_IT_number']['default'][1])
         origin_choice = Base(origin_choice, SG_DETAILS['origin_choice']['default'][1])
 
         return cls(crystal_system=crystal_system, space_group_name_HM_alt=space_group_name_HM_alt,
-                   space_group_IT_number=space_group_IT_number, origin_choice=origin_choice)
+                   space_group_IT_number=space_group_IT_number, origin_choice=origin_choice, calc_xyz_mult=calc_xyz_mult)

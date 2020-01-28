@@ -205,11 +205,12 @@ class CryspyCalculator:
             # Space group
             space_group = self._createProjItemFromObj(SpaceGroup.fromPars,
                                                       ['crystal_system', 'space_group_name_HM_alt',
-                                                       'space_group_IT_number', 'origin_choice'],
+                                                       'space_group_IT_number', 'origin_choice', 'calc_xyz_mult'],
                                                       [calculator_phase.space_group.crystal_system,
                                                        calculator_phase.space_group.name_hm_ref,
                                                        calculator_phase.space_group.it_number,
-                                                       calculator_phase.space_group.it_coordinate_system_code])
+                                                       calculator_phase.space_group.it_coordinate_system_code,
+                                                       None])
 
             # Unit cell parameters
             unit_cell = self._createProjItemFromObj(Cell.fromPars, ['length_a', 'length_b', 'length_c',

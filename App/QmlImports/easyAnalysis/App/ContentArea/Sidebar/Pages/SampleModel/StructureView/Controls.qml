@@ -25,10 +25,10 @@ ColumnLayout {
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
             if (Specific.Variables.projectOpened) {
-                const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site
+                const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atoms
                 let type_symbol_list = []
                 for (let atom_id in atom_site_dict) {
-                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
+                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.store.value)
                 }
                 type_symbol_list = Array.from(new Set(type_symbol_list))
                 for (let i = 0; i < type_symbol_list.length; i++) {
@@ -123,9 +123,9 @@ ColumnLayout {
                 Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
 
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.crystal_system.value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.space_group_IT_number.value + '.  ' + Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group['space_group_name_H-M_alt'].value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.origin_choice.value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].spacegroup.crystal_system.store.value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].spacegroup.space_group_IT_number.store.value + '.  ' + Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].spacegroup.space_group_name_HM_alt.store.value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].spacegroup.origin_choice.store.value : ""] }
             }
 
             GenericAppElements.GridLayout {

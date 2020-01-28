@@ -45,10 +45,10 @@ Column {
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
             if (Specific.Variables.projectOpened) {
-                const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site
+                const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atoms
                 let type_symbol_list = []
                 for (let atom_id in atom_site_dict) {
-                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
+                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.store.value)
                 }
                 type_symbol_list = Array.from(new Set(type_symbol_list))
                 for (let i = 0; i < type_symbol_list.length; i++) {

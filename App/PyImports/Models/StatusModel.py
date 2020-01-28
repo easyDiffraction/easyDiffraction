@@ -86,7 +86,7 @@ class StatusModel(BaseModel):
 
         # Set chi squared
         try:
-            self._interestedList.setItemValue('chiSq', round(project_dict['info']['chi_squared'].value, 2))
+            self._interestedList.setItemValue('chiSq', round(float(project_dict['info']['chi_squared'].value), 2))
         except KeyError:
             self._interestedList.setItemValue('chiSq', 0)
 
