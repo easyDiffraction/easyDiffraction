@@ -50,6 +50,7 @@ if __name__ == '__main__':
     upgradePip()
 
     installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2', egg='cryspy_0.2.0_beta')
+    installFromGit(owner='easyDiffraction', repo='EasyInterface', branch='master', egg='EasyInterface_0.0.2_beta')
 
     install(
         #'cryspy==0.1.13',
