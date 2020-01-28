@@ -112,7 +112,6 @@ class Proxy(QObject):
         # We can't link signals as the manager signals emitted before the dict is updated :-(
         self.projectChanged.emit()
 
-
     @Slot()
     def createProjectZip(self):
         self._calculator_interface.writeMainCif(self.project_control.tempDir.name)
@@ -130,26 +129,20 @@ class Proxy(QObject):
     # ##############
     # QML Properties
     # ##############
-    def calculatorAsDict(self):
-        ###logging.info(self._calculator_interface.asDict())
-        return self._calculator_interface.asDict()
-
-    def calculatorAsCifDict(self):
-        ###logging.info(self._calculator_interface.asCifDict())
-        return self._calculator_interface.asCifDict()
-
 
     # Notifications of changes for QML GUI about projectDictChanged,
     # which calls another signal projectChanged
+
     projectChanged = Signal()
+
     project = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
-    cif = Property('QVariant', lambda self: self._calculator_interface.asCifDict(), notify=projectChanged)
-    phase_cif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
-    experiment_cif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
-    calculation_cif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
+    phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
+    experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
+    calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
+
     measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
     calculatedData = Property('QVariant', lambda self: self._calculated_data_model, constant=True)
     braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model, constant=True)
@@ -159,6 +152,7 @@ class Proxy(QObject):
     atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), constant=True)
     atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), constant=True)
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
+
     statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
     fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
