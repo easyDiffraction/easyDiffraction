@@ -3,7 +3,7 @@ import logging
 from PySide2.QtCore import Qt, QPointF, Slot
 from PySide2.QtCharts import QtCharts
 
-from PyImports.Models.BaseModel import BaseModel
+from PyImports.DisplayModels.BaseModel import BaseModel
 
 
 class MeasuredDataModel(BaseModel):

@@ -5,7 +5,7 @@ from PySide2.QtGui import QStandardItemModel
 
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
-import PyImports.Models.CalculatedDataModel as Model
+import PyImports.DisplayModels.CalculatedDataModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
 

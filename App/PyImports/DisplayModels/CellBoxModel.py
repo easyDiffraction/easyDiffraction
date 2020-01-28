@@ -3,7 +3,7 @@ import logging
 from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
-from PyImports.Models.BaseModel import BaseModel
+from PyImports.DisplayModels.BaseModel import BaseModel
 
 class CellBoxModel(BaseModel):
     def __init__(self, parent=None):

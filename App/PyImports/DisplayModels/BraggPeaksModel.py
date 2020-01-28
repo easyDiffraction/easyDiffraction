@@ -4,7 +4,7 @@ from PySide2.QtCore import Qt, QObject, QPointF, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 from PySide2.QtCharts import QtCharts
 
-from PyImports.Models.BaseModel import BaseModel
+from PyImports.DisplayModels.BaseModel import BaseModel
 
 class BraggPeaksSeries(QObject):
     def __init__(self, parent=None):

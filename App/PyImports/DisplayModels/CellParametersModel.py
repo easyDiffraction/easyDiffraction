@@ -1,10 +1,9 @@
 import logging
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
-from PySide2.QtGui import QStandardItem, QStandardItemModel
+from PySide2.QtCore import Qt
+from PySide2.QtGui import QStandardItemModel
 
-import PyImports.Helpers as Helpers
-from PyImports.Models.BaseModel import BaseModel
+from PyImports.DisplayModels.BaseModel import BaseModel
 
 
 class CellParametersModel(BaseModel):

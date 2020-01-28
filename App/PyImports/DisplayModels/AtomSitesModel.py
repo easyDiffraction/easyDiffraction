@@ -3,7 +3,7 @@ import logging
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItemModel
 
-from PyImports.Models.BaseModel import BaseModel
+from PyImports.DisplayModels.BaseModel import BaseModel
 
 
 class AtomSitesModel(BaseModel):

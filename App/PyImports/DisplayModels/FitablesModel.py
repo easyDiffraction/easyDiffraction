@@ -1,10 +1,8 @@
-from functools import reduce
-
-from PySide2.QtCore import Qt, QObject, Signal
+from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
-import PyImports.Helpers as Helpers
-from PyImports.Models.BaseModel import BaseModel
+import PyImports.EasyInterface.Utils.Helpers as Helpers
+from PyImports.DisplayModels.BaseModel import BaseModel
 
 class FitablesModel(BaseModel):
     def __init__(self, parent=None):

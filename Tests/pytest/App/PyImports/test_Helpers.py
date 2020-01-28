@@ -1,15 +1,10 @@
 import sys
-import os
-import webbrowser
 
 import pytest
-from pytest_mock import mocker
-from _pytest import monkeypatch
 
-from PySide2.QtCore import QObject, Signal, Slot, Property, QUrl
+from PySide2.QtCore import QObject
 
 # tested module
-from PyImports.Helpers import *
 
 
 def test_nested_get():

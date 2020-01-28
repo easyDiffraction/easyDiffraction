@@ -2,13 +2,13 @@ import logging
 import os
 from datetime import datetime
 from typing import List
-from PySide2.QtCore import QObject, Signal, Slot
+from PySide2.QtCore import QObject, Signal
 
-from .ObjectClasses.DataObj.Calculation import *
-from .ObjectClasses.DataObj.Experiment import *
-from .ObjectClasses.PhaseObj.Phase import *
-from .ObjectClasses.Utils.DictTools import UndoableDict
-from .ObjectClasses.Utils.InfoObjs import App, Calculator, Info
+from PyImports.EasyInterface.ObjectClasses.DataObj.Calculation import *
+from PyImports.EasyInterface.ObjectClasses.DataObj.Experiment import *
+from PyImports.EasyInterface.ObjectClasses.PhaseObj.Phase import *
+from PyImports.EasyInterface.ObjectClasses.Utils.DictTools import UndoableDict
+from PyImports.EasyInterface.ObjectClasses.Utils.InfoObjs import App, Calculator, Info
 
 
 class ProjectDict(UndoableDict):
@@ -148,7 +148,7 @@ class CalculatorInterface(QObject):
         #    logging.info(key)
         #    logging.info(dict(val))
 
-        k, v = self.project_dict['phases'].dictComparison(phases, ignore=set(['calc_xyz_mult']))
+        k, v = self.project_dict['phases'].dictComparison(phases)
 
         if not k:
             return

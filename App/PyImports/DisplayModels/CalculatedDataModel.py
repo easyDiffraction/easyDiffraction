@@ -4,6 +4,8 @@ from PySide2.QtCore import Qt, QObject, QPointF, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 from PySide2.QtCharts import QtCharts
 
+from PyImports.DisplayModels.BaseModel import BaseModel
+
 class CalculatedDataSeries(QObject):
     def __init__(self, parent=None):
         QObject.__init__(self, parent)
@@ -11,9 +13,9 @@ class CalculatedDataSeries(QObject):
         self._lowerDiffSeries = []
         self._upperDiffSeries = []
 
-    def updateSeries(self, calculator):
+    def updateSeries(self, interface):
         logging.info("=====> start")
-        project_dict = calculator.asDict()
+        project_dict = interface.project_dict
         self._calcSeries.clear()
         self._lowerDiffSeries.clear()
         self._upperDiffSeries.clear()
@@ -40,7 +42,6 @@ class CalculatedDataSeries(QObject):
     def updateQmlUpperDiffSeries(self, series):
         series.replace(self._upperDiffSeries)
 
-from PyImports.Models.BaseModel import BaseModel
 
 class CalculatedDataModel(BaseModel):
     def __init__(self, parent=None):

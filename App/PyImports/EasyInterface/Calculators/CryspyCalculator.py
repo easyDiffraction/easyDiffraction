@@ -6,8 +6,6 @@ from typing import Tuple
 import cryspy
 import pycifstar
 
-# from ..ObjectClasses.PhaseObj import *
-# from ..ObjectClasses.DataObj import *
 from ..ObjectClasses.PhaseObj.Atom import *
 from ..ObjectClasses.PhaseObj.Cell import *
 from ..ObjectClasses.PhaseObj.Phase import *
@@ -393,6 +391,10 @@ class CryspyCalculator:
                                                      [calculator_experiment_name, wavelength, offset, scale,
                                                       backgrounds, resolution, data])
             experiments.append(experiment)
+
+        logging.info(experiments)
+        logging.info(Experiments(experiments))
+
         return Experiments(experiments)
 
     def getCalculations(self) -> Calculations:
@@ -453,6 +455,9 @@ class CryspyCalculator:
             calculations.append(Calculation(calculator_experiment_name,
                                             bragg_peaks, calculated_pattern, limits))
         calculations = Calculations(calculations)
+
+        logging.info(calculations)
+
         return calculations
 
     @staticmethod
@@ -476,6 +481,8 @@ class CryspyCalculator:
 
     def setPhases(self, phases: Phases):
         """Set phases (sample model tab in GUI)"""
+
+        logging.info('-> start')
 
         for phase_name in phases.keys():
             cryspy_phase_names = [crystal.data_name for crystal in self._cryspy_obj.crystals]
@@ -545,9 +552,11 @@ class CryspyCalculator:
                                                               project_atom_site['chi_23'])
             else:
                 raise NotImplementedError
+        logging.info('<- end')
 
     def setExperiments(self, experiments: Experiments):
         """Set experiments (Experimental data tab in GUI)"""
+        logging.info('-> start')
 
         for experiment_name in experiments.keys():
             cryspy_experiment_names = [experiment.data_name for experiment in self._cryspy_obj.experiments]
@@ -584,6 +593,7 @@ class CryspyCalculator:
                 self._setCalculatorObjFromProjectDict(calculator_resolution.y, project_resolution['y'])
             else:
                 raise NotImplementedError
+        logging.info('<- end')
 
     def setObjFromProjectDicts(self, phases: Phases, experiments: Experiments):
         """Set all the cryspy parameters from project dictionary"""

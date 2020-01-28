@@ -158,12 +158,20 @@ class PathDict(UserDict):
                 path = path.split(".")
 
             if type == 'change':
-                new_value = changes[1]
+                if isinstance(path[-1], int):
+                    path = path[:-1]
+                    if path in key_list:
+                        continue
+                    new_value = another_dict.getItemByPath(path)
+                else:
+                    new_value = changes[1]
             elif type == 'add':
                 if not isinstance(changes[0][0], int):
                     path.append(changes[0][0])
                     new_value = changes[0][1]
                 else:
+                    if path in key_list:
+                        continue
                     new_value = another_dict.getItemByPath(path)
                 if path[0] == '':
                     del path[0]

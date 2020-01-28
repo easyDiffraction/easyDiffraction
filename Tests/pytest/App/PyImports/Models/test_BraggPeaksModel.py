@@ -7,7 +7,7 @@ from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
 from PyImports.Calculators.CryspyCalculator import CryspyCalculator
 
-import PyImports.Models.BraggPeaksModel as Model
+import PyImports.DisplayModels.BraggPeaksModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
 
