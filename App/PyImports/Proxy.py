@@ -18,10 +18,10 @@ from PyImports.DisplayModels.StatusModel import StatusModel
 from PyImports.DisplayModels.FileStructureModel import FileStructureModel
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
 from PyImports.Refinement import Refiner
-import PyImports.EasyInterface.Utils.Helpers as Helpers
+import EasyInterface.Utils.Helpers as Helpers
 
-from PyImports.EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
-from PyImports.Interface import CalculatorInterface
+from EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from EasyInterface.QtInterface import QtCalculatorInterface
 
 class Proxy(QObject):
 
@@ -84,7 +84,7 @@ class Proxy(QObject):
         self._main_rcif_path = self.project_control.main_rcif_path
         #logging.info(self._calculator.asCifDict())
         # TODO This is where you would choose the calculator and import the module
-        self._calculator_interface = CalculatorInterface(
+        self._calculator_interface = QtCalculatorInterface(
             CryspyCalculator(self._main_rcif_path)
         )
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
