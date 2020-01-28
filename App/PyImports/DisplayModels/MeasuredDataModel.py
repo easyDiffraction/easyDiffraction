@@ -37,9 +37,13 @@ class MeasuredDataModel(BaseModel):
             for colum_index, (data_id, data_list) in enumerate(experiment_dict['measured_pattern'].items()):
                 index = self._headers_model.index(0, colum_index)
                 self._headers_model.setData(index, data_id, Qt.DisplayRole)
-                for row_index, value in enumerate(data_list):
-                    index = self._model.index(row_index, colum_index)
-                    self._model.setData(index, value, Qt.DisplayRole)
+                if data_list is None:
+                    index = self._model.index(0, colum_index)
+                    self._model.setData(index, None, Qt.DisplayRole)
+                else:
+                    for row_index, value in enumerate(data_list):
+                        index = self._model.index(row_index, colum_index)
+                        self._model.setData(index, value, Qt.DisplayRole)
 
             self._model.blockSignals(False)
             self._headers_model.blockSignals(False)

@@ -3,7 +3,8 @@ import pytest
 from PySide2.QtCore import QUrl
 from PySide2.QtGui import QStandardItemModel
 
-from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from EasyInterface.Interface import CalculatorInterface
 
 import PyImports.DisplayModels.CellBoxModel as Model
 
@@ -13,9 +14,10 @@ def test_CellBoxModelModel():
 
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
+    interface = CalculatorInterface(calculator)
 
     m = Model.CellBoxModel()
-    m.setCalculatorInterface(calculator)
+    m.setCalculatorInterface(interface)
 
 
     assert m._x_role == 257

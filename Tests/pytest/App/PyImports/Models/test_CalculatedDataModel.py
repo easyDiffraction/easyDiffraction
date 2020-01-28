@@ -3,7 +3,8 @@ import pytest
 from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
 
-from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from EasyInterface.Interface import CalculatorInterface
 
 import PyImports.DisplayModels.CalculatedDataModel as Model
 
@@ -13,9 +14,10 @@ def test_CalculatedDataModel():
 
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
+    interface = CalculatorInterface(calculator)
 
     m = Model.CalculatedDataModel()
-    m.setCalculatorInterface(calculator)
+    m.setCalculatorInterface(interface)
 
 
     assert isinstance(m._model, QStandardItemModel)

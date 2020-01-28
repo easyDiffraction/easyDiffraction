@@ -3,7 +3,8 @@ import pytest
 from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
 
-from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from EasyInterface.Interface import CalculatorInterface
 
 import PyImports.DisplayModels.FitablesModel as Model
 
@@ -38,7 +39,7 @@ def test_FitablesModelModel():
     assert m._model.item(0, 0).data(role=fr+6) == True
     assert m._model.item(0, 0).data(role=fr+7) == None
 
-    assert m._model.item(33, 0).data(role=fr+1) == 'experiments pnd resolution y'
+    assert m._model.item(33, 0).data(role=fr+1) == 'experiments pd resolution y'
     assert m._model.item(33, 0).data(role=fr+2) == 0.0
     assert m._model.item(33, 0).data(role=fr+3) == 0.0
     assert m._model.item(33, 0).data(role=fr+4) == 0.0

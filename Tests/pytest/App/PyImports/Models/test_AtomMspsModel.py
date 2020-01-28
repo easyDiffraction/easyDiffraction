@@ -3,7 +3,8 @@ import pytest
 from PySide2.QtCore import QUrl
 from PySide2.QtGui import QStandardItemModel
 
-from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from EasyInterface.Interface import CalculatorInterface
 
 import PyImports.DisplayModels.AtomMspsModel as Model
 
@@ -13,9 +14,11 @@ def test_AtomMspsModel():
 
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
+    interface = CalculatorInterface(calculator)
+
 
     m = Model.AtomMspsModel()
-    m.setCalculatorInterface(calculator)
+    m.setCalculatorInterface(interface)
 
     assert isinstance(m._model, QStandardItemModel)
     assert isinstance(m._project_dict, dict)
