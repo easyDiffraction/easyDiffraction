@@ -33,6 +33,7 @@ class MeasuredDataModel(BaseModel):
             self._headers_model.setColumnCount(column_count)
             self._headers_model.setRowCount(1)
 
+            # Add all the columns from experiment_dict['measured_pattern'] to self._model
             for colum_index, (data_id, data_list) in enumerate(experiment_dict['measured_pattern'].items()):
                 index = self._headers_model.index(0, colum_index)
                 self._headers_model.setData(index, data_id, Qt.DisplayRole)
@@ -62,24 +63,19 @@ class MeasuredDataModel(BaseModel):
         logging.info("=====> start")
 
         # Indices of the self._model columns to be plotted on chart
-        x_column = 0        # first column in experiment_dict['measured_pattern']
-        y_obs_column = 1    # second column in experiment_dict['measured_pattern']
-        sy_obs_column = 2   # third column in experiment_dict['measured_pattern']
+        x_column = 0
+        y_obs_column = 1
+        sy_obs_column = 2
 
         # Get values from model
         x_list = []
         y_obs_lower_list = []
         y_obs_upper_list = []
         for row_index in range(self._model.rowCount()):
-            index = self._model.index(row_index, x_column)
-            x_list.append(self._model.data(index))
-
-            index = self._model.index(row_index, y_obs_column)
-            y_obs = self._model.data(index)
-
-            index = self._model.index(row_index, sy_obs_column)
-            sy_obs = self._model.data(index)
-
+            x = self._model.data(self._model.index(row_index, x_column))
+            y_obs = self._model.data(self._model.index(row_index, y_obs_column))
+            sy_obs = self._model.data(self._model.index(row_index, sy_obs_column))
+            x_list.append(x)
             y_obs_lower_list.append(y_obs - sy_obs)
             y_obs_upper_list.append(y_obs + sy_obs)
 
