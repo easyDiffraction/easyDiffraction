@@ -3,7 +3,7 @@ import QtCharts 2.3
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 
-GenericAppElements.ChartView {
+GenericAppElements.ChartViewAnalysis {
     showObs: true
     showCalc: true
     showDiff: true

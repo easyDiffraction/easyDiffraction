@@ -10,6 +10,7 @@ QtObject {
     property var phase_cif: projectOpened ? proxy.phase_cif : null
     property var measured_data: projectOpened ? proxy.measuredData.asModel() : null
     property var measured_data_header: projectOpened ? proxy.measuredData.asHeadersModel() : null
+    property var calculated_data: projectOpened ? proxy.calculatedData.asModel() : null
     property var experiment_cif: projectOpened ? proxy.experiment_cif : null
     property var calculation_cif: projectOpened ? proxy.calculation_cif : null
 }

@@ -14,7 +14,8 @@ CellComboBox 1.0 CellComboBox.qml
 ComboBox 1.0 ComboBox.qml
 GuideWindow 1.0 GuideWindow.qml
 AppUrlArea 1.0 AppUrlArea.qml
-ChartView 1.0 ChartView.qml
+ChartViewAnalysis 1.0 ChartViewAnalysis.qml
+ChartViewExperiment 1.0 ChartViewExperiment.qml
 StructureView 1.0 StructureView.qml
 DifferenceChartView 1.0 DifferenceChartView.qml
 LineSeries 1.0 LineSeries.qml

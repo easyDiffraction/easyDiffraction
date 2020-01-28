@@ -41,10 +41,10 @@ ColumnLayout {
             if (Specific.Variables.projectOpened) {
                 //proxy.measuredDataSeries.updateQmlLowerSeries(lowerLineSeries)    // Can be removed now!
                 //proxy.measuredDataSeries.updateQmlUpperSeries(upperLineSeries)    // Can be removed now!
-                proxy.calculatedDataSeries.updateQmlCalcSeries(calcSeries)
+                //proxy.calculatedDataSeries.updateQmlCalcSeries(calcSeries)
                 proxy.braggPeaksDataSeries.updateQmlSeries(braggSeries)
-                proxy.calculatedDataSeries.updateQmlLowerDiffSeries(lowerDiffSeries)
-                proxy.calculatedDataSeries.updateQmlUpperDiffSeries(upperDiffSeries)
+                //proxy.calculatedDataSeries.updateQmlLowerDiffSeries(lowerDiffSeries)
+                //proxy.calculatedDataSeries.updateQmlUpperDiffSeries(upperDiffSeries)
                 adjustLeftAxesAnchor()
             }
         }
@@ -243,6 +243,8 @@ ColumnLayout {
                     color: Generic.Style.redColor
                     width: 2
                     //useOpenGL: true
+
+                    // Old approach (slow): use QStandartItemModel-base model updated on python side
                     /*
                     VXYModelMapper{
                         model: Specific.Variables.projectOpened ? proxy.calculatedData : null
@@ -250,6 +252,9 @@ ColumnLayout {
                         yColumn: 1
                     }
                     */
+                    // New approach (fast): pass a reference to LineSeries to python for updating
+                    Component.onCompleted: proxy.calculatedData.setCalcSeries(calcSeries)
+
                     onHovered: {
                         const p = topChart.mapToPosition(point)
                         const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
@@ -534,26 +539,30 @@ ColumnLayout {
 
                     upperSeries: LineSeries {
                         id: upperDiffSeries
+                        // Old approach (slow): use QStandartItemModel-base model updated on python side
                         /*
-                        useOpenGL: true
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                             xColumn: 0
                             yColumn: 2
                         }
                         */
+                        // New approach (fast): pass a reference to LineSeries to python for updating
+                        Component.onCompleted: proxy.calculatedData.setUpperDiffSeries(upperDiffSeries)
                     }
 
                     lowerSeries: LineSeries {
                         id: lowerDiffSeries
+                        // Old approach (slow): use QStandartItemModel-base model updated on python side
                         /*
-                        useOpenGL: true
                         VXYModelMapper{
                             model: Specific.Variables.projectOpened ? proxy.calculatedData : null
                             xColumn: 0
                             yColumn: 3
                         }
                         */
+                        // New approach (fast): pass a reference to LineSeries to python for updating
+                        Component.onCompleted: proxy.calculatedData.setLowerDiffSeries(lowerDiffSeries)
                     }
 
                     onHovered: {
