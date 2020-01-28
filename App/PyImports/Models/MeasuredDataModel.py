@@ -13,7 +13,7 @@ class MeasuredDataSeries(QObject):
         self._lowerSeries = []
 
     def updateSeries(self, calculator_interface):
-        logging.info("+++++++++++++++++++++++++ start") # profiling
+        logging.info("---> start")
         project_dict = calculator_interface.project_dict
         self._upperSeries.clear()
         self._lowerSeries.clear()
@@ -24,7 +24,7 @@ class MeasuredDataSeries(QObject):
             for x, y_obs_lower, y_obs_upper in zip(x_list, y_obs_lower_list, y_obs_upper_list):
                 self._lowerSeries.append(QPointF(x, y_obs_lower))
                 self._upperSeries.append(QPointF(x, y_obs_upper))
-        logging.info("+++++++++++++++++++++++++ end") # profiling
+        logging.info("<===== end")
 
     @Slot(QtCharts.QXYSeries)
     def updateQmlLowerSeries(self, series):
@@ -43,7 +43,7 @@ class MeasuredDataModel(BaseModel):
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI measured data table and chart."""
-        logging.info("+++++++++++++++++++++++++ setData start") # profiling
+        logging.info("-> start")
         for experiment_id, experiment_dict in self._project_dict['experiments'].items():
             self._model.blockSignals(True)
             self._headers_model.blockSignals(True)
@@ -68,4 +68,4 @@ class MeasuredDataModel(BaseModel):
             #
             self._model.layoutChanged.emit()
             self._headers_model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++ setData end") # profiling
+        logging.info("<- end")

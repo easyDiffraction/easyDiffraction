@@ -16,7 +16,7 @@ class CellBoxModel(BaseModel):
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI structure chart (unit cell box)."""
-        logging.info("+++++++++++++++++++++++++ setData start") # profiling
+        logging.info("-> start")
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
             self._model.blockSignals(True)
@@ -57,4 +57,4 @@ class CellBoxModel(BaseModel):
             # unblock signals and emit model layout changed
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++ setData end") # profiling
+        logging.info("<- end")

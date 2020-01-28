@@ -12,7 +12,7 @@ class CalculatedDataSeries(QObject):
         self._upperDiffSeries = []
 
     def updateSeries(self, calculator):
-        logging.info("+++++++++++++++++++++++++ start") # profiling
+        logging.info("=====> start")
         project_dict = calculator.asDict()
         self._calcSeries.clear()
         self._lowerDiffSeries.clear()
@@ -26,7 +26,7 @@ class CalculatedDataSeries(QObject):
                 self._calcSeries.append(QPointF(x, y_calc))
                 self._lowerDiffSeries.append(QPointF(x, y_diff_lower))
                 self._upperDiffSeries.append(QPointF(x, y_diff_upper))
-        logging.info("+++++++++++++++++++++++++ end") # profiling
+        logging.info("<===== end")
 
     @Slot(QtCharts.QXYSeries)
     def updateQmlCalcSeries(self, series):
@@ -51,7 +51,7 @@ class CalculatedDataModel(BaseModel):
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI calculated data table and chart."""
-        logging.info("+++++++++++++++++++++++++ setData start") # profiling
+        logging.info("-> start")
         for experiment_id, experiment_dict in self._project_dict['calculations'].items():
             self._model.blockSignals(True)
             self._headers_model.blockSignals(True)
@@ -72,4 +72,4 @@ class CalculatedDataModel(BaseModel):
             self._headers_model.blockSignals(False)
             self._model.layoutChanged.emit()
             self._headers_model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++ setData end") # profiling
+        logging.info("<- end")

@@ -18,11 +18,17 @@ Column {
     property string headerBackgroundColor: '#eee'
     property string headerBorderColor: '#dedede'
 
-    //property string colorCell: "black"
-    property var type_symbol_dict: ({})
-
     height: childrenRect.height
     spacing: 12
+
+    function toFixed(value, precision = 4) {
+        if (typeof value === 'number')
+            return value.toFixed(precision)
+        else if (typeof value === 'string')
+            return value
+        else
+            return ""
+    }
 
     function cellWidthProvider(column) {
         const allColumnWidth = width - borderWidth * 2
@@ -33,29 +39,6 @@ Column {
             return numberColumnWidth
         else
             return flexibleColumnsWidth / flexibleColumnsCount
-    }
-
-    ////////////////////////
-    // Check if data changed
-    ////////////////////////
-
-    Text {
-        visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
-        onTextChanged: {
-            //print("--------------------------------------------------------- Time stamp: ", text)
-            if (Specific.Variables.projectOpened) {
-                const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site
-                let type_symbol_list = []
-                for (let atom_id in atom_site_dict) {
-                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
-                }
-                type_symbol_list = Array.from(new Set(type_symbol_list))
-                for (let i = 0; i < type_symbol_list.length; i++) {
-                    type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
-                }
-            }
-        }
     }
 
     Rectangle {
@@ -261,7 +244,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: type
+                            text: typeof type !== "undefined" ? type : ""
                             color: foregroundColor()
                         }
                         Text {
@@ -273,7 +256,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof chiiso === 'number' ? chiiso.toFixed(4) : chiiso
+                            text: toFixed(chiiso)
                             color: foregroundColor()
                         }
                         Text {
@@ -285,7 +268,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof chi11 === 'number' ? chi11.toFixed(4) : chi11
+                            text: toFixed(chi11)
                             color: foregroundColor()
                         }
                         Text {
@@ -297,7 +280,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof chi22 === 'number' ? chi22.toFixed(4) : chi22
+                            text: toFixed(chi22)
                             color: foregroundColor()
                         }
                         Text {
@@ -309,7 +292,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof chi33 === 'number' ? chi33.toFixed(4) : chi33
+                            text: toFixed(chi33)
                             color: foregroundColor()
                         }
                         Text {
@@ -321,7 +304,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof chi12 === 'number' ? chi12.toFixed(4) : chi12
+                            text: toFixed(chi12)
                             color: foregroundColor()
                         }
                         Text {
@@ -333,7 +316,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof chi13 === 'number' ? chi13.toFixed(4) : chi13
+                            text: toFixed(chi13)
                             color: foregroundColor()
                         }
                         Text {
@@ -345,7 +328,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof chi23 === 'number' ? chi23.toFixed(4) : chi23
+                            text: toFixed(chi23)
                             color: foregroundColor()
                         }
                     }

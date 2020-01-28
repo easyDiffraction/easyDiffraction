@@ -12,7 +12,7 @@ class BraggPeaksSeries(QObject):
         self._series = []
 
     def updateSeries(self, calculator):
-        logging.info("+++++++++++++++++++++++++ start") # profiling
+        logging.info("---> start")
         project_dict = calculator.asDict()
         self._series.clear()
         for experiment_id, experiment_dict in project_dict['calculations'].items():
@@ -22,7 +22,7 @@ class BraggPeaksSeries(QObject):
                     vertical_points = 11
                     for vertical_index in range(vertical_points):
                         self._series.append(QPointF(x, vertical_index))
-        logging.info("+++++++++++++++++++++++++ end") # profiling
+        logging.info("<===== end")
 
     @Slot(QtCharts.QXYSeries)
     def updateQmlSeries(self, series):
@@ -37,7 +37,7 @@ class BraggPeaksModel(BaseModel):
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI chart: Bragg peaks."""
-        logging.info("+++++++++++++++++++++++++ setData start") # profiling
+        logging.info("-> start")
         for experiment_id, experiment_dict in self._project_dict['calculations'].items():
             for phase_id in self._project_dict['phases'].keys():
                 # data model
@@ -69,7 +69,7 @@ class BraggPeaksModel(BaseModel):
                         self._tick_model.setData(tick_y_index, tick_y_value, Qt.DisplayRole)
                 self._tick_model.blockSignals(False)
                 self._tick_model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++ setData end") # profiling
+        logging.info("<- end")
 
     def asTickModel(self):
         """..."""

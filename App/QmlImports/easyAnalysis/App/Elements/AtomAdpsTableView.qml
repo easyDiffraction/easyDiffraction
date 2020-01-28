@@ -24,6 +24,15 @@ Column {
     height: childrenRect.height
     spacing: 12
 
+    function toFixed(value, precision = 4) {
+        if (typeof value === 'number')
+            return value.toFixed(precision)
+        else if (typeof value === 'string')
+            return value
+        else
+            return ""
+    }
+
     function cellWidthProvider(column) {
         const allColumnWidth = width - borderWidth * 2
         const numberColumnWidth = 40
@@ -38,25 +47,6 @@ Column {
     ////////////////////////
     // Check if data changed
     ////////////////////////
-
-    Text {
-        visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
-        onTextChanged: {
-            //print("--------------------------------------------------------- Time stamp: ", text)
-            if (Specific.Variables.projectOpened) {
-                const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atoms
-                let type_symbol_list = []
-                for (let atom_id in atom_site_dict) {
-                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.store.value)
-                }
-                type_symbol_list = Array.from(new Set(type_symbol_list))
-                for (let i = 0; i < type_symbol_list.length; i++) {
-                    type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
-                }
-            }
-        }
-    }
 
     Rectangle {
         id: listViewWrapper
@@ -285,7 +275,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof u11 === 'number' ? u11.toFixed(4) : u11
+                            text: toFixed(u11)
                             color: foregroundColor()
                         }
                         Text {
@@ -297,7 +287,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof u22 === 'number' ? u22.toFixed(4) : u22
+                            text: toFixed(u22)
                             color: foregroundColor()
                         }
                         Text {
@@ -309,7 +299,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof u33 === 'number' ? u33.toFixed(4) : u33
+                            text: toFixed(u33)
                             color: foregroundColor()
                         }
                         Text {
@@ -321,7 +311,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof u12 === 'number' ? u12.toFixed(4) : u12
+                            text: toFixed(u12)
                             color: foregroundColor()
                         }
                         Text {
@@ -333,7 +323,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof u13 === 'number' ? u13.toFixed(4) : u13
+                            text: toFixed(u13)
                             color: foregroundColor()
                         }
                         Text {
@@ -345,7 +335,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof u23 === 'number' ? u23.toFixed(4) : u23
+                            text: toFixed(u23)
                             color: foregroundColor()
                         }
                     }

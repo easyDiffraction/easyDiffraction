@@ -23,6 +23,15 @@ Column {
     height: childrenRect.height
     spacing: 12
 
+    function toFixed(value, precision = 4) {
+        if (typeof value === 'number')
+            return value.toFixed(precision)
+        else if (typeof value === 'string')
+            return value
+        else
+            return ""
+    }
+
     function cellWidthProvider(column) {
         const allColumnWidth = width - borderWidth * 2
         const numberColumnWidth = 40
@@ -279,7 +288,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof xPos === 'number' ? xPos.toFixed(4) : xPos
+                            text: toFixed(xPos)
                             color: foregroundColor()
                         }
                         Text {
@@ -291,7 +300,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof yPos === 'number' ? yPos.toFixed(4) : yPos
+                            text: toFixed(yPos)
                             color: foregroundColor()
                         }
                         Text {
@@ -303,7 +312,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof zPos === 'number' ? zPos.toFixed(4) : zPos
+                            text: toFixed(zPos)
                             color: foregroundColor()
                         }
                         Text {
@@ -315,7 +324,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof occupancy === 'number' ? occupancy.toFixed(4) : occupancy
+                            text: toFixed(occupancy)
                             color: foregroundColor()
                         }
                         GenericAppContentArea.Button {

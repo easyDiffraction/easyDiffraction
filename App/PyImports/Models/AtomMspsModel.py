@@ -1,10 +1,10 @@
 import logging
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
-from PySide2.QtGui import QStandardItem, QStandardItemModel
+from PySide2.QtCore import Qt
+from PySide2.QtGui import QStandardItemModel
 
-import PyImports.Helpers as Helpers
 from PyImports.Models.BaseModel import BaseModel
+
 
 class AtomMspsModel(BaseModel):
     def __init__(self, parent=None):
@@ -35,7 +35,7 @@ class AtomMspsModel(BaseModel):
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI ..."""
-        logging.info("+++++++++++++++++++++++++ setData start") # profiling
+        logging.info("-> start")
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
             self._model.blockSignals(True)
@@ -45,7 +45,7 @@ class AtomMspsModel(BaseModel):
                 data.append({
                     self._label_role: atom_id,
                     self._type_role: atom_dict.getItemByPath(['MSP', 'type']).value,
-                    self._chiiso_role: '?',
+                    self._chiiso_role: "",
                     self._chi11_role: atom_dict.getItemByPath(['MSP', 'chi_11']).value,
                     self._chi22_role: atom_dict.getItemByPath(['MSP', 'chi_22']).value,
                     self._chi33_role: atom_dict.getItemByPath(['MSP', 'chi_33']).value,
@@ -64,4 +64,4 @@ class AtomMspsModel(BaseModel):
             # unblock signals and emit model layout changed
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++ setData end") # profiling
+        logging.info("<- end")

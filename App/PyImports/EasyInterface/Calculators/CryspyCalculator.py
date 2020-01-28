@@ -200,7 +200,7 @@ class CryspyCalculator:
 
         for calculator_phase in self._cryspy_obj.crystals:
             calculator_phase_name = calculator_phase.data_name
-            logging.info(calculator_phase_name)
+            #logging.info(calculator_phase_name)
 
             # Space group
             space_group = self._createProjItemFromObj(SpaceGroup.fromPars,
@@ -221,7 +221,7 @@ class CryspyCalculator:
                                                      calculator_phase.cell.angle_gamma])
 
             phase = Phase.fromPars(calculator_phase_name, space_group, unit_cell)
-            logging.info(phase)
+            #logging.info(phase)
 
             atoms = []
             # Atom sites

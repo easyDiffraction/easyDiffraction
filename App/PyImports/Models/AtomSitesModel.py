@@ -1,9 +1,10 @@
 import logging
 
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
-from PySide2.QtGui import QStandardItem, QStandardItemModel
+from PySide2.QtCore import Qt
+from PySide2.QtGui import QStandardItemModel
 
 from PyImports.Models.BaseModel import BaseModel
+
 
 class AtomSitesModel(BaseModel):
     def __init__(self, parent=None):
@@ -30,7 +31,7 @@ class AtomSitesModel(BaseModel):
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI ..."""
-        logging.info("+++++++++++++++++++++++++ setData start") # profiling
+        logging.info("-> start")
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
             self._model.blockSignals(True)
@@ -61,8 +62,7 @@ class AtomSitesModel(BaseModel):
                 index = self._model.index(row_index, 0)
                 for role, value in dict.items():
                     self._model.setData(index, value, role)
-                    #print(index)
             # unblock signals and emit model layout changed
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
-        logging.info("+++++++++++++++++++++++++ setData end") # profiling
+        logging.info("<- end")
