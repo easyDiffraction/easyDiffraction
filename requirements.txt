@@ -1,3 +1,2 @@
-cryspy>=0.2.0
+EasyInterface
 pyside2
-dictdiffer
