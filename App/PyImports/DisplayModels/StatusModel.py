@@ -2,7 +2,7 @@ from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
 import PyImports.EasyInterface.Utils.Helpers as Helpers
-from PyImports.EasyInterface import StatusItem, StatusList
+from PyImports.EasyInterface.Utils.StatusObjects import StatusItem, StatusList
 from PyImports.DisplayModels.BaseModel import BaseModel
 
 class StatusModel(BaseModel):

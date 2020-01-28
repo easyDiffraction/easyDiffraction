@@ -3,26 +3,24 @@ import logging
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
 
-import PyImports.ProjectSentinel
-from PyImports.Models.MeasuredDataModel import MeasuredDataModel
-from PyImports.Models.CalculatedDataModel import CalculatedDataModel
-from PyImports.Models.CalculatedDataModel import CalculatedDataSeries #---#
-from PyImports.Models.BraggPeaksModel import BraggPeaksModel
-from PyImports.Models.BraggPeaksModel import BraggPeaksSeries #---#
-from PyImports.Models.CellParametersModel import CellParametersModel
-from PyImports.Models.CellBoxModel import CellBoxModel
-from PyImports.Models.AtomSitesModel import AtomSitesModel
-from PyImports.Models.AtomAdpsModel import AtomAdpsModel
-from PyImports.Models.AtomMspsModel import AtomMspsModel
-from PyImports.Models.FitablesModel import FitablesModel
-from PyImports.Models.StatusModel import StatusModel
-from PyImports.Models.FileStructureModel import FileStructureModel
+from PyImports.DisplayModels.MeasuredDataModel import MeasuredDataModel
+from PyImports.DisplayModels.CalculatedDataModel import CalculatedDataModel
+from PyImports.DisplayModels.CalculatedDataModel import CalculatedDataSeries #---#
+from PyImports.DisplayModels.BraggPeaksModel import BraggPeaksModel
+from PyImports.DisplayModels.BraggPeaksModel import BraggPeaksSeries #---#
+from PyImports.DisplayModels.CellParametersModel import CellParametersModel
+from PyImports.DisplayModels.CellBoxModel import CellBoxModel
+from PyImports.DisplayModels.AtomSitesModel import AtomSitesModel
+from PyImports.DisplayModels.AtomAdpsModel import AtomAdpsModel
+from PyImports.DisplayModels.AtomMspsModel import AtomMspsModel
+from PyImports.DisplayModels.FitablesModel import FitablesModel
+from PyImports.DisplayModels.StatusModel import StatusModel
+from PyImports.DisplayModels.FileStructureModel import FileStructureModel
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
 from PyImports.Refinement import Refiner
 import PyImports.EasyInterface.Utils.Helpers as Helpers
 
-###from PyImports.Calculators.CryspyCalculator import CryspyCalculator
-from PyImports.EasyInterface import CryspyCalculator
+from PyImports.EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.Interface import CalculatorInterface
 
 class Proxy(QObject):
