@@ -82,7 +82,7 @@ ApplicationWindow {
         print(projectManager.needToSave)
         //        close.accepted = projectManager.needToSave ? false: true
 //        close.accepted = false
-          close.accepted = true
+        close.accepted = true
 //        closeDialogue.visible = true
     }
 
@@ -94,58 +94,38 @@ ApplicationWindow {
 
         Column {
             padding: 20
-            spacing: 15
+            spacing: 20
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 5
+                font.pointSize: Generic.Style.fontPointSize + 1
                 font.family: Generic.Style.fontFamily
                 color: "#444"
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "The project has not been saved. Do you want to exit?"
             }
 
-            RowLayout{
-
+            Row {
                 spacing: 15
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                Button {
-                    height: Generic.Style.toolbarButtonHeight
-                    font.pointSize: Generic.Style.fontPointSize + 5
-                    font.family: Generic.Style.fontFamily
-                    icon.source: Generic.Variables.thirdPartyIconsPath + "sign-out-alt.svg"
-                    icon.color: exitButtonIconColor
+                GenericAppToolbar.Button {
                     text: "Save and exit"
-                    background: Rectangle { color: exitButtonBackgroundColor }
                     onClicked: {
-                        // Save logic goes here.....
                         closeDialogue.close()
                         Qt.exit(0)
                     }
                 }
 
-                Button {
-                    height: Generic.Style.toolbarButtonHeight
-                    font.pointSize: Generic.Style.fontPointSize + 5
-                    font.family: Generic.Style.fontFamily
-                    icon.source: Generic.Variables.thirdPartyIconsPath + "sign-out-alt.svg"
-                    icon.color: exitButtonIconColor
+                GenericAppToolbar.Button {
                     text: "Exit without saving"
-                    background: Rectangle { color: exitButtonBackgroundColor }
                     onClicked: {
                         closeDialogue.close()
                         Qt.exit(0)
                     }
                 }
 
-                Button {
-                    height: Generic.Style.toolbarButtonHeight
-                    font.pointSize: Generic.Style.fontPointSize + 5
-                    font.family: Generic.Style.fontFamily
-                    icon.source: Generic.Variables.thirdPartyIconsPath + "sign-out-alt.svg"
-                    icon.color: exitButtonIconColor
+                GenericAppToolbar.Button {
                     text: "Cancel"
-                    background: Rectangle { color: exitButtonBackgroundColor }
                     onClicked: {
                         closeDialogue.close()
                     }
