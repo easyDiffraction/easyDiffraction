@@ -51,7 +51,6 @@ if __name__ == '__main__':
 
     installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2', egg='cryspy-develop')
     installFromGit(owner='easyDiffraction', repo='easyInterface', branch='master', egg='easyinterface-develop')
-    exit()
 
     install(
         #'cryspy==0.1.13',
@@ -62,6 +61,7 @@ if __name__ == '__main__':
         'uritemplate==3.0.0',
         'pyyaml==5.1.2',
         'dicttoxml==1.7.4',
+        'asteval==0.9.18',
         'pytest==5.3.0',
         'pytest_mock==1.12.1',
         'pytest-cov==2.8.1',
