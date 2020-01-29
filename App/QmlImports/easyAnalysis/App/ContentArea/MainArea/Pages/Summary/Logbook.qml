@@ -102,7 +102,7 @@ Rectangle {
     function writeHtmlBody() {
         let s = ''
         s += '<body>'
-        s += `<h1>${proxy.project.info.name}</h1>`
+        s += `<h1>${projectManager.projectName}</h1>`
         s += '<p>'
         s += `<b>Software:</b> <a href="${proxy.project.app.url}">${proxy.project.app.name} v${proxy.project.app.version}</a><br>`
         s += `<b>Calculator:</b> <a href="${proxy.project.calculator.url}">${proxy.project.calculator.name} v${proxy.project.calculator.version}</a><br>`

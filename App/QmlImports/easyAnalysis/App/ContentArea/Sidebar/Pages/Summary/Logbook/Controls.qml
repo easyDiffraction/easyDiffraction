@@ -37,7 +37,7 @@ ColumnLayout {
                 GenericAppElements.ComboBox {
                     id: exportFileExt
                     implicitWidth: 100
-                    model: [".HTML"]
+                    model: [".HTML", ".PDF"]
                 }
 
                 GenericAppContentAreaButtons.Export {
