@@ -85,6 +85,7 @@ class Proxy(QObject):
             CryspyCalculator(self._main_rcif_path)
         )
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
+        self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
         #logging.info(self._calculator_interface.asCifDict())
         ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
         # This should pick up on non-valid cif files
@@ -112,6 +113,8 @@ class Proxy(QObject):
         # We can't link signals as the manager signals emitted before the dict is updated :-(
         self.projectChanged.emit()
 
+        self._calculator_interface.clearUndoStack()
+
     @Slot()
     def createProjectZip(self):
         self._calculator_interface.writeMainCif(self.project_control.tempDir.name)
@@ -134,12 +137,16 @@ class Proxy(QObject):
     # which calls another signal projectChanged
 
     projectChanged = Signal()
+    canUndoOrRedoChanged = Signal()
 
     calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
     project = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
+
+    canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)
+    canRedo = Property('QVariant', lambda self: self._calculator_interface.canRedo(), notify=canUndoOrRedoChanged)
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
