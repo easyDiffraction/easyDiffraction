@@ -13,6 +13,11 @@ import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyDiffraction 1.0 as Specific
 
 ApplicationWindow {
+
+    property string exitButtonBackgroundColor: "#ddd"
+    property string exitButtonBorderColor: "#ccc"
+    property string exitButtonIconColor: "#333"
+
     id: window
 
     visible: true
@@ -72,6 +77,82 @@ ApplicationWindow {
 
     // Temporary solution to update main area width
     onWidthChanged: Generic.Variables.mainAreaWidth = width - Generic.Style.appBorderThickness - Generic.Style.sidebarWidth
+
+    onClosing: {
+        print(projectManager.needToSave)
+        //        close.accepted = projectManager.needToSave ? false: true
+//        close.accepted = false
+          close.accepted = true
+//        closeDialogue.visible = true
+    }
+
+
+    GenericControls.Dialog {
+        id: closeDialogue
+        visible: false
+        title: "Save Changes"
+
+        Column {
+            padding: 20
+            spacing: 15
+
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 5
+                font.family: Generic.Style.fontFamily
+                color: "#444"
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "The project has not been saved. Do you want to exit?"
+            }
+
+            RowLayout{
+
+                spacing: 15
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Button {
+                    height: Generic.Style.toolbarButtonHeight
+                    font.pointSize: Generic.Style.fontPointSize + 5
+                    font.family: Generic.Style.fontFamily
+                    icon.source: Generic.Variables.thirdPartyIconsPath + "sign-out-alt.svg"
+                    icon.color: exitButtonIconColor
+                    text: "Save and exit"
+                    background: Rectangle { color: exitButtonBackgroundColor }
+                    onClicked: {
+                        // Save logic goes here.....
+                        closeDialogue.close()
+                        Qt.exit(0)
+                    }
+                }
+
+                Button {
+                    height: Generic.Style.toolbarButtonHeight
+                    font.pointSize: Generic.Style.fontPointSize + 5
+                    font.family: Generic.Style.fontFamily
+                    icon.source: Generic.Variables.thirdPartyIconsPath + "sign-out-alt.svg"
+                    icon.color: exitButtonIconColor
+                    text: "Exit without saving"
+                    background: Rectangle { color: exitButtonBackgroundColor }
+                    onClicked: {
+                        closeDialogue.close()
+                        Qt.exit(0)
+                    }
+                }
+
+                Button {
+                    height: Generic.Style.toolbarButtonHeight
+                    font.pointSize: Generic.Style.fontPointSize + 5
+                    font.family: Generic.Style.fontFamily
+                    icon.source: Generic.Variables.thirdPartyIconsPath + "sign-out-alt.svg"
+                    icon.color: exitButtonIconColor
+                    text: "Cancel"
+                    background: Rectangle { color: exitButtonBackgroundColor }
+                    onClicked: {
+                        closeDialogue.close()
+                    }
+                }
+            }
+        }
+    }
 }
 
 
