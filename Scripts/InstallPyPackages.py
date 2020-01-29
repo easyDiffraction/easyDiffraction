@@ -61,6 +61,7 @@ if __name__ == '__main__':
         'uritemplate==3.0.0',
         'pyyaml==5.1.2',
         'dicttoxml==1.7.4',
+        'asteval==0.9.18',
         'pytest==5.3.0',
         'pytest_mock==1.12.1',
         'pytest-cov==2.8.1',
