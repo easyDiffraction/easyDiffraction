@@ -59,8 +59,10 @@ class FitablesModel(BaseModel):
                     value = project_dict.getItemByPath(keys_list).min
                 elif role_name == 'max':
                     value = project_dict.getItemByPath(keys_list).max
-                else:
+                elif role_name == 'unit':
                     value = str(Helpers.nested_get(project_dict, keys_list + [role_name])) # conversion to str is needed if role = unit !
+                else:
+                    value = Helpers.nested_get(project_dict, keys_list + [role_name])
                 item.setData(value, role)
             column.append(item)
         # set model
