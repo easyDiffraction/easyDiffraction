@@ -78,7 +78,22 @@ class FitablesModel(BaseModel):
         edit_value = self._model.data(index, edit_role)
         display_value = self._model.data(index, display_role)
         if edit_value != display_value:
-            self._calculator_interface.setDictByPath(keys_list, edit_value)
+            if isinstance(edit_value, bool):
+                if 'phases' == keys_list[0]:
+                    self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
+                elif 'experiments' == keys_list[0]:
+                    self._calculator_interface.setExperimentRefine(keys_list[1], keys_list[2:-2], edit_value)
+                else:
+                    self._calculator_interface.setDictByPath(keys_list, edit_value)
+            else:
+                if 'phases' == keys_list[0]:
+                    self._calculator_interface.setPhaseValue(keys_list[1], keys_list[2:-2], edit_value)
+                    self._calculator_interface.updateCalculations()
+                elif 'experiments' == keys_list[0]:
+                    self._calculator_interface.setExperimentValue(keys_list[1], keys_list[2:-2], edit_value)
+                    self._calculator_interface.updateCalculations()
+                else:
+                    self._calculator_interface.setDictByPath(keys_list, edit_value)
 
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
         """Define what to do if model is changed, e.g. from GUI."""
@@ -87,4 +102,6 @@ class FitablesModel(BaseModel):
         if role_name.endswith(self._edit_role_name_suffix):
             index = top_left_index
             edit_role = role
+            # self._calculator_interface.project_dict.startBulkUpdate('Change {}'.format(role_name))
             self._updateProjectByIndexAndRole(index, edit_role)
+            # self._calculator_interface.project_dict.endBulkUpdate()
