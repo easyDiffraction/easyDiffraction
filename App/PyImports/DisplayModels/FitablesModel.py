@@ -1,7 +1,7 @@
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
-import EasyInterface.Utils.Helpers as Helpers
+import easyInterface.Utils.Helpers as Helpers
 from PyImports.DisplayModels.BaseModel import BaseModel
 
 class FitablesModel(BaseModel):

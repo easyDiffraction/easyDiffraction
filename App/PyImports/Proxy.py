@@ -17,10 +17,10 @@ from PyImports.DisplayModels.StatusModel import StatusModel
 from PyImports.DisplayModels.FileStructureModel import FileStructureModel
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
 from PyImports.Refinement import Refiner
-import EasyInterface.Utils.Helpers as Helpers
+import easyInterface.Utils.Helpers as Helpers
 
-from EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
-from EasyInterface.QtInterface import QtCalculatorInterface
+from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.QtInterface import QtCalculatorInterface
 
 class Proxy(QObject):
 
