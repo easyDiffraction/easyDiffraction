@@ -20,6 +20,28 @@
     "App/PyImports/DisplayModels/FileStructureModel.py",
     "App/PyImports/DisplayModels/FitablesModel.py",
     "App/PyImports/DisplayModels/MeasuredDataModel.py",
-    "App/PyImports/DisplayModels/StatusModel.py"
+    "App/PyImports/DisplayModels/StatusModel.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/Interface.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/QtInterface.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/Calculators/CryspyCalculator.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/units.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/DataObj/Calculation.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/DataObj/Experiment.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/PhaseObj/Atom.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/PhaseObj/Cell.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/PhaseObj/Phase.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/PhaseObj/SpaceGroup.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/Utils/BaseClasses.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/Utils/DictTools.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/Utils/InfoObj.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/Utils/Helpers.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/Utils/StatusObjects.py"
     ]
 }
