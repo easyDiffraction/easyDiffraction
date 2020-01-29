@@ -106,7 +106,7 @@ Rectangle {
         s += '<p>'
         s += `<b>Software:</b> <a href="${proxy.project.app.url}">${proxy.project.app.name} v${proxy.project.app.version}</a><br>`
         s += `<b>Calculator:</b> <a href="${proxy.project.calculator.url}">${proxy.project.calculator.name} v${proxy.project.calculator.version}</a><br>`
-        s += `<b>Keywords:</b> ${proxy.project.info.keywords.join(', ')}<br>`
+        s += `<b>Keywords:</b> ${projectManager.projectKeywords}<br>`
         s += `<b>Phases:</b> ${proxy.project.info.phase_ids.join(', ')}<br>`
         s += `<b>Experiments:</b> ${proxy.project.info.experiment_ids.join(', ')}<br>`
         s += `<b>Instrument:</b> 6T2 at LLB<br>`
