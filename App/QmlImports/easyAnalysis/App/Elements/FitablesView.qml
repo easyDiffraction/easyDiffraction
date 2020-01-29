@@ -202,7 +202,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize * 0.5
                             rightPadding: font.pixelSize
-                            text: units
+                            text: unit
                             color: foregroundColor2()
                         }
                         Text {

@@ -15,7 +15,7 @@ class FitablesModel(BaseModel):
         self._calculator = None
         self._model = QStandardItemModel()
         # set role names
-        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'units']
+        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'unit']
         self._roles_list = []
         self._roles_dict = {}
         self._setRolesListAndDict()
@@ -60,7 +60,7 @@ class FitablesModel(BaseModel):
                 elif role_name == 'max':
                     value = project_dict.getItemByPath(keys_list).max
                 else:
-                    value = Helpers.nested_get(project_dict, keys_list + [role_name])
+                    value = str(Helpers.nested_get(project_dict, keys_list + [role_name])) # conversion to str is needed if role = unit !
                 item.setData(value, role)
             column.append(item)
         # set model
