@@ -6,6 +6,10 @@ QtObject {
     // Python models
     property bool projectOpened: false
 
+    property var calculatorInterface: projectOpened ? proxy.calculatorInterface : null
+    property var canUndo: calculatorInterface ? proxy.calculatorInterface.canUndo() : false
+    property var canRedo: calculatorInterface ? proxy.calculatorInterface.canRedo() : false
+
     property var project: projectOpened ? proxy.project : null
     property var cif: projectOpened ? proxy.fileStructure : null
     property var phaseCif: projectOpened ? proxy.phaseCif : null

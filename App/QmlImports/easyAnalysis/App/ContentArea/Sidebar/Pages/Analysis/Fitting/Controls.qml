@@ -64,14 +64,16 @@ ColumnLayout {
                 */
 
                 GenericAppContentAreaButtons.Undo {
-                  onClicked: {
-                    print("Undo button clicked")
-                  }
+                    enabled: Specific.Variables.canUndo
+                    onClicked: {
+                        Specific.Variables.calculatorInterface.undo()
+                    }
                 }
                 GenericAppContentAreaButtons.Redo {
-                  onClicked: {
-                    print("Redo button clicked")
-                  }
+                    enabled: Specific.Variables.canRedo
+                    onClicked: {
+                        Specific.Variables.calculatorInterface.redo()
+                    }
                 }
             }
         }

@@ -135,6 +135,7 @@ class Proxy(QObject):
 
     projectChanged = Signal()
 
+    calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
     project = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
