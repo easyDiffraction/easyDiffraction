@@ -1,7 +1,7 @@
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
-import EasyInterface.Utils.Helpers as Helpers
+import easyInterface.Utils.Helpers as Helpers
 from PyImports.DisplayModels.BaseModel import BaseModel
 
 class FitablesModel(BaseModel):
@@ -15,7 +15,7 @@ class FitablesModel(BaseModel):
         self._calculator = None
         self._model = QStandardItemModel()
         # set role names
-        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'units']
+        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'unit']
         self._roles_list = []
         self._roles_dict = {}
         self._setRolesListAndDict()
@@ -59,6 +59,8 @@ class FitablesModel(BaseModel):
                     value = project_dict.getItemByPath(keys_list).min
                 elif role_name == 'max':
                     value = project_dict.getItemByPath(keys_list).max
+                elif role_name == 'unit':
+                    value = str(Helpers.nested_get(project_dict, keys_list + [role_name])) # conversion to str is needed if role = unit !
                 else:
                     value = Helpers.nested_get(project_dict, keys_list + [role_name])
                 item.setData(value, role)

@@ -108,6 +108,7 @@ ColumnLayout {
                         Generic.Variables.analysisPageFinished = true
                         Generic.Variables.summaryPageFinished = Generic.Variables.isDebug ? true : false
                         saveButton.enabled = true
+                        Specific.Variables.calculatorInterface.clearUndoStack()
                     }
                     else {
                         failOpenDialog.visible = true

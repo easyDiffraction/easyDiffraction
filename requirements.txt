@@ -1,2 +1,2 @@
-EasyInterface
+easyInterface
 pyside2

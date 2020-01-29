@@ -3,8 +3,8 @@ import pytest
 from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
 
-from EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
-from EasyInterface.Interface import CalculatorInterface
+from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Interface import CalculatorInterface
 
 import PyImports.DisplayModels.MeasuredDataModel as Model
 

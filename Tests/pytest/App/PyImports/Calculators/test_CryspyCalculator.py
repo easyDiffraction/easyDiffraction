@@ -6,9 +6,9 @@ from PySide2.QtGui import QStandardItemModel
 import cryspy
 
 # module for testing
-from EasyInterface.Calculators.CryspyCalculator import CryspyCalculator
-from EasyInterface.Calculators.CryspyCalculator import PHASE_SEGMENT, EXPERIMENT_SEGMENT
-from EasyInterface.Interface import CalculatorInterface
+from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Calculators.CryspyCalculator import PHASE_SEGMENT, EXPERIMENT_SEGMENT
+from easyInterface.Interface import CalculatorInterface
 
 TEST_FILE = "file:Tests/Data/main.cif"
 fitdata_data = [0, 2, 3, 5]
@@ -84,7 +84,7 @@ def test_setPhasesDictFromCryspyObj(cal):
     assert phase_dict['Fe3O4']['spacegroup']['origin_choice'].value == '2'
 
     # atom sites
-    assert len(phase_dict['Fe3O4']['atom_site']) == 3
+    assert len(phase_dict['Fe3O4']['atoms']) == 3
     assert list(phase_dict['Fe3O4']['atoms'].keys()) == ['Fe3A', 'Fe3B', 'O']
     assert phase_dict['Fe3O4']['atoms']['Fe3A']['fract_x'].value == 0.125
     assert phase_dict['Fe3O4']['atoms']['Fe3B']['fract_y'].value == 0.5
@@ -100,7 +100,7 @@ def test_setPhasesDictFromCryspyObj(cal):
 
     # ADP type
     assert phase_dict['Fe3O4']['atoms']['Fe3A']['adp_type']['header'] == 'Type'
-    assert phase_dict['Fe3O4']['atoms']['Fe3A']['adp_type'].value == 'Usio'
+    assert phase_dict['Fe3O4']['atoms']['Fe3A']['adp_type'].value == 'Uiso'
     assert phase_dict['Fe3O4']['atoms']['O']['adp_type'].value == 'Uiso'
 
     # Isotropic ADP
@@ -119,7 +119,7 @@ def test_setPhasesDictFromCryspyObj(cal):
     assert phase_dict['Fe3O4']['atoms']['Fe3B']['ADP']['u_23']['store']['constraint'] is None
 
     # Anisotropic MSP
-    assert phase_dict['Fe3O4']['atoms']['Fe3A']['MSP']['chi_type'].value == 'Cani'
+    assert phase_dict['Fe3O4']['atoms']['Fe3A']['MSP']['type'].value == 'Cani'
     assert phase_dict['Fe3O4']['atoms']['Fe3A']['MSP']['chi_11'].value == -3.468
     assert phase_dict['Fe3O4']['atoms']['Fe3A']['MSP']['chi_33'].value == -3.468
     assert phase_dict['Fe3O4']['atoms']['Fe3A']['MSP']['chi_23']['store'].max == 0.0
