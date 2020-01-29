@@ -1,3 +1,5 @@
+import logging
+
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
@@ -102,6 +104,8 @@ class FitablesModel(BaseModel):
         if role_name.endswith(self._edit_role_name_suffix):
             index = top_left_index
             edit_role = role
-            # self._calculator_interface.project_dict.startBulkUpdate('Change {}'.format(role_name))
+            self._calculator_interface.project_dict.startBulkUpdate('Change {}'.format(role_name))
+            self._calculator_interface.canUndoOrRedoChanged.emit()
             self._updateProjectByIndexAndRole(index, edit_role)
-            # self._calculator_interface.project_dict.endBulkUpdate()
+            self._calculator_interface.project_dict.endBulkUpdate()
+            self._calculator_interface.canUndoOrRedoChanged.emit()
