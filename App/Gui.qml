@@ -15,13 +15,16 @@ import easyDiffraction 1.0 as Specific
 ApplicationWindow {
     id: window
 
+    property real toolBarOpacity: 0
+
     visible: true
     minimumWidth: Generic.Variables.appMinWindowWidth
     minimumHeight: Generic.Variables.appMinWindowHeight
     title: Specific.Settings.appName
-    color: Generic.Style.appBkgColor
+    color: "white"
     font.family: Generic.Style.fontFamily
     font.pointSize: Generic.Style.fontPointSize
+    flags: Qt.FramelessWindowHint | Qt.Dialog
 
     // Application preferences dialog (disabled by default)
     GenericAppElements.AppPreferences{}
@@ -31,9 +34,11 @@ ApplicationWindow {
 
     // Application window layout
     ColumnLayout {
+        id: content
+        //visible: displayContent
         anchors.fill: parent
         spacing: 0
-        GenericAppToolbar.Toolbar {}
+        GenericAppToolbar.Toolbar { opacity: toolBarOpacity }
         GenericAppContentArea.ContentArea {}
     }
 

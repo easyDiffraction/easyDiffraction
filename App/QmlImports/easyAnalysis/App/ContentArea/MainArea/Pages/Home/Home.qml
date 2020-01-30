@@ -222,43 +222,12 @@ Rectangle {
         }
     }
 
-    // Reset intro
-    function resetIntro() {
-        making.opacity = 0
-        diffraction.opacity = 0
-        dam.opacity = 0
-        easy.opacity = 0
-
-        easy.color = "#666"
-        diffraction.color = "#666"
-
-        easy.font.family = Generic.Style.introCondencedRegularFontFamily
-        diffraction.text = "diffraction"
-
-        making.x = 0
-        diffraction.x = making.width
-        dam.x = making.width + diffraction.width
-        easy.x = making.width + diffraction.width + dam.width
-
-        //modellingButton.width = 0
-        //analysisButton.width = 0
-        //modellingButton.text = ""
-        //analysisButton.text = ""
-        modellingButton.opacity = 0
-        analysisButton.opacity = 0
-
-        appIcon.opacity = 0
-        appVersion.opacity = 0
-        links.opacity = 0
-
-        disableButton.opacity = 1
-        skipButton.opacity = 1
-    }
-    
     // Buttons at the bottom
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: 20
+
         Button {
             id: skipButton
             visible: Generic.Variables.showIntro
@@ -276,6 +245,7 @@ Rectangle {
                 animo.complete()
             }
         }
+
         Button {
             id: disableButton
             visible: Generic.Variables.showIntro
@@ -294,26 +264,6 @@ Rectangle {
                 Generic.Variables.showIntro = false
             }
         }
-        /*
-        Button {
-            id: repeatButton
-            visible: Generic.Variables.showIntro
-            text: "Repeat"
-            contentItem: IconLabel {
-                text: repeatButton.text
-                font.family: Generic.Style.introThinFontFamily
-                font.pointSize: repeatFontSize
-                color: "#666"
-            }
-            background: Rectangle {
-                color: "transparent"
-            }
-            onClicked: {
-                resetIntro()
-                animo.restart()
-            }
-        }
-        */
     }
 
     ////////////
@@ -352,22 +302,20 @@ Rectangle {
         }
         ParallelAnimation {
             // show app icon and version
-            PropertyAnimation { easing.type: Easing.InExpo; target: appIcon;    property: "opacity"; to: 1; duration: animationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: appVersion; property: "opacity"; to: 1; duration: animationDuration }
-        //}
-        //ParallelAnimation {
-            // show buttons
-            //PropertyAnimation { target: modellingButton; property: "text"; to: "Modelling"; duration: animationDuration*0.29 }//animationDuration }
-            //PropertyAnimation { target: analysisButton;  property: "text"; to: "Analysis"; duration: animationDuration*0.29 } //animationDuration }
-            //PropertyAnimation { target: modellingButton; property: "width"; to: 150; duration: animationDuration*0.3 }//animationDuration }
-            //PropertyAnimation { target: analysisButton;  property: "width"; to: 150; duration: animationDuration*0.3 } //animationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: modellingButton; property: "opacity"; to: 1; duration: animationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: analysisButton; property: "opacity"; to: 1; duration: animationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: links; property: "opacity"; to: 1; duration: animationDuration }
-
-            PropertyAnimation { easing.type: Easing.InExpo; target: disableButton; property: "opacity"; to: 0; duration: animationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: skipButton; property: "opacity"; to: 0; duration: animationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: appIcon;    property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: appVersion; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: modellingButton; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: analysisButton; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: links; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            // bottom buttons
+            PropertyAnimation { easing.type: Easing.InExpo; target: disableButton; property: "opacity"; to: 0; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: skipButton; property: "opacity"; to: 0; duration: Generic.Variables.introAnimationDuration }
+            // display toolbar
+            NumberAnimation { easing.type: Easing.InExpo; target: window; property: "toolBarOpacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
         }
+        // change app window flags and background color
+        NumberAnimation { target: window; property: "flags"; to: Qt.Window; duration: 0 }
+        PropertyAction { target: window; property: "color"; value: Generic.Style.appBkgColor }
     }
 }
 
