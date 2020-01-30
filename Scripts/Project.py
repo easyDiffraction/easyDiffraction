@@ -13,8 +13,10 @@ class Config():
     def __init__(self):
         self._config_dir = os.getcwd()
         self._config_name = 'Project.yml'
+        self._release_dir = os.path.join(self._config_dir, 'App')
+        self._release_name = 'Release.yml'
         # load external config
-        self.__dict__ = self._loadYaml(self._config_dir, self._config_name)
+        self.__dict__ = self._loadYaml([self._config_dir, self._release_dir], [self._config_name, self._release_name])
         # project
         self.__dict__['project']['dir_path'] = os.getcwd() # ??? self._config_dir
         self.__dict__['project']['subdirs']['app']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['app']['name'])
@@ -71,13 +73,15 @@ class Config():
     def __repr__(self):
         return yaml.dump(self.__dict__, sort_keys=False, indent=2, allow_unicode=True)
 
-    def _loadYaml(self, file_dir, file_name):
-        file_path = os.path.join(file_dir, file_name)
-        if not os.path.isfile(file_path):
-            sys.exit("- Failed to find config '{0}'".format(file_path))
-        with open(file_path, 'r') as file:
-            file_content = yaml.load(file, Loader=yaml.FullLoader)
-            return file_content
+    def _loadYaml(self, file_dirs, file_names):
+        file_content = dict()
+        for file_dir, file_name in zip(file_dirs, file_names):
+            file_path = os.path.join(file_dir, file_name)
+            if not os.path.isfile(file_path):
+                sys.exit("- Failed to find config '{0}'".format(file_path))
+            with open(file_path, 'r') as file:
+                file_content = dict(**file_content, **yaml.load(file, Loader=yaml.FullLoader))
+        return file_content
 
     def _absolutePath(self, relative_path):
         project_dir_path = self.__dict__['project']['dir_path']

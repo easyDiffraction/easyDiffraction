@@ -1,0 +1,11 @@
+# release
+release:
+  version: 0.4.0
+  date: 31 Jan 2020
+  changes: # Get from pull requests description?
+  - Add loading crystal structure from CIF
+  - Add loading experimental datasets from CIF
+  - Add installer for Linux (Ubuntu)
+  - Add application window icon
+  - Change data processing workflow order
+  - Improve charts performance

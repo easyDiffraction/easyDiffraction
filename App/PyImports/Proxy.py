@@ -17,6 +17,7 @@ from PyImports.DisplayModels.StatusModel import StatusModel
 from PyImports.DisplayModels.FileStructureModel import FileStructureModel
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
 from PyImports.Refinement import Refiner
+from PyImports.ReleaseReader import Config
 import easyInterface.Utils.Helpers as Helpers
 
 from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
@@ -27,6 +28,9 @@ class Proxy(QObject):
     def __init__(self, parent=None):
         logging.info("")
         super().__init__(parent)
+
+        self.info = Config()['release']
+
         #
         self._main_rcif_path = None
         self._phases_rcif_path = None
@@ -86,6 +90,9 @@ class Proxy(QObject):
         self._calculator_interface = QtCalculatorInterface(
             CryspyCalculator(self._main_rcif_path)
         )
+        
+        self._calculator_interface.project_dict['app']['version'] = self.info['version']
+
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
         self.projectChanged.connect(self.onProjectUnsaved)
@@ -180,6 +187,8 @@ class Proxy(QObject):
     statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
     fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
+
+    releaseInfo = Property('QVariant', lambda self: self.info, constant=True)
 
     # ##########
     # REFINEMENT
