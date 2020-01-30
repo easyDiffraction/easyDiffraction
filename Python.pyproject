@@ -1,30 +1,47 @@
 {
 "files": [
+    "App/Gui.qml",
+
     "App/easyDiffraction.py",
 
-    "App/PyImports/Helpers.py",
+    "App/PyImports/Interface.py",
     "App/PyImports/ProjectSentinel.py",
     "App/PyImports/Proxy.py",
     "App/PyImports/Refinement.py",
-    "App/PyImports/StatusObjects.py",
 
-    "App/PyImports/Calculators/CryspyCalculator.py",
+    "App/PyImports/DisplayModels/AtomAdpsModel.py",
+    "App/PyImports/DisplayModels/AtomMspsModel.py",
+    "App/PyImports/DisplayModels/AtomSitesModel.py",
+    "App/PyImports/DisplayModels/BaseModel.py",
+    "App/PyImports/DisplayModels/BraggPeaksModel.py",
+    "App/PyImports/DisplayModels/CalculatedDataModel.py",
+    "App/PyImports/DisplayModels/CellBoxModel.py",
+    "App/PyImports/DisplayModels/CellParametersModel.py",
+    "App/PyImports/DisplayModels/FileStructureModel.py",
+    "App/PyImports/DisplayModels/FitablesModel.py",
+    "App/PyImports/DisplayModels/MeasuredDataModel.py",
+    "App/PyImports/DisplayModels/StatusModel.py",
 
-    "App/PyImports/Models/BaseModel.py",
-    "App/PyImports/Models/FileStructureModel.py",
-    "App/PyImports/Models/MeasuredDataModel.py",
-    "App/PyImports/Models/AtomSitesModel.py",
-    "App/PyImports/Models/AtomAdpsModel.py",
-    "App/PyImports/Models/AtomMspsModel.py",
-    "App/PyImports/Models/CellParametersModel.py",
-    "App/PyImports/Models/CellBoxModel.py",
-    "App/PyImports/Models/CalculatedDataModel.py",
-    "App/PyImports/Models/BraggPeaksModel.py",
-    "App/PyImports/Models/FitablesModel.py",
-    "App/PyImports/Models/StatusModel.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/Interface.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/QtInterface.py",
 
-    "App/Gui.qml",
+    ".python-venv/src/easyinterface-develop/easyInterface/Calculators/CryspyCalculator.py",
 
-    "App/QmlResource.qrc"
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/units.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/DataObj/Calculation.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/DataObj/Experiment.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/PhaseObj/Atom.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/PhaseObj/Cell.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/PhaseObj/Phase.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/PhaseObj/SpaceGroup.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/Utils/BaseClasses.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/Utils/DictTools.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/Utils/InfoObj.py",
+
+    ".python-venv/src/easyinterface-develop/easyInterface/Utils/Helpers.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/Utils/StatusObjects.py"
     ]
 }

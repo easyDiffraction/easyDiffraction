@@ -90,7 +90,7 @@ _publ_manuscript_incl_extra_defn
 # 3. TITLE AND AUTHOR LIST
  
 _publ_section_title
-; ' PbSO4 D1A(ILL),Rietveld Round Robin, R.J. Hill,JApC 25,589(1992)'
+; ' PbSO4 D1A(ILL), Rietveld Round Robin, R.J. Hill, JApC 25, 589 (1992)'
 ;
 _publ_section_title_footnote
 ;
@@ -146,7 +146,7 @@ _publ_section_acknowledgements
 # completed per structure. For each data set, replace the '?' in the
 # data_? line below by a unique identifier.
  
-data_ PbSO4
+data_PbSO4 
  
 #=============================================================================
  
@@ -193,13 +193,13 @@ loop_
 'x,-y+1/2,z'
 'x+1/2,y,-z+1/2'
  
-_cell_length_a                       8.47884(15)
-_cell_length_b                       5.39673(10)
-_cell_length_c                       6.95840(13)
+_cell_length_a                       8.47793(9)
+_cell_length_b                       5.39682(6)
+_cell_length_c                       6.95810(8)
 _cell_angle_alpha                    90.0000
 _cell_angle_beta                     90.0000
 _cell_angle_gamma                    90.0000
-_cell_volume                         318.403(10)
+_cell_volume                         318.360(6)
 _cell_formula_units_Z                ?
 _cell_measurement_temperature        ?
 _cell_special_details
@@ -322,36 +322,36 @@ _pd_proc_ls_pref_orient_corr
 #  The sum is extended to all non-excluded points.
 #  These are the current CIF standard
  
-_pd_proc_ls_prof_R_factor                3.2303
-_pd_proc_ls_prof_wR_factor               3.8650
-_pd_proc_ls_prof_wR_expected             1.9309
+_pd_proc_ls_prof_R_factor                6.5816
+_pd_proc_ls_prof_wR_factor               7.7791
+_pd_proc_ls_prof_wR_expected             1.9322
  
 #  The following profile R-factors are CORRECTED for background
 #  The sum is extended to all non-excluded points.
 #  These items are not in the current CIF standard, but are defined above
  
-_pd_proc_ls_prof_cR_factor                7.6592
-_pd_proc_ls_prof_cwR_factor               7.2157
-_pd_proc_ls_prof_cwR_expected             3.6048
+_pd_proc_ls_prof_cR_factor               14.0093
+_pd_proc_ls_prof_cwR_factor              13.7802
+_pd_proc_ls_prof_cwR_expected             3.4228
  
 #  The following items are not in the CIF standard, but are defined above
  
-_pd_proc_ls_prof_chi2                 4.0068
-_pd_proc_ls_prof_echi2                4.1437
+_pd_proc_ls_prof_chi2                16.2088
+_pd_proc_ls_prof_echi2               17.0104
  
 #  Items related to LS refinement
  
-_refine_ls_R_I_factor                 4.1229
-_refine_ls_number_reflns                   211
-_refine_ls_number_parameters                34
+_refine_ls_R_I_factor                 8.7982
+_refine_ls_number_reflns                   210
+_refine_ls_number_parameters                30
 _refine_ls_number_restraints                 0
  
 # The following four items apply to angular dispersive measurements.
 # 2theta minimum, maximum and increment (in degrees) are for the 
 # intensities used in the refinement.
  
-_pd_proc_2theta_range_min               10.0880
-_pd_proc_2theta_range_max              155.5379
+_pd_proc_2theta_range_min               10.1385
+_pd_proc_2theta_range_max              155.5885
 _pd_proc_2theta_range_inc              0.050000
 _pd_proc_wavelength                    1.912000
  
@@ -384,11 +384,11 @@ loop_
     _atom_site_occupancy
     _atom_site_adp_type
     _atom_site_type_symbol
- Pb  0.18749(10)  0.25000  0.16719(16)  0.0179(3)  1.00000 Uiso Pb    
- S  0.0654(3)  0.25000  0.6834(4)  0.0053(6)  1.00000 Uiso S     
- O1  0.90767(20)  0.25000  0.5953(2)  0.0252(4)  1.00000 Uiso O     
- O2  0.19376(20)  0.25000  0.5432(2)  0.0186(4)  1.00000 Uiso O     
- O3  0.08103(12)  0.02708(16)  0.80905(15)  0.0167(3)  1.00000 Uiso O     
+ Pb  0.18724(18)  0.25000  0.1661(3)  0.00000  1.00000 Uiso Pb    
+ S  0.0643(6)  0.25000  0.6826(8)  0.00000  1.00000 Uiso S     
+ O1  0.9079(4)  0.25000  0.5960(4)  0.00000  1.00000 Uiso O     
+ O2  0.1926(4)  0.25000  0.5417(4)  0.00000  1.00000 Uiso O     
+ O3  0.0804(2)  0.0289(3)  0.8073(3)  0.00000  1.00000 Uiso O     
  
 # Note: if the displacement parameters were refined anisotropically
 # the U matrices should be given as for single-crystal studies.

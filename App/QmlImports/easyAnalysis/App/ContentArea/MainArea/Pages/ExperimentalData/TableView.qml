@@ -42,7 +42,7 @@ Rectangle {
             height: cellHeight
             enabled: false
 
-            model: Specific.Variables.projectOpened ? proxy.measuredDataHeader : null
+            model: Specific.Variables.measuredDataHeaderModel
 
             delegate: Rectangle {
                 implicitWidth: cellWidth
@@ -73,7 +73,7 @@ Rectangle {
             //ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 1 / contentTableView.columns }
             ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
 
-            model: Specific.Variables.projectOpened ? proxy.measuredData : null
+            model: Specific.Variables.measuredDataModel
 
             delegate: Rectangle {
                 implicitWidth: cellWidth

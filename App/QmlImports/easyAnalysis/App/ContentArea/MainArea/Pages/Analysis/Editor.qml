@@ -26,7 +26,11 @@ Rectangle {
             font.pointSize: Generic.Style.fontPointSize
             //antialiasing: true
             wrapMode: Text.NoWrap
-            text: showContent ? Specific.Variables.cif.calculations : ""
+            // this has to be wrapped with the showContent conditional
+            // to allow for the iffy view update.
+            // Otherwise, one needs to click in the TextView to redraw the content.
+            text: showContent ? Specific.Variables.calculationCif : ""
+
         }
     }
 }

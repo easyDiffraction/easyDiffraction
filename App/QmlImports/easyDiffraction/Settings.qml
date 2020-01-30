@@ -10,6 +10,9 @@ QtObject {
     readonly property string appVersion: "0.3.9"
     readonly property string appDate: "17 Dec 2019"
     readonly property string appUrl: "https://easydiffraction.org"
+    readonly property string essUrl: "https://ess.eu"
+    readonly property string oslUrl: "https://raw.githubusercontent.com/easyDiffraction/easyDiffraction/master/externalLicences.md"
+    readonly property string eulaUrl: "https://raw.githubusercontent.com/easyDiffraction/easyDiffraction/master/LICENSE"
     readonly property string appIconPath: qmlImportsDir + "/easyDiffraction/Resources/Icons/App.svg"
-
+    readonly property string essIconPath: qmlImportsDir + "/easyDiffraction/Resources/Icons/ESSlogo.png"
 }

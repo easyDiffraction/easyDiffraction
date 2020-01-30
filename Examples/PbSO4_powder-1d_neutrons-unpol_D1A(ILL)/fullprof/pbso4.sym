@@ -1,4 +1,4 @@
-  PbSO4 D1A(ILL),Rietveld Round Robin, R.J. Hill,JApC 25,589(1992)
+  PbSO4 D1A(ILL), Rietveld Round Robin, R.J. Hill, JApC 25, 589 (1992)
 
             --------------------------------
             SYMMETRY INFORMATION ON PHASE: 1
@@ -69,68 +69,68 @@
        -------------------------------------------------
 
 
-  -> Information on Atom: Pb     at position:    0.18749   0.25000   0.16719  Multiplicity:   4
+  -> Information on Atom: Pb     at position:    0.18724   0.25000   0.16615  Multiplicity:   4
      List of symmetry operators and symmetry elements of the site point group:
      Operator  2:  x,-y+1/2,z                    m x,1/4,z 
-     Codes for atom coordinates  (Automatic Constraints):      171.00        0.00      181.00
+     Codes for atom coordinates  (Automatic Constraints):      261.00        0.00      301.00
      Codes for anisotropic betas (Automatic Constraints):        0.00        0.00        0.00        0.00        0.00        0.00
 
      --> Complete orbit of the atom: Pb    
 
-         Pb(  1)     0.18749  0.25000  0.16719    x,y,z
-         Pb(  2)     0.68749  0.25000  0.33281    x+1/2,-y+1/2,-z+1/2
-         Pb(  3)     0.81251  0.75000  0.83281    -x,y+1/2,-z
-         Pb(  4)     0.31251  0.75000  0.66719    -x+1/2,-y,z+1/2
+         Pb(  1)     0.18724  0.25000  0.16615    x,y,z
+         Pb(  2)     0.68724  0.25000  0.33385    x+1/2,-y+1/2,-z+1/2
+         Pb(  3)     0.81276  0.75000  0.83385    -x,y+1/2,-z
+         Pb(  4)     0.31276  0.75000  0.66615    -x+1/2,-y,z+1/2
 
-  -> Information on Atom: S      at position:    0.06541   0.25000   0.68340  Multiplicity:   4
+  -> Information on Atom: S      at position:    0.06434   0.25000   0.68261  Multiplicity:   4
      List of symmetry operators and symmetry elements of the site point group:
      Operator  2:  x,-y+1/2,z                    m x,1/4,z 
-     Codes for atom coordinates  (Automatic Constraints):      191.00        0.00      201.00
+     Codes for atom coordinates  (Automatic Constraints):      291.00        0.00      271.00
      Codes for anisotropic betas (Automatic Constraints):        0.00        0.00        0.00        0.00        0.00        0.00
 
      --> Complete orbit of the atom: S     
 
-         S(  1)      0.06541  0.25000  0.68340    x,y,z
-         S(  2)      0.56541  0.25000  0.81660    x+1/2,-y+1/2,-z+1/2
-         S(  3)      0.93459  0.75000  0.31660    -x,y+1/2,-z
-         S(  4)      0.43459  0.75000  0.18340    -x+1/2,-y,z+1/2
+         S(  1)      0.06434  0.25000  0.68261    x,y,z
+         S(  2)      0.56434  0.25000  0.81739    x+1/2,-y+1/2,-z+1/2
+         S(  3)      0.93566  0.75000  0.31739    -x,y+1/2,-z
+         S(  4)      0.43566  0.75000  0.18261    -x+1/2,-y,z+1/2
 
-  -> Information on Atom: O1     at position:    0.90767   0.25000   0.59529  Multiplicity:   4
+  -> Information on Atom: O1     at position:    0.90790   0.25000   0.59598  Multiplicity:   4
      List of symmetry operators and symmetry elements of the site point group:
      Operator  2:  x,-y+1/2,z                    m x,1/4,z 
-     Codes for atom coordinates  (Automatic Constraints):      211.00        0.00      221.00
+     Codes for atom coordinates  (Automatic Constraints):      251.00        0.00      241.00
      Codes for anisotropic betas (Automatic Constraints):        0.00        0.00        0.00        0.00        0.00        0.00
 
      --> Complete orbit of the atom: O1    
 
-         O1(  1)     0.90767  0.25000  0.59529    x,y,z
-         O1(  2)     0.40767  0.25000  0.90471    x+1/2,-y+1/2,-z+1/2
-         O1(  3)     0.09233  0.75000  0.40471    -x,y+1/2,-z
-         O1(  4)     0.59233  0.75000  0.09529    -x+1/2,-y,z+1/2
+         O1(  1)     0.90790  0.25000  0.59598    x,y,z
+         O1(  2)     0.40790  0.25000  0.90402    x+1/2,-y+1/2,-z+1/2
+         O1(  3)     0.09210  0.75000  0.40402    -x,y+1/2,-z
+         O1(  4)     0.59210  0.75000  0.09598    -x+1/2,-y,z+1/2
 
-  -> Information on Atom: O2     at position:    0.19376   0.25000   0.54321  Multiplicity:   4
+  -> Information on Atom: O2     at position:    0.19260   0.25000   0.54171  Multiplicity:   4
      List of symmetry operators and symmetry elements of the site point group:
      Operator  2:  x,-y+1/2,z                    m x,1/4,z 
-     Codes for atom coordinates  (Automatic Constraints):      231.00        0.00      241.00
+     Codes for atom coordinates  (Automatic Constraints):      221.00        0.00      211.00
      Codes for anisotropic betas (Automatic Constraints):        0.00        0.00        0.00        0.00        0.00        0.00
 
      --> Complete orbit of the atom: O2    
 
-         O2(  1)     0.19376  0.25000  0.54321    x,y,z
-         O2(  2)     0.69376  0.25000  0.95679    x+1/2,-y+1/2,-z+1/2
-         O2(  3)     0.80624  0.75000  0.45679    -x,y+1/2,-z
-         O2(  4)     0.30624  0.75000  0.04321    -x+1/2,-y,z+1/2
+         O2(  1)     0.19260  0.25000  0.54171    x,y,z
+         O2(  2)     0.69260  0.25000  0.95829    x+1/2,-y+1/2,-z+1/2
+         O2(  3)     0.80740  0.75000  0.45829    -x,y+1/2,-z
+         O2(  4)     0.30740  0.75000  0.04171    -x+1/2,-y,z+1/2
 
-  -> Information on Atom: O3     at position:    0.08103   0.02708   0.80905  Multiplicity:   8
+  -> Information on Atom: O3     at position:    0.08043   0.02893   0.80734  Multiplicity:   8
      The above atom is in a general position (no constraints in atom positions)
 
      --> Complete orbit of the atom: O3    
 
-         O3(  1)     0.08103  0.02708  0.80905    x,y,z
-         O3(  2)     0.58103  0.47292  0.69095    x+1/2,-y+1/2,-z+1/2
-         O3(  3)     0.91897  0.52708  0.19095    -x,y+1/2,-z
-         O3(  4)     0.41897  0.97292  0.30905    -x+1/2,-y,z+1/2
-         O3(  5)     0.91897  0.97292  0.19095    -x,-y,-z
-         O3(  6)     0.41897  0.52708  0.30905    -x+1/2,y+1/2,z+1/2
-         O3(  7)     0.08103  0.47292  0.80905    x,-y+1/2,z
-         O3(  8)     0.58103  0.02708  0.69095    x+1/2,y,-z+1/2
+         O3(  1)     0.08043  0.02893  0.80734    x,y,z
+         O3(  2)     0.58043  0.47107  0.69266    x+1/2,-y+1/2,-z+1/2
+         O3(  3)     0.91957  0.52893  0.19266    -x,y+1/2,-z
+         O3(  4)     0.41957  0.97107  0.30734    -x+1/2,-y,z+1/2
+         O3(  5)     0.91957  0.97107  0.19266    -x,-y,-z
+         O3(  6)     0.41957  0.52893  0.30734    -x+1/2,y+1/2,z+1/2
+         O3(  7)     0.08043  0.47107  0.80734    x,-y+1/2,z
+         O3(  8)     0.58043  0.02893  0.69266    x+1/2,y,-z+1/2

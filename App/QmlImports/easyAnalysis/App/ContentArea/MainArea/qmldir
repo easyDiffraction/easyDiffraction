@@ -1,2 +1,2 @@
-module easyAnalysis.App.ContentArea.MainArea
+module MainArea
 TabButton 1.0 TabButton.qml

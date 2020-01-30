@@ -3,9 +3,10 @@ import pytest
 from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
 
-from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Interface import CalculatorInterface
 
-import PyImports.Models.StatusModel as Model
+import PyImports.DisplayModels.StatusModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
 
@@ -13,9 +14,10 @@ def test_StatusModelModel():
 
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
+    interface = CalculatorInterface(calculator)
 
     m = Model.StatusModel()
-    m.setCalculator(calculator)
+    m.setCalculatorInterface(interface)
 
 
     assert isinstance(m._statusBarModel, QStandardItemModel)
@@ -58,5 +60,5 @@ def test_StatusModelModel_bad_calculator():
     # null calculator
     with pytest.raises(AttributeError):
         m = Model.StatusModel()
-        m.setCalculator(calculator)
+        m.setCalculatorInterface(calculator)
 

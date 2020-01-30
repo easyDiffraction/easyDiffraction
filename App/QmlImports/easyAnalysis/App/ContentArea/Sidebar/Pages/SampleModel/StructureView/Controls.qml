@@ -3,11 +3,11 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Dialogs 1.3 as Dialogs1
 import QtQuick.Layouts 1.12
+
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
-import easyAnalysis.Logic 1.0 as GenericLogic
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -25,10 +25,10 @@ ColumnLayout {
         onTextChanged: {
             //print("--------------------------------------------------------- Time stamp: ", text)
             if (Specific.Variables.projectOpened) {
-                const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site
+                const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atoms
                 let type_symbol_list = []
                 for (let atom_id in atom_site_dict) {
-                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
+                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.store.value)
                 }
                 type_symbol_list = Array.from(new Set(type_symbol_list))
                 for (let i = 0; i < type_symbol_list.length; i++) {
@@ -53,8 +53,8 @@ ColumnLayout {
                     message: "Here you can see labels of the structural phases."
                     position: "left"
                     guideCurrentIndex: 0
-                    toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                    guidesCount: Generic.Variables.SampleModelGuidesCount
+                    toolbarCurrentIndex: Generic.Variables.SampleIndex
+                    guidesCount: Generic.Variables.SampleGuidesCount
                 }
             }
 
@@ -93,7 +93,7 @@ ColumnLayout {
                     //if (projectControl.validCif) {
                     proxy.loadPhasesFromFile()
                     Specific.Variables.projectOpened = true
-                    //Generic.Variables.homePageFinished = true
+                    //Generic.Variables.projectPageFinished = true
                     Generic.Variables.samplePageFinished = true
                     //Generic.Variables.dataPageFinished = false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
@@ -123,9 +123,9 @@ ColumnLayout {
                 Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
 
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.crystal_system.value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.space_group_IT_number.value + '.  ' + Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group['space_group_name_H-M_alt'].value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.origin_choice.value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].spacegroup.crystal_system.store.value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].spacegroup.space_group_IT_number.store.value + '.  ' + Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].spacegroup.space_group_name_HM_alt.store.value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].spacegroup.origin_choice.store.value : ""] }
             }
 
             GenericAppElements.GridLayout {
@@ -144,8 +144,8 @@ ColumnLayout {
             message: "The sidebar groups contain details related to the sample model.\n\nClick on the group name to unfold the group."
             position: "left"
             guideCurrentIndex: 3
-            toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-            guidesCount: Generic.Variables.SampleModelGuidesCount
+            toolbarCurrentIndex: Generic.Variables.SampleIndex
+            guidesCount: Generic.Variables.SampleGuidesCount
         }
     }
 
@@ -207,34 +207,34 @@ ColumnLayout {
     GenericAppElements.FlowButtons {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.4.-sample-model"
         goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
-            text: "Home"
-            ToolTip.text: qsTr("Go to the previous step: Home")
+            text: "Project"
+            ToolTip.text: qsTr("Go to the previous step: Project")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the previous step: Home.\n\nAlternatively, you can click on the 'Home' button in toolbar."
+                message: "Click here to go to the previous step: Project.\n\nAlternatively, you can click on the 'Project' button in toolbar."
                 position: "top"
                 guideCurrentIndex: 4
-                toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                guidesCount: Generic.Variables.SampleModelGuidesCount
+                toolbarCurrentIndex: Generic.Variables.SampleIndex
+                guidesCount: Generic.Variables.SampleGuidesCount
             }
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
-            text: "Experimental Data"
-            ToolTip.text: qsTr("Go to the next step: Experimental data")
+            text: "Experiment"
+            ToolTip.text: qsTr("Go to the next step: Experiment")
             enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
             highlighted: Specific.Variables.projectOpened
             onClicked: {
                 Generic.Variables.samplePageFinished = true
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the next step: Experimental data."
+                message: "Click here to go to the next step: Experiment."
                 position: "top"
                 guideCurrentIndex: 5
-                toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                guidesCount: Generic.Variables.SampleModelGuidesCount
+                toolbarCurrentIndex: Generic.Variables.SampleIndex
+                guidesCount: Generic.Variables.SampleGuidesCount
             }
         }
     }

@@ -5,38 +5,47 @@ import QtQuick.Window 2.12
 import Qt.labs.settings 1.1
 
 import easyAnalysis 1.0 as Generic
-import easyAnalysis.App 1.0 as GenericApp
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.Menubar 1.0 as GenericAppMenubar
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
-import easyAnalysis.Logic 1.0 as GenericLogic
 import easyDiffraction 1.0 as Specific
 
 ApplicationWindow {
+
+    property string exitButtonBackgroundColor: "#ddd"
+    property string exitButtonBorderColor: "#ccc"
+    property string exitButtonIconColor: "#333"
+
     id: window
 
-    visible: true
-    color: Generic.Style.appBkgColor
-    title: Specific.Settings.appName
+    property real toolBarOpacity: 0
 
+    visible: true
     minimumWidth: Generic.Variables.appMinWindowWidth
     minimumHeight: Generic.Variables.appMinWindowHeight
-
+    title: Specific.Settings.appName
+    color: "white"
     font.family: Generic.Style.fontFamily
     font.pointSize: Generic.Style.fontPointSize
+    //flags: Qt.FramelessWindowHint | Qt.Dialog
 
-    // Introduction animation
-    GenericApp.Intro {}
+    opacity: 0
 
-    // Application menubar
-    ///GenericAppMenubar.Menubar {}
+    // Application preferences dialog (disabled by default)
+    GenericAppElements.AppPreferences{}
+
+    // Application menubar (not implemented yet)
+    //GenericAppMenubar.Menubar {}
 
     // Application window layout
     ColumnLayout {
+        id: content
+        //visible: displayContent
         anchors.fill: parent
         spacing: 0
-        GenericAppToolbar.Toolbar {}
+        GenericAppToolbar.Toolbar { opacity: toolBarOpacity }
         GenericAppContentArea.ContentArea {}
     }
 
@@ -49,8 +58,11 @@ ApplicationWindow {
         property alias height: window.height
     }
 
+    //ona
+
+    // Load persistent settings when window is created
     Component.onCompleted: {
-        // Load persistent settings
+        //Generic.Variables.showIntro ? window.flags = Qt.FramelessWindowHint | Qt.Dialog : window.flags = Qt.Window
         Generic.Variables.showIntro = settings.value("showIntro", Generic.Variables.showIntro)
         Generic.Variables.showGuide = settings.value("showGuide", Generic.Variables.showGuide)
         Generic.Variables.appWindowWidth = settings.value("appWindowWidth", Generic.Variables.appWindowWidth)
@@ -61,10 +73,11 @@ ApplicationWindow {
         window.height = Generic.Variables.appWindowHeight
         window.x = Generic.Variables.appWindowX
         window.y = Generic.Variables.appWindowY
+        animo.restart()
     }
 
+    // Save persistent settings when app window is closed
     Component.onDestruction: {
-        // Save persistent settings
         settings.setValue("showIntro", Generic.Variables.showIntro)
         settings.setValue("showGuide", Generic.Variables.showGuide)
         settings.setValue("appWindowWidth", window.width)
@@ -73,7 +86,26 @@ ApplicationWindow {
         settings.setValue("appWindowY", window.y)
     }
 
+    // Temporary solution to update main area width
     onWidthChanged: Generic.Variables.mainAreaWidth = width - Generic.Style.appBorderThickness - Generic.Style.sidebarWidth
+
+    GenericControls.CloseDialog {
+        id: closeDialogue
+        visible: false
+       }
+
+    onClosing: {
+       close.accepted = !Specific.Variables.needToSave
+       closeDialogue.visible = Specific.Variables.needToSave
+    }
+
+
+    SequentialAnimation {
+        id: animo
+        NumberAnimation { target: window; property: "flags"; to: Generic.Variables.showIntro ? Qt.FramelessWindowHint | Qt.Dialog : Qt.Window; duration: 0 }
+        PropertyAnimation { easing.type: Easing.InExpo; target: window; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+    }
+
 }
 
 

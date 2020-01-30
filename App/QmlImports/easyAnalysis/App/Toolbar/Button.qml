@@ -11,6 +11,8 @@ TabButton {
     property int blinkingAnimationDuration: 500
     property int colorAnimationDuration: 250
 
+    property string buttonBorderDisabledColor: Generic.Style.buttonBorderDisabledColor
+
     autoExclusive: true
 
     icon.width: Generic.Style.toolbarButtonHeight / 2
@@ -19,6 +21,8 @@ TabButton {
     Behavior on icon.color { ColorAnimation { duration: colorAnimationDuration } }
 
     ToolTip.visible: ToolTip.text !== "" ? hovered : false
+
+    width: Generic.Style.toolbarButtonWidth
 
     contentItem: IconLabel {
         id: buttonIcon
@@ -69,7 +73,7 @@ TabButton {
 
     function backgroundColor() {
         if (!button.enabled)
-            return Generic.Style.buttonBkgDisabledColor
+            return Generic.Style.toolbarButtonBkgDisabledColor
         var color1 = button.checked ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgFinishedColor
         var color2 = Generic.Style.buttonBkgBlendColor
         var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
@@ -78,7 +82,7 @@ TabButton {
 
     function borderColor() {
         if (!button.enabled)
-            return Generic.Style.buttonBorderDisabledColor
+            return buttonBorderDisabledColor
         if (button.checked)
             return Generic.Style.buttonBorderHighlightedColor
         return Generic.Style.buttonBorderFinishedColor

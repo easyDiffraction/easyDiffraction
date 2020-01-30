@@ -9,44 +9,44 @@ from PySide2.QtQml import QQmlApplicationEngine
 
 from PyImports.Proxy import Proxy
 
-current_dir = os.path.dirname(sys.argv[0])
-
-def installationPath():
-    if sys.platform.startswith('win'):
-        return os.path.realpath(os.path.join(current_dir, '..'))
-    elif sys.platform.startswith('darwin'):
-        return os.path.realpath(os.path.join(current_dir, '..', '..', '..'))
-    return os.path.join(current_dir)
-
-def logFilePath(log_name):
-    return os.path.join(installationPath(), log_name)
-
-logging.basicConfig(
-    format = "%(asctime)-15s [%(levelname)s] %(filename)s %(funcName)s [%(lineno)d]: %(message)s",
-    level = logging.INFO,
-    #filename = logFilePath('easyDiffraction.log'),
-    #filemode = 'w'
-    )
-logger = logging.getLogger()
-logger.disabled = True # App crashes on Windows if log to file is enabled. Permissions?
-
 if __name__ == '__main__':
-    QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    # Global logging settings
+    logging.basicConfig(level=logging.INFO, format="\033[1;32;49m%(asctime)s  |  %(lineno)-4d %(filename)-30s  |  %(funcName)-35s  |  %(message)s\033[0m")
+    logging.getLogger().disabled = False
 
+    # The following way to enable HighDpi support doesn't work.
+    # Add 'NSHighResolutionCapable = YES' to 'easyDiffraction.app/Contents/Info.plist'
+    # using python script 'FreezeApp.py' after PyInstaller
+    #QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    #QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+
+    # Set paths
+    current_dir_path = os.path.dirname(sys.argv[0])
+    installation_path = current_dir_path
+    if sys.platform.startswith('win'):
+        installation_path = os.path.realpath(os.path.join(current_dir_path, '..'))
+    elif sys.platform.startswith('darwin'):
+        installation_path = os.path.realpath(os.path.join(current_dir_path, '..', '..', '..'))
+
+    window_icon_path = os.path.join(current_dir_path, 'QmlImports', 'easyDiffraction', 'Resources', 'Icons', 'LogoWithPaddings.png')
+    qml_gui_file_path = os.path.join(current_dir_path, "Gui.qml")
+    qml_imports_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir_path, "QmlImports")).toString())
+    examples_dir_path = str(QUrl.fromLocalFile(os.path.join(installation_path, 'Examples')).toString())
+
+    # Create an application
     app = QApplication(sys.argv)
 
     app.setOrganizationName("easyDiffraction")
     app.setOrganizationDomain("easyDiffraction.org")
     app.setApplicationName("easyDiffraction")
-    app.setWindowIcon(QIcon(os.path.join(current_dir, 'QmlImports', 'easyDiffraction', 'Resources', 'Icons', 'LogoWithPaddings.png')))
+    app.setWindowIcon(QIcon(window_icon_path))
 
+    # Create a proxy object between python logic and QML GUI
     proxy = Proxy()
 
-    examples_dir_path = str(QUrl.fromLocalFile(os.path.join(installationPath(), 'Examples')).toString())
-    qml_imports_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir, "QmlImports")).toString())
-    qnl_gui_file_path = os.path.join(current_dir, "Gui.qml")
-
+    # Create GUI from QML
     engine = QQmlApplicationEngine()
+
     engine.rootContext().setContextProperty("proxy", proxy)
     engine.rootContext().setContextProperty("projectControl", proxy.project_control)
     engine.rootContext().setContextProperty("projectManager", proxy.project_control.manager)
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)
 
     engine.addImportPath(qml_imports_dir_path)
-    engine.load(qnl_gui_file_path)
+    engine.load(qml_gui_file_path)
     #engine.addImportPath(":/QmlImports")
     #engine.load(":/Gui.qml")
 

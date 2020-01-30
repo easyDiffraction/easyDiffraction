@@ -34,12 +34,6 @@ GenericAppElements.GroupBox {
             spacing: 0
         }
 
-        // save state button
-        GenericAppContentAreaButtons.SaveState {
-            onClicked: proxy.updateProjectSave()
-            enabled: projectManager.validSaveState
-        }
-
         // help button
         GenericAppContentAreaButtons.Help {
             onClicked: Qt.openUrlExternally(documentationUrl)
