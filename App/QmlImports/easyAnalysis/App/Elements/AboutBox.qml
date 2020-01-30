@@ -64,7 +64,7 @@ GenericControls.Dialog {
                     // Application version
                     Text {
                         id: appVersion
-                        //anchors.right: parent.right
+                        anchors.right: parent.right
                         font.family: Generic.Style.introExpandedThinFontFamily
                         font.pointSize: appVersionFontSize
                         text: "Version %1 (%2)".arg(Specific.Settings.appVersion).arg(Specific.Settings.appDate)
