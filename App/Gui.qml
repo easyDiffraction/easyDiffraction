@@ -13,6 +13,11 @@ import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyDiffraction 1.0 as Specific
 
 ApplicationWindow {
+
+    property string exitButtonBackgroundColor: "#ddd"
+    property string exitButtonBorderColor: "#ccc"
+    property string exitButtonIconColor: "#333"
+
     id: window
 
     property real toolBarOpacity: 0
@@ -83,6 +88,17 @@ ApplicationWindow {
 
     // Temporary solution to update main area width
     onWidthChanged: Generic.Variables.mainAreaWidth = width - Generic.Style.appBorderThickness - Generic.Style.sidebarWidth
+
+    GenericControls.CloseDialog {
+        id: closeDialogue
+        visible: false
+       }
+
+    onClosing: {
+       close.accepted = !Specific.Variables.needToSave
+       closeDialogue.visible = Specific.Variables.needToSave
+    }
+
 
     SequentialAnimation {
         id: animo

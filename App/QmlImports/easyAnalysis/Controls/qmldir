@@ -1,2 +1,3 @@
 module Controls
 Dialog 1.0 Dialog.qml
+CloseDialog 1.0 CloseDialog.qml

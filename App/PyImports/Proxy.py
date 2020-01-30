@@ -51,6 +51,8 @@ class Proxy(QObject):
         self._refinement_done = False
         self._refinement_result = None
 
+        self._needToSave = False
+
     @Slot()
     def loadPhasesFromFile(self):
         """
@@ -86,6 +88,7 @@ class Proxy(QObject):
         )
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
+        self.projectChanged.connect(self.onProjectUnsaved)
         #logging.info(self._calculator_interface.asCifDict())
         ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
         # This should pick up on non-valid cif files
@@ -111,7 +114,7 @@ class Proxy(QObject):
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
 
         # We can't link signals as the manager signals emitted before the dict is updated :-(
-        self.projectChanged.emit()
+        # self.projectChanged.emit()
 
         self._calculator_interface.clearUndoStack()
 
@@ -119,15 +122,21 @@ class Proxy(QObject):
     def createProjectZip(self):
         self._calculator_interface.writeMainCif(self.project_control.tempDir.name)
         writeEmptyProject(self.project_control, self.project_control._projectFile)
+        self.onProjectSaved()
 
     @Slot(str)
     def saveProject(self, saveName):
         self._calculator_interface.saveCifs(self.project_control.tempDir.name)
         writeProject(self.project_control, saveName)
+        self.onProjectSaved()
 
-    @Slot()
-    def updateProjectSave(self):
-        self.saveProject(self.project_control._projectFile)
+    def onProjectSaved(self):
+        self._needToSave = False
+        self.projectSaveStateChanged.emit()
+
+    def onProjectUnsaved(self):
+        self._needToSave = True
+        self.projectSaveStateChanged.emit()
 
     # ##############
     # QML Properties
@@ -137,13 +146,18 @@ class Proxy(QObject):
     # which calls another signal projectChanged
 
     projectChanged = Signal()
+    projectSaveStateChanged = Signal()
     canUndoOrRedoChanged = Signal()
+
+    # self._projectChanged.connect(self.set_SaveState)
 
     calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
     project = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
+
+    needToSave = Property(bool, lambda self: self._needToSave, notify=projectSaveStateChanged)
 
     undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
     redoText = Property('QVariant', lambda self: self._calculator_interface.redoText(), notify=canUndoOrRedoChanged)
@@ -179,7 +193,9 @@ class Proxy(QObject):
         self._refinement_running = False
         self._refinement_done = True
         self._refinement_result = res
+        #self.onProjectUnsaved()
         self.refinementChanged.emit()
+
 
     def _thread_failed(self, reason):
         """

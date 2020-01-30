@@ -17,6 +17,7 @@ QtObject {
     property var phaseCif: projectOpened ? proxy.phaseCif : null
     property var experimentCif: projectOpened ? proxy.experimentCif : null
     property var calculationCif: projectOpened ? proxy.calculationCif : null
+    property var needToSave: projectOpened ? proxy.needToSave : false
 
     property var measuredData: proxy.measuredData
     property var measuredDataHeaderModel: projectOpened ? proxy.measuredData.asHeadersModel() : null
