@@ -82,7 +82,7 @@ class FitablesModel(BaseModel):
 
         fitable_name = '.'.join(keys_list[:-3])
         fitable_value = edit_value
-        undo_redo_text = f"Changing {fitable_name} to {fitable_value:.4f}"
+        undo_redo_text = f"Changing '{fitable_name}' to '{fitable_value:.4f}'"
         self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
         self._calculator_interface.canUndoOrRedoChanged.emit()
 
