@@ -18,48 +18,62 @@ GenericControls.Dialog {
         spacing: 30
 
         // Application icon, name, version container
-        Row {
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 10
+        Item {
+            id: infoRect
+            width: childrenRect.width
+            height: childrenRect.height
 
-            // Application icon
-            Image {
-                //id: appIcon
-                y: 10
-                width: 75
-                height: width
-                //anchors.horizontalCenter: parent.horizontalCenter
-                source: Specific.Settings.appIconPath
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 10
+                bottomPadding: appIcon.y
+
+                // Application icon
+                Image {
+                    id: appIcon
+                    y: 10
+                    width: 75
+                    fillMode: Image.PreserveAspectFit
+                    source: Specific.Settings.appIconPath
+                }
+
+                // Application name and version
+                Column {
+                    spacing: 0
+
+                    // Application name
+                    Row {
+                        spacing: 3
+
+                        Text {
+                            text: "easy"
+                            font.family: Generic.Style.introCondencedThinFontFamily
+                            font.pointSize: appNameFontSize
+                            color: "#444"
+                        }
+                        Text {
+                            text: "Diffraction"
+                            font.family: Generic.Style.introCondencedRegularFontFamily
+                            font.pointSize: appNameFontSize
+                            color: "#444"
+                        }
+                    }
+                    // Application version
+                    Text {
+                        id: appVersion
+                        anchors.right: parent.right
+                        font.family: Generic.Style.introExpandedThinFontFamily
+                        font.pointSize: appVersionFontSize
+                        text: "Version %1 (%2)".arg(Specific.Settings.appVersion).arg(Specific.Settings.appDate)
+                    }
+                }
             }
 
-            // Application name and version
-            Column {
-
-                // Application name
-                Row {
-                    //anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 3
-
-                    Text {
-                        text: "easy"
-                        font.family: Generic.Style.introCondencedThinFontFamily
-                        font.pointSize: appNameFontSize
-                        color: "#444"
-                    }
-                    Text {
-                        text: "Diffraction"
-                        font.family: Generic.Style.introCondencedRegularFontFamily
-                        font.pointSize: appNameFontSize
-                        color: "#444"
-                    }
-                }
-                // Application version
-                Text {
-                    anchors.right: parent.right
-                    font.family: Generic.Style.introExpandedThinFontFamily
-                    font.pointSize: appVersionFontSize
-                    text: "Version %1 (%2)".arg(Specific.Settings.appVersion).arg(Specific.Settings.appDate)
-                }
+            // Link to app website
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
             }
         }
 
@@ -102,7 +116,7 @@ GenericControls.Dialog {
         // Description container
         Column {
             id: descriptionContainer
-            width: 350
+            width: infoRect.width
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 5
 
@@ -116,7 +130,6 @@ GenericControls.Dialog {
                 color: "#222"
                 text: "easyDiffraction is a scientific software for\n modelling and analysis of neutron diffraction data."
             }
-
 
             Text {
                 width: parent.width
@@ -132,8 +145,8 @@ GenericControls.Dialog {
             // ESS icon
             Image {
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: 0.75*sourceSize.width
-                height: 0.75*sourceSize.height
+                height: 75
+                fillMode: Image.PreserveAspectFit
                 source: Specific.Settings.essIconPath
 
                 MouseArea {
