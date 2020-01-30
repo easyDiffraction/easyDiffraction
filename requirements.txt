@@ -1,2 +1,3 @@
 easyInterface
 pyside2
+pyyaml
