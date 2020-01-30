@@ -150,7 +150,7 @@ Rectangle {
                 id: aboutLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: modellingButton.width
+                //width: analysisButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
@@ -160,7 +160,7 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: aboutDialog.visible = true
+                    onClicked: Generic.Variables.showAbout = 1
                 }
             }
 
@@ -168,7 +168,7 @@ Rectangle {
                 id: tutorialLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: analysisButton.width
+                //width: analysisButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
@@ -186,7 +186,7 @@ Rectangle {
                 id: documentationLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: modellingButton.width
+                //width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
@@ -204,7 +204,7 @@ Rectangle {
                 id: contactLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: modellingButton.width
+                //width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter

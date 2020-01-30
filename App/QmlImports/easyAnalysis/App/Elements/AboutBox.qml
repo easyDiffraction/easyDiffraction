@@ -13,6 +13,10 @@ GenericControls.Dialog {
     id: aboutDialog
     title: "About"
 
+    visible: Generic.Variables.showAbout
+
+    onClosed: Generic.Variables.showAbout = 0
+
     Column {
         padding: 20
         spacing: 30
@@ -24,7 +28,6 @@ GenericControls.Dialog {
             height: childrenRect.height
 
             Row {
-                anchors.horizontalCenter: parent.horizontalCenter
                 spacing: 10
                 bottomPadding: appIcon.y
 
@@ -61,7 +64,7 @@ GenericControls.Dialog {
                     // Application version
                     Text {
                         id: appVersion
-                        anchors.right: parent.right
+                        //anchors.right: parent.right
                         font.family: Generic.Style.introExpandedThinFontFamily
                         font.pointSize: appVersionFontSize
                         text: "Version %1 (%2)".arg(Specific.Settings.appVersion).arg(Specific.Settings.appDate)
