@@ -202,11 +202,31 @@ class ProjectControl(QObject):
     project_url_absolute_path = Property(str, get_project_url_absolute_path, constant=False)
 
 
+# class saveTracker:
+#     def __init__(self):
+#         self._modified = False
+#
+#     def toSave(self, func):
+#         self._modified = True
+#         def inner(*args, **kwargs):
+#             return func(*args, **kwargs)
+#         return inner
+#
+#     def hasSaved(self, func):
+#         self._modified = False
+#         def inner(*args, **kwargs):
+#             return func(*args, **kwargs)
+#         return inner
+#
+#     def isSaved(self):
+#         return self._modified
+
 class ProjectManager(QObject):
     projectSaveChange = Signal(bool)
     projectDetailChange = Signal()
 
-    needToSave = Property(bool, lambda self: self.get_isValidSaveState(), constant=False)
+    # saveTracker = saveTracker()
+    needToSave = Property(bool, lambda self: not self.get_isValidSaveState(), constant=False)
 
     def __init__(self, parent=None):
         super(ProjectManager, self).__init__(parent)
@@ -262,6 +282,7 @@ class ProjectManager(QObject):
         self._modified = value
         self.projectDetailChange.emit()
 
+
     def resetManager(self):
         self._projectSaveBool = False
         self._projectName = None
@@ -277,7 +298,6 @@ class ProjectManager(QObject):
     projectInstruments = Property(str, get_projectInstrumentsChanged, set_projectInstrumentsChanged,
                                   notify=projectDetailChange)
     projectModified = Property(str, get_projectModifiedChanged, set_projectModifiedChanged, notify=projectDetailChange)
-
 
 ## Project output checking
 

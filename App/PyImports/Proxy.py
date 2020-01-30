@@ -88,6 +88,7 @@ class Proxy(QObject):
         )
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
+        self.projectChanged.connect(self.set_SaveState)
         #logging.info(self._calculator_interface.asCifDict())
         ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
         # This should pick up on non-valid cif files
@@ -134,13 +135,18 @@ class Proxy(QObject):
     @Slot()
     def updateProjectSave(self):
         self.saveProject(self.project_control._projectFile)
-        # self.reset_saveState()
+        self.reset_saveState()
 
     def get_saveState(self):
         return self._needToSave
 
+    def set_SaveState(self):
+        self._needToSave = True
+        logging.info('save_state - {}'.format(self._needToSave))
+
     def reset_saveState(self):
         self._needToSave = False
+        logging.info('reset_state - {}'.format(self._needToSave))
 
     # ##############
     # QML Properties
@@ -152,13 +158,15 @@ class Proxy(QObject):
     projectChanged = Signal()
     canUndoOrRedoChanged = Signal()
 
+    # self._projectChanged.connect(self.set_SaveState)
+
     calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
     project = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
 
-    getSaveState = Property(bool, lambda self: self.get_saveState(), constant=True)
+    getSaveState = Property(bool, lambda self: self.get_saveState(), notify=projectChanged)
 
     canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)
     canRedo = Property('QVariant', lambda self: self._calculator_interface.canRedo(), notify=canUndoOrRedoChanged)
