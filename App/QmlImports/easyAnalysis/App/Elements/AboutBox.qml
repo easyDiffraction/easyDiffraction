@@ -15,122 +15,142 @@ GenericControls.Dialog {
 
     Column {
         padding: 20
-        spacing: 15
-                        // Application icon
-        Image {
-            id: appIcon
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: 110
-            height: width
-            //antialiasing: true
-            //fillMode: Image.PreserveAspectFit
-            source: Specific.Settings.appIconPath
-            sourceSize: Qt.size( img.sourceSize.width, img.sourceSize.height )
-            Image {
-                id: img
-                source: parent.source
-                width: 0
-                height: 0
-            }
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
-            }
-        }
+        spacing: 30
 
-                // Initial sentence to be transformed to application name
-        Item {
-            id: container
-            anchors.horizontalCenter: parent.horizontalCenter
-            height: easy.height
-            width: easy.width
-            Text { id: easy;        text: "easyDiffraction"; font.family: Generic.Style.introCondencedRegularFontFamily; font.pointSize: appNameFontSize; color: "#666" }
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
-            }
-        }
-//                // Application version
-        Text {
-            id: appVersion
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.family: Generic.Style.introExpandedThinFontFamily
-            font.pointSize: appVersionFontSize
-            text: "Version %1 (%2)".arg(Specific.Settings.appVersion).arg(Specific.Settings.appDate)
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
-            }
-        }
-
-        Text {
-            id: eula
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.family: Generic.Style.introExpandedThinFontFamily
-            font.pointSize: appVersionFontSize
-            text: "End User Licence Agreement"
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.eulaUrl)
-            }
-        }
-
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            id: osl
-            font.family: Generic.Style.introExpandedThinFontFamily
-            font.pointSize: appVersionFontSize
-            text: "Dependent Open Source Licenses"
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.oslUrl)
-            }
-        }
-
-        Text {
-            wrapMode: TextEdit.WordWrap
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "easyDiffraction is build by ESS - DMSC in Copenhagen Denmark"
-        }
-
-         Image {
-            id: essIcon
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: 0.75*img2.sourceSize.width
-            height: 0.75*img2.sourceSize.height
-            //antialiasing: true
-            //fillMode: Image.PreserveAspectFit
-            source: Specific.Settings.essIconPath
-            sourceSize: Qt.size( img2.sourceSize.width, img2.sourceSize.height )
-            Image {
-                id: img2
-                source: parent.source
-                width: 0
-                height: 0
-            }
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.essUrl)
-            }
-        }
-
+        // Application icon, name, version container
         Row {
-            spacing: 15
-
             anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 10
 
-            Text{
-                text: "© 2019-2020"
+            // Application icon
+            Image {
+                //id: appIcon
+                y: 10
+                width: 75
+                height: width
+                //anchors.horizontalCenter: parent.horizontalCenter
+                source: Specific.Settings.appIconPath
             }
-             Text{
-                text: "All rights reserved"
+
+            // Application name and version
+            Column {
+
+                // Application name
+                Row {
+                    //anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 3
+
+                    Text {
+                        text: "easy"
+                        font.family: Generic.Style.introCondencedThinFontFamily
+                        font.pointSize: appNameFontSize
+                        color: "#444"
+                    }
+                    Text {
+                        text: "Diffraction"
+                        font.family: Generic.Style.introCondencedRegularFontFamily
+                        font.pointSize: appNameFontSize
+                        color: "#444"
+                    }
+                }
+                // Application version
+                Text {
+                    anchors.right: parent.right
+                    font.family: Generic.Style.introExpandedThinFontFamily
+                    font.pointSize: appVersionFontSize
+                    text: "Version %1 (%2)".arg(Specific.Settings.appVersion).arg(Specific.Settings.appDate)
+                }
             }
+        }
+
+        // Eula and licences container
+        Column {
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 5
+
+            // EULA
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.family: Generic.Style.fontFamily
+                font.pointSize: Generic.Style.fontPointSize
+                text: "End User Licence Agreement"
+                color: Generic.Style.blueColor
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally(Specific.Settings.eulaUrl)
+                }
+            }
+
+            // Licences
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.family: Generic.Style.fontFamily
+                font.pointSize: Generic.Style.fontPointSize
+                text: "Dependent Open Source Licenses"
+                color: Generic.Style.blueColor
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally(Specific.Settings.oslUrl)
+                }
+            }
+        }
+
+        // Description container
+        Column {
+            id: descriptionContainer
+            width: 350
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 5
+
+            Text {
+                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: TextEdit.WordWrap
+                font.family: Generic.Style.fontFamily
+                font.pointSize: Generic.Style.fontPointSize
+                color: "#222"
+                text: "easyDiffraction is a scientific software for\n modelling and analysis of neutron diffraction data."
+            }
+
+
+            Text {
+                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: TextEdit.WordWrap
+                font.family: Generic.Style.fontFamily
+                font.pointSize: Generic.Style.fontPointSize
+                color: "#222"
+                text: "easyDiffraction is build by ESS DMSC in\n Copenhagen, Denmark."
+            }
+
+            // ESS icon
+            Image {
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: 0.75*sourceSize.width
+                height: 0.75*sourceSize.height
+                source: Specific.Settings.essIconPath
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally(Specific.Settings.essUrl)
+                }
+            }
+        }
+
+        // Footer
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.family: Generic.Style.fontFamily
+            font.pointSize: Generic.Style.fontPointSize
+            color: "#222"
+            text: "© 2019-2020 • All rights reserved"
         }
     }
 }
