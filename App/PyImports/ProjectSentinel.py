@@ -225,9 +225,6 @@ class ProjectManager(QObject):
     projectSaveChange = Signal(bool)
     projectDetailChange = Signal()
 
-    # saveTracker = saveTracker()
-    needToSave = Property(bool, lambda self: not self.get_isValidSaveState(), constant=False)
-
     def __init__(self, parent=None):
         super(ProjectManager, self).__init__(parent)
         self._projectSaveBool = False
