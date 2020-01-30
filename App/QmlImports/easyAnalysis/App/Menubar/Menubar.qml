@@ -45,8 +45,8 @@ QtLabs.MenuBar {
                     // reset!
                     //dialog.open()
                     //animo.restart()
-                    //if (Generic.Variables.toolbarCurrentIndex !== Generic.Variables.HomeIndex) {
-                    //    Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
+                    //if (Generic.Variables.toolbarCurrentIndex !== Generic.Variables.ProjectIndex) {
+                    //    Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
                     //}
                 //}
             }

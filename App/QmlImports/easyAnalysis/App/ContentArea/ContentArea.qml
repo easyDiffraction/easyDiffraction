@@ -14,30 +14,9 @@ SwipeView {
     currentIndex: Generic.Variables.toolbarCurrentIndex
 
     GenericAppContentAreaPages.Home {}
-
-    // -------
-    //GenericAppContentArea.Spacer {}
-    // -------
-
+    GenericAppContentAreaPages.Project {}
     GenericAppContentAreaPages.SampleModel {}
     GenericAppContentAreaPages.ExperimentalData {}
-    //GenericAppContentAreaPages.InstrumentModel {}
-
-    // -------
-    //GenericAppContentArea.Spacer {}
-    // -------
-
-    //GenericAppContentAreaPages.Linking {}
-
-    // -------
-    //GenericAppContentArea.Spacer {}
-    // -------
-
     GenericAppContentAreaPages.Analysis {}
-
-    // -------
-    //GenericAppContentArea.Spacer {}
-    // -------
-
     GenericAppContentAreaPages.Summary {}
 }

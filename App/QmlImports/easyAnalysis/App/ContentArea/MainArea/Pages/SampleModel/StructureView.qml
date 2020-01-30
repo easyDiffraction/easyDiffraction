@@ -9,8 +9,8 @@ GenericAppElements.StructureView {
         message: "Crystal structure is shown in the main area."
         position: "right"
         guideCurrentIndex: 1
-        toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-        guidesCount: Generic.Variables.SampleModelGuidesCount
+        toolbarCurrentIndex: Generic.Variables.SampleIndex
+        guidesCount: Generic.Variables.SampleGuidesCount
     }
 }
 

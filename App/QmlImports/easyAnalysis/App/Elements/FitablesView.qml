@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
+import easyDiffraction 1.0 as Specific
+
 Column {
     property alias model: contentListView.model
 
@@ -19,22 +21,33 @@ Column {
     height: childrenRect.height
     spacing: 12
 
+    function toFixed(value, precision = 4) {
+        if (typeof value === 'number')
+            return value.toFixed(precision)
+        else if (typeof value === 'string')
+            return value
+        else
+            return ""
+    }
+
     function cellWidthProvider(column) {
         const allColumnWidth = width - borderWidth * 2
         const numberColumnWidth = 40
         const refineColumnWidth = cellHeight * 1.5
         const flexibleColumnsWidth = allColumnWidth - numberColumnWidth - refineColumnWidth
-        const flexibleColumnsCount = 3
+        const flexibleColumnsCount = 4
         if (column === 1)
             return numberColumnWidth
         else if (column === 2)
-            return 2 * flexibleColumnsWidth / flexibleColumnsCount
+            return 2.6 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 3)
             return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 4)
             return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 5)
             return refineColumnWidth
+        else if (column === 6)
+            return 0.4 * flexibleColumnsWidth / flexibleColumnsCount
         else return 0
     }
 
@@ -65,6 +78,7 @@ Column {
 
                     Row {
                         anchors.fill: parent
+                        spacing: 0
 
                         Text {
                             width: cellWidthProvider(1)
@@ -90,8 +104,17 @@ Column {
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            rightPadding: 0
                             text: "Value"
+                        }
+                        Text {
+                            width: cellWidthProvider(6)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignLeft
+                            leftPadding: font.pixelSize * 0.5
+                            rightPadding: font.pixelSize
+                            text: ""
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -134,6 +157,9 @@ Column {
                     function foregroundColor() {
                         return index === contentListView.currentIndex ? highlightedRowForegroundColor : rowForegroundColor
                     }
+                    function foregroundColor2() {
+                        return index === contentListView.currentIndex ? highlightedRowForegroundColor : "#999"
+                    }
                     function backgroundColor() {
                         if (index === contentListView.currentIndex)
                             return highlightedRowBackgroundColor
@@ -143,6 +169,7 @@ Column {
 
                     Row {
                         anchors.fill: parent
+                        spacing: 0
 
                         Text {
                             width: cellWidthProvider(1)
@@ -165,20 +192,27 @@ Column {
                             color: foregroundColor()
                         }
                         TextInput {
-                            id: qwe
                             width: cellWidthProvider(3)
                             height: parent.height
                             enabled: !proxy.refinementRunning
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
-                            rightPadding: leftPadding
-                            text: typeof value === 'number' ? value.toFixed(4) : value
+                            rightPadding: 0
                             color: foregroundColor()
-                            onEditingFinished: {
-                                valueEdit = text
-                                slider.value = text
-                            }
+                            text: toFixed(value)
+                            onTextChanged: updateSliderValue.restart()
+                            onEditingFinished: valueEdit = text
+                        }
+                        Text {
+                            width: cellWidthProvider(6)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignLeft
+                            leftPadding: font.pixelSize * 0.5
+                            rightPadding: font.pixelSize
+                            text: unit
+                            color: foregroundColor2()
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -212,16 +246,7 @@ Column {
 
                 }
                 // Content row
-
-                onCurrentIndexChanged: {
-                    slider.from = model.data(model.index(currentIndex, 0), Qt.UserRole + 5)
-                    slider.to = model.data(model.index(currentIndex, 0), Qt.UserRole + 6)
-                    slider.value = model.data(model.index(currentIndex, 0), Qt.UserRole + 3)
-                    //slider.stepSize = 0.1
-                    sliderFromLabel.text = slider.from.toFixed(4)
-                    sliderToLabel.text = slider.to.toFixed(4)
-                }
-
+                onCurrentIndexChanged: updateSliderValue.restart()
             }
         }
     }
@@ -243,6 +268,7 @@ Column {
             leftPadding: font.pixelSize
             rightPadding: leftPadding
             background: Rectangle { border.width: borderWidth; border.color: headerBorderColor }
+            text: slider.from.toFixed(4)
         }
 
         Slider {
@@ -252,6 +278,9 @@ Column {
             //wheelEnabled: false
             //touchDragThreshold: 10000
             //focus: false
+
+            from: Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 5) : 0
+            to: Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 6) : 0
 
             handle: Rectangle {
                 id: sliderHandle
@@ -301,7 +330,15 @@ Column {
             leftPadding: font.pixelSize
             rightPadding: leftPadding
             background: Rectangle { border.width: borderWidth; border.color: headerBorderColor }
+            text: slider.to.toFixed(4)
         }
+    }
+
+    // It seems that a small delay is needed before we update the slider value from the cell text
+    Timer {
+        id: updateSliderValue
+        interval: 50
+        onTriggered: slider.value = Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 3) : 0
     }
 
 }

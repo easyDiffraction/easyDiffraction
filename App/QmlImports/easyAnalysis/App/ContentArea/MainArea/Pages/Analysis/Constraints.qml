@@ -6,7 +6,6 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
-import easyAnalysis.Logic 1.0 as GenericLogic
 
 Rectangle {
     width: Generic.Variables.mainAreaWidth // fix

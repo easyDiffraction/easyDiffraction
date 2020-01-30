@@ -5,5 +5,4 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 
 ColumnLayout {
     spacing: 0
-
 }

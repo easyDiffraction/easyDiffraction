@@ -20,6 +20,17 @@ def upgradePip():
     else:
         BasicFunctions.printSuccessMessage(message)
 
+def installFromGit(owner, repo, branch, egg):
+    url = "git://github.com/{0}/{1}.git@{2}#egg={3}".format(owner, repo, branch, egg)
+    message = "install from '{}'".format(url)
+    try:
+        BasicFunctions.run('pip', 'install', '-e', url, exit_on_error=False)
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        #sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+
 def install(*packages):
     for package in packages:
         message = "install '{}'".format(package)
@@ -38,14 +49,19 @@ if __name__ == '__main__':
 
     upgradePip()
 
+    installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2', egg='cryspy-develop')
+    installFromGit(owner='easyDiffraction', repo='easyInterface', branch='master', egg='easyinterface-develop')
+
     install(
-        'cryspy==0.1.13',
+        #'cryspy==0.1.13',
+        #'easyInterface=0.0.2',
         'PySide2==5.13.1',
         'pyinstaller==3.5',                                                     # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
         'requests==2.22.0',
         'uritemplate==3.0.0',
         'pyyaml==5.1.2',
         'dicttoxml==1.7.4',
+        'asteval==0.9.18',
         'pytest==5.3.0',
         'pytest_mock==1.12.1',
         'pytest-cov==2.8.1',

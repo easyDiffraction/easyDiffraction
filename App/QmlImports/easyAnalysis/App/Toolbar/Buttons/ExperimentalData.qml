@@ -4,8 +4,8 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 
 GenericAppToolbar.Button {
-    icon.source: Generic.Variables.thirdPartyIconsPath + "server.svg"
-    text: qsTr("Experimental Data") // Measured data?
-    ToolTip.text: qsTr("Experimental data page")
+    icon.source: Generic.Variables.thirdPartyIconsPath + "microscope.svg"
+    text: qsTr("Experiment")
+    ToolTip.text: qsTr("Experimental settings and data page")
     //finished: Generic.Variables.dataPageFinished
 }

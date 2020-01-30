@@ -3,9 +3,10 @@ import pytest
 from PySide2.QtCore import QUrl
 from PySide2.QtGui import QStandardItemModel
 
-from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Interface import CalculatorInterface
 
-import PyImports.Models.CellParametersModel as Model
+import PyImports.DisplayModels.CellParametersModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
 
@@ -13,9 +14,10 @@ def test_CellParametersModel():
 
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
+    interface = CalculatorInterface(calculator)
 
     m = Model.CellParametersModel()
-    m.setCalculator(calculator)
+    m.setCalculatorInterface(interface)
 
 
     assert m._a_role == 257
@@ -49,7 +51,7 @@ def test_CellParametersModel_bad_calculator():
     # null calculator
     with pytest.raises(AttributeError):
         m = Model.CellParametersModel()
-        m.setCalculator(calculator)
+        m.setCalculatorInterface(calculator)
 
     # empty file
     #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()

@@ -1,7 +1,5 @@
 import pytest
 
-from PyImports.StatusObjects import *
-
 
 ## TESTS FOR STATUSITEM
 

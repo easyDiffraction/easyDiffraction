@@ -22,7 +22,7 @@ Rectangle {
             font.pointSize: Generic.Style.fontPointSize
             //antialiasing: true
             wrapMode: Text.NoWrap
-            text: showContent ? Specific.Variables.phase_cif : ""
+            text: showContent ? Specific.Variables.phaseCif : ""
         }
     }
 

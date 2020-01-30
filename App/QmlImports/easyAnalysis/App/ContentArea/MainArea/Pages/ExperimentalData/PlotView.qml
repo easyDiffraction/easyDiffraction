@@ -3,15 +3,14 @@ import QtCharts 2.3
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 
-GenericAppElements.ChartView {
+GenericAppElements.ChartViewExperiment {
     showObs: true
-    showCalc: false
 
     GenericAppElements.GuideWindow {
         message: "Measured data points are plotted in the main area."
         position: "right"
         guideCurrentIndex: 1
-        toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-        guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+        toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+        guidesCount: Generic.Variables.ExperimentGuidesCount
     }
 }

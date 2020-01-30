@@ -29,7 +29,7 @@ Rectangle {
             // this has to be wrapped with the showContent conditional
             // to allow for the iffy view update.
             // Otherwise, one needs to click in the TextView to redraw the content.
-            text: showContent ? Specific.Variables.calculation_cif : ""
+            text: showContent ? Specific.Variables.calculationCif : ""
 
         }
     }

@@ -2,27 +2,25 @@ import os
 import logging
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
+from PySide2.QtGui import QPdfWriter, QTextDocument
+from PyImports.DisplayModels.MeasuredDataModel import MeasuredDataModel
+from PyImports.DisplayModels.CalculatedDataModel import CalculatedDataModel
+from PyImports.DisplayModels.BraggPeaksModel import BraggPeaksModel
+from PyImports.DisplayModels.CellParametersModel import CellParametersModel
+from PyImports.DisplayModels.CellBoxModel import CellBoxModel
+from PyImports.DisplayModels.AtomSitesModel import AtomSitesModel
+from PyImports.DisplayModels.AtomAdpsModel import AtomAdpsModel
+from PyImports.DisplayModels.AtomMspsModel import AtomMspsModel
+from PyImports.DisplayModels.FitablesModel import FitablesModel
 
-import PyImports.ProjectSentinel
-from PyImports.Calculators.CryspyCalculator import CryspyCalculator
-from PyImports.Models.MeasuredDataModel import MeasuredDataModel
-from PyImports.Models.MeasuredDataModel import MeasuredDataSeries
-from PyImports.Models.CalculatedDataModel import CalculatedDataModel
-from PyImports.Models.CalculatedDataModel import CalculatedDataSeries #---#
-from PyImports.Models.BraggPeaksModel import BraggPeaksModel
-from PyImports.Models.BraggPeaksModel import BraggPeaksSeries #---#
-from PyImports.Models.CellParametersModel import CellParametersModel
-from PyImports.Models.CellBoxModel import CellBoxModel
-from PyImports.Models.AtomSitesModel import AtomSitesModel
-from PyImports.Models.AtomAdpsModel import AtomAdpsModel
-from PyImports.Models.AtomMspsModel import AtomMspsModel
-from PyImports.Models.FitablesModel import FitablesModel
-from PyImports.Models.StatusModel import StatusModel
-from PyImports.Models.FileStructureModel import FileStructureModel
+from PyImports.DisplayModels.StatusModel import StatusModel
+from PyImports.DisplayModels.FileStructureModel import FileStructureModel
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
 from PyImports.Refinement import Refiner
-import PyImports.Helpers as Helpers
+import easyInterface.Utils.Helpers as Helpers
 
+from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.QtInterface import QtCalculatorInterface
 
 class Proxy(QObject):
 
@@ -33,15 +31,12 @@ class Proxy(QObject):
         self._main_rcif_path = None
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
-        self._calculator = None
+        self._calculator_interface = None
         #
         self.project_control = ProjectControl()
         self._measured_data_model = MeasuredDataModel()
-        self._measured_data_series = MeasuredDataSeries()
         self._calculated_data_model = CalculatedDataModel()
-        self._calculated_data_series = CalculatedDataSeries() #---#
         self._bragg_peaks_model = BraggPeaksModel()
-        self._bragg_peaks_series = BraggPeaksSeries() #---#
         self._cell_parameters_model = CellParametersModel()
         self._cell_box_model = CellBoxModel()
         self._atom_sites_model = AtomSitesModel()
@@ -56,14 +51,16 @@ class Proxy(QObject):
         self._refinement_done = False
         self._refinement_result = None
 
+        self._needToSave = False
+
     @Slot()
     def loadPhasesFromFile(self):
         """
         Replace internal structure models based on requested content from CIF
         """
         self._phases_rcif_path = self.project_control.phases_rcif_path
-        self._calculator.updatePhases(self._phases_rcif_path)
-        self._file_structure_model.setCalculator(self._calculator)
+        self._calculator_interface.updatePhaseDefinition(self._phases_rcif_path)
+        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
 
@@ -73,10 +70,9 @@ class Proxy(QObject):
         Replace internal experiment models based on requested content from CIF
         """
         self._experiment_rcif_path = self.project_control.experiment_rcif_path
-        self._calculator.updateExps(self._experiment_rcif_path)
-        self._measured_data_series.updateSeries(self._calculator)
-        self._measured_data_model.updateSeries(self._calculator)
-        self._file_structure_model.setCalculator(self._calculator)
+        self._calculator_interface.updateExpsDefinition(self._experiment_rcif_path)
+        self._measured_data_model.setCalculatorInterface(self._calculator_interface)
+        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
 
@@ -85,97 +81,102 @@ class Proxy(QObject):
     def initialize(self):
         logging.info("")
         self._main_rcif_path = self.project_control.main_rcif_path
-        #
-        self._calculator = CryspyCalculator(self._main_rcif_path)
-        self._calculator.projectDictChanged.connect(self.projectChanged)
+        #logging.info(self._calculator.asCifDict())
+        # TODO This is where you would choose the calculator and import the module
+        self._calculator_interface = QtCalculatorInterface(
+            CryspyCalculator(self._main_rcif_path)
+        )
+        self._calculator_interface.projectDictChanged.connect(self.projectChanged)
+        self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
+        self.projectChanged.connect(self.onProjectUnsaved)
+        #logging.info(self._calculator_interface.asCifDict())
         ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
         # This should pick up on non-valid cif files
-        if not check_project_dict(self._calculator.asCifDict()):
-            # Note that new projects also fall into here, so:
-            if not self._calculator.name():
-                self.project_control._isValidCif = False
-                return
+        #if not check_project_dict(self._calculator.asCifDict()):
+        #    # Note that new projects also fall into here, so:
+        #    if not self._calculator.name():
+        #        self.project_control._isValidCif = False
+        #        return
         #
-        self._measured_data_series.updateSeries(self._calculator)
-        self._measured_data_model.setCalculator(self._calculator)
-        self._calculated_data_model.setCalculator(self._calculator)
-        self._calculated_data_series.updateSeries(self._calculator) #---#
-        self._bragg_peaks_model.setCalculator(self._calculator)
-        self._bragg_peaks_series.updateSeries(self._calculator) #---#
-        self._cell_parameters_model.setCalculator(self._calculator)
-        self._cell_box_model.setCalculator(self._calculator)
-        self._atom_sites_model.setCalculator(self._calculator)
-        self._atom_adps_model.setCalculator(self._calculator)
-        self._atom_msps_model.setCalculator(self._calculator)
-        self._fitables_model.setCalculator(self._calculator)
-        self._status_model.setCalculator(self._calculator)
-        self._file_structure_model.setCalculator(self._calculator)
+        self._measured_data_model.setCalculatorInterface(self._calculator_interface)
+        self._calculated_data_model.setCalculatorInterface(self._calculator_interface)
+        self._bragg_peaks_model.setCalculatorInterface(self._calculator_interface)
+        self._cell_parameters_model.setCalculatorInterface(self._calculator_interface)
+        self._cell_box_model.setCalculatorInterface(self._calculator_interface)
+        self._atom_sites_model.setCalculatorInterface(self._calculator_interface)
+        self._atom_adps_model.setCalculatorInterface(self._calculator_interface)
+        self._atom_msps_model.setCalculatorInterface(self._calculator_interface)
+        self._fitables_model.setCalculatorInterface(self._calculator_interface)
+        self._status_model.setCalculatorInterface(self._calculator_interface)
+        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         #
-        self._refine_thread = Refiner(self._calculator, 'refine')
+        self._refine_thread = Refiner(self._calculator_interface, 'refine')
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
 
         # We can't link signals as the manager signals emitted before the dict is updated :-(
-        self.projectChanged.emit()
+        # self.projectChanged.emit()
 
+        self._calculator_interface.clearUndoStack()
 
     @Slot()
     def createProjectZip(self):
-        self._calculator.writeMainCif(self.project_control.tempDir.name)
+        self._calculator_interface.writeMainCif(self.project_control.tempDir.name)
         writeEmptyProject(self.project_control, self.project_control._projectFile)
+        self.onProjectSaved()
 
     @Slot(str)
     def saveProject(self, saveName):
-        self._calculator.saveCifs(self.project_control.tempDir.name)
+        self._calculator_interface.saveCifs(self.project_control.tempDir.name)
         writeProject(self.project_control, saveName)
+        self.onProjectSaved()
 
-    @Slot()
-    def updateProjectSave(self):
-        self.saveProject(self.project_control._projectFile)
+    def onProjectSaved(self):
+        self._needToSave = False
+        self.projectSaveStateChanged.emit()
+
+    def onProjectUnsaved(self):
+        self._needToSave = True
+        self.projectSaveStateChanged.emit()
 
     # ##############
     # QML Properties
     # ##############
-    def calculatorAsDict(self):
-        return self._calculator.asDict()
-
-    def calculatorAsCifDict(self):
-        return self._calculator.asCifDict()
-
-    def calculatedSeries(self):
-        self._calculated_data_series.updateSeries(self._calculator) #---#
-        return self._calculated_data_series
-
-    def braggPeaksSeries(self):
-        self._bragg_peaks_series.updateSeries(self._calculator) #---#
-        return self._bragg_peaks_series
 
     # Notifications of changes for QML GUI about projectDictChanged,
     # which calls another signal projectChanged
+
     projectChanged = Signal()
-    project = Property('QVariant', calculatorAsDict, notify=projectChanged)
-    cif = Property('QVariant', calculatorAsCifDict, notify=projectChanged)
-    phase_cif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
-    experiment_cif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
-    calculation_cif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
-    calculatedDataSeries = Property('QVariant', calculatedSeries, notify=projectChanged) #---#
-    braggPeaksDataSeries = Property('QVariant', braggPeaksSeries, notify=projectChanged) #---#
+    projectSaveStateChanged = Signal()
+    canUndoOrRedoChanged = Signal()
+
+    # self._projectChanged.connect(self.set_SaveState)
+
+    calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
+    project = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
+    phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
+    experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
+    calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
+
+    needToSave = Property(bool, lambda self: self._needToSave, notify=projectSaveStateChanged)
+
+    undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
+    redoText = Property('QVariant', lambda self: self._calculator_interface.redoText(), notify=canUndoOrRedoChanged)
+    canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)
+    canRedo = Property('QVariant', lambda self: self._calculator_interface.canRedo(), notify=canUndoOrRedoChanged)
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
-    measuredData = Property('QVariant', lambda self: self._measured_data_model.asModel(), constant=True)
-    measuredDataSeries = Property('QVariant', lambda self: self._measured_data_series, constant=True)
-    measuredDataHeader = Property('QVariant', lambda self: self._measured_data_model.asHeadersModel(), constant=True)
-    calculatedData = Property('QVariant', lambda self: self._calculated_data_model.asModel(), constant=True)
-    calculatedDataHeader = Property('QVariant', lambda self: self._calculated_data_model.asHeadersModel(),
-                                    constant=True)
-    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model.asModel(), constant=True)
-    braggPeaksTicks = Property('QVariant', lambda self: self._bragg_peaks_model.asTickModel(), constant=True)
+
+    measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
+    calculatedData = Property('QVariant', lambda self: self._calculated_data_model, constant=True)
+    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model, constant=True)
     cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
     cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), constant=True)
     atomSites = Property('QVariant', lambda self: self._atom_sites_model.asModel(), constant=True)
     atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), constant=True)
     atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), constant=True)
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
+
     statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
     fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
@@ -192,7 +193,9 @@ class Proxy(QObject):
         self._refinement_running = False
         self._refinement_done = True
         self._refinement_result = res
+        #self.onProjectUnsaved()
         self.refinementChanged.emit()
+
 
     def _thread_failed(self, reason):
         """
@@ -253,10 +256,19 @@ class Proxy(QObject):
             logging.info("No report to save")
             return
 
-        # HTML can contain non-ascii, so need to open with right encoding
-        with open(full_filename, 'w', encoding='utf-8') as report_file:
-            report_file.write(self.report_html)
-            logging.info("Report written")
+        if extension == '.HTML':
+            # HTML can contain non-ascii, so need to open with right encoding
+            with open(full_filename, 'w', encoding='utf-8') as report_file:
+                report_file.write(self.report_html)
+                logging.info("Report written")
+        elif extension == '.PDF':
+            document = QTextDocument(parent=None)
+            document.setHtml(self.report_html)
+            printer = QPdfWriter(full_filename)
+            printer.setPageSize(printer.A4)
+            document.print_(printer)
+        else:
+            raise NotImplementedError
 
         # Show the generated report in the default browser
         url = os.path.realpath(full_filename)

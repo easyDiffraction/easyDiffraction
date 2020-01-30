@@ -57,7 +57,7 @@ parts:
       - xfonts-scalable
     python-packages:
       - pyside2
-      - cryspy
+      - EasyInterface
 
 layout:
   /etc/fonts:

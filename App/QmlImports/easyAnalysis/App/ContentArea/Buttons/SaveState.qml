@@ -4,17 +4,18 @@ import QtQuick.Controls.impl 2.12
 import QtQuick.Layouts 1.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
+import easyDiffraction 1.0 as Specific
 
 GenericAppContentArea.Button {
     id: button
 
-    enabled: false // Disable until properly implemented
+    enabled: Specific.Variables.needToSave
 
     Layout.fillWidth: false
     implicitWidth: implicitHeight
 
-    checkable: true
-    checked: false
+    checkable: false
+    checked: true
 
     icon.source: Generic.Variables.thirdPartyIconsPath + "save.svg"
     ToolTip.text: qsTr("Save current state of the project")
@@ -30,13 +31,15 @@ GenericAppContentArea.Button {
     }
 
     background: Rectangle {
-        implicitHeight: Generic.Style.buttonHeight
+        implicitHeight: Generic.Style.toolbarButtonHeight
         color: backgroundColor()
         border.color: borderColor()
         radius: Generic.Style.toolbarButtonRadius
     }
 
-    onClicked: checked = false
+    onClicked: {
+        print("save project button is clicked")
+    }
 
     function iconColor() {
         if (!button.enabled)
@@ -52,11 +55,12 @@ GenericAppContentArea.Button {
 
     function backgroundColor() {
         if (!button.enabled)
-            return Generic.Style.buttonBkgDisabledColor
-        var color1 = button.checked ? "salmon" : Generic.Style.buttonBkgEnabledColor
-        var color2 = Generic.Style.buttonBkgBlendColor
+            return Generic.Style.toolbarButtonBkgDisabledColor
+        var color1 = button.checked ? "salmon" : Generic.Style.toolbarButtonBkgEnabledColor
+        var color2 = Generic.Style.toolbarButtonBkgBlendColor
         var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
         return Color.blend(color1, color2, alpha)
     }
 }
+
 

@@ -3,11 +3,11 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Dialogs 1.3 as Dialogs1
 import QtQuick.Layouts 1.12
+
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
-import easyAnalysis.Logic 1.0 as GenericLogic
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -27,8 +27,8 @@ ColumnLayout {
                     message: "Here you can see labels of the experimental data."
                     position: "left"
                     guideCurrentIndex: 0
-                    toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                    guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                    toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+                    guidesCount: Generic.Variables.ExperimentGuidesCount
                 }
             }
 
@@ -62,7 +62,7 @@ ColumnLayout {
             //if (projectControl.validCif) {
             proxy.loadExperimentFromFile()
             Specific.Variables.projectOpened = true
-            //Generic.Variables.homePageFinished = true
+            //Generic.Variables.projectPageFinished = true
             //Generic.Variables.samplePageFinished = true
             Generic.Variables.dataPageFinished = true
             Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
@@ -108,8 +108,8 @@ ColumnLayout {
             message: "The sidebar groups contain details related to the experiment.\n\nClick on the group name to unfold the group."
             position: "left"
             guideCurrentIndex: 4
-            toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-            guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+            toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+            guidesCount: Generic.Variables.ExperimentGuidesCount
         }
     }
 
@@ -133,19 +133,19 @@ ColumnLayout {
                 enabled: false
                 // Row
                 Text { text: qsTr("U") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.u.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.u.store.value.toFixed(4) : "" }
                 Text {}
                 Text { text: qsTr("V") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.v.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.v.store.value.toFixed(4) : "" }
                 Text {}
                 Text { text: qsTr("W") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.w.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.w.store.value.toFixed(4) : "" }
                 // Row
                 Text { text: qsTr("X") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.x.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.x.store.value.toFixed(4) : "" }
                 Text {}
                 Text { text: qsTr("Y") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.y.value.toFixed(4) : "" }
+                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].resolution.y.store.value.toFixed(4) : "" }
             }
         }
     }
@@ -155,19 +155,25 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         title: "Misc"//"Instrument parameters"
         content: GridLayout {
-            columns: 5
+            columns: 8
             columnSpacing: 15
             rowSpacing: 10
             enabled: false
+            Text { text: qsTr("Scale") }
+            GenericAppElements.TextField {
+                text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].phase.scale.store.value.toFixed(4) : ""
+                units: ""
+            }
+            Text {}
             Text { text: qsTr("Wavelength") }
             GenericAppElements.TextField {
-                text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].wavelength.value.toFixed(4) : ""
+                text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].wavelength.store.value.toFixed(4) : ""
                 units: "\u212B"
             }
             Text {}
             Text { text: qsTr("Zero shift") }
             GenericAppElements.TextField {
-                text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].offset.value.toFixed(4) : ""
+                text: Specific.Variables.projectOpened ? Specific.Variables.project.experiments[Specific.Variables.project.info.experiment_ids[0]].offset.store.value.toFixed(4) : ""
                 units: "\u00B0"
             }
         }
@@ -182,17 +188,17 @@ ColumnLayout {
     GenericAppElements.FlowButtons {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.3.-experimental-data"
         goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
-            text: "Sample Model"
-            ToolTip.text: qsTr("Go to the previous step: Sample model")
+            text: "Sample"
+            ToolTip.text: qsTr("Go to the previous step: Sample")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleModelIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the previous step: Sample Model.\n\nAlternatively, you can click on the 'Sample Model' button in toolbar."
+                message: "Click here to go to the previous step: Sample.\n\nAlternatively, you can click on the 'Sample' button in toolbar."
                 position: "top"
                 guideCurrentIndex: 5
-                toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+                guidesCount: Generic.Variables.ExperimentGuidesCount
             }
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
@@ -206,8 +212,8 @@ ColumnLayout {
                 message: "Click here to go to the next step: Structure refinement."
                 position: "top"
                 guideCurrentIndex: 6
-                toolbarCurrentIndex: Generic.Variables.ExperimentalDataIndex
-                guidesCount: Generic.Variables.ExperimentalDataGuidesCount
+                toolbarCurrentIndex: Generic.Variables.ExperimentIndex
+                guidesCount: Generic.Variables.ExperimentGuidesCount
             }
         }
     }

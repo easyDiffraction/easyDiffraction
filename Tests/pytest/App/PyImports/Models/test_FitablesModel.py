@@ -3,9 +3,10 @@ import pytest
 from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
 
-from PyImports.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Interface import CalculatorInterface
 
-import PyImports.Models.FitablesModel as Model
+import PyImports.DisplayModels.FitablesModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
 
@@ -15,7 +16,7 @@ def test_FitablesModelModel():
     calculator = CryspyCalculator(file_path)
 
     m = Model.FitablesModel()
-    m.setCalculator(calculator)
+    m.setCalculatorInterface(calculator)
 
     assert isinstance(m._model, QStandardItemModel)
 
@@ -38,7 +39,7 @@ def test_FitablesModelModel():
     assert m._model.item(0, 0).data(role=fr+6) == True
     assert m._model.item(0, 0).data(role=fr+7) == None
 
-    assert m._model.item(33, 0).data(role=fr+1) == 'experiments pnd resolution y'
+    assert m._model.item(33, 0).data(role=fr+1) == 'experiments pd resolution y'
     assert m._model.item(33, 0).data(role=fr+2) == 0.0
     assert m._model.item(33, 0).data(role=fr+3) == 0.0
     assert m._model.item(33, 0).data(role=fr+4) == 0.0
@@ -57,7 +58,7 @@ def test_FitablesModelModel_bad_calculator():
     # null calculator
     with pytest.raises(AttributeError):
         m = Model.FitablesModel()
-        m.setCalculator(calculator)
+        m.setCalculatorInterface(calculator)
 
     # empty file
     #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()
