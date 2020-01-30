@@ -4,17 +4,18 @@ import QtQuick.Controls.impl 2.12
 import QtQuick.Layouts 1.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
+import easyDiffraction 1.0 as Specific
 
 GenericAppContentArea.Button {
     id: button
 
-    enabled: projectManager.validSaveState
+    enabled: Specific.Variables.needToSave
 
     Layout.fillWidth: false
     implicitWidth: implicitHeight
 
-    checkable: true
-    checked: false
+    checkable: false
+    checked: true
 
     icon.source: Generic.Variables.thirdPartyIconsPath + "save.svg"
     ToolTip.text: qsTr("Save current state of the project")
@@ -36,7 +37,9 @@ GenericAppContentArea.Button {
         radius: Generic.Style.toolbarButtonRadius
     }
 
-    onClicked: checked = false
+    onClicked: {
+        print("save project button is clicked")
+    }
 
     function iconColor() {
         if (!button.enabled)

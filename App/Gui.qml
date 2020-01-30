@@ -84,8 +84,8 @@ ApplicationWindow {
        }
 
     onClosing: {
-       close.accepted = !proxy.getSaveState
-       closeDialogue.visible = proxy.getSaveState
+       close.accepted = !Specific.Variables.needToSave
+       closeDialogue.visible = Specific.Variables.needToSave
     }
 
 }

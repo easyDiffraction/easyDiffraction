@@ -42,7 +42,7 @@ Dialog {
             font.family: Generic.Style.fontFamily
             icon.source: Generic.Variables.thirdPartyIconsPath + "sign-out-alt.svg"
             icon.color: exitButtonIconColor
-            text: mytitle
+            text: "Exit " + mytitle
             background: Rectangle { color: exitButtonBackgroundColor }
             onClicked: dialog.close()
         }
@@ -57,10 +57,10 @@ Dialog {
 
     Column {
         padding: 20
-        spacing: 20
+        spacing: 30
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize + 1
+            font.pointSize: Generic.Style.fontPointSize
             font.family: Generic.Style.fontFamily
             color: "#444"
             anchors.horizontalCenter: parent.horizontalCenter
