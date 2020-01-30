@@ -35,10 +35,10 @@ ApplicationWindow {
     opacity: 0
 
     // Application preferences dialog (disabled by default)
-    GenericAppElements.AppPreferences{}
+    GenericAppElements.AppPreferences {}
 
-    // Application menubar (not implemented yet)
-    //GenericAppMenubar.Menubar {}
+    // Application menubar
+    GenericAppMenubar.Menubar {}
 
     // Application window layout
     ColumnLayout {
@@ -93,13 +93,12 @@ ApplicationWindow {
     GenericControls.CloseDialog {
         id: closeDialogue
         visible: false
-       }
+    }
 
     onClosing: {
        close.accepted = !Specific.Variables.needToSave
        closeDialogue.visible = Specific.Variables.needToSave
     }
-
 
     SequentialAnimation {
         id: animo
