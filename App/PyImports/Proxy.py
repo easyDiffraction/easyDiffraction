@@ -2,7 +2,7 @@ import os
 import logging
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
-
+from PySide2.QtGui import QPdfWriter, QTextDocument
 from PyImports.DisplayModels.MeasuredDataModel import MeasuredDataModel
 from PyImports.DisplayModels.CalculatedDataModel import CalculatedDataModel
 from PyImports.DisplayModels.BraggPeaksModel import BraggPeaksModel
@@ -238,10 +238,19 @@ class Proxy(QObject):
             logging.info("No report to save")
             return
 
-        # HTML can contain non-ascii, so need to open with right encoding
-        with open(full_filename, 'w', encoding='utf-8') as report_file:
-            report_file.write(self.report_html)
-            logging.info("Report written")
+        if extension == '.HTML':
+            # HTML can contain non-ascii, so need to open with right encoding
+            with open(full_filename, 'w', encoding='utf-8') as report_file:
+                report_file.write(self.report_html)
+                logging.info("Report written")
+        elif extension == '.PDF':
+            document = QTextDocument(parent=None)
+            document.setHtml(self.report_html)
+            printer = QPdfWriter(full_filename)
+            printer.setPageSize(printer.A4)
+            document.print_(printer)
+        else:
+            raise NotImplementedError
 
         # Show the generated report in the default browser
         url = os.path.realpath(full_filename)
