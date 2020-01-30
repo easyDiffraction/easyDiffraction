@@ -144,9 +144,11 @@ Rectangle {
             id: links
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 5
-            opacity: 0
+            //opacity: 0
 
             Text {
+                id: aboutLink
+                opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
@@ -163,6 +165,8 @@ Rectangle {
             }
 
             Text {
+                id: tutorialLink
+                opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: analysisButton.width
                 font.pointSize: Generic.Style.fontPointSize
@@ -179,6 +183,8 @@ Rectangle {
             }
 
             Text {
+                id: documentationLink
+                opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
@@ -195,6 +201,8 @@ Rectangle {
             }
 
             Text {
+                id: contactLink
+                opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
@@ -265,22 +273,22 @@ Rectangle {
         id: animo
         //running: true
         PauseAnimation {
-            duration: 1.5*animationDuration
+            duration: 1*Generic.Variables.introAnimationDuration
         }
         ParallelAnimation {
             // appearing
-            NumberAnimation { easing.type: Easing.OutCubic; target: making;      property: "opacity"; to: 1; duration: 2*animationDuration }
-            NumberAnimation { easing.type: Easing.OutCubic; target: diffraction; property: "opacity"; to: 1; duration: 2*animationDuration }
-            NumberAnimation { easing.type: Easing.OutCubic; target: dam;         property: "opacity"; to: 1; duration: 2*animationDuration }
-            NumberAnimation { easing.type: Easing.OutCubic; target: easy;        property: "opacity"; to: 1; duration: 2*animationDuration }
+            NumberAnimation { easing.type: Easing.Linear; target: making;      property: "opacity"; to: 1; duration: 2*animationDuration }
+            NumberAnimation { easing.type: Easing.Linear; target: diffraction; property: "opacity"; to: 1; duration: 2*animationDuration }
+            NumberAnimation { easing.type: Easing.Linear; target: dam;         property: "opacity"; to: 1; duration: 2*animationDuration }
+            NumberAnimation { easing.type: Easing.Linear; target: easy;        property: "opacity"; to: 1; duration: 2*animationDuration }
         }
         ParallelAnimation {
             // highlighting
-            PropertyAnimation { target: easy;        property: "color"; to: "#444"; duration: animationDuration }
-            PropertyAnimation { target: diffraction; property: "color"; to: "#444"; duration: animationDuration }
+            PropertyAnimation { easing.type: Easing.Linear; target: easy;        property: "color"; to: "#444"; duration: animationDuration }
+            PropertyAnimation { easing.type: Easing.Linear; target: diffraction; property: "color"; to: "#444"; duration: animationDuration }
             // hidding
-            NumberAnimation { target: making; property: "opacity"; to: 0; duration: animationDuration }
-            NumberAnimation { target: dam;    property: "opacity"; to: 0; duration: animationDuration }
+            NumberAnimation { easing.type: Easing.Linear; target: making; property: "opacity"; to: 0; duration: animationDuration }
+            NumberAnimation { easing.type: Easing.Linear; target: dam;    property: "opacity"; to: 0; duration: animationDuration }
         }
         ParallelAnimation {
             // font change
@@ -289,23 +297,40 @@ Rectangle {
             PropertyAnimation { target: diffraction; property: "text"; to: "Diffraction"; duration: animationDuration*0.1 }
             // mooving
             NumberAnimation { easing.type: Easing.OutExpo; target: easy;         property: "x"; to: container.width/2 - easy.width - (diffraction.width - easy.width)/2; duration: animationDuration }
-            NumberAnimation { easing.type: Easing.OutExpo; target: diffraction;  property: "x"; to: container.width/2 - (diffraction.width - easy.width)/2; duration: animationDuration }
+            NumberAnimation { easing.type: Easing.OutExpo; target: diffraction;  property: "x"; to: container.width/2 - (diffraction.width - easy.width)/2;              duration: animationDuration }
+        }
+        // easyDiffraction opacity
+        ParallelAnimation {
+            NumberAnimation { easing.type: Easing.Linear; target: easy;         property: "opacity"; from: 0 ; to: 1; duration: Generic.Variables.showIntro ? 0 : Generic.Variables.introAnimationDuration }
+            NumberAnimation { easing.type: Easing.Linear; target: diffraction;  property: "opacity"; from: 0 ; to: 1; duration: Generic.Variables.showIntro ? 0 : Generic.Variables.introAnimationDuration }
         }
         ParallelAnimation {
-            // show app icon and version
-            PropertyAnimation { easing.type: Easing.InExpo; target: appIcon;    property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: appVersion; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: modellingButton; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: analysisButton; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: links; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            // show app icon, version, links: opacity
+            PropertyAnimation { easing.type: Easing.OutExpo; target: appIcon;           property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: appVersion;        property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: analysisButton;    property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: aboutLink;         property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: tutorialLink;      property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: documentationLink; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: contactLink;       property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            // show app icon, version, links: moving
+            PropertyAnimation { easing.type: Easing.OutExpo; target: appIcon;           property: "y"; from: -appIcon.height; to: appIcon.y;           duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: appVersion;        property: "y"; from: window.height;   to: appVersion.y;        duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: analysisButton;    property: "y"; from: window.height;   to: analysisButton.y;    duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: aboutLink;         property: "y"; from: window.height;   to: aboutLink.y;         duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: tutorialLink;      property: "y"; from: window.height;   to: tutorialLink.y;      duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: documentationLink; property: "y"; from: window.height;   to: documentationLink.y; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.OutExpo; target: contactLink;       property: "y"; from: window.height;   to: contactLink.y;       duration: Generic.Variables.introAnimationDuration }
             // bottom buttons
             PropertyAnimation { easing.type: Easing.InExpo; target: disableButton; property: "opacity"; to: 0; duration: Generic.Variables.introAnimationDuration }
-            PropertyAnimation { easing.type: Easing.InExpo; target: skipButton; property: "opacity"; to: 0; duration: Generic.Variables.introAnimationDuration }
+            PropertyAnimation { easing.type: Easing.InExpo; target: skipButton;    property: "opacity"; to: 0; duration: Generic.Variables.introAnimationDuration }
             // display toolbar
-            NumberAnimation { easing.type: Easing.InExpo; target: window; property: "toolBarOpacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+            NumberAnimation { easing.type: Easing.OutExpo; target: window; property: "toolBarOpacity";                                     to: 1; duration: Generic.Variables.introAnimationDuration }
+            NumberAnimation { easing.type: Easing.OutExpo; target: window; property: "toolBarY";       from: -Generic.Style.toolbarHeight; to: 0; duration: Generic.Variables.introAnimationDuration }
+            // change app window flags
+            NumberAnimation { target: window; property: "flags"; to: Qt.Window; duration: 0 }
         }
-        // change app window flags and background color
-        NumberAnimation { target: window; property: "flags"; to: Qt.Window; duration: 0 }
+        // change background color
         PropertyAction { target: window; property: "color"; value: Generic.Style.appBkgColor }
     }
 }

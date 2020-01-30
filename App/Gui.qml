@@ -21,6 +21,7 @@ ApplicationWindow {
     id: window
 
     property real toolBarOpacity: 0
+    property real toolBarY: 0
 
     visible: true
     minimumWidth: Generic.Variables.appMinWindowWidth
@@ -45,7 +46,7 @@ ApplicationWindow {
         //visible: displayContent
         anchors.fill: parent
         spacing: 0
-        GenericAppToolbar.Toolbar { opacity: toolBarOpacity }
+        GenericAppToolbar.Toolbar { y: toolBarY; opacity: toolBarOpacity }
         GenericAppContentArea.ContentArea {}
     }
 
