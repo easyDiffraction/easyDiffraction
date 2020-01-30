@@ -79,6 +79,13 @@ class FitablesModel(BaseModel):
         keys_list = self._model.data(index, path_role) + [display_role_name]
         edit_value = self._model.data(index, edit_role)
         display_value = self._model.data(index, display_role)
+
+        fitable_name = '.'.join(keys_list[:-3])
+        fitable_value = edit_value
+        undo_redo_text = f"Changing {fitable_name} to {fitable_value:.4f}"
+        self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
+        self._calculator_interface.canUndoOrRedoChanged.emit()
+
         if edit_value != display_value:
             if isinstance(edit_value, bool):
                 if 'phases' == keys_list[0]:
@@ -97,6 +104,9 @@ class FitablesModel(BaseModel):
                 else:
                     self._calculator_interface.setDictByPath(keys_list, edit_value)
 
+        self._calculator_interface.project_dict.endBulkUpdate()
+        self._calculator_interface.canUndoOrRedoChanged.emit()
+
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
         """Define what to do if model is changed, e.g. from GUI."""
         role = roles[0]
@@ -104,8 +114,4 @@ class FitablesModel(BaseModel):
         if role_name.endswith(self._edit_role_name_suffix):
             index = top_left_index
             edit_role = role
-            self._calculator_interface.project_dict.startBulkUpdate('Change {}'.format(role_name))
-            self._calculator_interface.canUndoOrRedoChanged.emit()
             self._updateProjectByIndexAndRole(index, edit_role)
-            self._calculator_interface.project_dict.endBulkUpdate()
-            self._calculator_interface.canUndoOrRedoChanged.emit()

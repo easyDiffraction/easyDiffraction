@@ -7,6 +7,8 @@ QtObject {
     property bool projectOpened: false
 
     property var calculatorInterface: projectOpened ? proxy.calculatorInterface : null
+    property var undoText: calculatorInterface ? proxy.undoText : ""
+    property var redoText: calculatorInterface ? proxy.redoText : ""
     property var canUndo: calculatorInterface ? proxy.canUndo : false
     property var canRedo: calculatorInterface ? proxy.canRedo : false
 
