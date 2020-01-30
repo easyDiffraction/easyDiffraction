@@ -78,61 +78,16 @@ ApplicationWindow {
     // Temporary solution to update main area width
     onWidthChanged: Generic.Variables.mainAreaWidth = width - Generic.Style.appBorderThickness - Generic.Style.sidebarWidth
 
-    onClosing: {
-        print(projectManager.needToSave)
-        //        close.accepted = projectManager.needToSave ? false: true
-//        close.accepted = false
-        close.accepted = true
-//        closeDialogue.visible = true
-    }
-
-
-    GenericControls.Dialog {
+    GenericControls.CloseDialog {
         id: closeDialogue
         visible: false
-        title: "Save Changes"
+       }
 
-        Column {
-            padding: 20
-            spacing: 20
-
-            Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
-                font.family: Generic.Style.fontFamily
-                color: "#444"
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "The project has not been saved. Do you want to exit?"
-            }
-
-            Row {
-                spacing: 15
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                GenericAppToolbar.Button {
-                    text: "Save and exit"
-                    onClicked: {
-                        closeDialogue.close()
-                        Qt.exit(0)
-                    }
-                }
-
-                GenericAppToolbar.Button {
-                    text: "Exit without saving"
-                    onClicked: {
-                        closeDialogue.close()
-                        Qt.exit(0)
-                    }
-                }
-
-                GenericAppToolbar.Button {
-                    text: "Cancel"
-                    onClicked: {
-                        closeDialogue.close()
-                    }
-                }
-            }
-        }
+    onClosing: {
+       close.accepted = !proxy.getSaveState
+       closeDialogue.visible = proxy.getSaveState
     }
+
 }
 
 

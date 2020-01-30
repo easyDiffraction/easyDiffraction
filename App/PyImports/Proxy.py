@@ -51,6 +51,8 @@ class Proxy(QObject):
         self._refinement_done = False
         self._refinement_result = None
 
+        self._needToSave = False
+
     @Slot()
     def loadPhasesFromFile(self):
         """
@@ -114,22 +116,31 @@ class Proxy(QObject):
         # self.projectChanged.emit()
 
         self._calculator_interface.clearUndoStack()
+        self.reset_saveState()
 
     @Slot()
     def createProjectZip(self):
         self._calculator_interface.writeMainCif(self.project_control.tempDir.name)
         writeEmptyProject(self.project_control, self.project_control._projectFile)
+        self.reset_saveState()
 
     @Slot(str)
     def saveProject(self, saveName):
         self._calculator_interface.saveCifs(self.project_control.tempDir.name)
         writeProject(self.project_control, saveName)
+        self.reset_saveState()
+
 
     @Slot()
     def updateProjectSave(self):
         self.saveProject(self.project_control._projectFile)
+        # self.reset_saveState()
 
+    def get_saveState(self):
+        return self._needToSave
 
+    def reset_saveState(self):
+        self._needToSave = False
 
     # ##############
     # QML Properties
@@ -146,6 +157,8 @@ class Proxy(QObject):
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
+
+    getSaveState = Property(bool, lambda self: self.get_saveState(), constant=True)
 
     canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)
     canRedo = Property('QVariant', lambda self: self._calculator_interface.canRedo(), notify=canUndoOrRedoChanged)
@@ -179,7 +192,9 @@ class Proxy(QObject):
         self._refinement_running = False
         self._refinement_done = True
         self._refinement_result = res
+        self._needToSave = True
         self.refinementChanged.emit()
+
 
     def _thread_failed(self, reason):
         """
