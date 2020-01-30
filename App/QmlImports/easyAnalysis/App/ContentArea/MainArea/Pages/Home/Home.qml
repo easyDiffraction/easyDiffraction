@@ -274,7 +274,7 @@ Rectangle {
         id: animo
         //running: true
         PauseAnimation {
-            //duration: 2*animationDuration
+            duration: 1.5*animationDuration
         }
         ParallelAnimation {
             // appearing

@@ -24,7 +24,9 @@ ApplicationWindow {
     color: "white"
     font.family: Generic.Style.fontFamily
     font.pointSize: Generic.Style.fontPointSize
-    flags: Qt.FramelessWindowHint | Qt.Dialog
+    //flags: Qt.FramelessWindowHint | Qt.Dialog
+
+    opacity: 0
 
     // Application preferences dialog (disabled by default)
     GenericAppElements.AppPreferences{}
@@ -51,8 +53,11 @@ ApplicationWindow {
         property alias height: window.height
     }
 
+    //ona
+
     // Load persistent settings when window is created
     Component.onCompleted: {
+        //Generic.Variables.showIntro ? window.flags = Qt.FramelessWindowHint | Qt.Dialog : window.flags = Qt.Window
         Generic.Variables.showIntro = settings.value("showIntro", Generic.Variables.showIntro)
         Generic.Variables.showGuide = settings.value("showGuide", Generic.Variables.showGuide)
         Generic.Variables.appWindowWidth = settings.value("appWindowWidth", Generic.Variables.appWindowWidth)
@@ -63,6 +68,7 @@ ApplicationWindow {
         window.height = Generic.Variables.appWindowHeight
         window.x = Generic.Variables.appWindowX
         window.y = Generic.Variables.appWindowY
+        animo.restart()
     }
 
     // Save persistent settings when app window is closed
@@ -77,6 +83,13 @@ ApplicationWindow {
 
     // Temporary solution to update main area width
     onWidthChanged: Generic.Variables.mainAreaWidth = width - Generic.Style.appBorderThickness - Generic.Style.sidebarWidth
+
+    SequentialAnimation {
+        id: animo
+        NumberAnimation { target: window; property: "flags"; to: Generic.Variables.showIntro ? Qt.FramelessWindowHint | Qt.Dialog : Qt.Window; duration: 0 }
+        PropertyAnimation { easing.type: Easing.InExpo; target: window; property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
+    }
+
 }
 
 
