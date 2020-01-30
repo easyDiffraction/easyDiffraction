@@ -31,3 +31,4 @@ ExperimentsTableView 1.0 ExperimentsTableView.qml
 StatusBar 1.0 StatusBar.qml
 FlowButtons 1.0 FlowButtons.qml
 AppPreferences 1.0 AppPreferences.qml
+AboutBox 1.0 AboutBox.qml
