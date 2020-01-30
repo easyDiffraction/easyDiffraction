@@ -10,10 +10,12 @@ TabButton {
     property bool blinking: false
     property int blinkingAnimationDuration: 500
     property int colorAnimationDuration: 250
-
     property string buttonBorderDisabledColor: Generic.Style.buttonBorderDisabledColor
 
     autoExclusive: true
+
+    width: Generic.Style.toolbarButtonWidth
+    font.bold: checked ? true : false
 
     icon.width: Generic.Style.toolbarButtonHeight / 2
     icon.height: Generic.Style.toolbarButtonHeight / 2
@@ -21,8 +23,6 @@ TabButton {
     Behavior on icon.color { ColorAnimation { duration: colorAnimationDuration } }
 
     ToolTip.visible: ToolTip.text !== "" ? hovered : false
-
-    width: Generic.Style.toolbarButtonWidth
 
     contentItem: IconLabel {
         id: buttonIcon

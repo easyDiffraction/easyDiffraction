@@ -13,6 +13,8 @@ Button {
     Layout.fillWidth: true
     implicitWidth: 1
 
+    font.bold: enabled && highlighted ? true : false
+
     icon.width: Generic.Style.buttonHeight / 1.75
     icon.height: Generic.Style.buttonHeight / 1.75
     icon.color: iconColor() //button.enabled ? Generic.Style.buttonIconEnabledColor : Generic.Style.buttonIconDisabledColor
