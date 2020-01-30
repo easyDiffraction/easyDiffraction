@@ -101,6 +101,7 @@ Rectangle {
             id: buttons
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 5
+            /*
             GenericAppToolbar.Button {
                 id: modellingButton
                 opacity: 0
@@ -115,15 +116,16 @@ Rectangle {
                 onClicked: print("Not implemented yet")
             }
             GenericAppToolbar.Button { width: 1; opacity: 0 }
+            */
             GenericAppToolbar.Button {
                 id: analysisButton
                 opacity: 0
                 checked: true
                 autoExclusive: false
-                width: 150
-                //font.bold: true
-                text: "Analysis"
-                ToolTip.text: "Fitting of diffraction data"
+                width: 230
+                font.bold: true
+                text: "Start Simulation/Refinement"
+                ToolTip.text: "Simulation of the diffraction pattern or structure model refinement"
                 onClicked: {
                     //dialog.close() // Only needed in dialog version
                     analysisButton.checked = true
@@ -145,6 +147,7 @@ Rectangle {
             opacity: 0
 
             Text {
+                anchors.horizontalCenter: parent.horizontalCenter
                 width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
@@ -160,6 +163,7 @@ Rectangle {
             }
 
             Text {
+                anchors.horizontalCenter: parent.horizontalCenter
                 width: analysisButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
@@ -175,6 +179,7 @@ Rectangle {
             }
 
             Text {
+                anchors.horizontalCenter: parent.horizontalCenter
                 width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
@@ -190,6 +195,7 @@ Rectangle {
             }
 
             Text {
+                anchors.horizontalCenter: parent.horizontalCenter
                 width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
