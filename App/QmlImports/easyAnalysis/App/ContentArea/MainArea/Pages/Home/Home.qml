@@ -27,23 +27,8 @@ Rectangle {
     Component.onCompleted: animo.restart()
 
     // About dialog
-    GenericControls.Dialog {
+    GenericAppElements.AboutBox{
         id: aboutDialog
-        title: "About"
-
-        Column {
-            padding: 20
-            spacing: 15
-
-            ScrollView {
-                width: 400
-
-                TextArea {
-                    wrapMode: TextEdit.WordWrap
-                    text: "nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo nkfjnfekw wekjvbew vwejv bo "
-                }
-            }
-        }
     }
 
 
