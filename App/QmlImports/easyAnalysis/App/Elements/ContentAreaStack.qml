@@ -43,7 +43,7 @@ RowLayout {
         }
 
         // Status bar
-        GenericAppElements.StatusBar{}
+        GenericAppElements.StatusBar {}
     }
 
     // ContentArea right border

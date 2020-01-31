@@ -6,6 +6,7 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
+    visible: !Generic.Variables.HomeIndex
     spacing: 0
 
     GenericAppElements.HorizontalBorder {}
