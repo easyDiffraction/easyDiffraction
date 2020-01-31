@@ -18,7 +18,7 @@ Rectangle {
         onTriggered: {
             const html = writeHTML()
             textArea.text = html
-            pyQmlProxy.store_report(html)
+            proxyPyQml.store_report(html)
         }
     }
 
@@ -103,13 +103,13 @@ Rectangle {
         s += '<body>'
         s += `<h1>${Specific.Variables.projectManager.projectName}</h1>`
         s += '<p>'
-        s += `<b>Software:</b> <a href="${pyQmlProxy.project.app.url}">${pyQmlProxy.project.app.name} v${pyQmlProxy.project.app.version}</a><br>`
-        s += `<b>Calculator:</b> <a href="${pyQmlProxy.project.calculator.url}">${pyQmlProxy.project.calculator.name} v${pyQmlProxy.project.calculator.version}</a><br>`
+        s += `<b>Software:</b> <a href="${proxyPyQml.project.app.url}">${proxyPyQml.project.app.name} v${proxyPyQml.project.app.version}</a><br>`
+        s += `<b>Calculator:</b> <a href="${proxyPyQml.project.calculator.url}">${proxyPyQml.project.calculator.name} v${proxyPyQml.project.calculator.version}</a><br>`
         s += `<b>Keywords:</b> ${Specific.Variables.projectManager.projectKeywords}<br>`
-        s += `<b>Phases:</b> ${pyQmlProxy.project.info.phase_ids.join(', ')}<br>`
-        s += `<b>Experiments:</b> ${pyQmlProxy.project.info.experiment_ids.join(', ')}<br>`
+        s += `<b>Phases:</b> ${proxyPyQml.project.info.phase_ids.join(', ')}<br>`
+        s += `<b>Experiments:</b> ${proxyPyQml.project.info.experiment_ids.join(', ')}<br>`
         s += `<b>Instrument:</b> 6T2 at LLB<br>`
-        s += `<b>Modified:</b> ${pyQmlProxy.project.info.modified_datetime}<br>`
+        s += `<b>Modified:</b> ${proxyPyQml.project.info.modified_datetime}<br>`
         s += `<b>Chi2:</b> ${Generic.Variables.chiSquared} <br>`
         s += '</p>'
         s += '<h2>Parameters</h2>'

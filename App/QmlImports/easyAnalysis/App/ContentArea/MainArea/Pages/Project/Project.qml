@@ -62,8 +62,8 @@ Rectangle {
                 if (!Specific.Variables.projectOpened)
                     return s
                 s += "Keywords: " + Specific.Variables.projectManager.projectKeywords + "\n"
-                s += "Phases: " + pyQmlProxy.project.info.phase_ids.join(", ") + "\n"
-                s += "Experiments: " + pyQmlProxy.project.info.experiment_ids.join(", ") + "\n"
+                s += "Phases: " + proxyPyQml.project.info.phase_ids.join(", ") + "\n"
+                s += "Experiments: " + proxyPyQml.project.info.experiment_ids.join(", ") + "\n"
                 s += "Instrument: 6T2 at LLB\n"
                 s += "Modified: " + Specific.Variables.projectManager.projectModified
             }

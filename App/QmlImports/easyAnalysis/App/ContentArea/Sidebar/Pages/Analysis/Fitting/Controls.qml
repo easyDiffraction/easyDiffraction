@@ -42,7 +42,7 @@ ColumnLayout {
                 GenericAppContentAreaButtons.PausePlay {
                     id: pausePlayButton
                     onClicked: {
-                        pyQmlProxy.refine()
+                        proxyPyQml.refine()
                         Generic.Variables.analysisPageFinished = true
                     }
                     GenericAppElements.GuideWindow {

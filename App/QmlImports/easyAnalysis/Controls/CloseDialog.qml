@@ -149,7 +149,7 @@ Dialog {
         nameFilters: ["Project files (*.zip)"]
         folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
         onAccepted: {
-            pyQmlProxy.saveProject(fileUrl)
+            proxyPyQml.saveProject(fileUrl)
             fileDialogSaveProject.close()
             if (Specific.Variables.projectControl.savedProject === false) {
                 failSaveDialog.visible = true

@@ -7,7 +7,7 @@ from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import QApplication
 from PySide2.QtQml import QQmlApplicationEngine
 
-from PyImports.Proxy import Proxy
+from PyImports.ProxyPyQml import ProxyPyQml
 
 if __name__ == '__main__':
     # Global logging settings
@@ -42,12 +42,12 @@ if __name__ == '__main__':
     app.setWindowIcon(QIcon(window_icon_path))
 
     # Create a proxy object between python logic and QML GUI
-    py_qml_proxy = Proxy()
+    proxy_py_qml = ProxyPyQml()
 
     # Create GUI from QML
     engine = QQmlApplicationEngine()
 
-    engine.rootContext().setContextProperty("pyQmlProxy", py_qml_proxy)
+    engine.rootContext().setContextProperty("proxyPyQml", proxy_py_qml)
     engine.rootContext().setContextProperty("examplesDir", examples_dir_path)
     engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)
 

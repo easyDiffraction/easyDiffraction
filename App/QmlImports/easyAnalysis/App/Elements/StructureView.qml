@@ -127,7 +127,7 @@ Rectangle {
             axisZ: ValueAxis3D { labelFormat: "" }
 
             //GenericAppElements.AtomScatter3DSeries {
-            //    atomModel: pyQmlProxy.cellBox
+            //    atomModel: proxyPyQml.cellBox
             //}
 
             // Unit cell chart settings

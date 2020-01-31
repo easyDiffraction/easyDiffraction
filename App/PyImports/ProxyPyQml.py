@@ -23,7 +23,7 @@ import easyInterface.Utils.Helpers as Helpers
 from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
 from easyInterface.QtInterface import QtCalculatorInterface
 
-class Proxy(QObject):
+class ProxyPyQml(QObject):
 
     def __init__(self, parent=None):
         logging.info("")

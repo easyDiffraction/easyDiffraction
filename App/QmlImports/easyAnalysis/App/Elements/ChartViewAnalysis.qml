@@ -393,12 +393,12 @@ ColumnLayout {
 
                     /*
                     onHovered: {
-                        const phase1 = pyQmlProxy.project.phasesIds()[0]
-                        const braggPeaks = pyQmlProxy.project[phase1].bragg_peaks
+                        const phase1 = proxyPyQml.project.phasesIds()[0]
+                        const braggPeaks = proxyPyQml.project[phase1].bragg_peaks
 
 
                         const position = middleChart.mapToPosition(point)
-                        const tth = point.x - parseFloat(pyQmlProxy.tmp_setup_zero_shift())
+                        const tth = point.x - parseFloat(proxyPyQml.tmp_setup_zero_shift())
                         const hklList = tthHklDict[tth]
                         let text = "x: %1\nhkl:".arg(point.x)
                         for (let i = 0; i < hklList.length; i++) {

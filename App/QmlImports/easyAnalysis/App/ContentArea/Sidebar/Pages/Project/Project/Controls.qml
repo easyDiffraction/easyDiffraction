@@ -95,8 +95,8 @@ ColumnLayout {
                     Specific.Variables.projectControl.loadProject(fileUrl)
                     fileDialogLoadProject.close()
                     if (Specific.Variables.projectControl.validCif) {
-                        pyQmlProxy.initialize()
-//                        if (pyQmlProxy.validPojectZip) {
+                        proxyPyQml.initialize()
+//                        if (proxyPyQml.validPojectZip) {
 //                            saveStateButton.enabled = true
 //                        } else {
 //                            saveStateButton.enabled = false
@@ -127,7 +127,7 @@ ColumnLayout {
                 nameFilters: ["Project files (*.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
-                    pyQmlProxy.saveProject(fileUrl)
+                    proxyPyQml.saveProject(fileUrl)
                     fileDialogSaveProject.close()
                     if (projectControl.savedProject === false) {
                         failSaveDialog.visible = true
@@ -222,8 +222,8 @@ ColumnLayout {
                 standardButtons: Dialog.Ok
                 onAccepted: {
                     Specific.Variables.projectControl.writeMain(titleInput.text, keywordsInput.text)
-                    pyQmlProxy.initialize()
-                    pyQmlProxy.createProjectZip()
+                    proxyPyQml.initialize()
+                    proxyPyQml.createProjectZip()
                     Specific.Variables.projectOpened = true
                 }
             }

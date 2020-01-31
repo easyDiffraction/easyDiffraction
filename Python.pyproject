@@ -6,7 +6,7 @@
 
     "App/PyImports/Interface.py",
     "App/PyImports/ProjectSentinel.py",
-    "App/PyImports/Proxy.py",
+    "App/PyImports/ProxyPyQml.py",
     "App/PyImports/Refinement.py",
 
     "App/PyImports/DisplayModels/AtomAdpsModel.py",
