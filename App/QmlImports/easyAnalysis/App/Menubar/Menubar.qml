@@ -67,15 +67,15 @@ QtLabs.MenuBar {
         }
         QtLabs.MenuItem {
             text: qsTr("Get Started Video Tutorial")
-            onTriggered: Qt.openUrlExternally("https://www.easydiffraction.org/tutorials_start.html")
+            onTriggered: Qt.openUrlExternally("https://easydiffraction.org/tutorials_start.html")
         }
         QtLabs.MenuItem {
             text: qsTr("Online Documentation")
-            onTriggered: Qt.openUrlExternally("https://www.easydiffraction.org/documentation.html")
+            onTriggered: Qt.openUrlExternally("https://easydiffraction.org/documentation.html")
         }
         QtLabs.MenuItem {
             text: qsTr("Get in Touch Online")
-            onTriggered: Qt.openUrlExternally("https://www.easydiffraction.org/contact.html")
+            onTriggered: Qt.openUrlExternally("https://easydiffraction.org/contact.html")
         }
 
     }

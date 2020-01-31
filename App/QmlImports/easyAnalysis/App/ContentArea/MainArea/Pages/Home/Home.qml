@@ -179,7 +179,7 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/tutorials_start.html")
+                    onClicked: Qt.openUrlExternally("https://easydiffraction.org/tutorials_start.html")
                 }
             }
 
@@ -196,7 +196,7 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/documentation.html")
+                    onClicked: Qt.openUrlExternally("https://easydiffraction.org/documentation.html")
                 }
             }
 
@@ -213,7 +213,7 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally("https://www.easydiffraction.org/contact.html")
+                    onClicked: Qt.openUrlExternally("https://easydiffraction.org/contact.html")
                 }
             }
 
