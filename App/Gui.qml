@@ -26,7 +26,7 @@ ApplicationWindow {
     visible: true
     minimumWidth: Generic.Variables.appMinWindowWidth
     minimumHeight: Generic.Variables.appMinWindowHeight
-    title: Specific.Settings.appName
+    title: Specific.Constants.appName
     color: "white"
     font.family: Generic.Style.fontFamily
     font.pointSize: Generic.Style.fontPointSize

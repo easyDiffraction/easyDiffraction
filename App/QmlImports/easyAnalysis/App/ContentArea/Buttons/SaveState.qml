@@ -40,7 +40,7 @@ GenericAppContentArea.Button {
     onClicked: {
         Generic.Variables.showSaveDialog = 0
         if (Specific.Variables.projectFilePathSelected) {
-            proxyPyQml.saveProject()
+            Generic.Constants.proxy.saveProject()
         } else {
             Generic.Variables.showSaveDialog = 1
         }

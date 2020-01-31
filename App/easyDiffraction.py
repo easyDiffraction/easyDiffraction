@@ -42,12 +42,12 @@ if __name__ == '__main__':
     app.setWindowIcon(QIcon(window_icon_path))
 
     # Create a proxy object between python logic and QML GUI
-    proxy_py_qml = ProxyPyQml()
+    proxy_py_qml_obj = ProxyPyQml()
 
     # Create GUI from QML
     engine = QQmlApplicationEngine()
 
-    engine.rootContext().setContextProperty("proxyPyQml", proxy_py_qml)
+    engine.rootContext().setContextProperty("proxyPyQmlObj", proxy_py_qml_obj)
     engine.rootContext().setContextProperty("examplesDir", examples_dir_path)
     engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)
 

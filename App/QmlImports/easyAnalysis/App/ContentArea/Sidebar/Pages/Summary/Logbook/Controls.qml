@@ -44,7 +44,7 @@ ColumnLayout {
                     id: exportButton
                     implicitWidth: 190
                     text: "Export"
-                    onClicked: proxyPyQml.save_report(exportFileName.text, exportFileExt.currentText)
+                    onClicked: Generic.Constants.proxy.save_report(exportFileName.text, exportFileExt.currentText)
                 }
 
             }

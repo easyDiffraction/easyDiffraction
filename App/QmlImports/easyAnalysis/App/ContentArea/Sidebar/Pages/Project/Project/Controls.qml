@@ -95,8 +95,8 @@ ColumnLayout {
                     Specific.Variables.projectControl.loadProject(fileUrl)
                     fileDialogLoadProject.close()
                     if (Specific.Variables.projectControl.validCif) {
-                        proxyPyQml.initialize()
-//                        if (proxyPyQml.validPojectZip) {
+                        Generic.Constants.proxy.initialize()
+//                        if (Generic.Constants.proxy.validPojectZip) {
 //                            saveStateButton.enabled = true
 //                        } else {
 //                            saveStateButton.enabled = false
@@ -128,7 +128,7 @@ ColumnLayout {
                 nameFilters: ["Project files (*.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
-                    proxyPyQml.saveProjectAs(fileUrl)
+                    Generic.Constants.proxy.saveProjectAs(fileUrl)
                     Generic.Variables.showSaveDialog = 0
                     if (Specific.Variables.projectControl.savedProject === false) {
                         failSaveDialog.visible = true
@@ -146,7 +146,7 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     fileDialogCreateProject.close()
-                    proxyPyQml.createProject(fileUrl)
+                    Generic.Constants.proxy.createProject(fileUrl)
                     getProjectInfoDialog.visible = true
                     Generic.Variables.projectPageFinished = true
                     Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
@@ -226,8 +226,8 @@ ColumnLayout {
                 standardButtons: Dialog.Ok
                 onAccepted: {
                     Specific.Variables.projectControl.writeMain(titleInput.text, keywordsInput.text)
-                    proxyPyQml.initialize()
-                    proxyPyQml.createProjectZip()
+                    Generic.Constants.proxy.initialize()
+                    Generic.Constants.proxy.createProjectZip()
                     Specific.Variables.projectOpened = true
                 }
             }

@@ -184,8 +184,10 @@ class ProxyPyQml(QObject):
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
 
-    projectControl = Property('QVariant', lambda self: self._project_control, notify=projectChanged) #?
-    projectManager = Property('QVariant', lambda self: self._project_control.manager, notify=projectChanged) #?
+    proxy = Property('QVariant', lambda self: self, constant=True)
+
+    projectControl = Property('QVariant', lambda self: self._project_control, constant=True)
+    projectManager = Property('QVariant', lambda self: self._project_control.manager, constant=True)
 
     measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
     calculatedData = Property('QVariant', lambda self: self._calculated_data_model, constant=True)

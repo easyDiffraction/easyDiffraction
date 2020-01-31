@@ -18,7 +18,7 @@ Rectangle {
         onTriggered: {
             const html = writeHTML()
             textArea.text = html
-            proxyPyQml.store_report(html)
+            Generic.Constants.proxy.store_report(html)
         }
     }
 

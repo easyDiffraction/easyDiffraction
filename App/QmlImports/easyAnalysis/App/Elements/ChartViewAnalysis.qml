@@ -398,7 +398,7 @@ ColumnLayout {
 
 
                         const position = middleChart.mapToPosition(point)
-                        const tth = point.x - parseFloat(proxyPyQml.tmp_setup_zero_shift())
+                        const tth = point.x - parseFloat(Generic.Constants.proxy.tmp_setup_zero_shift())
                         const hklList = tthHklDict[tth]
                         let text = "x: %1\nhkl:".arg(point.x)
                         for (let i = 0; i < hklList.length; i++) {

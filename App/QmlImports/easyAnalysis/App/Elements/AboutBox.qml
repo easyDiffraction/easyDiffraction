@@ -37,7 +37,7 @@ GenericControls.Dialog {
                     y: 10
                     width: 75
                     fillMode: Image.PreserveAspectFit
-                    source: Specific.Settings.appIconPath
+                    source: Specific.Constants.appIconPath
                 }
 
                 // Application name and version
@@ -67,7 +67,7 @@ GenericControls.Dialog {
                         anchors.right: parent.right
                         font.family: Generic.Style.introExpandedThinFontFamily
                         font.pointSize: appVersionFontSize
-                        text: "Version %1 (%2)".arg(Specific.Settings.appVersion).arg(Specific.Settings.appDate)
+                        text: "Version %1 (%2)".arg(Specific.Constants.appVersion).arg(Specific.Constants.appDate)
                     }
                 }
             }
@@ -76,7 +76,7 @@ GenericControls.Dialog {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
+                onClicked: Qt.openUrlExternally(Specific.Constants.appUrl)
             }
         }
 
@@ -96,7 +96,7 @@ GenericControls.Dialog {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally(Specific.Settings.eulaUrl)
+                    onClicked: Qt.openUrlExternally(Specific.Constants.eulaUrl)
                 }
             }
 
@@ -111,7 +111,7 @@ GenericControls.Dialog {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally(Specific.Settings.oslUrl)
+                    onClicked: Qt.openUrlExternally(Specific.Constants.oslUrl)
                 }
             }
         }
@@ -150,12 +150,12 @@ GenericControls.Dialog {
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 75
                 fillMode: Image.PreserveAspectFit
-                source: Specific.Settings.essIconPath
+                source: Specific.Constants.essIconPath
 
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally(Specific.Settings.essUrl)
+                    onClicked: Qt.openUrlExternally(Specific.Constants.essUrl)
                 }
             }
         }

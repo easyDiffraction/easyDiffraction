@@ -48,7 +48,7 @@ Rectangle {
             height: width
             //antialiasing: true
             //fillMode: Image.PreserveAspectFit
-            source: Specific.Settings.appIconPath
+            source: Specific.Constants.appIconPath
             sourceSize: Qt.size( img.sourceSize.width, img.sourceSize.height )
             Image {
                 id: img
@@ -59,7 +59,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
+                onClicked: Qt.openUrlExternally(Specific.Constants.appUrl)
             }
         }
 
@@ -76,7 +76,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
+                onClicked: Qt.openUrlExternally(Specific.Constants.appUrl)
             }
         }
 
@@ -87,11 +87,11 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             font.family: Generic.Style.introExpandedThinFontFamily
             font.pointSize: appVersionFontSize
-            text: "Version %1 (%2)".arg(Specific.Settings.appVersion).arg(Specific.Settings.appDate)
+            text: "Version %1 (%2)".arg(Specific.Constants.appVersion).arg(Specific.Constants.appDate)
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: Qt.openUrlExternally(Specific.Settings.appUrl)
+                onClicked: Qt.openUrlExternally(Specific.Constants.appUrl)
             }
         }
 

@@ -90,7 +90,7 @@ ColumnLayout {
                     var old_analysis_state = Generic.Variables.analysisPageFinished
                     var old_summary_state = Generic.Variables.summaryPageFinished
                     //if (projectControl.validCif) {
-                    proxyPyQml.loadPhasesFromFile()
+                    Generic.Constants.proxy.loadPhasesFromFile()
                     Specific.Variables.projectOpened = true
                     //Generic.Variables.projectPageFinished = true
                     Generic.Variables.samplePageFinished = true
