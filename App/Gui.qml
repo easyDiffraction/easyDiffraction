@@ -38,7 +38,7 @@ ApplicationWindow {
     GenericAppElements.AppPreferences {}
 
     // Application menubar
-    GenericAppMenubar.Menubar {}
+    //GenericAppMenubar.Menubar {}
 
     // Application window layout
     ColumnLayout {
