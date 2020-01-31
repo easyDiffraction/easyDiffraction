@@ -34,6 +34,7 @@ GenericControls.Dialog {
                     Generic.Variables.closeAppAfterSaving = 1
                     if (Specific.Variables.projectFilePathSelected) {
                         proxyPyQml.saveProject()
+                        Qt.quit()
                     } else {
                         Generic.Variables.showSaveDialog = 1
                     }

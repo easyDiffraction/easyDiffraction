@@ -146,7 +146,7 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     fileDialogCreateProject.close()
-                    Specific.Variables.projectControl.createProject(fileUrl)
+                    proxyPyQml.createProject(fileUrl)
                     getProjectInfoDialog.visible = true
                     Generic.Variables.projectPageFinished = true
                     Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false

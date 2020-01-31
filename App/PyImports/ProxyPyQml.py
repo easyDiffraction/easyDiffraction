@@ -31,7 +31,6 @@ class ProxyPyQml(QObject):
 
         self.info = Config()['release']
 
-        self._project_file_path = None
         self._main_rcif_path = None
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
@@ -131,16 +130,21 @@ class ProxyPyQml(QObject):
         writeEmptyProject(self._project_control, self._project_control._project_file)
         self.onProjectSaved()
 
-    @Slot()
-    def saveProject(self):
-        self._calculator_interface.saveCifs(self._project_control.tempDir.name)
-        writeProject(self._project_control, self._project_file_path)
+    @Slot(str)
+    def createProject(self, file_path):
+        self._project_control.createProject(file_path)
         self.onProjectSaved()
 
     @Slot(str)
     def saveProjectAs(self, file_path):
-        self._project_file_path = file_path
+        self._project_control._project_file = file_path
         self.saveProject()
+
+    @Slot()
+    def saveProject(self):
+        self._calculator_interface.saveCifs(self._project_control.tempDir.name)
+        writeProject(self._project_control, self._project_control._project_file)
+        self.onProjectSaved()
 
     def onProjectSaved(self):
         self._needToSave = False
@@ -149,11 +153,6 @@ class ProxyPyQml(QObject):
     def onProjectUnsaved(self):
         self._needToSave = True
         self.projectSaveStateChanged.emit()
-
-    def qwe(self):
-        logging.info(f"++++++++++++++++ {bool(self._project_file_path)}")
-        return bool(self._project_file_path);
-
 
     # ##############
     # QML Properties
@@ -174,8 +173,7 @@ class ProxyPyQml(QObject):
     calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
 
     needToSave = Property(bool, lambda self: self._needToSave, notify=projectSaveStateChanged)
-    #projectFilePathSelected = Property('QVariant', lambda self: bool(self._project_file_path), notify=projectSaveStateChanged)
-    projectFilePathSelected = Property(bool, qwe, notify=projectSaveStateChanged)
+    projectFilePathSelected = Property(bool, lambda self: bool(self._project_control._project_file), notify=projectSaveStateChanged)
 
     calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
     undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
