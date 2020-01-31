@@ -128,7 +128,7 @@ class ProxyPyQml(QObject):
     @Slot()
     def createProjectZip(self):
         self._calculator_interface.writeMainCif(self._project_control.tempDir.name)
-        writeEmptyProject(self._project_control, self._project_control._projectFile)
+        writeEmptyProject(self._project_control, self._project_control._project_file)
         self.onProjectSaved()
 
     @Slot()
