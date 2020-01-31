@@ -30,6 +30,7 @@ if __name__ == '__main__':
 
     window_icon_path = os.path.join(current_dir_path, 'QmlImports', 'easyDiffraction', 'Resources', 'Icons', 'LogoWithPaddings.png')
     qml_gui_file_path = os.path.join(current_dir_path, "Gui.qml")
+    release_config_file_path = os.path.join(current_dir_path, "Release.yml")
     qml_imports_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir_path, "QmlImports")).toString())
     examples_dir_path = str(QUrl.fromLocalFile(os.path.join(installation_path, 'Examples')).toString())
 
@@ -42,7 +43,7 @@ if __name__ == '__main__':
     app.setWindowIcon(QIcon(window_icon_path))
 
     # Create a proxy object between python logic and QML GUI
-    proxy_py_qml_obj = ProxyPyQml()
+    proxy_py_qml_obj = ProxyPyQml(release_config_file_path)
 
     # Create GUI from QML
     engine = QQmlApplicationEngine()

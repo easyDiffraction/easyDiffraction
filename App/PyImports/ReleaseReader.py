@@ -7,11 +7,9 @@ import yaml  # pip install pyyaml
 # CLASSES
 
 class Config():
-    def __init__(self):
-        self._config_dir = os.getcwd()
-        self._config_name = 'Release.yml'
+    def __init__(self, release_config_file_path):
         # load external config
-        self.__dict__ = self._loadYaml(self._config_dir, self._config_name)
+        self.__dict__ = self._loadYaml(release_config_file_path)
 
     def __getitem__(self, key):
         return self.__dict__[key]
@@ -19,8 +17,7 @@ class Config():
     def __repr__(self):
         return yaml.dump(self.__dict__, sort_keys=False, indent=2, allow_unicode=True)
 
-    def _loadYaml(self, file_dir, file_name):
-        file_path = os.path.join(file_dir, file_name)
+    def _loadYaml(self, file_path):
         if not os.path.isfile(file_path):
             sys.exit("- Failed to find config '{0}'".format(file_path))
         with open(file_path, 'r') as file:

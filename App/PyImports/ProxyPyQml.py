@@ -18,18 +18,18 @@ from PyImports.DisplayModels.FileStructureModel import FileStructureModel
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
 from PyImports.Refinement import Refiner
 from PyImports.ReleaseReader import Config
-import easyInterface.Utils.Helpers as Helpers
 
+import easyInterface.Utils.Helpers as Helpers
 from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
 from easyInterface.QtInterface import QtCalculatorInterface
 
 class ProxyPyQml(QObject):
 
-    def __init__(self, parent=None):
+    def __init__(self, release_config_file_path, parent=None):
         logging.info("")
         super().__init__(parent)
 
-        self.info = Config()['release']
+        self.info = Config(release_config_file_path)['release']
 
         self._main_rcif_path = None
         self._phases_rcif_path = None
