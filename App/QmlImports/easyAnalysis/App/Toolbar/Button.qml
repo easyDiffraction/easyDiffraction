@@ -72,39 +72,44 @@ TabButton {
     }
 
     function backgroundColor() {
+        const alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
+        if (button.checked) {
+            const color1 = Generic.Style.buttonBkgHighlightedColor
+            const color2 = Generic.Style.buttonBkgBlendColor
+            return Color.blend(color1, color2, alpha)
+        }
         if (!button.enabled)
             return Generic.Style.toolbarButtonBkgDisabledColor
-        var color1 = button.checked ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgFinishedColor
+        var color1 = Generic.Style.buttonBkgFinishedColor
         var color2 = Generic.Style.buttonBkgBlendColor
-        var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
         return Color.blend(color1, color2, alpha)
     }
 
     function borderColor() {
-        if (!button.enabled)
-            return buttonBorderDisabledColor
         if (button.checked)
             return Generic.Style.buttonBorderHighlightedColor
+        if (!button.enabled)
+            return buttonBorderDisabledColor
         return Generic.Style.buttonBorderFinishedColor
     }
 
     function iconColor() {
         if (blinking)
             return Generic.Style.buttonIconHighlightedColor
-        if (!button.enabled)
-            return Generic.Style.buttonIconDisabledColor
         if (button.checked)
             return Generic.Style.buttonIconHighlightedColor
+        if (!button.enabled)
+            return Generic.Style.buttonIconDisabledColor
         return Generic.Style.buttonIconFinishedColor
     }
 
     function textColor() {
         if (blinking)
             return Generic.Style.buttonTextHighlightedColor
-        if (!button.enabled)
-            return Generic.Style.buttonTextDisabledColor
         if (button.checked)
             return Generic.Style.buttonTextHighlightedColor
+        if (!button.enabled)
+            return Generic.Style.buttonTextDisabledColor
         return Generic.Style.buttonTextFinishedColor
     }
 

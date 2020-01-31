@@ -10,13 +10,15 @@ import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyDiffraction 1.0 as Specific
 
 Rectangle {
+    id: mainRectangle
+
     property int margin: 20
     property int animationDuration: Generic.Variables.showIntro ? Generic.Variables.introAnimationDuration : 0
     property int appNameFontSize: Generic.Style.systemFontPointSize * 4
     property int appVersionFontSize: Generic.Style.systemFontPointSize + 1
     property int repeatFontSize: Generic.Style.systemFontPointSize + 1
 
-    id: mainRectangle
+    enabled: false
 
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -31,7 +33,7 @@ Rectangle {
         id: aboutDialog
     }
 
-
+    // Content
     Column {
         anchors.centerIn: parent
         width: parent.width
@@ -119,6 +121,7 @@ Rectangle {
             */
             GenericAppToolbar.Button {
                 id: analysisButton
+                enabled: true
                 opacity: 0
                 checked: true
                 autoExclusive: false
@@ -150,7 +153,6 @@ Rectangle {
                 id: aboutLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                //width: analysisButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
@@ -168,7 +170,6 @@ Rectangle {
                 id: tutorialLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                //width: analysisButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
@@ -186,7 +187,6 @@ Rectangle {
                 id: documentationLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                //width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
@@ -204,7 +204,6 @@ Rectangle {
                 id: contactLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                //width: modellingButton.width
                 font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
@@ -332,6 +331,8 @@ Rectangle {
         }
         // change background color
         PropertyAction { target: window; property: "color"; value: Generic.Style.appBkgColor }
+        // activate links and tooltips
+        PropertyAction { target: mainRectangle; property: "enabled"; value: true }
     }
 }
 
