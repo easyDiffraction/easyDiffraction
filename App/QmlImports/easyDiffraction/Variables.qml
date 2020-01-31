@@ -14,6 +14,7 @@ QtObject {
     property var experimentCif: projectOpened ? proxyPyQml.experimentCif : null
     property var calculationCif: projectOpened ? proxyPyQml.calculationCif : null
     property var needToSave: projectOpened ? proxyPyQml.needToSave : false
+    property var projectFilePathSelected: proxyPyQml.projectFilePathSelected
 
     // Measured and calculated data
     property var measuredData: proxyPyQml.measuredData

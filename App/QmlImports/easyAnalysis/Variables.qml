@@ -9,6 +9,9 @@ QtObject {
     property int showGuide: 1       // bool doesn't work on windows
     property int showPreferences: 0 // bool doesn't work on windows
     property int showAbout: 0       // bool doesn't work on windows
+    property int showSaveDialog: 0  // bool doesn't work on windows
+    property int closeAppAfterSaving: 0  // bool doesn't work on windows
+
     property int appMinWindowWidth: 1280
     property int appMinWindowHeight: 760
     property int appWindowWidth: appMinWindowWidth

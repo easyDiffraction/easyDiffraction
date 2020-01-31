@@ -38,7 +38,12 @@ GenericAppContentArea.Button {
     }
 
     onClicked: {
-        print("save project button is clicked")
+        Generic.Variables.showSaveDialog = 0
+        if (Specific.Variables.projectFilePathSelected) {
+            proxyPyQml.saveProject()
+        } else {
+            Generic.Variables.showSaveDialog = 1
+        }
     }
 
     function iconColor() {

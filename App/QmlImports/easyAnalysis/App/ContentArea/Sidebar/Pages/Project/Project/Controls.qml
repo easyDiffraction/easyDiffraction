@@ -67,7 +67,7 @@ ColumnLayout {
                 enabled: false
                 text: qsTr("Save project as...")
 
-                onClicked: fileDialogSaveProject.open()
+                onClicked: Generic.Variables.showSaveDialog = 1
 
                 /*
                 GenericAppElements.GuideWindow {
@@ -123,14 +123,18 @@ ColumnLayout {
 
             Dialogs1.FileDialog{
                 id: fileDialogSaveProject
+                visible: Generic.Variables.showSaveDialog
                 selectExisting: false
                 nameFilters: ["Project files (*.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
-                    proxyPyQml.saveProject(fileUrl)
-                    fileDialogSaveProject.close()
-                    if (projectControl.savedProject === false) {
+                    proxyPyQml.saveProjectAs(fileUrl)
+                    Generic.Variables.showSaveDialog = 0
+                    if (Specific.Variables.projectControl.savedProject === false) {
                         failSaveDialog.visible = true
+                    }
+                    if (Generic.Variables.closeAppAfterSaving == 1) {
+                        Qt.quit()
                     }
                 }
             }

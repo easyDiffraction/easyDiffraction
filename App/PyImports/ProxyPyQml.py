@@ -31,12 +31,12 @@ class ProxyPyQml(QObject):
 
         self.info = Config()['release']
 
-        #
+        self._project_file_path = None
         self._main_rcif_path = None
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
         self._calculator_interface = None
-        #
+
         self._project_control = ProjectControl()
         self._measured_data_model = MeasuredDataModel()
         self._calculated_data_model = CalculatedDataModel()
@@ -131,11 +131,16 @@ class ProxyPyQml(QObject):
         writeEmptyProject(self._project_control, self._project_control._projectFile)
         self.onProjectSaved()
 
-    @Slot(str)
-    def saveProject(self, file_path):
+    @Slot()
+    def saveProject(self):
         self._calculator_interface.saveCifs(self._project_control.tempDir.name)
-        writeProject(self._project_control, file_path)
+        writeProject(self._project_control, self._project_file_path)
         self.onProjectSaved()
+
+    @Slot(str)
+    def saveProjectAs(self, file_path):
+        self._project_file_path = file_path
+        self.saveProject()
 
     def onProjectSaved(self):
         self._needToSave = False
@@ -144,6 +149,11 @@ class ProxyPyQml(QObject):
     def onProjectUnsaved(self):
         self._needToSave = True
         self.projectSaveStateChanged.emit()
+
+    def qwe(self):
+        logging.info(f"++++++++++++++++ {bool(self._project_file_path)}")
+        return bool(self._project_file_path);
+
 
     # ##############
     # QML Properties
@@ -164,6 +174,8 @@ class ProxyPyQml(QObject):
     calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
 
     needToSave = Property(bool, lambda self: self._needToSave, notify=projectSaveStateChanged)
+    #projectFilePathSelected = Property('QVariant', lambda self: bool(self._project_file_path), notify=projectSaveStateChanged)
+    projectFilePathSelected = Property(bool, qwe, notify=projectSaveStateChanged)
 
     calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
     undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
