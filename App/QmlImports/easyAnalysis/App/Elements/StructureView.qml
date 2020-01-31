@@ -26,12 +26,12 @@ Rectangle {
 
     Text {
         visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
+        text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.refinement_datetime : ""
         onTextChanged: {
             if (Specific.Variables.projectOpened) {
                 // Create dictionary b_scattering:color
                 // At the moment only get 1st phase.
-                const atom_site_list = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].sites
+                const atom_site_list = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].sites
                 const bscatList = Array.from(new Set(atom_site_list.scat_length_neutron))
                 let bscatColorDict = {}
                 for (let i = 0; i < bscatList.length; i++ ) {
@@ -39,9 +39,9 @@ Rectangle {
                 }
 
                 // Unit cell parameters
-                const a = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_a.store.value
-                const b = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_b.store.value
-                const c = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_c.store.value
+                const a = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].cell.length_a.store.value
+                const b = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].cell.length_b.store.value
+                const c = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].cell.length_c.store.value
 
                 // Remove old atom scatters, but unit cell box (number 1)
                 for (let i = 1, len = chart.seriesList.length; i < len; i++) {

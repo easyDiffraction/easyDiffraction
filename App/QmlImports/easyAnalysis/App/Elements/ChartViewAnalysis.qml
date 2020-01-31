@@ -46,7 +46,7 @@ ColumnLayout {
 
     Text {
         visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
+        text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.refinement_datetime : ""
         onTextChanged: projectChangedTimer.restart()
     }
 
@@ -150,8 +150,8 @@ ColumnLayout {
                     labelsVisible: !showDiff
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_max : 1
+                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_min : 0
+                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_max : 1
                 }
 
                 // Y-axis for measured and calculated data
@@ -166,8 +166,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_max : 0
+                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_min : 0
+                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_max : 0
                 }
 
                 // Measured curve
@@ -393,8 +393,8 @@ ColumnLayout {
 
                     /*
                     onHovered: {
-                        const phase1 = proxyPyQml.project.phasesIds()[0]
-                        const braggPeaks = proxyPyQml.project[phase1].bragg_peaks
+                        const phase1 = Specific.Variables.projectDict.phasesIds()[0]
+                        const braggPeaks = Specific.Variables.projectDict[phase1].bragg_peaks
 
 
                         const position = middleChart.mapToPosition(point)
@@ -473,8 +473,8 @@ ColumnLayout {
                     titleFont: commonFont
                     min: {
                         if (Specific.Variables.projectOpened) {
-                            let min = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min
-                            let max = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max
+                            let min = Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.difference.y_min
+                            let max = Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.difference.y_max
                             let MAX = Math.max(Math.abs(min), Math.abs(max))
                             return Math.sign(min) * MAX
                         }
@@ -482,8 +482,8 @@ ColumnLayout {
                     }
                     max: {
                         if (Specific.Variables.projectOpened) {
-                            let min = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_min
-                            let max = Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.difference.y_max
+                            let min = Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.difference.y_min
+                            let max = Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.difference.y_max
                             let MAX = Math.max(Math.abs(min), Math.abs(max))
                             return Math.sign(max) * MAX
                         }

@@ -127,8 +127,8 @@ ColumnLayout {
                     labelsVisible: !showDiff
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.x_max : 1
+                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_min : 0
+                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_max : 1
                 }
 
                 // Y-axis for measured and calculated data
@@ -143,8 +143,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.project.calculations[Specific.Variables.project.info.experiment_ids[0]].limits.main.y_max : 0
+                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_min : 0
+                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_max : 0
                 }
 
                 // Measured curve

@@ -59,13 +59,14 @@ Rectangle {
         Text {
             text: {
                 let s = ""
-                if (!Specific.Variables.projectOpened)
-                    return s
-                s += "Keywords: " + Specific.Variables.projectManager.projectKeywords + "\n"
-                s += "Phases: " + proxyPyQml.project.info.phase_ids.join(", ") + "\n"
-                s += "Experiments: " + proxyPyQml.project.info.experiment_ids.join(", ") + "\n"
-                s += "Instrument: 6T2 at LLB\n"
-                s += "Modified: " + Specific.Variables.projectManager.projectModified
+                if (Specific.Variables.projectOpened) {
+                    s += "Keywords: " + Specific.Variables.projectManager.projectKeywords + "\n"
+                    s += "Phases: " + Specific.Variables.projectDict.info.phase_ids.join(", ") + "\n"
+                    s += "Experiments: " + Specific.Variables.projectDict.info.experiment_ids.join(", ") + "\n"
+                    s += "Instrument: 6T2 at LLB\n"
+                    s += "Modified: " + Specific.Variables.projectManager.projectModified
+                }
+                return s
             }
             font.pointSize: Generic.Style.fontPointSize + 1
             font.family: Generic.Style.fontFamily

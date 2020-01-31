@@ -8,7 +8,7 @@ QtObject {
     // Main
     property var projectControl: proxyPyQml.projectControl ? proxyPyQml.projectControl : ""
     property var projectManager: proxyPyQml.projectManager ? proxyPyQml.projectManager : ""
-    property var project: projectOpened ? proxyPyQml.project : null
+    property var projectDict: projectOpened ? proxyPyQml.projectDict : null
     property var cif: projectOpened ? proxyPyQml.fileStructure : null
     property var phaseCif: projectOpened ? proxyPyQml.phaseCif : null
     property var experimentCif: projectOpened ? proxyPyQml.experimentCif : null

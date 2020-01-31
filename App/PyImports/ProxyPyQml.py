@@ -158,7 +158,7 @@ class ProxyPyQml(QObject):
 
     # self._projectChanged.connect(self.set_SaveState)
 
-    project = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
+    projectDict = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
