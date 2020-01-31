@@ -63,7 +63,7 @@ class ProxyPyQml(QObject):
         Replace internal structure models based on requested content from CIF
         """
         self._phases_rcif_path = self._project_control.phases_rcif_path
-        self._calculator_interface.updatePhaseDefinition(self._phases_rcif_path)
+        self._calculator_interface.addPhaseDefinition(self._phases_rcif_path)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
@@ -74,7 +74,7 @@ class ProxyPyQml(QObject):
         Replace internal experiment models based on requested content from CIF
         """
         self._experiment_rcif_path = self._project_control.experiment_rcif_path
-        self._calculator_interface.updateExpsDefinition(self._experiment_rcif_path)
+        self._calculator_interface.addExperimentDefinition(self._experiment_rcif_path)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
