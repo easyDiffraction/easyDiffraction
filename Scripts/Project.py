@@ -2,9 +2,10 @@
 
 import os, sys
 import subprocess
-import yaml # pip install pyyaml
-import cryspy # pip install cryspy
-import PySide2, shiboken2 # pip install pyside2
+import yaml
+import cryspy
+import easyInterface
+import PySide2, shiboken2
 import BasicFunctions
 
 # CLASSES
@@ -34,6 +35,7 @@ class Config():
         self.__dict__['user']['home_dir'] = os.path.expanduser('~')
         # freeze
         self.__dict__['pyinstaller']['lib_path']['cryspy'] = cryspy.__path__[0]
+        self.__dict__['pyinstaller']['lib_path']['easyInterface'] = easyInterface.__path__[0]
         self.__dict__['pyinstaller']['lib_path']['shiboken2'] = shiboken2.__path__[0]
         self.__dict__['pyinstaller']['lib_path']['pyside2'] = PySide2.__path__[0]
         # freezed app

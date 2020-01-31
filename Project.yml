@@ -77,6 +77,7 @@ github:
 pyinstaller:
   lib_path:
     cryspy: null
+    easyInterface: null
     shiboken2: null
     pyside2: null
   missing_files:

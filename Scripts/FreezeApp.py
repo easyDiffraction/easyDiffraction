@@ -15,20 +15,22 @@ def freezeApp():
         project_dir_path = config['project']['dir_path']
         distribution_dir_path = config['project']['subdirs']['distribution']['path']
         cryspy_path = config['pyinstaller']['lib_path']['cryspy']
+        easyInterface_path = config['pyinstaller']['lib_path']['easyInterface']
         icon_ext = config['app']['icon']['ext'][os_name]
         separator = config['pyinstaller']['separator'][os_name]
         BasicFunctions.run(
             'pyinstaller', '{0}/App/{1}.py'.format(project_dir_path, project_name),
-            '--name', project_name,                                                 # Name to assign to the bundled app and spec file (default: first script’s basename)
-            '--noconfirm',                                                          # Replace output directory (default: SPECPATH/dist/SPECNAME) without asking for confirmation
-            '--clean',                                                              # Clean PyInstaller cache and remove temporary files before building.
-            '--windowed',                                                           # Windows and Mac OS X: do not provide a console window for standard i/o.
-            '--onedir',                                                             # Create a one-folder bundle containing an executable (default)
-            '--log-level', 'WARN',                                                  # LEVEL may be one of DEBUG, INFO, WARN, ERROR, CRITICAL (default: INFO).
-            '--distpath', "{0}".format(distribution_dir_path),                      # Where to put the bundled app (default: ./dist)
-            '--workpath', os.path.join(distribution_dir_path, 'FreezeAppTmp'),      # Where to put all the temporary work files, .log, .pyz and etc. (default: ./build)
-            '--add-data', "{0}{1}cryspy".format(cryspy_path, separator),            # Add CrysPy library
-            '--add-data', "{0}/App{1}.".format(project_dir_path, separator),        # Add App Pythnon and QML source files
+            '--name', project_name,                                                     # Name to assign to the bundled app and spec file (default: first script’s basename)
+            '--noconfirm',                                                              # Replace output directory (default: SPECPATH/dist/SPECNAME) without asking for confirmation
+            '--clean',                                                                  # Clean PyInstaller cache and remove temporary files before building.
+            '--windowed',                                                               # Windows and Mac OS X: do not provide a console window for standard i/o.
+            '--onedir',                                                                 # Create a one-folder bundle containing an executable (default)
+            '--log-level', 'WARN',                                                      # LEVEL may be one of DEBUG, INFO, WARN, ERROR, CRITICAL (default: INFO).
+            '--distpath', "{0}".format(distribution_dir_path),                          # Where to put the bundled app (default: ./dist)
+            '--workpath', os.path.join(distribution_dir_path, 'FreezeAppTmp'),          # Where to put all the temporary work files, .log, .pyz and etc. (default: ./build)
+            '--add-data', "{0}{1}cryspy".format(cryspy_path, separator),                # Add CrysPy library
+            '--add-data', "{0}{1}easyInterface".format(easyInterface_path, separator),  # Add easyInterface library
+            '--add-data', "{0}/App{1}.".format(project_dir_path, separator),            # Add App Pythnon and QML source files
             '--icon', '{0}/App/QmlImports/{1}/Resources/Icons/App.{2}'.format(project_dir_path, project_name, icon_ext)
             )
     except Exception as exception:
