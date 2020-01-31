@@ -226,6 +226,8 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
 
+        parent: Overlay.overlay
+
         Button {
             id: skipButton
             visible: Generic.Variables.showIntro
@@ -334,6 +336,7 @@ Rectangle {
         // activate links and tooltips
         PropertyAction { target: mainRectangle; property: "enabled"; value: true }
     }
+
 }
 
 
