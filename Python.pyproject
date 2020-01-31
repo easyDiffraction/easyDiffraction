@@ -4,10 +4,10 @@
 
     "App/easyDiffraction.py",
 
-    "App/PyImports/Interface.py",
     "App/PyImports/ProjectSentinel.py",
     "App/PyImports/ProxyPyQml.py",
     "App/PyImports/Refinement.py",
+    "App/PyImports/ReleaseReader.py",
 
     "App/PyImports/DisplayModels/AtomAdpsModel.py",
     "App/PyImports/DisplayModels/AtomMspsModel.py",
