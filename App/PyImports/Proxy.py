@@ -37,7 +37,7 @@ class Proxy(QObject):
         self._experiment_rcif_path = None
         self._calculator_interface = None
         #
-        self.project_control = ProjectControl()
+        self._project_control = ProjectControl()
         self._measured_data_model = MeasuredDataModel()
         self._calculated_data_model = CalculatedDataModel()
         self._bragg_peaks_model = BraggPeaksModel()
@@ -62,7 +62,7 @@ class Proxy(QObject):
         """
         Replace internal structure models based on requested content from CIF
         """
-        self._phases_rcif_path = self.project_control.phases_rcif_path
+        self._phases_rcif_path = self._project_control.phases_rcif_path
         self._calculator_interface.updatePhaseDefinition(self._phases_rcif_path)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
@@ -73,7 +73,7 @@ class Proxy(QObject):
         """
         Replace internal experiment models based on requested content from CIF
         """
-        self._experiment_rcif_path = self.project_control.experiment_rcif_path
+        self._experiment_rcif_path = self._project_control.experiment_rcif_path
         self._calculator_interface.updateExpsDefinition(self._experiment_rcif_path)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
@@ -84,7 +84,7 @@ class Proxy(QObject):
     @Slot()
     def initialize(self):
         logging.info("")
-        self._main_rcif_path = self.project_control.main_rcif_path
+        self._main_rcif_path = self._project_control.main_rcif_path
         #logging.info(self._calculator.asCifDict())
         # TODO This is where you would choose the calculator and import the module
         self._calculator_interface = QtCalculatorInterface(
@@ -102,7 +102,7 @@ class Proxy(QObject):
         #if not check_project_dict(self._calculator.asCifDict()):
         #    # Note that new projects also fall into here, so:
         #    if not self._calculator.name():
-        #        self.project_control._isValidCif = False
+        #        self._project_control._isValidCif = False
         #        return
         #
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
@@ -127,14 +127,14 @@ class Proxy(QObject):
 
     @Slot()
     def createProjectZip(self):
-        self._calculator_interface.writeMainCif(self.project_control.tempDir.name)
-        writeEmptyProject(self.project_control, self.project_control._projectFile)
+        self._calculator_interface.writeMainCif(self._project_control.tempDir.name)
+        writeEmptyProject(self._project_control, self._project_control._projectFile)
         self.onProjectSaved()
 
     @Slot(str)
-    def saveProject(self, saveName):
-        self._calculator_interface.saveCifs(self.project_control.tempDir.name)
-        writeProject(self.project_control, saveName)
+    def saveProject(self, file_path):
+        self._calculator_interface.saveCifs(self._project_control.tempDir.name)
+        writeProject(self._project_control, file_path)
         self.onProjectSaved()
 
     def onProjectSaved(self):
@@ -158,7 +158,6 @@ class Proxy(QObject):
 
     # self._projectChanged.connect(self.set_SaveState)
 
-    calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
     project = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
@@ -166,6 +165,7 @@ class Proxy(QObject):
 
     needToSave = Property(bool, lambda self: self._needToSave, notify=projectSaveStateChanged)
 
+    calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
     undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
     redoText = Property('QVariant', lambda self: self._calculator_interface.redoText(), notify=canUndoOrRedoChanged)
     canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)
@@ -173,6 +173,9 @@ class Proxy(QObject):
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
+
+    projectControl = Property('QVariant', lambda self: self._project_control, notify=projectChanged) #?
+    projectManager = Property('QVariant', lambda self: self._project_control.manager, notify=projectChanged) #?
 
     measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
     calculatedData = Property('QVariant', lambda self: self._calculated_data_model, constant=True)
@@ -198,13 +201,11 @@ class Proxy(QObject):
         """
         Notfy the listeners about refinement results
         """
-        logging.info("")
         self._refinement_running = False
         self._refinement_done = True
         self._refinement_result = res
         #self.onProjectUnsaved()
         self.refinementChanged.emit()
-
 
     def _thread_failed(self, reason):
         """
@@ -234,12 +235,11 @@ class Proxy(QObject):
         self._refine_thread.failed.connect(self._thread_failed)
         self._refine_thread.start()
         self.refinementChanged.emit()
-        logging.info("")
 
     refinementChanged = Signal()
+    refinementResult = Property('QVariant', lambda self: self._refinement_result, notify=refinementChanged)
     refinementRunning = Property(bool, lambda self: self._refinement_running, notify=refinementChanged)
     refinementDone = Property(bool, lambda self: self._refinement_done, notify=refinementChanged)
-    refinementResult = Property('QVariant', lambda self: self._refinement_result, notify=refinementChanged)
 
     # ######
     # REPORT
@@ -259,7 +259,7 @@ class Proxy(QObject):
         Currently only html
         """
         full_filename = filename + extension.lower()
-        full_filename = os.path.join(self.project_control.get_project_dir_absolute_path(), full_filename)
+        full_filename = os.path.join(self._project_control.get_project_dir_absolute_path(), full_filename)
 
         if not self.report_html:
             logging.info("No report to save")

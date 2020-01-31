@@ -20,7 +20,7 @@ ColumnLayout {
         orientation: ListView.Horizontal
         spacing: 20
 
-        model: Specific.Variables.projectOpened ? proxy.statusInfo : null
+        model: Specific.Variables.statusInfo
 
         visible: model !== null
 

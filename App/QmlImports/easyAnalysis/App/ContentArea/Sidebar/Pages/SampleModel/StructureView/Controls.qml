@@ -23,7 +23,6 @@ ColumnLayout {
         visible: false
         text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
         onTextChanged: {
-            //print("--------------------------------------------------------- Time stamp: ", text)
             if (Specific.Variables.projectOpened) {
                 const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atoms
                 let type_symbol_list = []
@@ -71,7 +70,7 @@ ColumnLayout {
                     text: "Remove all phases" }
                 GenericAppContentAreaButtons.Import {
                     text: "Import new phase from CIF"
-                    enabled: !proxy.refinementRunning
+                    enabled: !Specific.Variables.refinementRunning
                     onClicked: fileDialogLoadPhase.open()
                     }
                 GenericAppContentAreaButtons.Export {
@@ -86,12 +85,12 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", examplesDir)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    projectControl.loadPhases(fileUrl)
+                    Specific.Variables.projectControl.loadPhases(fileUrl)
                     fileDialogLoadPhase.close()
                     var old_analysis_state = Generic.Variables.analysisPageFinished
                     var old_summary_state = Generic.Variables.summaryPageFinished
                     //if (projectControl.validCif) {
-                    proxy.loadPhasesFromFile()
+                    pyQmlProxy.loadPhasesFromFile()
                     Specific.Variables.projectOpened = true
                     //Generic.Variables.projectPageFinished = true
                     Generic.Variables.samplePageFinished = true
@@ -136,7 +135,7 @@ ColumnLayout {
                 // Table
                 GenericAppElements.CellParametersTableView {
                     Layout.fillWidth: true
-                    model: Specific.Variables.projectOpened ? proxy.cellParameters : null
+                    model: Specific.Variables.cellParameters
                 }
             }
         }
@@ -158,7 +157,7 @@ ColumnLayout {
             // Table
             GenericAppElements.AtomsTableView {
                 Layout.fillWidth: true
-                model: Specific.Variables.projectOpened ? proxy.atomSites : null
+                model: Specific.Variables.atomSites
             }
 
             // Buttons
@@ -179,7 +178,7 @@ ColumnLayout {
             // Table
             GenericAppElements.AtomAdpsTableView {
                 Layout.fillWidth: true
-                model: Specific.Variables.projectOpened ? proxy.atomAdps : null
+                model: Specific.Variables.atomAdps
             }
         }
     }
@@ -193,7 +192,7 @@ ColumnLayout {
             // Table
             GenericAppElements.AtomMspsTableView {
                 Layout.fillWidth: true
-                model: Specific.Variables.projectOpened ? proxy.atomMsps : null
+                model: Specific.Variables.atomMsps
             }
         }
     }

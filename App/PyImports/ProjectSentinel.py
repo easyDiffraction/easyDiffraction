@@ -17,7 +17,7 @@ class ProjectControl(QObject):
         self.tempDir = make_temp_dir()
         self.manager = ProjectManager()
         self._saveSuccess = False
-        self._projectFile = None
+        self._project_file = None
         self._isValidCif = None
         self.main_rcif_path = None
         self.phases_rcif_path = None
@@ -59,7 +59,7 @@ class ProjectControl(QObject):
             # This is if we've loaded a `zip`
             if check_project_file(self.main_rcif_path):
                 _ = temp_project_dir(self.main_rcif_path, self.tempDir)
-                self._projectFile = self.main_rcif_path
+                self._project_file = self.main_rcif_path
                 self.manager.validSaveState = True
                 self.main_rcif_path = os.path.join(self.tempDir.name, 'main.cif')
         else:
@@ -116,7 +116,7 @@ class ProjectControl(QObject):
         saveName = dataDir
         if extension != '.zip':
             saveName = dataDir + '.zip'
-        self._projectFile = saveName
+        self._project_file = saveName
         self.manager.validSaveState = True
 
     @Slot(str, result=str)
@@ -187,7 +187,7 @@ class ProjectControl(QObject):
         self.tempDir = make_temp_dir()
         self.manager.resetManager()
         self._saveSuccess = False
-        self._projectFile = None
+        self._project_file = None
         self._isValidCif = None
         self.main_rcif_path = None
         self.structure_rcif_path = None
@@ -396,11 +396,11 @@ def write_zip(data_dir, saveName, mustContain, canContain):
 def writeProject(projectModel, saveName):
     allOK, saveName = create_project_zip(projectModel.tempDir.name, saveName)
     projectModel._saveSuccess = True
-    projectModel._projectFile = saveName
+    projectModel._project_file = saveName
     if not allOK:
         raise FileNotFoundError
 
 def writeEmptyProject(projectModel, saveName):
     saveName = create_empty_project(projectModel.tempDir.name, saveName)
     projectModel._saveSuccess = True
-    projectModel._projectFile = saveName
+    projectModel._project_file = saveName

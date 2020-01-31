@@ -37,7 +37,7 @@ ColumnLayout {
                 columns: 2
 
                 GenericAppContentAreaButtons.Import {
-                 enabled: !proxy.refinementRunning
+                 enabled: !Specific.Variables.refinementRunning
                  text: "Import data from local drive";
                  onClicked: fileDialogLoadExps.open()
                 }
@@ -55,12 +55,12 @@ ColumnLayout {
         folder: settings.value("lastOpenedProjectFolder", examplesDir)
         onAccepted: {
             settings.setValue("lastOpenedProjectFolder", folder)
-            projectControl.loadExperiment(fileUrl)
+            Specific.Variables.projectControl.loadExperiment(fileUrl)
             fileDialogLoadExps.close()
             var old_analysis_state = Generic.Variables.analysisPageFinished
             var old_summary_state = Generic.Variables.summaryPageFinished
             //if (projectControl.validCif) {
-            proxy.loadExperimentFromFile()
+            pyQmlProxy.loadExperimentFromFile()
             Specific.Variables.projectOpened = true
             //Generic.Variables.projectPageFinished = true
             //Generic.Variables.samplePageFinished = true

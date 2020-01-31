@@ -183,32 +183,14 @@ ColumnLayout {
                     borderWidth: 1.5
                     //useOpenGL: true
 
-
-
                     lowerSeries: LineSeries {
                         id: lowerLineSeries
-                        // Old approach (slow): use QStandartItemModel-base model updated on python side
-                        /*
-                        VXYModelMapper{
-                            model: Specific.Variables.projectOpened ? proxy.measuredData : null
-                            xColumn: 0
-                            yColumn: 5
-                        }
-                        */
                         // New approach (fast): pass a reference to LineSeries to python for updating
                         Component.onCompleted: Specific.Variables.measuredData.setLowerSeries(lowerLineSeries)
                     }
 
                     upperSeries: LineSeries {
                         id: upperLineSeries
-                        // Old approach (slow): use QStandartItemModel-base model updated on python side
-                        /*
-                        VXYModelMapper{
-                            model: Specific.Variables.projectOpened ? proxy.measuredData : null
-                            xColumn: 0
-                            yColumn: 6
-                        }
-                        */
                         // New approach (fast): pass a reference to LineSeries to python for updating
                         Component.onCompleted: Specific.Variables.measuredData.setUpperSeries(upperLineSeries)
                     }
@@ -238,14 +220,6 @@ ColumnLayout {
                     width: 2
                     //useOpenGL: true
 
-                    // Old approach (slow): use QStandartItemModel-base model updated on python side
-                    /*
-                    VXYModelMapper{
-                        model: Specific.Variables.projectOpened ? proxy.calculatedData : null
-                        xColumn: 0
-                        yColumn: 1
-                    }
-                    */
                     // New approach (fast): pass a reference to LineSeries to python for updating
                     Component.onCompleted: Specific.Variables.calculatedData.setCalcSeries(calcSeries)
 
@@ -414,25 +388,17 @@ ColumnLayout {
                     borderColor: color
                     color: "#333"
 
-                    // Old approach (slow): use QStandartItemModel-base model updated on python side
-                    /*
-                    VXYModelMapper{
-                        model: Specific.Variables.projectOpened ? proxy.braggPeaksTicks : null
-                        xColumn: 0
-                        yColumn: 1
-                    }
-                    */
                     // New approach (fast): pass a reference to LineSeries to python for updating
                     Component.onCompleted: Specific.Variables.braggPeaks.setSeries(braggSeries)
 
                     /*
                     onHovered: {
-                        const phase1 = proxy.project.phasesIds()[0]
-                        const braggPeaks = proxy.project[phase1].bragg_peaks
+                        const phase1 = pyQmlProxy.project.phasesIds()[0]
+                        const braggPeaks = pyQmlProxy.project[phase1].bragg_peaks
 
 
                         const position = middleChart.mapToPosition(point)
-                        const tth = point.x - parseFloat(proxy.tmp_setup_zero_shift())
+                        const tth = point.x - parseFloat(pyQmlProxy.tmp_setup_zero_shift())
                         const hklList = tthHklDict[tth]
                         let text = "x: %1\nhkl:".arg(point.x)
                         for (let i = 0; i < hklList.length; i++) {
@@ -537,30 +503,14 @@ ColumnLayout {
 
                     upperSeries: LineSeries {
                         id: upperDiffSeries
-                        // Old approach (slow): use QStandartItemModel-base model updated on python side
-                        /*
-                        VXYModelMapper{
-                            model: Specific.Variables.projectOpened ? proxy.calculatedData : null
-                            xColumn: 0
-                            yColumn: 2
-                        }
-                        */
                         // New approach (fast): pass a reference to LineSeries to python for updating
-                        Component.onCompleted: proxy.calculatedData.setUpperDiffSeries(upperDiffSeries)
+                        Component.onCompleted: Specific.Variables.calculatedData.setUpperDiffSeries(upperDiffSeries)
                     }
 
                     lowerSeries: LineSeries {
                         id: lowerDiffSeries
-                        // Old approach (slow): use QStandartItemModel-base model updated on python side
-                        /*
-                        VXYModelMapper{
-                            model: Specific.Variables.projectOpened ? proxy.calculatedData : null
-                            xColumn: 0
-                            yColumn: 3
-                        }
-                        */
                         // New approach (fast): pass a reference to LineSeries to python for updating
-                        Component.onCompleted: proxy.calculatedData.setLowerDiffSeries(lowerDiffSeries)
+                        Component.onCompleted: Specific.Variables.calculatedData.setLowerDiffSeries(lowerDiffSeries)
                     }
 
                     onHovered: {
@@ -625,7 +575,7 @@ ColumnLayout {
     // Save chart onRefinementDone
     Timer {
         interval: 250
-        running: proxy.refinementDone
+        running: Specific.Variables.refinementDone
         repeat: false
         onTriggered: {
             if (showDiff) {
@@ -634,7 +584,7 @@ ColumnLayout {
                 const reduced_height =  chartContainer.height / chartContainer.width * reduced_width
                 chartContainer.grabToImage(
                             function(result) {
-                                result.saveToFile(projectControl.project_dir_absolute_path + "/saved_refinement.png")
+                                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/saved_refinement.png")
                             },
                             Qt.size(reduced_width, reduced_height)
                             )

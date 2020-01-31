@@ -44,7 +44,7 @@ ColumnLayout {
             GenericAppContentAreaButtons.Open {
                 id: openButton
                 text: qsTr("Open an existing project")
-                enabled: !proxy.refinementRunning
+                enabled: !Specific.Variables.refinementRunning
 
                 onClicked: fileDialogLoadProject.open()
 
@@ -92,11 +92,11 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    projectControl.loadProject(fileUrl)
+                    Specific.Variables.projectControl.loadProject(fileUrl)
                     fileDialogLoadProject.close()
-                    if (projectControl.validCif) {
-                        proxy.initialize()
-//                        if (proxy.validPojectZip) {
+                    if (Specific.Variables.projectControl.validCif) {
+                        pyQmlProxy.initialize()
+//                        if (pyQmlProxy.validPojectZip) {
 //                            saveStateButton.enabled = true
 //                        } else {
 //                            saveStateButton.enabled = false
@@ -127,7 +127,7 @@ ColumnLayout {
                 nameFilters: ["Project files (*.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
-                    proxy.saveProject(fileUrl)
+                    pyQmlProxy.saveProject(fileUrl)
                     fileDialogSaveProject.close()
                     if (projectControl.savedProject === false) {
                         failSaveDialog.visible = true
@@ -142,7 +142,7 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     fileDialogCreateProject.close()
-                    projectControl.createProject(fileUrl)
+                    Specific.Variables.projectControl.createProject(fileUrl)
                     getProjectInfoDialog.visible = true
                     Generic.Variables.projectPageFinished = true
                     Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
@@ -221,9 +221,9 @@ ColumnLayout {
                 }
                 standardButtons: Dialog.Ok
                 onAccepted: {
-                    projectControl.writeMain(titleInput.text, keywordsInput.text)
-                    proxy.initialize()
-                    proxy.createProjectZip()
+                    Specific.Variables.projectControl.writeMain(titleInput.text, keywordsInput.text)
+                    pyQmlProxy.initialize()
+                    pyQmlProxy.createProjectZip()
                     Specific.Variables.projectOpened = true
                 }
             }

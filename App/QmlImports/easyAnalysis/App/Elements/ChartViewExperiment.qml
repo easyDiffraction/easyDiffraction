@@ -160,32 +160,14 @@ ColumnLayout {
                     borderWidth: 1.5
                     //useOpenGL: true
 
-
-
                     lowerSeries: LineSeries {
                         id: lowerLineSeries
-                        // Old approach (slow): use QStandartItemModel-base model updated on python side
-                        /*
-                        VXYModelMapper{
-                            model: Specific.Variables.projectOpened ? proxy.measuredData : null
-                            xColumn: 0
-                            yColumn: 5
-                        }
-                        */
                         // New approach (fast): pass a reference to LineSeries to python for updating
                         Component.onCompleted: Specific.Variables.measuredData.setLowerSeries(lowerLineSeries)
                     }
 
                     upperSeries: LineSeries {
                         id: upperLineSeries
-                        // Old approach (slow): use QStandartItemModel-base model updated on python side
-                        /*
-                        VXYModelMapper{
-                            model: Specific.Variables.projectOpened ? proxy.measuredData : null
-                            xColumn: 0
-                            yColumn: 6
-                        }
-                        */
                         // New approach (fast): pass a reference to LineSeries to python for updating
                         Component.onCompleted: Specific.Variables.measuredData.setUpperSeries(upperLineSeries)
                     }

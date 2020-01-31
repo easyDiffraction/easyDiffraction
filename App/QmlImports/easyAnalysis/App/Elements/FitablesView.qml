@@ -194,7 +194,7 @@ Column {
                         TextInput {
                             width: cellWidthProvider(3)
                             height: parent.height
-                            enabled: !proxy.refinementRunning
+                            enabled: !Specific.Variables.refinementRunning
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
@@ -227,7 +227,7 @@ Column {
                         CheckBox {
                             width: cellWidthProvider(5)
                             height: parent.height
-                            enabled: !proxy.refinementRunning
+                            enabled: !Specific.Variables.refinementRunning
                             checked: refine
                             onToggled: refineEdit = checked
                         }
@@ -254,7 +254,7 @@ Column {
     // Slider
     Row {
         id: slideRow
-        enabled: !proxy.refinementRunning
+        enabled: !Specific.Variables.refinementRunning
         width: parent.width
         height: cellHeight
         spacing: 10

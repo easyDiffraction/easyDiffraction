@@ -47,7 +47,6 @@ Column {
         visible: false
         text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
         onTextChanged: {
-            //print("--------------------------------------------------------- Time stamp: ", text)
             if (Specific.Variables.projectOpened) {
                 const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site
                 let type_symbol_list = []

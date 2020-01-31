@@ -7,6 +7,7 @@ import QtQuick.Dialogs 1.3 as Dialogs1
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
+import easyDiffraction 1.0 as Specific
 
 Dialog {
     id: dialog
@@ -148,9 +149,9 @@ Dialog {
         nameFilters: ["Project files (*.zip)"]
         folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
         onAccepted: {
-            proxy.saveProject(fileUrl)
+            pyQmlProxy.saveProject(fileUrl)
             fileDialogSaveProject.close()
-            if (projectControl.savedProject === false) {
+            if (Specific.Variables.projectControl.savedProject === false) {
                 failSaveDialog.visible = true
             } else {
                 Qt.exit(0)

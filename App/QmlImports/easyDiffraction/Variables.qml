@@ -3,27 +3,44 @@ import QtQuick 2.12
 
 QtObject {
 
-    // Python models
     property bool projectOpened: false
 
-    property var calculatorInterface: projectOpened ? proxy.calculatorInterface : null
-    property var undoText: calculatorInterface ? proxy.undoText : ""
-    property var redoText: calculatorInterface ? proxy.redoText : ""
-    property var canUndo: calculatorInterface ? proxy.canUndo : false
-    property var canRedo: calculatorInterface ? proxy.canRedo : false
+    // Main
+    property var projectControl: pyQmlProxy.projectControl ? pyQmlProxy.projectControl : ""
+    property var projectManager: pyQmlProxy.projectManager ? pyQmlProxy.projectManager : ""
+    property var project: projectOpened ? pyQmlProxy.project : null
+    property var cif: projectOpened ? pyQmlProxy.fileStructure : null
+    property var phaseCif: projectOpened ? pyQmlProxy.phaseCif : null
+    property var experimentCif: projectOpened ? pyQmlProxy.experimentCif : null
+    property var calculationCif: projectOpened ? pyQmlProxy.calculationCif : null
+    property var needToSave: projectOpened ? pyQmlProxy.needToSave : false
 
-    property var project: projectOpened ? proxy.project : null
-    property var cif: projectOpened ? proxy.fileStructure : null
-    property var phaseCif: projectOpened ? proxy.phaseCif : null
-    property var experimentCif: projectOpened ? proxy.experimentCif : null
-    property var calculationCif: projectOpened ? proxy.calculationCif : null
-    property var needToSave: projectOpened ? proxy.needToSave : false
+    // Measured and calculated data
+    property var measuredData: pyQmlProxy.measuredData
+    property var measuredDataHeaderModel: projectOpened ? pyQmlProxy.measuredData.asHeadersModel() : null
+    property var measuredDataModel: projectOpened ? pyQmlProxy.measuredData.asModel() : null
+    property var calculatedData: pyQmlProxy.calculatedData
+    property var braggPeaks: pyQmlProxy.braggPeaks
 
-    property var measuredData: proxy.measuredData
-    property var measuredDataHeaderModel: projectOpened ? proxy.measuredData.asHeadersModel() : null
-    property var measuredDataModel: projectOpened ? proxy.measuredData.asModel() : null
+    // Models
+    property var fitables: projectOpened ? pyQmlProxy.fitables : null
+    property var cellParameters: projectOpened ? pyQmlProxy.cellParameters : null
+    property var cellBox: projectOpened ? pyQmlProxy.cellBox : null
+    property var atomSites: projectOpened ? pyQmlProxy.atomSites : null
+    property var atomAdps: projectOpened ? pyQmlProxy.atomAdps : null
+    property var atomMsps: projectOpened ? pyQmlProxy.atomMsps : null
+    property var statusInfo: projectOpened ? pyQmlProxy.statusInfo : null
 
-    property var calculatedData: proxy.calculatedData
-    property var braggPeaks: proxy.braggPeaks
+    // Refinement
+    property var refinementRunning: pyQmlProxy.refinementRunning
+    property var refinementDone: pyQmlProxy.refinementDone
+    property var refinementResult: pyQmlProxy.refinementResult
+
+    // Undo-Redo
+    property var calculatorInterface: projectOpened ? pyQmlProxy.calculatorInterface : null
+    property var undoText: calculatorInterface ? pyQmlProxy.undoText : ""
+    property var redoText: calculatorInterface ? pyQmlProxy.redoText : ""
+    property var canUndo: calculatorInterface ? pyQmlProxy.canUndo : false
+    property var canRedo: calculatorInterface ? pyQmlProxy.canRedo : false
 
 }

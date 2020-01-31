@@ -13,13 +13,12 @@ Rectangle {
     // Create report onRefinementDone
     Timer {
         interval: 1000
-        running: proxy.refinementDone
+        running: Specific.Variables.refinementDone
         repeat: false
         onTriggered: {
-            print("create report")
             const html = writeHTML()
             textArea.text = html
-            proxy.store_report(html)
+            pyQmlProxy.store_report(html)
         }
     }
 
@@ -80,12 +79,12 @@ Rectangle {
         s += '<th align="right">Error</th>'
         s += '<th align="right">Fit</th>'
         s += '</tr>'
-        for (let row_index = 0; row_index < proxy.fitables.rowCount(); row_index++) {
-            const index = proxy.fitables.index(row_index, 0)
-            const label = proxy.fitables.data(index, Qt.UserRole + 2)
-            const refine = proxy.fitables.data(index, Qt.UserRole + 7)
-            const value = refine ? proxy.fitables.data(index, Qt.UserRole + 3).toFixed(5) : ''
-            const error = refine ? proxy.fitables.data(index, Qt.UserRole + 4).toFixed(5) : ''
+        for (let row_index = 0; row_index < Specific.Variables.fitables.rowCount(); row_index++) {
+            const index = Specific.Variables.fitables.index(row_index, 0)
+            const label = Specific.Variables.fitables.data(index, Qt.UserRole + 2)
+            const refine = Specific.Variables.fitables.data(index, Qt.UserRole + 7)
+            const value = refine ? Specific.Variables.fitables.data(index, Qt.UserRole + 3).toFixed(5) : ''
+            const error = refine ? Specific.Variables.fitables.data(index, Qt.UserRole + 4).toFixed(5) : ''
             const fit = refine ? '+' : ''
             s += '<tr>'
             s += '<td align="right">' + (row_index + 1) + '</td>'
@@ -102,15 +101,15 @@ Rectangle {
     function writeHtmlBody() {
         let s = ''
         s += '<body>'
-        s += `<h1>${projectManager.projectName}</h1>`
+        s += `<h1>${Specific.Variables.projectManager.projectName}</h1>`
         s += '<p>'
-        s += `<b>Software:</b> <a href="${proxy.project.app.url}">${proxy.project.app.name} v${proxy.project.app.version}</a><br>`
-        s += `<b>Calculator:</b> <a href="${proxy.project.calculator.url}">${proxy.project.calculator.name} v${proxy.project.calculator.version}</a><br>`
-        s += `<b>Keywords:</b> ${projectManager.projectKeywords}<br>`
-        s += `<b>Phases:</b> ${proxy.project.info.phase_ids.join(', ')}<br>`
-        s += `<b>Experiments:</b> ${proxy.project.info.experiment_ids.join(', ')}<br>`
+        s += `<b>Software:</b> <a href="${pyQmlProxy.project.app.url}">${pyQmlProxy.project.app.name} v${pyQmlProxy.project.app.version}</a><br>`
+        s += `<b>Calculator:</b> <a href="${pyQmlProxy.project.calculator.url}">${pyQmlProxy.project.calculator.name} v${pyQmlProxy.project.calculator.version}</a><br>`
+        s += `<b>Keywords:</b> ${Specific.Variables.projectManager.projectKeywords}<br>`
+        s += `<b>Phases:</b> ${pyQmlProxy.project.info.phase_ids.join(', ')}<br>`
+        s += `<b>Experiments:</b> ${pyQmlProxy.project.info.experiment_ids.join(', ')}<br>`
         s += `<b>Instrument:</b> 6T2 at LLB<br>`
-        s += `<b>Modified:</b> ${proxy.project.info.modified_datetime}<br>`
+        s += `<b>Modified:</b> ${pyQmlProxy.project.info.modified_datetime}<br>`
         s += `<b>Chi2:</b> ${Generic.Variables.chiSquared} <br>`
         s += '</p>'
         s += '<h2>Parameters</h2>'
@@ -119,11 +118,11 @@ Rectangle {
         s += '<br></p>'
         s += '<h2>Fitting</h2>'
         s += '<p>'
-        s += `<img src="${Qt.resolvedUrl(projectControl.fullFilePath("saved_refinement.png"))}">`
+        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("saved_refinement.png"))}">`
         s += '</p>'
         s += '<h2>Structure</h2>'
         s += '<p>'
-        s += `<img src="${Qt.resolvedUrl(projectControl.fullFilePath("saved_structure.png"))}">`
+        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("saved_structure.png"))}">`
         s += '</p>'
         s += '</body>'
         return s

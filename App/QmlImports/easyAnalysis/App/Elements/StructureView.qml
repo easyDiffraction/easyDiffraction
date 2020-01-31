@@ -127,7 +127,7 @@ Rectangle {
             axisZ: ValueAxis3D { labelFormat: "" }
 
             //GenericAppElements.AtomScatter3DSeries {
-            //    atomModel: proxy.cellBox
+            //    atomModel: pyQmlProxy.cellBox
             //}
 
             // Unit cell chart settings
@@ -138,7 +138,7 @@ Rectangle {
                 colorStyle: Theme3D.ColorStyleUniform
 
                 ItemModelScatterDataProxy {
-                    itemModel: Specific.Variables.projectOpened ? proxy.cellBox : null
+                    itemModel: Specific.Variables.cellBox
                     xPosRole: "xPos"
                     yPosRole: "yPos"
                     zPosRole: "zPos"
@@ -196,12 +196,12 @@ Rectangle {
     // Save chart onRefinementDone
     Timer {
         interval: 250
-        running: proxy.refinementDone
+        running: Specific.Variables.refinementDone
         repeat: false
         onTriggered: {
             //print("save structure")
             chartContainer.grabToImage(function(result) {
-                result.saveToFile(projectControl.project_dir_absolute_path + "/saved_structure.png")
+                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/saved_structure.png")
             })
         }
     }

@@ -25,7 +25,7 @@ ColumnLayout {
             // Fitables table
             GenericAppElements.FitablesView {
                 Layout.fillWidth: true
-                model: Specific.Variables.projectOpened ? proxy.fitables : null
+                model: Specific.Variables.fitables
                 GenericAppElements.GuideWindow {
                     message: "Here you can see all the refinable parameters.\n\nYou can change their starting values manually\nor using the slider below."
                     position: "left"
@@ -42,7 +42,7 @@ ColumnLayout {
                 GenericAppContentAreaButtons.PausePlay {
                     id: pausePlayButton
                     onClicked: {
-                        proxy.refine()
+                        pyQmlProxy.refine()
                         Generic.Variables.analysisPageFinished = true
                     }
                     GenericAppElements.GuideWindow {
@@ -101,8 +101,8 @@ ColumnLayout {
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Summary"
-            enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && proxy.refinementDone
-            highlighted: proxy.refinementDone
+            enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && Specific.Variables.refinementDone
+            highlighted: Specific.Variables.refinementDone
             ToolTip.text: qsTr("Go to the next step: Summary")
             onClicked: {
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
@@ -120,30 +120,28 @@ ColumnLayout {
     // Info dialog (after refinement)
 
     GenericControls.Dialog {
-        visible: proxy.refinementDone
+        visible: Specific.Variables.refinementDone && Boolean(Specific.Variables.refinementResult)
         title: "Refinement Results"
+
+        onVisibleChanged: {
+            if (!visible)
+                return
+
+            const res = Specific.Variables.refinementResult
+
+            Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
+            Generic.Variables.numRefinedPars = res.num_refined_parameters ? res.num_refined_parameters : Generic.Variables.numRefinedPars
+
+            info.text = `${res.refinement_message}`
+            info.text += res.final_chi_sq ? `\n\nGoodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
+            info.text += res.num_refined_parameters ? `\nNum. refined parameters: ${res.num_refined_parameters}` : ""
+        }
 
         Column {
             padding: 20
             spacing: 15
 
-            Text {
-                text: {
-                    if (!proxy.refinementDone)
-                        return ""
-                    const res = proxy.refinementResult
-                    Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
-                    Generic.Variables.numRefinedPars = res.num_refined_parameters ? res.num_refined_parameters : Generic.Variables.numRefinedPars
-                    let s = `${res.refinement_message}`
-                    s += res.final_chi_sq ? `\n\nGoodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
-                    s += res.num_refined_parameters ? `\nNum. refined parameters: ${res.num_refined_parameters}` : ""
-                    //s += res.nfev ? `\nNumber of evaluations of the objective functions: ${res.nfev}` : ""
-                    //s += res.nit ? `\nNumber of iterations performed by the optimizer: ${res.nit}` : ""
-                    //s += res.started_chi_sq ? `\nStarted goodness-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(2)}` : ""
-                    //s += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
-                    return s
-                }
-            }
+            Text { id: info }
         }
     }
 }
