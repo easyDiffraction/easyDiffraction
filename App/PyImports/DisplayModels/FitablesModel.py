@@ -3,8 +3,9 @@ import logging
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
-import easyInterface.Utils.Helpers as Helpers
+from easyInterface.Utils.Helpers import find_in_obj, nested_get
 from PyImports.DisplayModels.BaseModel import BaseModel
+
 
 class FitablesModel(BaseModel):
     def __init__(self, parent=None):
@@ -41,7 +42,7 @@ class FitablesModel(BaseModel):
         project_dict = self._project_dict
         # set column
         column = []
-        for path in Helpers.find_in_obj(project_dict.asDict(), 'refine'):
+        for path in find_in_obj(project_dict.asDict(), 'refine'):
             keys_list = path[:-1]
             hide = project_dict.getItemByPath(keys_list + ['hide'])
             if hide:
@@ -62,9 +63,9 @@ class FitablesModel(BaseModel):
                 elif role_name == 'max':
                     value = project_dict.getItemByPath(keys_list).max
                 elif role_name == 'unit':
-                    value = str(Helpers.nested_get(project_dict, keys_list + [role_name])) # conversion to str is needed if role = unit !
+                    value = str(nested_get(project_dict, keys_list + [role_name])) # conversion to str is needed if role = unit !
                 else:
-                    value = Helpers.nested_get(project_dict, keys_list + [role_name])
+                    value = nested_get(project_dict, keys_list + [role_name])
                 item.setData(value, role)
             column.append(item)
         # set model

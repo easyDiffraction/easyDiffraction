@@ -1,9 +1,10 @@
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
-import easyInterface.Utils.Helpers as Helpers
+from easyInterface.Utils.Helpers import get_num_refine_pars
 from easyInterface.Utils.StatusObjects import StatusItem, StatusList
 from PyImports.DisplayModels.BaseModel import BaseModel
+
 
 class StatusModel(BaseModel):
     def __init__(self, parent=None):
@@ -92,7 +93,7 @@ class StatusModel(BaseModel):
 
 
         # Get number of parameters
-        numPars = Helpers.get_num_refine_pars(project_dict.asDict())
+        numPars = get_num_refine_pars(project_dict.asDict())
 
         # Set the other parameters.
         self._interestedList.setItemValue('numPars', numPars)

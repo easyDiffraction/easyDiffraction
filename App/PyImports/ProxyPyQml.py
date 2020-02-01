@@ -9,7 +9,7 @@ from PyImports.ProjectSentinel import ProjectControl, writeProject, check_projec
 from PyImports.Refinement import Refiner
 from PyImports.ReleaseReader import Config
 
-import easyInterface.Utils.Helpers as Helpers
+from easyInterface.Utils.Helpers import open_url
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
 from easyInterface.Diffraction.QtInterface import QtCalculatorInterface
 
@@ -283,4 +283,4 @@ class ProxyPyQml(QObject):
 
         # Show the generated report in the default browser
         url = os.path.realpath(full_filename)
-        Helpers.open_url(url=url)
+        open_url(url=url)

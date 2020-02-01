@@ -38,7 +38,7 @@
     ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/PhaseObj/SpaceGroup.py",
 
     ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/Utils/BaseClasses.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/Utils/DictTools.py",
+    ".python-venv/src/easyinterface-develop/easyInterface/Utils/DictTools.py",
     ".python-venv/src/easyinterface-develop/easyInterface/DataClasses/Utils/InfoObj.py",
 
     ".python-venv/src/easyinterface-develop/easyInterface/Utils/Helpers.py",
