@@ -3,8 +3,8 @@ import pytest
 from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
 
-from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.Interface import CalculatorInterface
+from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Diffraction.Interface import CalculatorInterface
 
 import PyImports.DisplayModels.FileStructureModel as Model
 

@@ -6,9 +6,9 @@ from PySide2.QtGui import QStandardItemModel
 import cryspy
 
 # module for testing
-from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.Calculators.CryspyCalculator import PHASE_SEGMENT, EXPERIMENT_SEGMENT
-from easyInterface.Interface import CalculatorInterface
+from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Diffraction.Calculators.CryspyCalculator import PHASE_SEGMENT, EXPERIMENT_SEGMENT
+from easyInterface.Diffraction.Interface import CalculatorInterface
 
 TEST_FILE = "file:Tests/Data/main.cif"
 fitdata_data = [0, 2, 3, 5]

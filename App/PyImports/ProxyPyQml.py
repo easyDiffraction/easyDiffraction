@@ -3,25 +3,15 @@ import logging
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
 from PySide2.QtGui import QPdfWriter, QTextDocument
-from PyImports.DisplayModels.MeasuredDataModel import MeasuredDataModel
-from PyImports.DisplayModels.CalculatedDataModel import CalculatedDataModel
-from PyImports.DisplayModels.BraggPeaksModel import BraggPeaksModel
-from PyImports.DisplayModels.CellParametersModel import CellParametersModel
-from PyImports.DisplayModels.CellBoxModel import CellBoxModel
-from PyImports.DisplayModels.AtomSitesModel import AtomSitesModel
-from PyImports.DisplayModels.AtomAdpsModel import AtomAdpsModel
-from PyImports.DisplayModels.AtomMspsModel import AtomMspsModel
-from PyImports.DisplayModels.FitablesModel import FitablesModel
+from PyImports.DisplayModels import *
 
-from PyImports.DisplayModels.StatusModel import StatusModel
-from PyImports.DisplayModels.FileStructureModel import FileStructureModel
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
 from PyImports.Refinement import Refiner
 from PyImports.ReleaseReader import Config
 
 import easyInterface.Utils.Helpers as Helpers
-from easyInterface.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.QtInterface import QtCalculatorInterface
+from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
+from easyInterface.Diffraction.QtInterface import QtCalculatorInterface
 
 class ProxyPyQml(QObject):
 

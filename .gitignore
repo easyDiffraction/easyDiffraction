@@ -75,3 +75,5 @@ Distribution
 *.log
 Auth.yml
 .idea/
+
+src/
