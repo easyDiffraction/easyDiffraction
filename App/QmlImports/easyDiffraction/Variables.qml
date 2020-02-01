@@ -6,8 +6,7 @@ QtObject {
     property bool projectOpened: false
 
     // Main
-    property var projectControl: proxyPyQmlObj.projectControl ? proxyPyQmlObj.projectControl : ""
-    property var projectManager: proxyPyQmlObj.projectManager ? proxyPyQmlObj.projectManager : ""
+    property var projectControl: proxyPyQmlObj.projectControl ? proxyPyQmlObj.projectControl : null
     property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     property var cif: projectOpened ? proxyPyQmlObj.fileStructure : null
     property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
@@ -15,6 +14,10 @@ QtObject {
     property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
     property var needToSave: projectOpened ? proxyPyQmlObj.needToSave : false
     property var projectFilePathSelected: proxyPyQmlObj.projectFilePathSelected
+
+    property var projectName: projectOpened ? proxyPyQmlObj.projectManager.projectName : null
+    property var projectKeywords: projectOpened ? proxyPyQmlObj.projectManager.projectKeywords : null
+    property var projectModifiedDate: projectOpened ? proxyPyQmlObj.projectManager.projectModified : null
 
     // Measured and calculated data
     property var measuredData: proxyPyQmlObj.measuredData

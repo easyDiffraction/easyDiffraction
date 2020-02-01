@@ -51,7 +51,7 @@ Rectangle {
         spacing: 10
 
         Text {
-            text: Specific.Variables.projectManager.projectName
+            text: Specific.Variables.projectName
             font.pointSize: Generic.Style.fontPointSize * 3
             font.family: Generic.Style.fontFamily
         }
@@ -60,11 +60,11 @@ Rectangle {
             text: {
                 let s = ""
                 if (Specific.Variables.projectOpened) {
-                    s += "Keywords: " + Specific.Variables.projectManager.projectKeywords + "\n"
+                    s += "Keywords: " + Specific.Variables.projectKeywords + "\n"
                     s += "Phases: " + Specific.Variables.projectDict.info.phase_ids.join(", ") + "\n"
                     s += "Experiments: " + Specific.Variables.projectDict.info.experiment_ids.join(", ") + "\n"
                     s += "Instrument: 6T2 at LLB\n"
-                    s += "Modified: " + Specific.Variables.projectManager.projectModified
+                    s += "Modified: " + Specific.Variables.projectModifiedDate
                 }
                 return s
             }
@@ -96,7 +96,7 @@ Rectangle {
                         clip: true
                         antialiasing: true
                         smooth: true
-                        source: Boolean(Specific.Variables.projectManager.projectName) ? Specific.Variables.projectControl.fullFilePath(modelData) : ""
+                        source: Specific.Variables.projectName && Specific.Variables.projectControl ? Specific.Variables.projectControl.fullFilePath(modelData) : ""
                     }
                 }
             }
