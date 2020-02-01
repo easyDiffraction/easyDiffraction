@@ -46,8 +46,12 @@ ApplicationWindow {
         //visible: displayContent
         anchors.fill: parent
         spacing: 0
-        GenericAppToolbar.Toolbar { y: toolBarY; opacity: toolBarOpacity }
-        GenericAppContentArea.ContentArea {}
+        GenericAppToolbar.Toolbar {
+            y: toolBarY
+            z: 1
+            opacity: toolBarOpacity
+        }
+        GenericAppContentArea.ContentArea { }
     }
 
     // Persistent settings

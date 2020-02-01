@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
+import QtGraphicalEffects 1.12
+
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
@@ -11,6 +13,15 @@ import easyDiffraction 1.0 as Specific
 ColumnLayout{
     id: main
     spacing: 0
+
+    DropShadow {
+        z: -1
+        anchors.fill: parent
+        horizontalOffset: 0
+        radius: 7
+        samples: 21
+        color: "#aaa"
+    }
 
     Rectangle {
       Layout.fillWidth: true
