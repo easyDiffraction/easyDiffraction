@@ -22,26 +22,26 @@
     "App/PyImports/DisplayModels/MeasuredDataModel.py",
     "App/PyImports/DisplayModels/StatusModel.py",
 
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/Interface.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/QtInterface.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/Interface.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/QtInterface.py",
 
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/Calculators/CryspyCalculator.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/Calculators/CryspyCalculator.py",
 
 
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/DataClasses/DataObj/Calculation.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/DataClasses/DataObj/Experiment.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/DataObj/Calculation.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/DataObj/Experiment.py",
 
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/DataClasses/PhaseObj/Atom.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/DataClasses/PhaseObj/Cell.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/DataClasses/PhaseObj/Phase.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/DataClasses/PhaseObj/SpaceGroup.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/PhaseObj/Atom.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/PhaseObj/Cell.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/PhaseObj/Phase.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/PhaseObj/SpaceGroup.py",
 
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/DataClasses/Utils/BaseClasses.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/Diffraction/DataClasses/Utils/InfoObj.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/Utils/BaseClasses.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/Utils/InfoObj.py",
 
-    ".python-venv/src/easyinterface-develop/easyInterface/Utils/DictTools.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/Utils/Helpers.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/Utils/StatusObjects.py",
-    ".python-venv/src/easyinterface-develop/easyInterface/Utils/units.py"
+    ".venv/lib/python3.7/site-packages/easyInterface/Utils/DictTools.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Utils/Helpers.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Utils/StatusObjects.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Utils/units.py"
     ]
 }
