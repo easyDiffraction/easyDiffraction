@@ -99,11 +99,9 @@ class FitablesModel(BaseModel):
                 if 'phases' == keys_list[0]:
                     self._calculator_interface.setPhaseValue(keys_list[1], keys_list[2:-2], edit_value)
                     self._calculator_interface.updateCalculations()
-                    self._calculator_interface.updatePhases()
                 elif 'experiments' == keys_list[0]:
                     self._calculator_interface.setExperimentValue(keys_list[1], keys_list[2:-2], edit_value)
                     self._calculator_interface.updateCalculations()
-                    self._calculator_interface.updateExperiments()
                 else:
                     self._calculator_interface.setDictByPath(keys_list, edit_value)
 
