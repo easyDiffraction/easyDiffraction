@@ -46,7 +46,7 @@ ColumnLayout {
 
     Text {
         visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.refinement_datetime : ""
+        text: Specific.Variables.projectChangedTime
         onTextChanged: projectChangedTimer.restart()
     }
 

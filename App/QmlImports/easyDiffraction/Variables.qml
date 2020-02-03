@@ -19,6 +19,8 @@ QtObject {
     property var projectKeywords: projectOpened ? proxyPyQmlObj.projectManager.projectKeywords : null
     property var projectModifiedDate: projectOpened ? proxyPyQmlObj.projectManager.projectModified : null
 
+    property var projectChangedTime: projectOpened ? proxyPyQmlObj.projectChangedTime : ""
+
     // Measured and calculated data
     property var measuredData: proxyPyQmlObj.measuredData
     property var measuredDataHeaderModel: projectOpened ? proxyPyQmlObj.measuredData.asHeadersModel() : null

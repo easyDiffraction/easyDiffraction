@@ -1,5 +1,6 @@
 import os
 import logging
+import time
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
 from PySide2.QtGui import QPdfWriter, QTextDocument
@@ -156,6 +157,8 @@ class ProxyPyQml(QObject):
     canUndoOrRedoChanged = Signal()
 
     # self._projectChanged.connect(self.set_SaveState)
+
+    projectChangedTime = Property(str, lambda self: str(time.time()), notify=projectChanged)
 
     projectDict = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)

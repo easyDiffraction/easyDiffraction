@@ -45,7 +45,7 @@ Column {
 
     Text {
         visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.refinement_datetime : ""
+        text: Specific.Variables.projectChangedTime
         onTextChanged: {
             if (Specific.Variables.projectOpened) {
                 const atom_site_dict = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].atom_site
