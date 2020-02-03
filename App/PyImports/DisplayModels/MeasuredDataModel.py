@@ -98,6 +98,12 @@ class MeasuredDataModel(BaseModel):
 
         logging.info("<===== end")
 
+    def onProjectChanged(self):
+        """
+        Reimplement BaseModel method, as we do not want to update measured data every time.
+        """
+        pass
+
     @Slot(QtCharts.QXYSeries)
     def setLowerSeries(self, series):
         """
