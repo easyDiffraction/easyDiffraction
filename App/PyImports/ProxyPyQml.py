@@ -57,6 +57,7 @@ class ProxyPyQml(QObject):
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
+        self.onProjectUnsaved()
 
     @Slot()
     def loadExperimentFromFile(self):
@@ -69,6 +70,7 @@ class ProxyPyQml(QObject):
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
+        self.onProjectUnsaved()
 
     # Load CIF method, accessible from QML
     @Slot()
