@@ -6,7 +6,7 @@ import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyDiffraction 1.0 as Specific
 
 
-GenericAppToolbar.Button {
+GenericAppToolbar.TabButton {
     icon.source: Generic.Variables.thirdPartyIconsPath + "calculator.svg"
     text: qsTr("Analysis")
     ToolTip.text: qsTr("Analysis and modelling page")

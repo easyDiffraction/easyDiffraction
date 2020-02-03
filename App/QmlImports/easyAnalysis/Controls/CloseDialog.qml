@@ -3,7 +3,7 @@ import QtQuick.Controls 2.12
 
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.Controls 1.0 as GenericControls
-import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
+import easyAnalysis.App.Dialog 1.0 as GenericAppDialog
 import easyDiffraction 1.0 as Specific
 
 
@@ -27,7 +27,7 @@ GenericControls.Dialog {
             spacing: 15
             anchors.horizontalCenter: parent.horizontalCenter
 
-            GenericAppToolbar.BasicButton {
+            GenericAppDialog.Button {
                 text: "Save and exit"
                 onClicked: {
                     Generic.Variables.showSaveDialog = 0
@@ -42,7 +42,7 @@ GenericControls.Dialog {
                 }
             }
 
-            GenericAppToolbar.BasicButton {
+            GenericAppDialog.Button {
                 text: "Exit without saving"
                 onClicked: {
                     dialog.close()

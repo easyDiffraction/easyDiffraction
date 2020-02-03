@@ -3,7 +3,7 @@ import QtQuick.Controls 2.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 
-GenericAppToolbar.Button {
+GenericAppToolbar.TabButton {
     icon.source: Generic.Variables.thirdPartyIconsPath + "microscope.svg"
     text: qsTr("Experiment")
     ToolTip.text: qsTr("Experimental settings and data page")

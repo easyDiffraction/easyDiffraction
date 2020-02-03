@@ -1,0 +1,7 @@
+module TabButtons
+Home 1.0 Home.qml
+Project 1.0 Project.qml
+Experiment 1.0 Experiment.qml
+Sample 1.0 Sample.qml
+Analysis 1.0 Analysis.qml
+Summary 1.0 Summary.qml

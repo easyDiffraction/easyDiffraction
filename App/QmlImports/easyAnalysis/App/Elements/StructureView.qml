@@ -58,6 +58,7 @@ Rectangle {
                         } else {
                             series.atomSize = Math.abs(atom_site_list.scat_length_neutron[i]) * 0.4
                             series.atomColor = bscatColorDict[atom_site_list.scat_length_neutron[i]]
+                            //print(a, atom_site_list.fract_x[i] * a)
                             series.atomModel.append({
                                 x: atom_site_list.fract_x[i] * a,
                                 y: atom_site_list.fract_y[i] * b,

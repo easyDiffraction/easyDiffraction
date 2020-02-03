@@ -1,7 +1,5 @@
 module Buttons
-Home 1.0 Home.qml
-Project 1.0 Project.qml
-ExperimentalData 1.0 ExperimentalData.qml
-SampleModel 1.0 SampleModel.qml
-Analysis 1.0 Analysis.qml
-Summary 1.0 Summary.qml
+Preferences 1.0 Preferences.qml
+SaveState 1.0 SaveState.qml
+Undo 1.0 Undo.qml
+Redo 1.0 Redo.qml

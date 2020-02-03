@@ -104,7 +104,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 5
             /*
-            GenericAppToolbar.Button {
+            GenericAppToolbar.TabButton {
                 id: modellingButton
                 opacity: 0
                 enabled: false
@@ -117,9 +117,9 @@ Rectangle {
                 ToolTip.text: "Simulation of diffraction data"
                 onClicked: print("Not implemented yet")
             }
-            GenericAppToolbar.Button { width: 1; opacity: 0 }
+            GenericAppToolbar.TabButton { width: 1; opacity: 0 }
             */
-            GenericAppToolbar.Button {
+            GenericAppToolbar.TabButton {
                 id: analysisButton
                 enabled: true
                 opacity: 0
