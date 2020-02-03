@@ -21,7 +21,7 @@ Rectangle {
             font.family: Generic.Style.monoFontFamily
             font.pointSize: Generic.Style.fontPointSize
             //antialiasing: true
-            wrapMode: Text.NoWrap
+            wrapMode: Text.Wrap //Text.NoWrap
             text: showContent ? Specific.Variables.phaseCif : ""
         }
     }
