@@ -7,6 +7,7 @@ import easyDiffraction 1.0 as Specific
 
 GenericAppToolbar.Button {
     enabled: Specific.Variables.needToSave
+    attention: true
     icon.source: Generic.Variables.thirdPartyIconsPath + "save.svg"
     ToolTip.text: qsTr("Save current state of the project")
 

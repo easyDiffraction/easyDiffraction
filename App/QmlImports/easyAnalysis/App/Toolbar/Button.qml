@@ -9,6 +9,8 @@ import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 GenericAppContentArea.Button {
     id: button
 
+    property bool attention: false
+
     Layout.fillWidth: false
     implicitWidth: implicitHeight
 
@@ -34,7 +36,7 @@ GenericAppContentArea.Button {
     function iconColor() {
         if (!button.enabled)
             return Generic.Style.buttonIconDisabledColor
-        return button.checked ? Generic.Style.buttonIconHighlightedColor : Generic.Style.buttonIconEnabledColor
+        return button.attention ? Generic.Style.buttonIconHighlightedColor : Generic.Style.buttonIconEnabledColor
     }
 
     function borderColor() {
@@ -46,7 +48,7 @@ GenericAppContentArea.Button {
     function backgroundColor() {
         if (!button.enabled)
             return Generic.Style.toolbarButtonBkgDisabledColor
-        var color1 = Generic.Style.toolbarButtonBkgEnabledColor
+        var color1 = button.attention ? Generic.Style.buttonBkgAttentionColor : Generic.Style.toolbarButtonBkgEnabledColor
         var color2 = Generic.Style.toolbarButtonBkgBlendColor
         var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
         return Color.blend(color1, color2, alpha)

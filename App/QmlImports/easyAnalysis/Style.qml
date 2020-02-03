@@ -71,6 +71,7 @@ QtObject {
 
     readonly property color buttonBkgDisabledColor: "#e1e1e1"
     readonly property color buttonBkgEnabledColor: "#e1e1e1"//"#666"
+    readonly property color buttonBkgAttentionColor: redColor //"coral"
     readonly property color buttonBkgHighlightedColor: blueColor
     readonly property color buttonBkgFinishedColor: Qt.lighter(blueColor, 2) //Qt.lighter(blueColor, 1.4) //Qt.lighter(blueColor, 1.9) //!!!!
     readonly property color buttonBkgBlendColor: "white"
