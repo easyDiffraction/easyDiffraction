@@ -20,7 +20,7 @@ def upgradePip():
     else:
         BasicFunctions.printSuccessMessage(message)
 
-def installFromGit(owner, repo, branch, egg):
+def installFromGitE(owner, repo, branch, egg):
     url = "git://github.com/{0}/{1}.git@{2}#egg={3}".format(owner, repo, branch, egg)
     message = "install from '{}'".format(url)
     try:
@@ -28,6 +28,17 @@ def installFromGit(owner, repo, branch, egg):
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         #sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+
+def installFromGit(owner, repo, branch):
+    url = "https://github.com/{0}/{1}/archive/{2}.zip".format(owner, repo, branch)
+    message = "install from '{}'".format(url)
+    try:
+        BasicFunctions.run('pip', 'install', url)
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
     else:
         BasicFunctions.printSuccessMessage(message)
 
@@ -49,8 +60,8 @@ if __name__ == '__main__':
 
     upgradePip()
 
-    installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2', egg='cryspy-develop')
-    installFromGit(owner='easyDiffraction', repo='easyInterface', branch='master', egg='easyinterface-develop')
+    installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2')
+    installFromGit(owner='easyDiffraction', repo='easyInterface', branch='master')
 
     install(
         #'cryspy==0.1.13',
