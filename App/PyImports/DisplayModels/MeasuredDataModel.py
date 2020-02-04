@@ -9,8 +9,10 @@ from PyImports.DisplayModels.BaseModel import BaseModel
 class MeasuredDataModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._upperSeries = []  # list of references to QML LineSeries (for 2 charts)
-        self._lowerSeries = []  # list of references to QML LineSeries (for 2 charts)
+        self._upperSeries = []  # list of internal line series data (for 2 charts)
+        self._lowerSeries = []  # list of internal line series data (for 2 charts)
+        self._upperSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
+        self._lowerSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
 
     def _setModelsFromProjectDict(self):
         """
@@ -95,6 +97,12 @@ class MeasuredDataModel(BaseModel):
                 s.append(QPointF(x, y_obs_upper))
             for s in self._lowerSeries:
                 s.append(QPointF(x, y_obs_lower))
+                
+        # Replace series
+        for s in self._upperSeriesRefs:
+            s.replace(self._upperSeries)
+        for s in self._lowerSeriesRefs:
+            s.replace(self._lowerSeries)
 
         logging.info("<===== end")
 
@@ -109,11 +117,11 @@ class MeasuredDataModel(BaseModel):
         """
         Sets lower series to be a reference to the QML LineSeries of ChartView.
         """
-        self._lowerSeries.append(series)
+        self._lowerSeriesRefs.append(series)
 
     @Slot(QtCharts.QXYSeries)
     def setUpperSeries(self, series):
         """
         Sets upper series to be a reference to the QML LineSeries of ChartView.
         """
-        self._upperSeries.append(series)
+        self._upperSeriesRefs.append(series)
