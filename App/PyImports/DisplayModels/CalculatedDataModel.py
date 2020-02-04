@@ -9,9 +9,9 @@ from PyImports.DisplayModels.BaseModel import BaseModel
 class CalculatedDataModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._calcSeries = None
-        self._lowerDiffSeries = None
-        self._upperDiffSeries = None
+        self._calcSeriesRef = None
+        self._lowerDiffSeriesRef = None
+        self._upperDiffSeriesRef = None
 
     def _setModelsFromProjectDict(self):
         """
@@ -63,9 +63,9 @@ class CalculatedDataModel(BaseModel):
         """
         logging.info("=====> start")
 
-        self._calcSeries.clear()
-        self._lowerDiffSeries.clear()
-        self._upperDiffSeries.clear()
+        calcSeries = []
+        lowerDiffSeries = []
+        upperDiffSeries = []
 
         for calc_dict, experiment_dict in zip(self._project_dict['calculations'].values(), self._project_dict['experiments'].values()):
             x_list = calc_dict['calculated_pattern']['x']
@@ -74,9 +74,14 @@ class CalculatedDataModel(BaseModel):
             sy_obs_list = experiment_dict['measured_pattern']['sy_obs']
 
             for x, y_calc, y_obs, sy_obs in zip(x_list, y_calc_list, y_obs_list, sy_obs_list):
-                self._calcSeries.append(QPointF(x, y_calc))
-                self._lowerDiffSeries.append(QPointF(x, y_obs + sy_obs - y_calc))
-                self._upperDiffSeries.append(QPointF(x, y_obs - sy_obs - y_calc))
+                calcSeries.append(QPointF(x, y_calc))
+                lowerDiffSeries.append(QPointF(x, y_obs + sy_obs - y_calc))
+                upperDiffSeries.append(QPointF(x, y_obs - sy_obs - y_calc))
+
+        # Replace series
+        self._calcSeriesRef.replace(calcSeries)
+        self._lowerDiffSeriesRef.replace(lowerDiffSeries)
+        self._upperDiffSeriesRef.replace(upperDiffSeries)
 
         logging.info("<===== end")
 
@@ -85,18 +90,18 @@ class CalculatedDataModel(BaseModel):
         """
         Sets calculated series to be a reference to the QML LineSeries of ChartView.
         """
-        self._calcSeries = series
+        self._calcSeriesRef = series
 
     @Slot(QtCharts.QXYSeries)
     def setLowerDiffSeries(self, series):
         """
         Sets lower difference series to be a reference to the QML LineSeries of ChartView.
         """
-        self._lowerDiffSeries = series
+        self._lowerDiffSeriesRef = series
 
     @Slot(QtCharts.QXYSeries)
     def setUpperDiffSeries(self, series):
         """
         Sets upper difference series to be a reference to the QML LineSeries of ChartView.
         """
-        self._upperDiffSeries = series
+        self._upperDiffSeriesRef = series
