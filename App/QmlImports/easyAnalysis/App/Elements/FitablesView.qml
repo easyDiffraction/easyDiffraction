@@ -201,8 +201,14 @@ Column {
                             rightPadding: 0
                             color: foregroundColor()
                             text: toFixed(value)
-                            onTextChanged: updateSliderValue.restart()
-                            onEditingFinished: valueEdit = text
+                            onTextChanged: {
+                                updateSlider()
+                            }
+                            onEditingFinished: {
+                                if (valueEdit !== text) {
+                                    valueEdit = parseFloat(text)
+                                }
+                            }
                         }
                         Text {
                             width: cellWidthProvider(6)
@@ -245,8 +251,11 @@ Column {
                     }
 
                 }
-                // Content row
-                onCurrentIndexChanged: updateSliderValue.restart()
+                // Content row changed
+                onCurrentIndexChanged: {
+                    updateSlider()
+                }
+
             }
         }
     }
@@ -279,8 +288,11 @@ Column {
             //touchDragThreshold: 10000
             //focus: false
 
+            /*
             from: Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 5) : 0
             to: Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 6) : 0
+            value: Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 3) : 0
+            */
 
             handle: Rectangle {
                 id: sliderHandle
@@ -298,6 +310,7 @@ Column {
 
             onPressedChanged: {
                 if (!pressed) {
+                    // Change valueEdit in the table model with new value from slider
                     contentListView.model.setData(contentListView.model.index(contentListView.currentIndex, 0), value, Qt.UserRole + 103)
                 }
             }
@@ -334,11 +347,21 @@ Column {
         }
     }
 
-    // It seems that a small delay is needed before we update the slider value from the cell text
-    Timer {
-        id: updateSliderValue
-        interval: 50
-        onTriggered: slider.value = Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 3) : 0
+    function updateSlider() {
+        if (!Specific.Variables.projectOpened)
+            return
+        const from = contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 5)
+        const to = contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 6)
+        const value = contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 3)
+        if (typeof from !== "undefined" && slider.from !== from) {
+            slider.from = from
+        }
+        if (typeof to !== "undefined" && slider.to !== to) {
+            slider.to = to
+        }
+        if (typeof value !== "undefined" && slider.value !== value) {
+            slider.value = value
+        }
     }
 
 }

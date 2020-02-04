@@ -38,6 +38,9 @@ class FitablesModel(BaseModel):
 
     def _setModelsFromProjectDict(self):
         """Create the initial data list with structure for GUI fitables table."""
+        # block model signals
+        self._model.blockSignals(True)
+        # reset model
         self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
         project_dict = self._project_dict
         # set column
@@ -70,7 +73,11 @@ class FitablesModel(BaseModel):
             column.append(item)
         # set model
         self._model.appendColumn(column) # dataChanged is not emited. why?
-        self._model.dataChanged.emit(self._model.index(0, 0), self._model.index(self._model.rowCount()-1, self._model.columnCount()-1), self._roles_list)
+        # unblock signals and emit model layout changed
+        self._model.blockSignals(False)
+        self._model.layoutChanged.emit()
+        # Emit signal which is catched by the QStandartItemModel-based
+        # QML GUI elements in order to update their views
 
     def _updateProjectByIndexAndRole(self, index, edit_role):
         """Update project element, which is changed in the model, depends on its index and role."""
