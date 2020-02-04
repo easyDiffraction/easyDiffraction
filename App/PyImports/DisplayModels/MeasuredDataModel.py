@@ -9,8 +9,6 @@ from PyImports.DisplayModels.BaseModel import BaseModel
 class MeasuredDataModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._upperSeries = []  # list of internal line series data (for 2 charts)
-        self._lowerSeries = []  # list of internal line series data (for 2 charts)
         self._upperSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
         self._lowerSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
 
@@ -86,23 +84,19 @@ class MeasuredDataModel(BaseModel):
             y_obs_upper_list.append(y_obs + sy_obs)
 
         # Clear series
-        for s in self._upperSeries:
-            s.clear()
-        for s in self._lowerSeries:
-            s.clear()
+        upperSeries = []
+        lowerSeries = []
 
         # Insert data into the Series format with QPointF's
         for x, y_obs_lower, y_obs_upper in zip(x_list, y_obs_lower_list, y_obs_upper_list):
-            for s in self._upperSeries:
-                s.append(QPointF(x, y_obs_upper))
-            for s in self._lowerSeries:
-                s.append(QPointF(x, y_obs_lower))
-                
+            upperSeries.append(QPointF(x, y_obs_upper))
+            lowerSeries.append(QPointF(x, y_obs_lower))
+
         # Replace series
         for s in self._upperSeriesRefs:
-            s.replace(self._upperSeries)
+            s.replace(upperSeries)
         for s in self._lowerSeriesRefs:
-            s.replace(self._lowerSeries)
+            s.replace(lowerSeries)
 
         logging.info("<===== end")
 
