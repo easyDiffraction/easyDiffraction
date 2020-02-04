@@ -1,0 +1,44 @@
+#======================================================================
+
+# CRYSTAL DATA
+
+#----------------------------------------------------------------------
+
+data_VESTA_phase_1
+
+
+_chemical_name_common                  'PbSO4'
+_cell_length_a                         8.47884(15)
+_cell_length_b                         5.3967(1)
+_cell_length_c                         6.95840(13)
+_cell_angle_alpha                      90
+_cell_angle_beta                       90
+_cell_angle_gamma                      90
+_space_group_name_H-M_alt              'P n m a'
+_space_group_IT_number                 62
+
+loop_
+_space_group_symop_operation_xyz
+   'x, y, z'
+   '-x, -y, -z'
+   '-x+1/2, -y, z+1/2'
+   'x+1/2, y, -z+1/2'
+   '-x, y+1/2, -z'
+   'x, -y+1/2, z'
+   'x+1/2, -y+1/2, -z+1/2'
+   '-x+1/2, y+1/2, z+1/2'
+
+loop_
+   _atom_site_label
+   _atom_site_occupancy
+   _atom_site_fract_x
+   _atom_site_fract_y
+   _atom_site_fract_z
+   _atom_site_adp_type
+   _atom_site_U_iso_or_equiv
+   _atom_site_type_symbol
+   Pb         1.0     0.18749(10)   0.250000      0.16719(16)  Uiso  0.017900 Pb
+   S          1.0     0.0654(4)     0.250000      0.6834(4)    Uiso  0.005300 S
+   O1         1.0     0.9077(2)     0.250000      0.5953(2)    Uiso  0.025200 O
+   O2         1.0     0.1938(2)     0.250000      0.5432(2)    Uiso  0.018600 O
+   O3         1.0     0.08103(12)   0.02708(16)   0.80905(16)  Uiso  0.016700 O

@@ -1,0 +1,24 @@
+#VESTA_FORMAT_VERSION 3.1.9
+ 
+ 
+CRYSTAL
+TITLE
+   PbSO4 D1A(ILL), Rietveld Round Robin, R.J. Hill, JApC 25, 589 (1992)
+ 
+IMPORT_STRUCTURE
+pbso4.cif
+ 
+IMPORT_DENSITY 1
++1.000000E+000 pbso4.pgrid
+ 
+BOUND
+    -0.1      1.1      -0.1      1.1      -0.1     1.1 
+  0   0   0   0  0
+SBOND
+  0 0 0 0
+ 
+STYLE
+MODEL   2  1  0
+SURFS   0  1  1
+SECTS  96  0
+POLYS  0
