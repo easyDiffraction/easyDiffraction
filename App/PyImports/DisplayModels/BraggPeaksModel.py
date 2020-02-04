@@ -9,7 +9,7 @@ from PyImports.DisplayModels.BaseModel import BaseModel
 class BraggPeaksModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._series = None
+        self._seriesRef = None
 
     def _setModelsFromProjectDict(self):
         """
@@ -54,7 +54,7 @@ class BraggPeaksModel(BaseModel):
         """
         logging.info("=====> start")
 
-        self._series.clear()
+        series = []
 
         for calc_dict in self._project_dict['calculations'].values():
             for phase_id in self._project_dict['phases'].keys():
@@ -62,7 +62,10 @@ class BraggPeaksModel(BaseModel):
                 for x in x_list:
                     vertical_points = 11
                     for vertical_index in range(vertical_points):
-                        self._series.append(QPointF(x, vertical_index))
+                        series.append(QPointF(x, vertical_index))
+
+        # Replace series
+        self._seriesRef.replace(series)
 
         logging.info("<===== end")
 
@@ -71,4 +74,4 @@ class BraggPeaksModel(BaseModel):
         """
         Sets series to be a reference to the QML LineSeries of ChartView.
         """
-        self._series = series
+        self._seriesRef = series
