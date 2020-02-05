@@ -98,8 +98,10 @@ class FitablesModel(BaseModel):
                 self._calculator_interface.canUndoOrRedoChanged.emit()
                 if 'phases' == keys_list[0]:
                     self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
+                    self._calculator_interface.updatePhases()
                 elif 'experiments' == keys_list[0]:
                     self._calculator_interface.setExperimentRefine(keys_list[1], keys_list[2:-2], edit_value)
+                    self._calculator_interface.updateExperiments()
                 else:
                     self._calculator_interface.setDictByPath(keys_list, edit_value)
             else:
@@ -108,15 +110,14 @@ class FitablesModel(BaseModel):
                 self._calculator_interface.canUndoOrRedoChanged.emit()
                 if 'phases' == keys_list[0]:
                     self._calculator_interface.setPhaseValue(keys_list[1], keys_list[2:-2], edit_value)
-                    self._calculator_interface.updateCalculations()
+                    self._calculator_interface.updateCalculations() # phases also updated ?
                 elif 'experiments' == keys_list[0]:
                     self._calculator_interface.setExperimentValue(keys_list[1], keys_list[2:-2], edit_value)
-                    self._calculator_interface.updateCalculations()
+                    self._calculator_interface.updateCalculations() # experiments also updated ?
                 else:
                     self._calculator_interface.setDictByPath(keys_list, edit_value)
-
-        self._calculator_interface.project_dict.endBulkUpdate()
-        self._calculator_interface.canUndoOrRedoChanged.emit()
+            self._calculator_interface.project_dict.endBulkUpdate()
+            self._calculator_interface.canUndoOrRedoChanged.emit()
 
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
         """Define what to do if model is changed, e.g. from GUI."""

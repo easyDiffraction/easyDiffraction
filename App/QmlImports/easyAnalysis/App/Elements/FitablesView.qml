@@ -10,6 +10,8 @@ Column {
     property int cellHeight: 34
     property int rowCountToDisplayWithoutHeader: 10
 
+    property bool isRefined: false
+
     property string rowBackgroundColor: 'white'
     property string alternateRowBackgroundColor: '#f7f7f7'
     property string highlightedRowBackgroundColor: "#2a99d9"
@@ -235,7 +237,18 @@ Column {
                             height: parent.height
                             enabled: !Specific.Variables.refinementRunning
                             checked: refine
-                            onToggled: refineEdit = checked
+                            onToggled: {
+                                // proper, but slow update of the checkbox
+                                // It waits until python updates project, etc.
+                                // because of the sequential execution
+                                //refineEdit = refine
+
+                                // temporary fix, but imediate update of the checkbox
+                                // because of the parallel call of python updates via
+                                // Timer (with small delay) using global boolean: isRefined
+                                isRefined = checked
+                                updateCheckBoxTimer.start()
+                            }
                         }
                     }
 
@@ -344,6 +357,14 @@ Column {
             rightPadding: leftPadding
             background: Rectangle { border.width: borderWidth; border.color: headerBorderColor }
             text: slider.to.toFixed(4)
+        }
+    }
+
+    Timer {
+        id: updateCheckBoxTimer
+        interval: 10
+        onTriggered: {
+            contentListView.model.setData(contentListView.model.index(contentListView.currentIndex, 0), isRefined, Qt.UserRole + 107)
         }
     }
 
