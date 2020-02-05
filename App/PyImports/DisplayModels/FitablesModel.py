@@ -88,14 +88,14 @@ class FitablesModel(BaseModel):
         edit_value = self._model.data(index, edit_role)
         display_value = self._model.data(index, display_role)
 
-        fitable_name = '.'.join(keys_list[:-3])
+        fitable_name = '.'.join(keys_list[:-2])
         fitable_value = edit_value
-        undo_redo_text = f"Changing '{fitable_name}' to '{fitable_value:.4f}'"
-        self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
-        self._calculator_interface.canUndoOrRedoChanged.emit()
 
         if edit_value != display_value:
             if isinstance(edit_value, bool):
+                undo_redo_text = f"Changing '{fitable_name}' refine state to '{fitable_value}'"
+                self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
+                self._calculator_interface.canUndoOrRedoChanged.emit()
                 if 'phases' == keys_list[0]:
                     self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
                 elif 'experiments' == keys_list[0]:
@@ -103,6 +103,9 @@ class FitablesModel(BaseModel):
                 else:
                     self._calculator_interface.setDictByPath(keys_list, edit_value)
             else:
+                undo_redo_text = f"Changing '{fitable_name}' to '{fitable_value:.4f}'"
+                self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
+                self._calculator_interface.canUndoOrRedoChanged.emit()
                 if 'phases' == keys_list[0]:
                     self._calculator_interface.setPhaseValue(keys_list[1], keys_list[2:-2], edit_value)
                     self._calculator_interface.updateCalculations()
