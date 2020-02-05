@@ -16,7 +16,7 @@ GenericControls.Dialog {
         // General preferences
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize + 5
+            font.pointSize: Generic.Style.fontPointSize + 3
             font.family: Generic.Style.fontFamily
             color: "#444"
             text: "General"
@@ -41,7 +41,7 @@ GenericControls.Dialog {
         // Update preferences
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize + 5
+            font.pointSize: Generic.Style.fontPointSize + 3
             font.family: Generic.Style.fontFamily
             color: "#444"
             text: "Update"
@@ -60,7 +60,7 @@ GenericControls.Dialog {
         // Language preferences
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize + 5
+            font.pointSize: Generic.Style.fontPointSize + 3
             font.family: Generic.Style.fontFamily
             color: "#444"
             text: "Language"
@@ -79,7 +79,7 @@ GenericControls.Dialog {
         // Theme preferences
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize + 5
+            font.pointSize: Generic.Style.fontPointSize + 3
             font.family: Generic.Style.fontFamily
             color: "#444"
             text: "Theme"

@@ -13,9 +13,10 @@ Dialog {
     property real initialDimmedAreaTransparency: 0.5
     property string dimmedAreaColor: "black"
     property string dialogBackgroundColor: "#efefef"
-    property string exitButtonBackgroundColor: "#ddd"
-    property string exitButtonBorderColor: "#ccc"
-    property string exitButtonIconColor: "#333"
+    property string headerBackgroundColor: "#ddd"
+    property string headerBorderColor: "#ccc"
+    property var headerFontFamily: Generic.Style.fontFamily
+    property var headerFontPointSize: Generic.Style.fontPointSize + 3
 
     parent: Overlay.overlay
     anchors.centerIn: parent
@@ -31,24 +32,35 @@ Dialog {
     // Header dialog area
     header: Column {
 
-        // Exit button
-        Button {
+        // Header area
+        TextArea {
             width: parent.width
             height: Generic.Style.toolbarButtonHeight
-            font.pointSize: Generic.Style.fontPointSize + 5
-            font.family: Generic.Style.fontFamily
-            icon.source: Generic.Variables.thirdPartyIconsPath + "sign-out-alt.svg"
-            icon.color: exitButtonIconColor
-            text: "Exit " + dialog.title
-            background: Rectangle { color: exitButtonBackgroundColor }
-            onClicked: dialog.close()
+            leftPadding: font.pixelSize * 0.75
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            readOnly: true
+            background: Rectangle { color: headerBackgroundColor }
+            font.family: headerFontFamily
+            font.pointSize: headerFontPointSize
+            text: dialog.title
+
+            // Exit button
+            Button {
+                width: parent.height
+                height: parent.height
+                anchors.right: parent.right
+                flat: true
+                text: "\u2715" // cross
+                onClicked: dialog.close()
+            }
         }
 
-        // Bottom border
+        // Bottom header border
         Rectangle {
             width: parent.width
             height: Generic.Style.appBorderThickness
-            color: exitButtonBorderColor
+            color: headerBorderColor
         }
     }
 
