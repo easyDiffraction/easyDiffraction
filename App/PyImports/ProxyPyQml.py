@@ -1,6 +1,7 @@
 import os
 import logging
 import time
+from copy import deepcopy
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
 from PySide2.QtGui import QPdfWriter, QTextDocument
@@ -26,6 +27,7 @@ class ProxyPyQml(QObject):
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
         self._calculator_interface = None
+        self._project_dict_copy = {}
 
         self._project_control = ProjectControl()
         self._measured_data_model = MeasuredDataModel()
@@ -82,12 +84,13 @@ class ProxyPyQml(QObject):
         self._calculator_interface = QtCalculatorInterface(
             CryspyCalculator(self._main_rcif_path)
         )
-        
         self._calculator_interface.project_dict['app']['version'] = self.info['version']
-
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
-        self.projectChanged.connect(self.onProjectUnsaved)
+        self._calculator_interface.clearUndoStack()
+        self.onProjectSaved()
+        self.projectChanged.connect(self.onProjectChanged)
+        #self.onProjectUnsaved()
         #logging.info(self._calculator_interface.asCifDict())
         ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
         # This should pick up on non-valid cif files
@@ -115,7 +118,6 @@ class ProxyPyQml(QObject):
         # We can't link signals as the manager signals emitted before the dict is updated :-(
         # self.projectChanged.emit()
 
-        self._calculator_interface.clearUndoStack()
 
     @Slot()
     def createProjectZip(self):
@@ -140,11 +142,19 @@ class ProxyPyQml(QObject):
         self.onProjectSaved()
 
     def onProjectSaved(self):
+        self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
         self._needToSave = False
         self.projectSaveStateChanged.emit()
 
     def onProjectUnsaved(self):
         self._needToSave = True
+        self.projectSaveStateChanged.emit()
+
+    def onProjectChanged(self):
+        keys, _ = self._calculator_interface.project_dict.dictComparison(self._project_dict_copy)
+        self._needToSave = True
+        if not keys:
+            self._needToSave = False
         self.projectSaveStateChanged.emit()
 
     # ##############
