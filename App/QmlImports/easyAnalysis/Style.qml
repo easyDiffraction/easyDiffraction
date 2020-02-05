@@ -62,8 +62,9 @@ QtObject {
     readonly property int toolbarSpacing: 10
     readonly property int toolbarHeight: toolbarButtonHeight + 2*toolbarSpacing
     readonly property color toolbarSpacerColor: appBorderColor//"#addButton"
-    readonly property color toolbarBkgColor: "transparent"
-    readonly property color toolbarBottomBorderColor: "#ccc"
+    //readonly property color toolbarBkgColor: "transparent"
+    readonly property color toolbarBkgColor: "#cdcdcd"
+    readonly property color toolbarBottomBorderColor: "#bcbcbc"
 
     readonly property color toolbarButtonBkgDisabledColor: appBkgColor
     readonly property color toolbarButtonBkgEnabledColor: "#fff"

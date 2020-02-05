@@ -20,8 +20,8 @@ ApplicationWindow {
 
     id: window
 
-    property real toolBarOpacity: 0
-    property real toolBarY: 0
+    //property real toolBarOpacity: 0
+    //property real toolBarY: 0
 
     visible: true
     minimumWidth: Generic.Variables.appMinWindowWidth
@@ -47,11 +47,13 @@ ApplicationWindow {
         anchors.fill: parent
         spacing: 0
         GenericAppToolbar.Toolbar {
+            /*
             y: toolBarY
             z: 1
             opacity: toolBarOpacity
+            */
         }
-        GenericAppContentArea.ContentArea { }
+        GenericAppContentArea.ContentArea {}
     }
 
     // Persistent settings

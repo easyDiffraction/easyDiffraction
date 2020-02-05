@@ -14,6 +14,7 @@ ColumnLayout{
     id: main
     spacing: 0
 
+    /*
     DropShadow {
         z: -1
         anchors.fill: parent
@@ -22,11 +23,12 @@ ColumnLayout{
         samples: 21
         color: "#aaa"
     }
+    */
 
     Rectangle {
         Layout.fillWidth: true
         height: Generic.Style.toolbarHeight
-        color: "#ddd"
+        color: Generic.Style.toolbarBkgColor
 
         // Preferences and save state buttons on the left side
         Row {
