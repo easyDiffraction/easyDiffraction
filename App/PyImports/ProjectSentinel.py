@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 import zipfile
+import logging
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import *
@@ -131,6 +132,18 @@ class ProjectControl(QObject):
         if os.path.isfile(fpath):
             return fURI
         return ""
+
+    @Slot(result=str)
+    def projectFileNameWithoutExt(self):
+        """
+        Return the base project file name without extension
+        :return: string with base project file name without extension
+        """
+        if self._project_file is None:
+            return "Undefined"
+        base_with_ext = os.path.basename(self._project_file)
+        base_without_ext = os.path.splitext(base_with_ext)[0]
+        return base_without_ext
 
     def get_project_dir_absolute_path(self):
         """
