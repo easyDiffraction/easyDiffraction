@@ -15,6 +15,7 @@ Rectangle {
     color: Generic.Style.appBkgColor
 
     // State 1: No Project Created/Opened
+
     Column {
         visible: !Specific.Variables.projectOpened
 
@@ -42,40 +43,89 @@ Rectangle {
     }
 
     // State 2: Project Created/Opened
+
     Column {
         visible: Specific.Variables.projectOpened
-
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.leftMargin: margin
-        spacing: 10
+        spacing: 20
 
         Text {
-            text: Specific.Variables.projectName
+            lineHeight: 0.5
             font.pointSize: Generic.Style.fontPointSize * 3
             font.family: Generic.Style.fontFamily
+            text: Specific.Variables.projectName
         }
 
-        Text {
-            text: {
-                let s = ""
-                if (Specific.Variables.projectOpened) {
-                    s += "Keywords: " + Specific.Variables.projectKeywords + "\n"
-                    s += "Phases: " + Specific.Variables.projectDict.info.phase_ids.join(", ") + "\n"
-                    s += "Experiments: " + Specific.Variables.projectDict.info.experiment_ids.join(", ") + "\n"
-                    s += "Instrument: 6T2 at LLB\n"
-                    s += "Modified: " + Specific.Variables.projectModifiedDate
-                }
-                return s
+        Grid {
+            columns: 2
+            rowSpacing: 0
+            columnSpacing: 15
+
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                text: "Project Keywords:"
             }
-            font.pointSize: Generic.Style.fontPointSize + 1
-            font.family: Generic.Style.fontFamily
-        }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                color: Generic.Style.buttonBkgHighlightedColor
+                text: Specific.Variables.projectKeywords
+            }
 
-        Item { height: 1; width: 1 }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                text: "Phases:"
+            }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                color: Generic.Style.buttonBkgHighlightedColor
+                text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.phase_ids.join(", ") : ""
+            }
+
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                text: "Experiments:"
+            }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                color: Generic.Style.buttonBkgHighlightedColor
+                text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.experiment_ids.join(", ") : ""
+            }
+
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                text: "Instrument:"
+            }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                color: Generic.Style.buttonBkgHighlightedColor
+                text: "6T2 at LLB"
+            }
+
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                text: "Modified:"
+            }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize + 1
+                font.family: Generic.Style.fontFamily
+                color: Generic.Style.buttonBkgHighlightedColor
+                text: Specific.Variables.projectModifiedDate
+            }
+
+        }
 
         // Temporary hide images
-
         Row {
             spacing: margin
 
