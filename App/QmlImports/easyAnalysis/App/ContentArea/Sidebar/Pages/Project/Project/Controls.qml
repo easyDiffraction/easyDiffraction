@@ -7,6 +7,7 @@ import Qt.labs.settings 1.1
 import Qt.labs.platform 1.1 as QtLabsPlatform
 
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
@@ -156,37 +157,27 @@ ColumnLayout {
                 }
             }
 
-            Dialog {
+            GenericControls.Dialog {
                 id: failOpenDialog
-                parent: Overlay.overlay
-                anchors.centerIn: parent
-                modal: true
-                opacity: 0.9
-                visible: false
-                Label {
-                    id: infoLabel
-                    anchors.centerIn: parent
-                    text: 'Warning: File was not a valid main `cif` file.'
-                    color: "black"
-                    font.family: Generic.Style.introThinFontFamily
-                    font.pointSize: Generic.Style.systemFontPointSize + 1
+                title: "Warning"
+                Column {
+                    padding: 20
+                    spacing: 15
+                    Text {
+                        text: "File was not a valid main 'cif' file."
+                    }
                 }
             }
 
-             Dialog {
+            GenericControls.Dialog {
                 id: failSaveDialog
-                parent: Overlay.overlay
-                anchors.centerIn: parent
-                modal: true
-                opacity: 0.9
-                visible: false
-                Label {
-                    id: infoLabel2
-                    anchors.centerIn: parent
-                    text: 'Error: The project file was not saved.'
-                    color: "black"
-                    font.family: Generic.Style.introThinFontFamily
-                    font.pointSize: Generic.Style.systemFontPointSize + 1
+                title: "Error"
+                Column {
+                    padding: 20
+                    spacing: 15
+                    Text {
+                        text: "The project file was not saved."
+                    }
                 }
             }
 
