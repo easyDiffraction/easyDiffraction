@@ -241,7 +241,7 @@ Column {
                                 // proper, but slow update of the checkbox
                                 // It waits until python updates project, etc.
                                 // because of the sequential execution
-                                //refineEdit = refine
+                                //refineEdit = checked
 
                                 // temporary fix, but imediate update of the checkbox
                                 // because of the parallel call of python updates via

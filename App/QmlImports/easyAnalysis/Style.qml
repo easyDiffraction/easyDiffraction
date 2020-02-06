@@ -64,7 +64,7 @@ QtObject {
     readonly property color toolbarSpacerColor: appBorderColor//"#addButton"
     //readonly property color toolbarBkgColor: "transparent"
     readonly property color toolbarBkgColor: "#cdcdcd"
-    readonly property color toolbarBottomBorderColor: "#bcbcbc"
+    readonly property color toolbarBottomBorderColor: "#c5c5c5"
 
     readonly property color toolbarButtonBkgDisabledColor: appBkgColor
     readonly property color toolbarButtonBkgEnabledColor: "#fff"
