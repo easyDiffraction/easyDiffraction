@@ -142,7 +142,8 @@ class ProxyPyQml(QObject):
         self.onProjectSaved()
 
     def onProjectSaved(self):
-        self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
+        if self._calculator_interface is not None:
+            self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
         self._needToSave = False
         self.projectSaveStateChanged.emit()
 
