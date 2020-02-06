@@ -8,6 +8,7 @@ import Qt.labs.platform 1.1 as QtLabsPlatform
 
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.Controls 1.0 as GenericControls
+import easyAnalysis.App.Dialog 1.0 as GenericAppDialog
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
@@ -122,6 +123,7 @@ ColumnLayout {
                 }
             }
 
+            // Save project dialog
             Dialogs1.FileDialog{
                 id: fileDialogSaveProject
                 visible: Generic.Variables.showSaveDialog
@@ -140,6 +142,7 @@ ColumnLayout {
                 }
             }
 
+            // Create project dialog
             Dialogs1.FileDialog{
                 id: fileDialogCreateProject
                 selectExisting: false
@@ -148,7 +151,8 @@ ColumnLayout {
                 onAccepted: {
                     fileDialogCreateProject.close()
                     Generic.Constants.proxy.createProject(fileUrl)
-                    getProjectInfoDialog.visible = true
+                    titleInput.text = Specific.Variables.projectControl.projectFileNameWithoutExt()
+                    projectInfoDialog.visible = true
                     Generic.Variables.projectPageFinished = true
                     Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
                     Generic.Variables.samplePageFinished = Generic.Variables.isDebug ? true : false
@@ -157,6 +161,7 @@ ColumnLayout {
                 }
             }
 
+            // Fail open dialog
             GenericControls.Dialog {
                 id: failOpenDialog
                 title: "Warning"
@@ -169,6 +174,7 @@ ColumnLayout {
                 }
             }
 
+            // Fail save dialog
             GenericControls.Dialog {
                 id: failSaveDialog
                 title: "Error"
@@ -181,48 +187,60 @@ ColumnLayout {
                 }
             }
 
-            Dialog {
-                id: getProjectInfoDialog
-                visible: false
-                parent: Overlay.overlay
-                anchors.centerIn: parent
-                modal: true
-                title: "Project description"
-                GenericAppElements.ColumnLayout {
-                    GenericAppElements.RowLayout {
-                        Label {
+            // Project description dialog
+            GenericControls.Dialog {
+                id: projectInfoDialog
+                title: "Project Description"
+
+                Column {
+                    id: projectInfoDialogContent
+                    padding: 20
+                    spacing: 30
+
+                    Grid {
+                        columns: 2
+                        rowSpacing: 10
+                        columnSpacing: 15
+
+                        Text {
                             text: "Project Title:"
                         }
                         TextInput {
                             id: titleInput
+                            focus: true
                             cursorVisible: true
                             selectByMouse: true
+                            color: Generic.Style.buttonBkgHighlightedColor
+                            selectedTextColor: "white"
                             selectionColor: Generic.Style.tableHighlightRowColor
-                            text: "Undefined"
                         }
-                    }
-                    GenericAppElements.RowLayout {
-                        Label {
-                            text: "Project keywords:"
+                        Text {
+                            text: "Project Keywords:"
                         }
                         TextInput {
                             id: keywordsInput
-                            cursorVisible: true
                             selectByMouse: true
+                            color: Generic.Style.buttonBkgHighlightedColor
+                            selectedTextColor: "white"
                             selectionColor: Generic.Style.tableHighlightRowColor
                             text: "neutron diffraction, powder, 1d"
                         }
                     }
-                }
-                standardButtons: Dialog.Ok
-                onAccepted: {
-                    Specific.Variables.projectControl.writeMain(titleInput.text, keywordsInput.text)
-                    Generic.Constants.proxy.initialize()
-                    Generic.Constants.proxy.createProjectZip()
-                    Specific.Variables.projectOpened = true
+
+                    GenericAppDialog.Button {
+                        anchors.horizontalCenter: projectInfoDialogContent.horizontalCenter
+                        text: "OK"
+                        onClicked: {
+                            Specific.Variables.projectControl.writeMain(titleInput.text, keywordsInput.text)
+                            Generic.Constants.proxy.initialize()
+                            Generic.Constants.proxy.createProjectZip()
+                            Specific.Variables.projectOpened = true
+                            projectInfoDialog.close()
+                        }
+                    }
+
                 }
             }
-
         }
     }
 
