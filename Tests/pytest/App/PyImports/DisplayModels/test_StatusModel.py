@@ -45,7 +45,7 @@ def test_StatusModelModel():
     assert m._statusBarModel.item(0, 0).data(role=fr + 1) == pytest.approx(340.79)
     assert m._statusBarModel.item(2, 0).data(role=fr + 1) == 1
     assert m._statusBarModel.item(3, 0).data(role=fr + 1) == 1
-    assert m._statusBarModel.item(1, 0).data(role=fr + 1) == 5
+    assert m._statusBarModel.item(1, 0).data(role=fr + 1) == 1
 
     assert m._chartDisplayModel.item(0, 0).data(role=fr + offset + 1) == pytest.approx(340.79)
     assert m._chartDisplayModel.item(1, 0).data(role=fr + offset + 1) == 1
