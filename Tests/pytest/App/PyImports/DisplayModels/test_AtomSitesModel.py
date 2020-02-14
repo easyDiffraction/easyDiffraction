@@ -4,23 +4,24 @@ from PySide2.QtCore import QUrl
 from PySide2.QtGui import QStandardItemModel
 
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.Diffraction.Interface import CalculatorInterface
+from easyInterface.Diffraction.QtInterface import QtCalculatorInterface,  ProjectDict
 
 import PyImports.DisplayModels.AtomSitesModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
 
+
 def test_AtomSitesModel():
 
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
-    interface = CalculatorInterface(calculator)
+    interface = QtCalculatorInterface(calculator)
 
-    m = Model.AtomSitesModel()
+    m = Model()
     m.setCalculatorInterface(interface)
 
     assert isinstance(m._model, QStandardItemModel)
-    assert isinstance(m._project_dict, dict)
+    assert isinstance(m._project_dict, ProjectDict)
 
     assert m._label_role == 257
     assert m._occupancy_role == 263
@@ -46,7 +47,7 @@ def test_AtomSitesModel():
     assert m._model.item(1, 0).data(role=m._z_role) == 0.5
     assert m._model.item(1, 0).data(role=m._occupancy_role) == 1.0
 
-    assert m._model.item(2, 0).data() == 'O1'
+    assert m._model.item(2, 0).data() == 'O'
     assert m._model.item(2, 0).data(role=m._atom_role) == 'O2-'
     assert m._model.item(2, 0).data(role=m._color_role) == 0.5803
     assert m._model.item(2, 0).data(role=m._x_role) == 0.25521
@@ -57,22 +58,3 @@ def test_AtomSitesModel():
     # test asModel
     assert m._model == m.asModel()
 
-
-def test_AtomSitesModel_bad_calculator():
-
-    calculator = None
-
-    # null calculator
-    with pytest.raises(AttributeError):
-        m = Model.AtomSitesModel()
-        m.setCalculatorInterface(calculator)
-
-    # empty file
-    #file_path = QUrl("file:Tests/Data/empty.cif").toLocalFile()
-    #with pytest.raises(IndexError):
-    #    calculator = CryspyCalculator(file_path)
-
-    # old style rcif
-    file_path = QUrl("file:Tests/Data/full.rcif").toLocalFile()
-    with pytest.raises(AttributeError):
-        calculator = CryspyCalculator(file_path)

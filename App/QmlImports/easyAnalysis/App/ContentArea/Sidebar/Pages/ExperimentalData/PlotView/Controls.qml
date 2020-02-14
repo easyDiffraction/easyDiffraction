@@ -102,8 +102,25 @@ ColumnLayout {
                 GenericAppElements.ComboBox { currentIndex: 0; model: ["Constant wavelength", "Time-of-flight"] }
                 GenericAppElements.ComboBox { currentIndex: 0; model: ["Powder", "Single crystal"] }
             }
-        }
 
+            GenericAppElements.GridLayout {
+                columns: 6
+                columnSpacing: 15
+                rowSpacing: 10
+
+                Text { text: qsTr("Wavelength") }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].wavelength.store.value.toFixed(4) : ""
+                    units: "\u212B"
+                }
+                Text {}
+                Text { text: qsTr("Zero shift") }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].offset.store.value.toFixed(4) : ""
+                    units: "\u00B0"
+                }
+            }
+        }
         GenericAppElements.GuideWindow {
             message: "The sidebar groups contain details related to the experiment.\n\nClick on the group name to unfold the group."
             position: "left"
@@ -153,28 +170,28 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.GroupBox {
-        title: "Misc"//"Instrument parameters"
-        content: GridLayout {
-            columns: 8
-            columnSpacing: 15
-            rowSpacing: 10
-            enabled: false
-            Text { text: qsTr("Scale") }
-            GenericAppElements.TextField {
-                text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].phase.scale.store.value.toFixed(4) : ""
-                units: ""
-            }
-            Text {}
-            Text { text: qsTr("Wavelength") }
-            GenericAppElements.TextField {
-                text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].wavelength.store.value.toFixed(4) : ""
-                units: "\u212B"
-            }
-            Text {}
-            Text { text: qsTr("Zero shift") }
-            GenericAppElements.TextField {
-                text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].offset.store.value.toFixed(4) : ""
-                units: "\u00B0"
+        title: "Associated phases"//"Instrument parameters"
+//        content: GridLayout {
+//            columns: 4
+//            columnSpacing: 15
+//            rowSpacing: 10
+//            enabled: false
+//            Text { text: qsTr("Scale") }
+//            GenericAppElements.TextField {
+//                text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].phase[Specific.Variables.projectDict.info.phase_ids[0]].scale.store.value.toFixed(4) : ""
+//                units: ""
+//            }
+//
+//        }
+        content:             // Table
+        GenericAppElements.PhasesTableScaleView {
+            Layout.fillWidth: true
+            GenericAppElements.GuideWindow {
+                message: "Here you can see labels of the structural phases."
+                position: "left"
+                guideCurrentIndex: 0
+                toolbarCurrentIndex: Generic.Variables.SampleIndex
+                guidesCount: Generic.Variables.SampleGuidesCount
             }
         }
     }

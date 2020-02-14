@@ -11,14 +11,17 @@ from PyImports.ProjectSentinel import ProjectControl, writeProject, check_projec
 from PyImports.Refinement import Refiner
 from PyImports.ReleaseReader import Config
 
+from easyInterface import logger
 from easyInterface.Utils.Helpers import open_url
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
 from easyInterface.Diffraction.QtInterface import QtCalculatorInterface
 
+
 class ProxyPyQml(QObject):
 
     def __init__(self, release_config_file_path, parent=None):
-        logging.info("")
+        self.__log = logger.getLogger(__name__)
+        self.__log.info("")
         super().__init__(parent)
 
         self.info = Config(release_config_file_path)['release']
@@ -77,7 +80,7 @@ class ProxyPyQml(QObject):
     # Load CIF method, accessible from QML
     @Slot()
     def initialize(self):
-        logging.info("")
+        self.__log.info("")
         self._main_rcif_path = self._project_control.main_rcif_path
         #logging.info(self._calculator.asCifDict())
         # TODO This is where you would choose the calculator and import the module
@@ -229,7 +232,7 @@ class ProxyPyQml(QObject):
         """
         Notify the GUI about failure so a message can be shown
         """
-        logging.info("Refinement failed: " + str(reason))
+        self.__log.info("Refinement failed: " + str(reason))
         self._refinement_running = False
         self._refinement_done = False
         self.refinementChanged.emit()
@@ -239,7 +242,7 @@ class ProxyPyQml(QObject):
         """
         Start refinement as a separate thread
         """
-        logging.info("")
+        self.__log.info("")
         if self._refinement_running:
             logging.info("Fitting stopped")
             # This lacks actual stopping functionality, needs to be added
@@ -271,7 +274,7 @@ class ProxyPyQml(QObject):
         self.report_html = report
 
     @Slot(str, str)
-    def save_report(self, filename="", extension="html"):
+    def save_report(self, filename="", extension=".HTML"):
         """
         Save the generated report to the specified file
         Currently only html
@@ -280,7 +283,7 @@ class ProxyPyQml(QObject):
         full_filename = os.path.join(self._project_control.get_project_dir_absolute_path(), full_filename)
 
         if not self.report_html:
-            logging.info("No report to save")
+            self.__log.info("No report to save")
             return
 
         if extension == '.HTML':

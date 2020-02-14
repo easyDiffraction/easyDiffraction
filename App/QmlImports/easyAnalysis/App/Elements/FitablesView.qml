@@ -2,6 +2,8 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 
 import easyDiffraction 1.0 as Specific
+import easyAnalysis.App.Elements 1.0 as GenericAppElements
+
 
 Column {
     property alias model: contentListView.model

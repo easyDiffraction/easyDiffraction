@@ -1,6 +1,6 @@
 import os
 import sys
-import logging
+import argparse
 
 from PySide2.QtCore import QUrl, Qt, QCoreApplication
 from PySide2.QtGui import QIcon
@@ -8,11 +8,29 @@ from PySide2.QtWidgets import QApplication
 from PySide2.QtQml import QQmlApplicationEngine
 
 from PyImports.ProxyPyQml import ProxyPyQml
+from easyInterface import logger, logging
 
 if __name__ == '__main__':
+
+    description = 'easyDiffraction is a scientific software for modelling and analysis of the neutron diffraction data.'
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument("--debug", "-d", help="set the debugging level, 10=DEBUG, 20=INFO, 30=WARNING")
+    args = parser.parse_args()
+
+
     # Global logging settings
-    logging.basicConfig(level=logging.INFO, format="\033[1;32;49m%(asctime)s  |  %(lineno)-4d %(filename)-30s  |  %(funcName)-35s  |  %(message)s\033[0m")
-    logging.getLogger().disabled = False
+    if args.debug:
+        try:
+            logger.setLevel(int(args.debug))
+        except ValueError:
+            logger.setLevel(logging.WARNING)
+            logger.logger.warning('Debug level %s could no be parsed. Setting to WARNING (30)', args.debug)
+    else:
+        logger.setLevel(logging.WARNING)
+    logger.addSysOutput()
+    # logger.addNameBlacklistFilter('easyInterface.Diffraction.Calculators', 'easyInterface.Diffraction.DataClasses')
+    # logger.addNameFilter('easyDiffraction')
+    # logging.getLogger().addFilter(logging.Filter(name='easyInterface'))
 
     # The following way to enable HighDpi support doesn't work.
     # Add 'NSHighResolutionCapable = YES' to 'easyDiffraction.app/Contents/Info.plist'

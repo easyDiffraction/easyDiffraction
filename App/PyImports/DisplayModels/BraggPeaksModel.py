@@ -19,8 +19,8 @@ class BraggPeaksModel(BaseModel):
 
         for calc_dict in self._project_dict['calculations'].values():
             for phase_id in self._project_dict['phases'].keys():
-                column_count = len(calc_dict['bragg_peaks'][phase_id].items())
-                row_count = len(list(calc_dict['bragg_peaks'][phase_id].items())[0][1])
+                column_count = len(calc_dict['bragg_peaks'][phase_id].items()) - 1  # Because of name
+                row_count = len(list(calc_dict['bragg_peaks'][phase_id].items())[1][1])  # We know name should be at [0]
 
                 self._model.blockSignals(True)
 
@@ -29,11 +29,14 @@ class BraggPeaksModel(BaseModel):
                 self._model.setRowCount(row_count)
 
                 # Add all the columns from calc_dict['bragg_peaks'][phase_id] to self._model
-                for colum_index, (data_id, data_list) in enumerate(calc_dict['bragg_peaks'][phase_id].items()):
+                colum_index = 0
+                for data_id, data_list in calc_dict['bragg_peaks'][phase_id].items():
+                    if data_id == 'name':
+                        continue
                     for row_index, value in enumerate(data_list):
                         index = self._model.index(row_index, colum_index)
                         self._model.setData(index, value, Qt.DisplayRole)
-
+                    colum_index += 1
                 self._model.blockSignals(False)
                 self._headers_model.blockSignals(False)
 
@@ -65,7 +68,8 @@ class BraggPeaksModel(BaseModel):
                         series.append(QPointF(x, vertical_index))
 
         # Replace series
-        self._seriesRef.replace(series)
+        if self._seriesRef is not None:
+            self._seriesRef.replace(series)
 
         logging.info("<===== end")
 

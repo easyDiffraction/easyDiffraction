@@ -15,7 +15,6 @@ class FitablesModel(BaseModel):
         self._edit_role_increment = 100
         self._edit_role_name_suffix = 'Edit'
         # major properties
-        self._calculator = None
         self._model = QStandardItemModel()
         # set role names
         self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'unit']
@@ -97,10 +96,18 @@ class FitablesModel(BaseModel):
                 self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
                 self._calculator_interface.canUndoOrRedoChanged.emit()
                 if 'phases' == keys_list[0]:
-                    self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
+                    try:
+                        self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
+                    except AttributeError:
+                        # In this case the calculator/dict are out of phase :-/ So fallback to manual.
+                        self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
+                        # Sync and update so this shouldn't happen again.
                     self._calculator_interface.updatePhases()
                 elif 'experiments' == keys_list[0]:
-                    self._calculator_interface.setExperimentRefine(keys_list[1], keys_list[2:-2], edit_value)
+                    try:
+                        self._calculator_interface.setExperimentRefine(keys_list[1], keys_list[2:-2], edit_value)
+                    except AttributeError:
+                        self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
                     self._calculator_interface.updateExperiments()
                 else:
                     self._calculator_interface.setDictByPath(keys_list, edit_value)
@@ -109,10 +116,18 @@ class FitablesModel(BaseModel):
                 self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
                 self._calculator_interface.canUndoOrRedoChanged.emit()
                 if 'phases' == keys_list[0]:
-                    self._calculator_interface.setPhaseValue(keys_list[1], keys_list[2:-2], edit_value)
+                    try:
+                        self._calculator_interface.setPhaseValue(keys_list[1], keys_list[2:-2], edit_value)
+                    except AttributeError:
+                        self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
+                        self._calculator_interface.updatePhases()
                     self._calculator_interface.updateCalculations() # phases also updated ?
                 elif 'experiments' == keys_list[0]:
-                    self._calculator_interface.setExperimentValue(keys_list[1], keys_list[2:-2], edit_value)
+                    try:
+                        self._calculator_interface.setExperimentValue(keys_list[1], keys_list[2:-2], edit_value)
+                    except AttributeError:
+                        self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
+                        self._calculator_interface.updateExperiments()
                     self._calculator_interface.updateCalculations() # experiments also updated ?
                 else:
                     self._calculator_interface.setDictByPath(keys_list, edit_value)

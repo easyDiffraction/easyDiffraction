@@ -4,19 +4,20 @@ from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
 
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.Diffraction.Interface import CalculatorInterface
+from easyInterface.Diffraction.QtInterface import QtCalculatorInterface,  ProjectDict
 
 import PyImports.DisplayModels.StatusModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
 
+
 def test_StatusModelModel():
 
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
-    interface = CalculatorInterface(calculator)
+    interface = QtCalculatorInterface(calculator)
 
-    m = Model.StatusModel()
+    m = Model()
     m.setCalculatorInterface(interface)
 
 
@@ -41,24 +42,15 @@ def test_StatusModelModel():
 
     fr = Qt.UserRole + 1
     offset = 100
-    assert m._statusBarModel.item(0, 0).data(role=fr + 1) == pytest.approx(71.95)
+    assert m._statusBarModel.item(0, 0).data(role=fr + 1) == pytest.approx(340.79)
     assert m._statusBarModel.item(2, 0).data(role=fr + 1) == 1
     assert m._statusBarModel.item(3, 0).data(role=fr + 1) == 1
     assert m._statusBarModel.item(1, 0).data(role=fr + 1) == 5
 
-    assert m._chartDisplayModel.item(0, 0).data(role=fr + offset + 1) == pytest.approx(71.95)
-    assert m._chartDisplayModel.item(1, 0).data(role=fr + offset + 1) == 5
+    assert m._chartDisplayModel.item(0, 0).data(role=fr + offset + 1) == pytest.approx(340.79)
+    assert m._chartDisplayModel.item(1, 0).data(role=fr + offset + 1) == 1
 
     assert m._statusBarModel == m.returnStatusBarModel()
     assert m._chartDisplayModel == m.returnChartModel()
 
-
-def test_StatusModelModel_bad_calculator():
-
-    calculator = None
-
-    # null calculator
-    with pytest.raises(AttributeError):
-        m = Model.StatusModel()
-        m.setCalculatorInterface(calculator)
 

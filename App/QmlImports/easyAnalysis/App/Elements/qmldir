@@ -27,6 +27,7 @@ AtomAdpsTableView 1.0 AtomAdpsTableView.qml
 AtomMspsTableView 1.0 AtomMspsTableView.qml
 CellParametersTableView 1.0 CellParametersTableView.qml
 PhasesTableView 1.0 PhasesTableView.qml
+PhasesTableScaleView 1.0 PhasesTableScaleView.qml
 ExperimentsTableView 1.0 ExperimentsTableView.qml
 StatusBar 1.0 StatusBar.qml
 FlowButtons 1.0 FlowButtons.qml

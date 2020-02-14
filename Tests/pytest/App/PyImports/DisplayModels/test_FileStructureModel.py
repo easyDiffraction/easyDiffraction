@@ -4,7 +4,7 @@ from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
 
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.Diffraction.Interface import CalculatorInterface
+from easyInterface.Diffraction.QtInterface import QtCalculatorInterface,  ProjectDict
 
 import PyImports.DisplayModels.FileStructureModel as Model
 
@@ -14,9 +14,9 @@ def test_FileStructureModel():
 
     file_path = QUrl(TEST_FILE).toLocalFile()
     calculator = CryspyCalculator(file_path)
-    interface = CalculatorInterface(calculator)
+    interface = QtCalculatorInterface(calculator)
 
-    m = Model.FileStructureModel()
+    m = Model()
     m.setCalculatorInterface(interface)
 
     assert isinstance(m._model, QStandardItemModel)

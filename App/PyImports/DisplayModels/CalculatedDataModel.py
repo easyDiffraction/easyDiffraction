@@ -79,9 +79,10 @@ class CalculatedDataModel(BaseModel):
                 upperDiffSeries.append(QPointF(x, y_obs - sy_obs - y_calc))
 
         # Replace series
-        self._calcSeriesRef.replace(calcSeries)
-        self._lowerDiffSeriesRef.replace(lowerDiffSeries)
-        self._upperDiffSeriesRef.replace(upperDiffSeries)
+        if self._calcSeriesRef is not None:
+            self._calcSeriesRef.replace(calcSeries)
+            self._lowerDiffSeriesRef.replace(lowerDiffSeries)
+            self._upperDiffSeriesRef.replace(upperDiffSeries)
 
         logging.info("<===== end")
 
