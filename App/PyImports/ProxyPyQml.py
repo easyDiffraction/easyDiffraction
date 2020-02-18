@@ -1,5 +1,4 @@
 import os
-import logging
 import time
 from copy import deepcopy
 
@@ -244,7 +243,7 @@ class ProxyPyQml(QObject):
         """
         self.__log.info("")
         if self._refinement_running:
-            logging.info("Fitting stopped")
+            self.__log.info("Fitting stopped")
             # This lacks actual stopping functionality, needs to be added
             self._refinement_running = False
             self._refinement_done = True
@@ -290,7 +289,7 @@ class ProxyPyQml(QObject):
             # HTML can contain non-ascii, so need to open with right encoding
             with open(full_filename, 'w', encoding='utf-8') as report_file:
                 report_file.write(self.report_html)
-                logging.info("Report written")
+                self.__log.info("Report written")
         elif extension == '.PDF':
             document = QTextDocument(parent=None)
             document.setHtml(self.report_html)

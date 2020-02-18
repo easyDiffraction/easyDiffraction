@@ -2,7 +2,6 @@ import os
 import sys
 import tempfile
 import zipfile
-import logging
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import *
