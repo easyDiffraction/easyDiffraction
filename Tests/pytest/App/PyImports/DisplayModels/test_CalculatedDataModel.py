@@ -33,9 +33,9 @@ def test_CalculatedDataModel():
 
     # Test stuff from _setModelFromProject here
     assert m._model.item(0, 0).data(role=Qt.DisplayRole) == 4.0
-    assert m._model.item(0, 3).data(role=Qt.DisplayRole) == 438.3046174533981
+    assert pytest.approx(m._model.item(0, 3).data(role=Qt.DisplayRole), 438.3046174533981)
     assert m._model.item(380, 0).data(role=Qt.DisplayRole) == 80.0
-    assert m._model.item(380, 3).data(role=Qt.DisplayRole) == -58.83263649312255
+    assert pytest.approx(m._model.item(380, 3).data(role=Qt.DisplayRole), -58.83263649312255)
 
     # test asModel
     assert m._model == m.asModel()
