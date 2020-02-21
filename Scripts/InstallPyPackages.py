@@ -64,7 +64,9 @@ if __name__ == '__main__':
 
     install(
         #'cryspy==0.1.13',
-        'easyInterface>=0.0.5',
+        'scipy==1.4.1',
+        'numpy==1.18.1',
+        'easyInterface>=0.0.6',
         'PySide2==5.13.1',
         'pyinstaller==3.5',                                                     # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
         'requests==2.22.0',
