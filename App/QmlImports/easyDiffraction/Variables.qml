@@ -49,4 +49,7 @@ QtObject {
     property var canUndo: calculatorInterface ? proxyPyQmlObj.canUndo : false
     property var canRedo: calculatorInterface ? proxyPyQmlObj.canRedo : false
 
+    // Logging
+    property var loggerPyQml: _loggerPyQml
+
 }

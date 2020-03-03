@@ -2,13 +2,14 @@ import os
 import sys
 import argparse
 
-from PySide2.QtCore import QUrl, Qt, QCoreApplication
+from PySide2.QtCore import Qt, QObject, QCoreApplication, QUrl, Slot
 from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import QApplication
 from PySide2.QtQml import QQmlApplicationEngine
 
 from PyImports.ProxyPyQml import ProxyPyQml
 from easyInterface import logger, logging
+from easyInterface.Utils.QtLogging import QtLogger
 
 if __name__ == '__main__':
 
@@ -16,7 +17,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument("--debug", "-d", help="set the debugging level, 10=DEBUG, 20=INFO, 30=WARNING")
     args = parser.parse_args()
-
 
     # Global logging settings
     if args.debug:
@@ -31,6 +31,7 @@ if __name__ == '__main__':
     # logger.addNameBlacklistFilter('easyInterface.Diffraction.Calculators', 'easyInterface.Diffraction.DataClasses')
     # logger.addNameFilter('easyDiffraction')
     # logging.getLogger().addFilter(logging.Filter(name='easyInterface'))
+    logger_py_qml = QtLogger(logger)
 
     # The following way to enable HighDpi support doesn't work.
     # Add 'NSHighResolutionCapable = YES' to 'easyDiffraction.app/Contents/Info.plist'
@@ -66,6 +67,7 @@ if __name__ == '__main__':
     # Create GUI from QML
     engine = QQmlApplicationEngine()
 
+    engine.rootContext().setContextProperty("_loggerPyQml", logger_py_qml)
     engine.rootContext().setContextProperty("proxyPyQmlObj", proxy_py_qml_obj)
     engine.rootContext().setContextProperty("examplesDir", examples_dir_path)
     engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)

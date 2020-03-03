@@ -1,9 +1,11 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import QtQuick.XmlListModel 2.12
 
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
+import easyDiffraction 1.0 as Specific
 
 GenericControls.Dialog {
     visible: Generic.Variables.showPreferences
@@ -36,7 +38,7 @@ GenericControls.Dialog {
 
         // Spacer
 
-        Item { height: 15; width: 1 }
+        Item { height: 10; width: 1 }
 
         // Update preferences
 
@@ -55,7 +57,7 @@ GenericControls.Dialog {
 
         // Spacer
 
-        Item { height: 15; width: 1 }
+        Item { height: 10; width: 1 }
 
         // Language preferences
 
@@ -74,7 +76,7 @@ GenericControls.Dialog {
 
         // Spacer
 
-        Item { height: 15; width: 1 }
+        Item { height: 10; width: 1 }
 
         // Theme preferences
 
@@ -89,6 +91,30 @@ GenericControls.Dialog {
             width: 250
             enabled: false
             model: ["Light", "Dark"]
+        }
+
+        // Spacer
+
+        Item { height: 10; width: 1 }
+
+        // Debugging
+
+        Text {
+            font.pointSize: Generic.Style.fontPointSize + 3
+            font.family: Generic.Style.fontFamily
+            color: "#444"
+            text: "Logging"
+        }
+
+        GenericAppElements.ComboBox {
+            width: 250
+            model: XmlListModel {
+                xml: Specific.Variables.loggerPyQml.levelsAsXml()
+                query: "/root/item/level"
+                XmlRole { name: "name"; query: "name/string()" }
+            }
+            currentIndex: Specific.Variables.loggerPyQml.defaultLevelIndex()
+            onActivated: Specific.Variables.loggerPyQml.setLevel(currentIndex)
         }
     }
 }
