@@ -2,8 +2,9 @@ __author__ = 'andrewszonov'
 __version__ = "2020_03_03"
 
 
-from dicttoxml import dicttoxml
+import logging
 from easyInterface import VERBOSE, Logger
+from dicttoxml import dicttoxml
 from PySide2.QtCore import QObject, Slot
 
 
@@ -13,13 +14,13 @@ class QtLogger(QObject):
         self.__logger = logger
         self.__initial_level = logger.logging_level
         self.__levels = [
-            { 'level': { 'name': 'Disabled', 'code': 0  } },
-            {'level':  {'name':  'Verbose',  'code': VERBOSE}},
-            { 'level': { 'name': 'Debug',    'code': 10 } },
-            { 'level': { 'name': 'Info',     'code': 20 } },
-            { 'level': { 'name': 'Warning',  'code': 30 } },
-            { 'level': { 'name': 'Error',    'code': 40 } },
-            { 'level': { 'name': 'Critical', 'code': 50 } }
+            { 'level': { 'name': 'Disabled', 'code': logging.NOTSET  } },
+            { 'level': { 'name': 'Verbose',  'code': VERBOSE } },
+            { 'level': { 'name': 'Debug',    'code': logging.DEBUG } },
+            { 'level': { 'name': 'Info',     'code': logging.INFO } },
+            { 'level': { 'name': 'Warning',  'code': logging.WARNING } },
+            { 'level': { 'name': 'Error',    'code': logging.ERROR } },
+            { 'level': { 'name': 'Critical', 'code': logging.CRITICAL } }
         ]
 
     @Slot(int)
@@ -48,7 +49,7 @@ class QtLogger(QObject):
     @Slot(result=int)
     def defaultLevelIndex(self):
         """
-        Reset the logger to the default level 
+        Reset the logger to the default level
         """
         for index, level in enumerate(self.__levels):
             if level['level']['code'] == self.__initial_level:
