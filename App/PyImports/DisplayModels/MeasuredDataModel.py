@@ -3,6 +3,8 @@ import logging
 from PySide2.QtCore import Qt, QPointF, Slot
 from PySide2.QtCharts import QtCharts
 
+
+from easyInterface import logger
 from PyImports.DisplayModels.BaseModel import BaseModel
 
 
@@ -11,12 +13,13 @@ class MeasuredDataModel(BaseModel):
         super().__init__(parent)
         self._upperSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
         self._lowerSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
+        self._log = logger.getLogger(__class__.__module__)
 
     def _setModelsFromProjectDict(self):
         """
         Create the model needed for GUI measured data table and chart.
         """
-        logging.info("-> start")
+        self._log.info("-> start")
 
         for experiment_id, experiment_dict in self._project_dict['experiments'].items():
             column_count = len(experiment_dict['measured_pattern'].items())
@@ -58,13 +61,13 @@ class MeasuredDataModel(BaseModel):
             # QStandartItemModel
             self._updateQmlChartViewSeries()
 
-        logging.info("<- end")
+        self._log.info("<- end")
 
     def _updateQmlChartViewSeries(self):
         """
         Updates QML LineSeries of ChartView.
         """
-        logging.info("=====> start")
+        self._log.info("=====> start")
 
         # Indices of the self._model columns to be plotted on chart
         x_column = 0
@@ -98,7 +101,7 @@ class MeasuredDataModel(BaseModel):
         for s in self._lowerSeriesRefs:
             s.replace(lowerSeries)
 
-        logging.info("<===== end")
+        self._log.info("<===== end")
 
     def onProjectChanged(self):
         """
