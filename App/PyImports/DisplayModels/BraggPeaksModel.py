@@ -1,4 +1,4 @@
-import logging
+from easyInterface import logger
 
 from PySide2.QtCore import Qt, QPointF, Slot
 from PySide2.QtCharts import QtCharts
@@ -10,12 +10,14 @@ class BraggPeaksModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._seriesRef = None
+        self._log = self._log = logger.getLogger(__class__.__module__)
+
 
     def _setModelsFromProjectDict(self):
         """
         Create the model needed for GUI measured data table and chart.
         """
-        logging.info("-> start")
+        self._log.info("-> start")
 
         for calc_dict in self._project_dict['calculations'].values():
             for phase_id in self._project_dict['phases'].keys():
@@ -49,13 +51,13 @@ class BraggPeaksModel(BaseModel):
                 # QStandartItemModel
                 self._updateQmlChartViewSeries()
 
-        logging.info("<- end")
+        self._log.info("<- end")
 
     def _updateQmlChartViewSeries(self):
         """
         Updates QML LineSeries of ChartView.
         """
-        logging.info("=====> start")
+        self._log.info("=====> start")
 
         series = []
 
@@ -71,7 +73,7 @@ class BraggPeaksModel(BaseModel):
         if self._seriesRef is not None:
             self._seriesRef.replace(series)
 
-        logging.info("<===== end")
+        self._log.info("<===== end")
 
     @Slot(QtCharts.QXYSeries)
     def setSeries(self, series):

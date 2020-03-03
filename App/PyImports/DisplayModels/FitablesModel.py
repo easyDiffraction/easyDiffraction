@@ -1,4 +1,4 @@
-import logging
+from easyInterface import logger
 
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItem, QStandardItemModel
@@ -24,6 +24,7 @@ class FitablesModel(BaseModel):
         self._model.setItemRoleNames(self._roles_dict)
         # connect signals
         self._model.dataChanged.connect(self.onModelChanged)
+        self._log = logger.getLogger(__class__.__module__)
 
     def _setRolesListAndDict(self):
         """..."""

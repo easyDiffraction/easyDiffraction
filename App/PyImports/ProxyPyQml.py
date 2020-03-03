@@ -4,16 +4,16 @@ from copy import deepcopy
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
 from PySide2.QtGui import QPdfWriter, QTextDocument
-from PyImports.DisplayModels import *
 
+from PyImports.DisplayModels import *
 from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
+from PyImports.QtInterface import QtCalculatorInterface
 from PyImports.Refinement import Refiner
 from PyImports.ReleaseReader import Config
 
 from easyInterface import logger
 from easyInterface.Utils.Helpers import open_url
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.Diffraction.QtInterface import QtCalculatorInterface
 
 
 class ProxyPyQml(QObject):

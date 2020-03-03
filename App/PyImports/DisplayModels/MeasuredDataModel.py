@@ -1,5 +1,3 @@
-import logging
-
 from PySide2.QtCore import Qt, QPointF, Slot
 from PySide2.QtCharts import QtCharts
 

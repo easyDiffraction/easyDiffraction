@@ -1,6 +1,7 @@
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItem, QStandardItemModel
 
+from easyInterface import logger
 from easyInterface.Utils.Helpers import get_num_refine_pars
 from easyInterface.Utils.StatusObjects import StatusItem, StatusList
 from PyImports.DisplayModels.BaseModel import BaseModel
@@ -37,6 +38,8 @@ class StatusModel(BaseModel):
         self._setRolesListAndDict()
         self._statusBarModel.setItemRoleNames(self._roles_dict['status'])
         self._chartDisplayModel.setItemRoleNames(self._roles_dict['plot'])
+
+        self._log = logger.getLogger(__class__.__module__)
 
     def _setRolesListAndDict(self):
         """..."""

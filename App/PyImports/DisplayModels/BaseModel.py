@@ -13,6 +13,7 @@ class BaseModel(QObject):
         self._model = QStandardItemModel()
         self._calculator_interface = None
         self._project_dict = None
+        self._log = None
 
     def _setModelsFromProjectDict(self):
         """

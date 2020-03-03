@@ -9,7 +9,7 @@ from PySide2.QtQml import QQmlApplicationEngine
 
 from PyImports.ProxyPyQml import ProxyPyQml
 from easyInterface import logger, logging
-from easyInterface.Utils.QtLogging import QtLogger
+from PyImports.Utils.QtLogging import QtLogger
 
 if __name__ == '__main__':
 

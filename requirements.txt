@@ -1,3 +1,4 @@
+dicttoxml
 easyInterface
 pyside2
 pyyaml

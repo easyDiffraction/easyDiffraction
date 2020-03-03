@@ -1,4 +1,4 @@
-import logging
+from easyInterface import logger
 
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QStandardItemModel
@@ -28,10 +28,11 @@ class AtomSitesModel(BaseModel):
             self._z_role: b'zPos',
             self._occupancy_role: b'occupancy'
             })
+        self._log = logger.getLogger(__class__.__module__)
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI ..."""
-        logging.info("-> start")
+        self._log.info("-> start")
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
             self._model.blockSignals(True)
@@ -65,4 +66,4 @@ class AtomSitesModel(BaseModel):
             # unblock signals and emit model layout changed
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
-        logging.info("<- end")
+        self._log.info("<- end")

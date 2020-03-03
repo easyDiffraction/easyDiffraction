@@ -1,4 +1,4 @@
-import logging
+from easyInterface import logger
 
 from PySide2.QtCore import Qt, QPointF, Slot
 from PySide2.QtCharts import QtCharts
@@ -12,12 +12,13 @@ class CalculatedDataModel(BaseModel):
         self._calcSeriesRef = None
         self._lowerDiffSeriesRef = None
         self._upperDiffSeriesRef = None
+        self._log = logger.getLogger(__class__.__module__)
 
     def _setModelsFromProjectDict(self):
         """
         Create the model needed for GUI measured data table and chart.
         """
-        logging.info("-> start")
+        self._log.info("-> start")
 
         for calc_dict in self._project_dict['calculations'].values():
             column_count = len(calc_dict['calculated_pattern'].items())
@@ -55,13 +56,13 @@ class CalculatedDataModel(BaseModel):
             # QStandartItemModel
             self._updateQmlChartViewSeries()
 
-        logging.info("<- end")
+        self._log.info("<- end")
 
     def _updateQmlChartViewSeries(self):
         """
         Updates QML LineSeries of ChartView.
         """
-        logging.info("=====> start")
+        self._log.info("=====> start")
 
         calcSeries = []
         lowerDiffSeries = []
@@ -84,7 +85,7 @@ class CalculatedDataModel(BaseModel):
             self._lowerDiffSeriesRef.replace(lowerDiffSeries)
             self._upperDiffSeriesRef.replace(upperDiffSeries)
 
-        logging.info("<===== end")
+        self._log.info("<===== end")
 
     @Slot(QtCharts.QXYSeries)
     def setCalcSeries(self, series):

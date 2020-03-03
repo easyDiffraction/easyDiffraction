@@ -1,4 +1,4 @@
-import logging
+from easyInterface import logger
 
 from PySide2.QtCore import Qt, QObject, Signal
 from PySide2.QtGui import QStandardItemModel, QStandardItem
@@ -17,6 +17,7 @@ class FileStructureModel(BaseModel):
             self._experiment_role: b'experimentsRole',
             self._calculation_role: b'calculationsRole',
             })
+        self._log = logger.getLogger(__class__.__module__)
 
     def asPhaseString(self):
         """

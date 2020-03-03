@@ -1,4 +1,4 @@
-import logging
+from easyInterface import logger
 
 from PySide2.QtCore import Qt, QObject, Signal, Slot, Property
 from PySide2.QtGui import QStandardItem, QStandardItemModel
@@ -13,10 +13,11 @@ class CellBoxModel(BaseModel):
         # set roles
         self._x_role, self._y_role, self._z_role = [ Qt.UserRole + 1 + i for i in range(3) ]
         self._model.setItemRoleNames({ self._x_role: b'xPos', self._y_role: b'yPos', self._z_role: b'zPos' })
+        self._log = logger.getLogger(__class__.__module__)
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI structure chart (unit cell box)."""
-        logging.info("-> start")
+        self._log.info("-> start")
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
             self._model.blockSignals(True)
@@ -57,4 +58,4 @@ class CellBoxModel(BaseModel):
             # unblock signals and emit model layout changed
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
-        logging.info("<- end")
+        self._log.info("<- end")

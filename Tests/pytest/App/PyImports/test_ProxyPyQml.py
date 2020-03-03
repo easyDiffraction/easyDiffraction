@@ -2,7 +2,7 @@
 import pytest
 from PyImports.ProxyPyQml import *
 from easyInterface.Utils import Helpers
-from easyInterface.Diffraction.QtInterface import QtCalculatorInterface
+from PyImports.QtInterface import QtCalculatorInterface
 
 TEST_FILE = "file:Tests/Data/main.cif"
 release_config_file_path = os.path.join('App', "Release.yml")
