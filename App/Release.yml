@@ -1,7 +1,9 @@
 # release
 release:
+  name: easyDiffraction
   version: 0.4.0
   date: 31 Jan 2020
+  url: http://easydiffraction.org
   changes: # Get from pull requests description?
   - Add loading crystal structure from CIF
   - Add loading experimental datasets from CIF

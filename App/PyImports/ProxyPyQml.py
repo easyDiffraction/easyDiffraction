@@ -86,7 +86,9 @@ class ProxyPyQml(QObject):
         self._calculator_interface = QtCalculatorInterface(
             CryspyCalculator(self._main_rcif_path)
         )
+        self._calculator_interface.project_dict['app']['name'] = self.info['name']
         self._calculator_interface.project_dict['app']['version'] = self.info['version']
+        self._calculator_interface.project_dict['app']['url'] = self.info['url']
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
         self._calculator_interface.clearUndoStack()
