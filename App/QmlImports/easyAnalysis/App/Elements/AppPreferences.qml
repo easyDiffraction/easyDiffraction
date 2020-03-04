@@ -113,8 +113,8 @@ GenericControls.Dialog {
                 query: "/root/item/level"
                 XmlRole { name: "name"; query: "name/string()" }
             }
-            currentIndex: Specific.Variables.loggerPyQml.defaultLevelIndex()
             onActivated: Specific.Variables.loggerPyQml.setLevel(currentIndex)
+            Component.onCompleted: currentIndex = Specific.Variables.loggerPyQml.defaultLevelIndex()
         }
     }
 }
