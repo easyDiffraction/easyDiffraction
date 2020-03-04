@@ -22,6 +22,7 @@
     "App/PyImports/DisplayModels/FileStructureModel.py",
     "App/PyImports/DisplayModels/FitablesModel.py",
     "App/PyImports/DisplayModels/MeasuredDataModel.py",
+    "App/PyImports/DisplayModels/ProjectModel.py",
     "App/PyImports/DisplayModels/StatusModel.py",
 
     ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/Interface.py",

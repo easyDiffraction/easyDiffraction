@@ -41,6 +41,7 @@ class ProxyPyQml(QObject):
         self._atom_adps_model = AtomAdpsModel()
         self._atom_msps_model = AtomMspsModel()
         self._fitables_model = FitablesModel()
+        self._project_model = ProjectModel()
         self._status_model = StatusModel()
         self._file_structure_model = FileStructureModel()
 
@@ -113,6 +114,7 @@ class ProxyPyQml(QObject):
         self._atom_adps_model.setCalculatorInterface(self._calculator_interface)
         self._atom_msps_model.setCalculatorInterface(self._calculator_interface)
         self._fitables_model.setCalculatorInterface(self._calculator_interface)
+        self._project_model.setCalculatorInterface(self._calculator_interface)
         self._status_model.setCalculatorInterface(self._calculator_interface)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         #
@@ -208,6 +210,7 @@ class ProxyPyQml(QObject):
     atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), constant=True)
     atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), constant=True)
     fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
+    _project = Property('QVariant', lambda self: self._project_model, constant=True)
 
     statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
