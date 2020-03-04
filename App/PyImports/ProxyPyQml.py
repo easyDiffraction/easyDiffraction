@@ -94,16 +94,7 @@ class ProxyPyQml(QObject):
         self._calculator_interface.clearUndoStack()
         self.onProjectSaved()
         self.projectChanged.connect(self.onProjectChanged)
-        #self.onProjectUnsaved()
-        #logging.info(self._calculator_interface.asCifDict())
-        ####self.projectChanged.connect(self.updateCalculatedSeries) #---#
-        # This should pick up on non-valid cif files
-        #if not check_project_dict(self._calculator.asCifDict()):
-        #    # Note that new projects also fall into here, so:
-        #    if not self._calculator.name():
-        #        self._project_control._isValidCif = False
-        #        return
-        #
+
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._calculated_data_model.setCalculatorInterface(self._calculator_interface)
         self._bragg_peaks_model.setCalculatorInterface(self._calculator_interface)

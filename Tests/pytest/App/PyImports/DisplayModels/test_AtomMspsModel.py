@@ -4,7 +4,7 @@ from PySide2.QtCore import QUrl
 from PySide2.QtGui import QStandardItemModel
 
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.Diffraction.QtInterface import QtCalculatorInterface,  ProjectDict
+from PyImports.QtInterface import QtCalculatorInterface, ProjectDict
 
 import PyImports.DisplayModels.AtomMspsModel as Model
 
