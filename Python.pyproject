@@ -9,6 +9,8 @@
     "App/PyImports/Refinement.py",
     "App/PyImports/ReleaseReader.py",
 
+    "App/PyImports/Utils/QtLogging.py",
+
     "App/PyImports/DisplayModels/AtomAdpsModel.py",
     "App/PyImports/DisplayModels/AtomMspsModel.py",
     "App/PyImports/DisplayModels/AtomSitesModel.py",
