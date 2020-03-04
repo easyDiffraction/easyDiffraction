@@ -9,10 +9,10 @@ from PySide2.QtCore import QObject, Slot
 
 
 class QtLogger(QObject):
-    def __init__(self, logger: Logger, parent=None):
+    def __init__(self, logger: Logger, level=None, parent=None):
         super().__init__(parent)
         self.__logger = logger
-        self.__initial_level = logger.logging_level
+        self.__initial_level = self.initialLevel(level)
         self.__levels = [
             { 'level': { 'name': 'Disabled', 'code': logging.NOTSET  } },
             { 'level': { 'name': 'Verbose',  'code': VERBOSE } },
@@ -22,6 +22,15 @@ class QtLogger(QObject):
             { 'level': { 'name': 'Error',    'code': logging.ERROR } },
             { 'level': { 'name': 'Critical', 'code': logging.CRITICAL } }
         ]
+        self.setLevel(self.defaultLevelIndex())
+
+    def initialLevel(self, level):
+        """
+        ...
+        """
+        if level is not None:
+            return level
+        return self.__logger.logging_level
 
     @Slot(int)
     def setLevel(self, index: str):
