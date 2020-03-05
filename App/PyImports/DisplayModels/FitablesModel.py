@@ -1,3 +1,5 @@
+import numpy as np
+
 from easyInterface import logger
 
 from PySide2.QtCore import Qt
@@ -147,6 +149,32 @@ class FitablesModel(BaseModel):
                 self._calculator_interface.updateCalculations() # experiments also updated ?
             else:
                 self._calculator_interface.setDictByPath(keys_list, edit_value)
+            # Update min and max if value is outside [min, max] range
+            value = self._calculator_interface.project_dict.getItemByPath(keys_list)
+            min = self._calculator_interface.project_dict.getItemByPath([*keys_list[:-1], 'min'])
+            max = self._calculator_interface.project_dict.getItemByPath([*keys_list[:-1], 'max'])
+            self._log.debug(f"initial min: {min}, max: {max}")
+            # TODO: the code below duplicates the code from BaseClasses.py - class Base - def updateMinMax
+            # stacked changes (for GUI triggered changes)
+            if min == -np.Inf or value < min:
+                if np.isclose([value], [0]):
+                    min = -1
+                elif value > 0:
+                    min = 0.8*value
+                elif value < 0:
+                    min = 1.2*value
+            if max == np.Inf or value > max:
+                if np.isclose([value], [0]):
+                    max = 1
+                elif value > 0:
+                    max = 1.2*value
+                elif value < 0:
+                    max = 0.8*value
+            # Update min and max in project dict
+            self._log.debug(f"re-calculated min: {min}, max: {max}")
+            self._calculator_interface.project_dict.setItemByPath([*keys_list[:-1], 'min'], min)
+            self._calculator_interface.project_dict.setItemByPath([*keys_list[:-1], 'max'], max)
+            self._calculator_interface.projectDictChanged.emit()
 
         elif display_role_name == 'min' or display_role_name == 'max':
             undo_redo_text = f"Changing '{fitable_name}' {display_role_name} to '{fitable_value}'"
