@@ -154,9 +154,9 @@ class FitablesModel(BaseModel):
             self._calculator_interface.canUndoOrRedoChanged.emit()
             # TODO: fix setDictByPath below
             #self._calculator_interface.setDictByPath(keys_list, edit_value)
-            # Temporary solution until above is fixed
+            # Temporary solution until above is fixed (?)
             self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
-            self.onProjectChanged()
+            self._calculator_interface.projectDictChanged.emit()
 
         else:
             self._log.warning(f"unknown role: {display_role_name}")
