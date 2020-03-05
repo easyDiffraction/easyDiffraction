@@ -56,7 +56,7 @@ class FitablesModel(BaseModel):
         column = []
         for path in find_in_obj(project_dict.asDict(), 'refine'):
             keys_list = path[:-1]
-            hide = project_dict.getItemByPath(keys_list + ['hide'])    
+            hide = project_dict.getItemByPath(keys_list + ['hide'])
             if hide:
                 continue
 

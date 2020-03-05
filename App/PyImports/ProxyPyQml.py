@@ -48,7 +48,7 @@ class ProxyPyQml(QObject):
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
-        self._refinement_result = None
+        self._refinement_result = {}
 
         self._needToSave = False
 
@@ -119,6 +119,8 @@ class ProxyPyQml(QObject):
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         #
         self._refine_thread = Refiner(self._calculator_interface, 'refine')
+        self._refine_thread.failed.connect(self._thread_failed)
+        self._refine_thread.finished.connect(self._thread_finished)
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
 
         # We can't link signals as the manager signals emitted before the dict is updated :-(
@@ -230,9 +232,8 @@ class ProxyPyQml(QObject):
         """
         self._refinement_running = False
         self._refinement_done = True
-        self._refinement_result = res
-        #self.onProjectUnsaved()
-        self.refinementChanged.emit()
+        self._refinement_result = deepcopy(res)
+        self.refinementStatusChanged.emit()
 
     def _thread_failed(self, reason):
         """
@@ -241,7 +242,7 @@ class ProxyPyQml(QObject):
         self.__log.info("Refinement failed: " + str(reason))
         self._refinement_running = False
         self._refinement_done = False
-        self.refinementChanged.emit()
+        self.refinementStatusChanged.emit()
 
     @Slot()
     def refine(self):
@@ -254,19 +255,15 @@ class ProxyPyQml(QObject):
             # This lacks actual stopping functionality, needs to be added
             self._refinement_running = False
             self._refinement_done = True
-            self.refinementChanged.emit()
+            self.refinementStatusChanged.emit()
             return
         self._refinement_running = True
         self._refinement_done = False
-        self._refine_thread.finished.connect(self._thread_finished)
-        self._refine_thread.failed.connect(self._thread_failed)
+        self.refinementStatusChanged.emit()
         self._refine_thread.start()
-        self.refinementChanged.emit()
 
-    refinementChanged = Signal()
-    refinementResult = Property('QVariant', lambda self: self._refinement_result, notify=refinementChanged)
-    refinementRunning = Property(bool, lambda self: self._refinement_running, notify=refinementChanged)
-    refinementDone = Property(bool, lambda self: self._refinement_done, notify=refinementChanged)
+    refinementStatusChanged = Signal()
+    refinementStatus = Property('QVariant', lambda self: [self._refinement_running, self._refinement_done, self._refinement_result], notify=refinementStatusChanged)
 
     # ######
     # REPORT
