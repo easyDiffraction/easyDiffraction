@@ -115,15 +115,16 @@ class FitablesModel(BaseModel):
                     # In this case the calculator/dict are out of phase :-/ So fallback to manual.
                     self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
                     # Sync and update so this shouldn't happen again.
-                self._calculator_interface.updatePhases()
+                #self._calculator_interface.updatePhases()
             elif 'experiments' == keys_list[0]:
                 try:
                     self._calculator_interface.setExperimentRefine(keys_list[1], keys_list[2:-2], edit_value)
                 except AttributeError:
                     self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
-                self._calculator_interface.updateExperiments()
+                #self._calculator_interface.updateExperiments()
             else:
                 self._calculator_interface.setDictByPath(keys_list, edit_value)
+            self._calculator_interface.projectDictChanged.emit()
 
         elif display_role_name == 'value':
             undo_redo_text = f"Changing '{fitable_name}' to '{fitable_value:.4f}'"
