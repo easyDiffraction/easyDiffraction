@@ -10,6 +10,7 @@ from PyImports.DisplayModels.BaseModel import BaseModel
 class FitablesModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self._log = logger.getLogger(__class__.__module__)
         # minor properties
         self._first_role = Qt.UserRole + 1
         self._edit_role_increment = 100
@@ -24,32 +25,39 @@ class FitablesModel(BaseModel):
         self._model.setItemRoleNames(self._roles_dict)
         # connect signals
         self._model.dataChanged.connect(self.onModelChanged)
-        self._log = logger.getLogger(__class__.__module__)
 
     def _setRolesListAndDict(self):
         """..."""
         for i, role_name in enumerate(self._role_names_list):
             display_role = self._first_role + i
             edit_role = display_role + self._edit_role_increment
+
             self._roles_dict[display_role] = role_name.encode()
             self._roles_dict[edit_role] = '{}{}'.format(role_name, self._edit_role_name_suffix).encode()
             self._roles_list.append(display_role)
             self._roles_list.append(edit_role)
 
+        self._log.debug(f"roles: {self._roles_dict}")
+
     def _setModelsFromProjectDict(self):
         """Create the initial data list with structure for GUI fitables table."""
+        self._log.debug("update model")
+
         # block model signals
         self._model.blockSignals(True)
+
         # reset model
         self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
         project_dict = self._project_dict
+
         # set column
         column = []
         for path in find_in_obj(project_dict.asDict(), 'refine'):
             keys_list = path[:-1]
-            hide = project_dict.getItemByPath(keys_list + ['hide'])
+            hide = project_dict.getItemByPath(keys_list + ['hide'])    
             if hide:
                 continue
+
             item = QStandardItem()
             for role, role_name_bytes in self._roles_dict.items():
                 role_name = role_name_bytes.decode()
@@ -70,9 +78,12 @@ class FitablesModel(BaseModel):
                 else:
                     value = nested_get(project_dict, keys_list + [role_name])
                 item.setData(value, role)
+
             column.append(item)
+
         # set model
         self._model.appendColumn(column) # dataChanged is not emited. why?
+
         # unblock signals and emit model layout changed
         self._model.blockSignals(False)
         self._model.layoutChanged.emit()
@@ -88,57 +99,79 @@ class FitablesModel(BaseModel):
         edit_value = self._model.data(index, edit_role)
         display_value = self._model.data(index, display_role)
 
+        # nothing is really changed
+        if edit_value == display_value:
+            return
+
         fitable_name = '.'.join(keys_list[:-2])
         fitable_value = edit_value
 
-        if edit_value != display_value:
-            if isinstance(edit_value, bool):
-                undo_redo_text = f"Changing '{fitable_name}' refine state to '{fitable_value}'"
-                self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
-                self._calculator_interface.canUndoOrRedoChanged.emit()
-                if 'phases' == keys_list[0]:
-                    try:
-                        self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
-                    except AttributeError:
-                        # In this case the calculator/dict are out of phase :-/ So fallback to manual.
-                        self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
-                        # Sync and update so this shouldn't happen again.
-                    self._calculator_interface.updatePhases()
-                elif 'experiments' == keys_list[0]:
-                    try:
-                        self._calculator_interface.setExperimentRefine(keys_list[1], keys_list[2:-2], edit_value)
-                    except AttributeError:
-                        self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
-                    self._calculator_interface.updateExperiments()
-                else:
-                    self._calculator_interface.setDictByPath(keys_list, edit_value)
+        if display_role_name == 'refine':
+            undo_redo_text = f"Changing '{fitable_name}' refine state to '{fitable_value}'"
+            if 'phases' == keys_list[0]:
+                try:
+                    self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
+                except AttributeError:
+                    # In this case the calculator/dict are out of phase :-/ So fallback to manual.
+                    self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
+                    # Sync and update so this shouldn't happen again.
+                self._calculator_interface.updatePhases()
+            elif 'experiments' == keys_list[0]:
+                try:
+                    self._calculator_interface.setExperimentRefine(keys_list[1], keys_list[2:-2], edit_value)
+                except AttributeError:
+                    self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
+                self._calculator_interface.updateExperiments()
             else:
-                undo_redo_text = f"Changing '{fitable_name}' to '{fitable_value:.4f}'"
-                self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
-                self._calculator_interface.canUndoOrRedoChanged.emit()
-                if 'phases' == keys_list[0]:
-                    try:
-                        self._calculator_interface.setPhaseValue(keys_list[1], keys_list[2:-2], edit_value)
-                    except AttributeError:
-                        self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
-                        self._calculator_interface.updatePhases()
-                    self._calculator_interface.updateCalculations() # phases also updated ?
-                elif 'experiments' == keys_list[0]:
-                    try:
-                        self._calculator_interface.setExperimentValue(keys_list[1], keys_list[2:-2], edit_value)
-                    except AttributeError:
-                        self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
-                        self._calculator_interface.updateExperiments()
-                    self._calculator_interface.updateCalculations() # experiments also updated ?
-                else:
-                    self._calculator_interface.setDictByPath(keys_list, edit_value)
-            self._calculator_interface.project_dict.endBulkUpdate()
+                self._calculator_interface.setDictByPath(keys_list, edit_value)
+
+        elif display_role_name == 'value':
+            undo_redo_text = f"Changing '{fitable_name}' to '{fitable_value:.4f}'"
+            self._log.debug(f"undo_redo_text: {undo_redo_text}")
+            self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
             self._calculator_interface.canUndoOrRedoChanged.emit()
+            if 'phases' == keys_list[0]:
+                try:
+                    self._calculator_interface.setPhaseValue(keys_list[1], keys_list[2:-2], edit_value)
+                except AttributeError:
+                    self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
+                    self._calculator_interface.updatePhases()
+                self._calculator_interface.updateCalculations() # phases also updated ?
+            elif 'experiments' == keys_list[0]:
+                try:
+                    self._calculator_interface.setExperimentValue(keys_list[1], keys_list[2:-2], edit_value)
+                except AttributeError:
+                    self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
+                    self._calculator_interface.updateExperiments()
+                self._calculator_interface.updateCalculations() # experiments also updated ?
+            else:
+                self._calculator_interface.setDictByPath(keys_list, edit_value)
+
+        elif display_role_name == 'min' or display_role_name == 'max':
+            undo_redo_text = f"Changing '{fitable_name}' {display_role_name} to '{fitable_value}'"
+            self._log.debug(f"undo_redo_text: {undo_redo_text}")
+            self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
+            self._calculator_interface.canUndoOrRedoChanged.emit()
+            # TODO: fix setDictByPath below
+            #self._calculator_interface.setDictByPath(keys_list, edit_value)
+            # Temporary solution until above is fixed
+            self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
+            self.onProjectChanged()
+
+        else:
+            self._log.warning(f"unknown role: {display_role_name}")
+
+        self._calculator_interface.project_dict.endBulkUpdate()
+        self._calculator_interface.canUndoOrRedoChanged.emit()
+
 
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
         """Define what to do if model is changed, e.g. from GUI."""
         role = roles[0]
         role_name = self._roles_dict[role].decode()
+        self._log.debug(f"role: {role}")
+        self._log.debug(f"role_name: {role_name}")
+
         if role_name.endswith(self._edit_role_name_suffix):
             index = top_left_index
             edit_role = role
