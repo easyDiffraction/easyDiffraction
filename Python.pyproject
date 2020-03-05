@@ -6,6 +6,7 @@
 
     "App/PyImports/ProjectSentinel.py",
     "App/PyImports/ProxyPyQml.py",
+    "App/PyImports/QtInterface.py",
     "App/PyImports/Refinement.py",
     "App/PyImports/ReleaseReader.py",
 
