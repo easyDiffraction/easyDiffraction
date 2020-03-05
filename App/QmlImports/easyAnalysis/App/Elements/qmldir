@@ -22,7 +22,6 @@ LineSeries 1.0 LineSeries.qml
 AtomScatter3DSeries 1.0 AtomScatter3DSeries.qml
 TextField 1.0 TextField.qml
 FitablesView 1.0 FitablesView.qml
-FitablesView 2.0 FitablesView2.qml
 AtomsTableView 1.0 AtomsTableView.qml
 AtomAdpsTableView 1.0 AtomAdpsTableView.qml
 AtomMspsTableView 1.0 AtomMspsTableView.qml

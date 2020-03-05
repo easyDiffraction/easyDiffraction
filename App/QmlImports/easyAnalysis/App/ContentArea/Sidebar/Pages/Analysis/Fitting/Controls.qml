@@ -6,7 +6,6 @@ import QtQuick.Layouts 1.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
-import easyAnalysis.App.Elements 2.0 as GenericAppElements2
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 import easyDiffraction 1.0 as Specific
@@ -24,7 +23,7 @@ ColumnLayout {
         collapsible: false
         content: GenericAppElements.ColumnLayout {
             // Fitables table
-            GenericAppElements2.FitablesView {
+            GenericAppElements.FitablesView {
                 Layout.fillWidth: true
                 model: Specific.Variables.fitables
                 GenericAppElements.GuideWindow {
