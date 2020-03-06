@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 import zipfile
+import numpy as np
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import *
@@ -34,16 +35,131 @@ class ProjectControl(QObject):
 
         pass
 
-    @Slot(str)
-    def loadExperiment(self, experiment_rcif_path):
+    @Slot(str, str)
+    def loadExperiment(self, experiment_rcif_path, selectedNameFilter):
         """
         Load an experiment information from a file.
         :param experiment_rcif_path: URI to experiment (r)cif file
         :return:
         """
-        self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
+        
+        if "(*.cif)" in selectedNameFilter:
+            self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
+        else:
+            if "file://" in experiment_rcif_path[0:8]:
+                experiment_rcif_path = experiment_rcif_path.split("file://", 1)[1]
 
-        pass
+            data = np.loadtxt(experiment_rcif_path)
+            joined = [" ".join(item) for item in data.astype(str)]
+            data_string = "\n".join(joined)
+            
+            unpolarized_cif_start = """
+data_pd
+
+_setup_wavelength      1.912
+_setup_offset_2theta  -0.13846
+
+_pd_instr_resolution_u  0.122083
+_pd_instr_resolution_v -0.335931
+_pd_instr_resolution_w  0.283817
+_pd_instr_resolution_x  0.0
+_pd_instr_resolution_y  0.148719
+
+loop_
+_pd_background_2theta
+_pd_background_intensity
+ 11.0000       209.6064
+ 15.0000       197.7444
+ 20.0000       193.2102
+ 30.0000       200.2073
+ 50.0000       226.5182
+ 70.0000       202.7764
+ 90.0000       195.2558
+110.0000       215.4868
+130.0000       157.2611
+153.0000       210.7761
+
+loop_
+_phase_label
+_phase_scale
+_phase_igsize
+PbSO4 1.1328 0.0
+
+loop_
+_pd_meas_2theta
+_pd_meas_intensity
+_pd_meas_intensity_sigma
+"""
+            
+            polarized_cif_start = """
+data_pd
+
+_setup_wavelength      0.84
+_setup_field           1.00
+_setup_offset_2theta -0.385404
+
+_diffrn_radiation_polarization -0.87
+_diffrn_radiation_efficiency    1.00
+
+_pd_instr_resolution_u 16.9776
+_pd_instr_resolution_v -2.8357
+_pd_instr_resolution_w  0.5763
+_pd_instr_resolution_x  0.0
+_pd_instr_resolution_y  0.0
+
+_range_2theta_min     4.000
+_range_2theta_max    80.000
+
+loop_
+_exclude_2theta_min
+_exclude_2theta_max
+0.0 1.0
+
+loop_
+_pd_background_2theta
+_pd_background_intensity
+ 4.5 256.0
+40.0 158.0
+80.0  65.0
+
+loop_
+_phase_label
+_phase_scale
+_phase_igsize
+Fe3O4 0.02381 0.0
+
+_chi2_sum True
+_chi2_diff False
+_chi2_up False
+_chi2_down False
+
+loop_
+_pd_meas_2theta
+_pd_meas_intensity_up
+_pd_meas_intensity_up_sigma
+_pd_meas_intensity_down
+_pd_meas_intensity_down_sigma
+"""
+            
+            if data.shape[1] == 3:
+                # if 3: insert unpolarized cif start
+                cif_string = unpolarized_cif_start + data_string
+            elif data.shape[1] == 5:
+                # if 5: insert polarized cif start
+                cif_string = polarized_cif_start + data_string
+            else:
+                raise IOError("Given xye file did not contain 3 or 5 columns of data.")
+
+            # save cif to disk, same folder but with name _generated.cif
+            head, tail = os.path.split(experiment_rcif_path)
+            name = tail.split(".",1)[0]
+            filename = os.path.join(head, name + "_generated.cif")
+
+            with open(filename, "w") as file:
+                file.write(cif_string)
+                
+            self.experiment_rcif_path = self.generalizePath("file://" + filename)
+
 
     @Slot(str)
     def loadProject(self, main_rcif_path):

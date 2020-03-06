@@ -51,11 +51,11 @@ ColumnLayout {
     // Loader
     Dialogs1.FileDialog{
         id: fileDialogLoadExps
-        nameFilters: [ "CIF files (*.cif)"]
+        nameFilters: [ "CIF files (*.cif)", "ASCII data files (*.xye)"]
         folder: settings.value("lastOpenedProjectFolder", examplesDir)
         onAccepted: {
             settings.setValue("lastOpenedProjectFolder", folder)
-            Specific.Variables.projectControl.loadExperiment(fileUrl)
+            Specific.Variables.projectControl.loadExperiment(fileUrl, selectedNameFilter)
             fileDialogLoadExps.close()
             var old_analysis_state = Generic.Variables.analysisPageFinished
             var old_summary_state = Generic.Variables.summaryPageFinished
