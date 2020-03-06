@@ -299,11 +299,13 @@ Column {
             validator: DoubleValidator {}
             text: toFixed(slider.from)
             onEditingFinished: {
-                if (text !== toFixed(slider.from)) {
-                    const editValue = parseFloat(text)
-                    const editRole = 361 // -> minEdit role in FitablesModel.py
-                    setModelData(editValue, editRole)
-                }
+                if (text === toFixed(slider.from))
+                    return
+                if (parseFloat(text) > parseFloat(sliderToLabel.text))
+                    return
+                const editValue = parseFloat(text)
+                const editRole = 361 // -> minEdit role in FitablesModel.py
+                setModelData(editValue, editRole)
             }
             Rectangle {
                 z: parent.z - 1
@@ -374,11 +376,13 @@ Column {
             validator: DoubleValidator {}
             text: toFixed(slider.to)
             onEditingFinished: {
-                if (text !== toFixed(slider.to)) {
-                    const editValue = parseFloat(text)
-                    const editRole = 362 // -> maxEdit role in FitablesModel.py
-                    setModelData(editValue, editRole)
-                }
+                if (text === toFixed(slider.to))
+                    return
+                if (parseFloat(text) < parseFloat(sliderFromLabel.text))
+                    return
+                const editValue = parseFloat(text)
+                const editRole = 362 // -> maxEdit role in FitablesModel.py
+                setModelData(editValue, editRole)
             }
             Rectangle {
                 z: parent.z - 1
