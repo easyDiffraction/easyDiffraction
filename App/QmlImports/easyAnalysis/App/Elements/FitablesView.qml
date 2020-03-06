@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
+import easyAnalysis 1.0 as Generic
 import easyDiffraction 1.0 as Specific
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 
@@ -293,6 +294,8 @@ Column {
             leftPadding: font.pixelSize
             rightPadding: leftPadding
             selectByMouse: true
+            selectedTextColor: "white"
+            selectionColor: Generic.Style.tableHighlightRowColor
             validator: DoubleValidator {}
             text: toFixed(slider.from)
             onEditingFinished: {
@@ -366,6 +369,8 @@ Column {
             leftPadding: font.pixelSize
             rightPadding: leftPadding
             selectByMouse: true
+            selectedTextColor: "white"
+            selectionColor: Generic.Style.tableHighlightRowColor
             validator: DoubleValidator {}
             text: toFixed(slider.to)
             onEditingFinished: {
