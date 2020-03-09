@@ -12,6 +12,7 @@ import PyImports.DisplayModels.FitablesModel as Model
 logger.addSysOutput()
 TEST_FILE = "file:Tests/Data/main.cif"
 
+
 def test_FitablesModelModel():
 
     file_path = QUrl(TEST_FILE).toLocalFile()
@@ -20,7 +21,6 @@ def test_FitablesModelModel():
 
     m = Model()
     m.setCalculatorInterface(interface)
-
 
     assert isinstance(m._model, QStandardItemModel)
 
@@ -32,7 +32,6 @@ def test_FitablesModelModel():
     assert b'path' in m._roles_dict.values()
     assert b'refine' in m._roles_dict.values()
 
-    #fr = Qt.UserRole + 1
     # Test stuff from _setModelFromProject here
     # first and last row
     assert m._model.item(0, 0).data(role=Qt.UserRole+2) == 'phases Fe3O4 cell length_a'
@@ -62,8 +61,29 @@ def test_onModelChanged():
 
     m = Model()
     m.setCalculatorInterface(interface)
-    phase_index = m._model.index(2, 0)
-    experiment_index = m._model.index(m._model.rowCount()-1, 0)
+    phase_index = m._model.index(2, 0)                           # 3rd element (from phase block)
+    experiment_index = m._model.index(m._model.rowCount()-1, 0)  # 2nd from below (from experiment block)
+
+    # ######################
+    # Check unsupported role
+    # ######################
+
+    edit_role = Qt.UserRole + 101  # path edit role
+    new_edit = []
+    m._model.setData(phase_index, new_edit, edit_role)
+
+    # ######################
+    # Check wrong phase name
+    # ######################
+
+    display_role = Qt.UserRole + 1  # path display role
+    edit_role = Qt.UserRole + 101   # path edit role
+    old_display = ['phases', 'Fe3O4', 'atoms', 'Fe3A', 'U_iso_or_equiv', 'store']
+    new_display = ['phases', 'H2O', 'atoms', 'Fe3A', 'U_iso_or_equiv', 'store']
+    old_edit = None
+    new_edit = True
+    ###m._model.setData(phase_index, new_display, display_role)
+    ###assert m._model.data(phase_index, display_role) == new_display
 
     # ######################
     # Check refine parameter
@@ -134,6 +154,27 @@ def test_onModelChanged():
     m._model.setData(experiment_index, new_edit, edit_role)
     assert m._model.data(experiment_index, display_role) == new_display
     assert m._model.data(experiment_index, edit_role) == old_edit
+
+    # Model changes via edit role outside min/max limits
+    m._model.setData(phase_index, -100, Qt.UserRole + 103)
+    assert m._model.data(phase_index, Qt.UserRole + 5) == -120
+    m._model.setData(phase_index, 100, Qt.UserRole + 103)
+    assert m._model.data(phase_index, Qt.UserRole + 6) == 120
+    m._model.setData(phase_index, 1000, Qt.UserRole + 103)
+    m._model.setData(phase_index, 1000, Qt.UserRole + 105)
+    m._model.setData(phase_index, 1000, Qt.UserRole + 106)
+    m._model.setData(phase_index,  100, Qt.UserRole + 103)
+    assert m._model.data(phase_index, Qt.UserRole + 5) == 80
+    m._model.setData(phase_index, -1000, Qt.UserRole + 103)
+    m._model.setData(phase_index, -1000, Qt.UserRole + 105)
+    m._model.setData(phase_index, -1000, Qt.UserRole + 106)
+    m._model.setData(phase_index,  -100, Qt.UserRole + 103)
+    assert m._model.data(phase_index, Qt.UserRole + 6) == -80
+    m._model.setData(phase_index, 0, Qt.UserRole + 105)
+    m._model.setData(phase_index, 0, Qt.UserRole + 106)
+    m._model.setData(phase_index, 0, Qt.UserRole + 103)
+    assert m._model.data(phase_index, Qt.UserRole + 5) == -1
+    assert m._model.data(phase_index, Qt.UserRole + 6) == 1
 
     # ###################
     # Check min parameter
