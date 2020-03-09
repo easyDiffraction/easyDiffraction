@@ -96,6 +96,10 @@ def test_onModelChanged():
     assert m._model.data(experiment_index, display_role) == new_display
     assert m._model.data(experiment_index, edit_role) == new_edit
 
+    # Edit value = display value
+    m._model.setData(phase_index, new_edit, edit_role)
+    assert m._model.data(phase_index, display_role) == new_display
+
     # #####################
     # Check value parameter
     # #####################
