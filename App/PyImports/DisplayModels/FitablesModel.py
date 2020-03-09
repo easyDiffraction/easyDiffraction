@@ -106,6 +106,7 @@ class FitablesModel(BaseModel):
         keys_list = self._model.data(index, path_role) + [display_role_name]
         edit_value = self._model.data(index, edit_role)
         display_value = self._model.data(index, display_role)
+        self._log.debug(f"edit_role: {edit_role}")
         self._log.debug(f"display_role: {display_role}")
         self._log.debug(f"display_role_name: {display_role_name}")
         self._log.debug(f"path_role: {path_role}")
@@ -114,8 +115,8 @@ class FitablesModel(BaseModel):
         self._log.debug(f"display_value: {display_value}")
 
         # nothing is really changed
-        if edit_value == display_value:
-            return
+        #if edit_value == display_value:
+        #    return
 
         fitable_name = '.'.join(keys_list[:-2])
         fitable_value = edit_value
