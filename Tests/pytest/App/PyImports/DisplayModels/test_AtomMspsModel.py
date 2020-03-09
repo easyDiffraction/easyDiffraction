@@ -4,8 +4,9 @@ from PySide2.QtCore import QUrl
 from PySide2.QtGui import QStandardItemModel
 
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.Diffraction.QtInterface import QtCalculatorInterface,  ProjectDict
+from easyInterface.Diffraction.Interface import ProjectDict
 
+from PyImports.QtInterface import QtCalculatorInterface
 import PyImports.DisplayModels.AtomMspsModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
@@ -62,4 +63,3 @@ def test_AtomMspsModel():
 
     # test asModel
     assert m._model == m.asModel()
-
