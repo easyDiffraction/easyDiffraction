@@ -4,8 +4,8 @@ from PySide2.QtCore import Qt, QUrl, QModelIndex
 from PySide2.QtGui import QStandardItemModel
 
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
-from easyInterface.Diffraction.QtInterface import QtCalculatorInterface,  ProjectDict
 
+from PyImports.QtInterface import QtCalculatorInterface
 import PyImports.DisplayModels.FitablesModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
@@ -135,7 +135,7 @@ def test_onModelChanged():
 
     display_role = Qt.UserRole + 5
     edit_role = Qt.UserRole + 105
-    old_display = 0
+    old_display = -1
     old_edit = None
     new_display = 0.5
     new_edit = 0.5
@@ -168,7 +168,7 @@ def test_onModelChanged():
 
     display_role = Qt.UserRole + 6
     edit_role = Qt.UserRole + 106
-    old_display = 0
+    old_display = 1
     old_edit = None
     new_display = 0.5
     new_edit = 0.5
