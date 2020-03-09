@@ -174,19 +174,18 @@ class FitablesModel(BaseModel):
             self._log.debug(f"initial min: {min}, max: {max}")
             # TODO: the code below duplicates the code from BaseClasses.py - class Base - def updateMinMax
             # stacked changes (for GUI triggered changes)
-            if min == -np.Inf or value < min:
-                if np.isclose([value], [0]):
-                    min = -1
-                elif value > 0:
+            if np.isclose([value], [0]):
+                min = -1
+                max = 1
+            if value < min:
+                if value > 0:
                     min = 0.8*value
-                elif value < 0:
+                else:
                     min = 1.2*value
-            if max == np.Inf or value > max:
-                if np.isclose([value], [0]):
-                    max = 1
-                elif value > 0:
+            if value > max:
+                if value > 0:
                     max = 1.2*value
-                elif value < 0:
+                else:
                     max = 0.8*value
             # Update min and max in project dict
             self._log.debug(f"re-calculated min: {min}, max: {max}")
@@ -206,7 +205,8 @@ class FitablesModel(BaseModel):
             self._calculator_interface.projectDictChanged.emit()
 
         else:
-            self._log.warning(f"unknown role: {display_role_name}")
+            self._log.warning(f"unsupported role: {display_role_name}")
+            return
 
         self._calculator_interface.project_dict.endBulkUpdate()
         self._calculator_interface.canUndoOrRedoChanged.emit()
