@@ -120,20 +120,6 @@ ColumnLayout {
                     units: "\u00B0"
                 }
             }
-
-            GenericAppElements.GridLayout {
-                columns: 6
-                columnSpacing: 15
-                rowSpacing: 10
-
-                Text { text: qsTr("Wavelength2") }
-                GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened
-                          ? Specific.Variables.project.asDictVariant().experiments[Specific.Variables.projectDict.info.experiment_ids[0]].wavelength.store.value.toFixed(4)
-                          : ""
-                    units: "\u212B"
-                }
-            }
         }
         GenericAppElements.GuideWindow {
             message: "The sidebar groups contain details related to the experiment.\n\nClick on the group name to unfold the group."

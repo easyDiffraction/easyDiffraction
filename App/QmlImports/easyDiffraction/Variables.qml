@@ -33,7 +33,6 @@ QtObject {
 
     // Models
     property var fitables: projectOpened ? proxyPyQmlObj.fitables : null
-    property var project: projectOpened ? proxyPyQmlObj._project : null
     property var cellParameters: projectOpened ? proxyPyQmlObj.cellParameters : null
     property var cellBox: projectOpened ? proxyPyQmlObj.cellBox : null
     property var atomSites: projectOpened ? proxyPyQmlObj.atomSites : null
