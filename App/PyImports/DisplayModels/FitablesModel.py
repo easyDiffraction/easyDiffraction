@@ -126,6 +126,8 @@ class FitablesModel(BaseModel):
         if display_role_name == 'refine':
             undo_redo_text = f"Changing '{fitable_name}' refine state to '{fitable_value}'"
             self._log.debug(f"undo_redo_text: {undo_redo_text}")
+            self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
+            self._calculator_interface.canUndoOrRedoChanged.emit()
             if 'phases' == keys_list[0]:
                 try:
                     self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
