@@ -10,7 +10,6 @@ from PyImports.QtInterface import QtCalculatorInterface
 import PyImports.DisplayModels.FitablesModel as Model
 
 logger.addSysOutput()
-logger.setLevel(10)
 TEST_FILE = "file:Tests/Data/main.cif"
 
 def test_FitablesModelModel():
@@ -33,24 +32,24 @@ def test_FitablesModelModel():
     assert b'path' in m._roles_dict.values()
     assert b'refine' in m._roles_dict.values()
 
-    fr = Qt.UserRole + 1
+    #fr = Qt.UserRole + 1
     # Test stuff from _setModelFromProject here
     # first and last row
-    assert m._model.item(0, 0).data(role=fr+1) == 'phases Fe3O4 cell length_a'
-    assert m._model.item(0, 0).data(role=fr+2) == 8.36212
-    assert m._model.item(0, 0).data(role=fr+3) == 0.0
-    assert m._model.item(0, 0).data(role=fr+4) == pytest.approx(6.68969)
-    assert m._model.item(0, 0).data(role=fr+5) == 10.034544
-    assert m._model.item(0, 0).data(role=fr+6) is True
-    assert m._model.item(0, 0).data(role=fr+7) == 'ang'
+    assert m._model.item(0, 0).data(role=Qt.UserRole+2) == 'phases Fe3O4 cell length_a'
+    assert m._model.item(0, 0).data(role=Qt.UserRole+3) == 8.36212
+    assert m._model.item(0, 0).data(role=Qt.UserRole+4) == 0.0
+    assert m._model.item(0, 0).data(role=Qt.UserRole+5) == pytest.approx(6.68969)
+    assert m._model.item(0, 0).data(role=Qt.UserRole+6) == 10.034544
+    assert m._model.item(0, 0).data(role=Qt.UserRole+7) is True
+    assert m._model.item(0, 0).data(role=Qt.UserRole+8) == 'ang'
 
-    assert m._model.item(21, 0).data(role=fr+1) == 'experiments pd resolution y'
-    assert m._model.item(21, 0).data(role=fr+2) == 0.0
-    assert m._model.item(21, 0).data(role=fr+3) == 0.0
-    assert m._model.item(21, 0).data(role=fr+4) == 0.0
-    assert m._model.item(21, 0).data(role=fr+5) == 0.0
-    assert m._model.item(21, 0).data(role=fr+6) is False
-    assert m._model.item(21, 0).data(role=fr+7) == ''
+    assert m._model.item(21, 0).data(role=Qt.UserRole+2) == 'experiments pd resolution y'
+    assert m._model.item(21, 0).data(role=Qt.UserRole+3) == 0.0
+    assert m._model.item(21, 0).data(role=Qt.UserRole+4) == 0.0
+    assert m._model.item(21, 0).data(role=Qt.UserRole+5) == -1.0
+    assert m._model.item(21, 0).data(role=Qt.UserRole+6) == 1.0
+    assert m._model.item(21, 0).data(role=Qt.UserRole+7) is False
+    assert m._model.item(21, 0).data(role=Qt.UserRole+8) == ''
 
     # test asModel
     assert m._model == m.asModel()
@@ -144,8 +143,8 @@ def test_onModelChanged():
     edit_role = Qt.UserRole + 105
     old_display = -1
     old_edit = None
-    new_display = 0.5
-    new_edit = 0.5
+    new_display = -0.5
+    new_edit = -0.5
 
     # Initial state
     assert m._model.data(phase_index, display_role) == old_display
