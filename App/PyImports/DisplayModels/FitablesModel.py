@@ -29,7 +29,9 @@ class FitablesModel(BaseModel):
         self._model.dataChanged.connect(self.onModelChanged)
 
     def _setRolesListAndDict(self):
-        """..."""
+        """
+        Create the display and edit role list and dict from role names.
+        """
         for i, role_name in enumerate(self._role_names_list):
             display_role = self._first_role + i
             edit_role = display_role + self._edit_role_increment
@@ -42,7 +44,9 @@ class FitablesModel(BaseModel):
         self._log.debug(f"roles: {self._roles_dict}")
 
     def _setModelsFromProjectDict(self):
-        """Create the initial data list with structure for GUI fitables table."""
+        """
+        Create the initial data list with structure for GUI fitables table.
+        """
         self._log.debug("update model")
 
         # block model signals
@@ -93,13 +97,21 @@ class FitablesModel(BaseModel):
         # QML GUI elements in order to update their views
 
     def _updateProjectByIndexAndRole(self, index, edit_role):
-        """Update project element, which is changed in the model, depends on its index and role."""
+        """
+        Update project element, which is changed in the model, depends on its index and role.
+        """
         display_role = edit_role - self._edit_role_increment
         display_role_name = self._roles_dict[display_role].decode()
         path_role = self._role_names_list.index('path') + self._first_role
         keys_list = self._model.data(index, path_role) + [display_role_name]
         edit_value = self._model.data(index, edit_role)
         display_value = self._model.data(index, display_role)
+        self._log.debug(f"display_role: {display_role}")
+        self._log.debug(f"display_role_name: {display_role_name}")
+        self._log.debug(f"path_role: {path_role}")
+        self._log.debug(f"keys_list: {keys_list}")
+        self._log.debug(f"edit_value: {edit_value}")
+        self._log.debug(f"display_value: {display_value}")
 
         # nothing is really changed
         if edit_value == display_value:
@@ -107,9 +119,12 @@ class FitablesModel(BaseModel):
 
         fitable_name = '.'.join(keys_list[:-2])
         fitable_value = edit_value
+        self._log.debug(f"fitable_name: {fitable_name}")
+        self._log.debug(f"fitable_value: {fitable_value}")
 
         if display_role_name == 'refine':
             undo_redo_text = f"Changing '{fitable_name}' refine state to '{fitable_value}'"
+            self._log.debug(f"undo_redo_text: {undo_redo_text}")
             if 'phases' == keys_list[0]:
                 try:
                     self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
@@ -195,9 +210,12 @@ class FitablesModel(BaseModel):
 
 
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
-        """Define what to do if model is changed, e.g. from GUI."""
+        """
+        Define what to do if model is changed, e.g. from GUI.
+        """
         role = roles[0]
         role_name = self._roles_dict[role].decode()
+        self._log.debug(f"roles: {roles}")
         self._log.debug(f"role: {role}")
         self._log.debug(f"role_name: {role_name}")
 
