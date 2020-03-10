@@ -176,77 +176,10 @@ def test_create_project_zip():
     temp1.cleanup()
 
 
-# @pytest.fixture
-# def pm():
-#     return ProjectManager()
-# 
-# 
-# @pytest.mark.parametrize('state', [True, False])
-# def test_ProjectManager_set_get_isValidSaveState(pm, qtbot, state):
-#     assert pm.validSaveState is False
-#     with qtbot.waitSignal(pm.projectSaveChange) as blocker:
-#         pm.validSaveState = state
-#     assert blocker.args == [state]
-#     assert pm.validSaveState == state
-# 
-# 
-# def test_ProjectManager_projectNameChanged(pm, qtbot):
-#     value = 'Foo'
-#     assert pm.projectName is None
-#     with qtbot.waitSignal(pm.projectDetailChange):
-#         pm.projectName = value
-#     assert pm.projectName == value
-# 
-# 
-# def test_ProjectManager_projectKeywordsChanged(pm, qtbot):
-#     value = ['Foo']
-#     assert pm.projectKeywords == ''
-#     with qtbot.waitSignal(pm.projectDetailChange):
-#         pm.projectKeywords = value
-#     assert pm.projectKeywords == value[0]
-# 
-# 
-# def test_ProjectManager_projectExperimentsChanged(pm, qtbot):
-#     value = 'Foo'
-#     assert pm.projectExperiments is None
-#     with qtbot.waitSignal(pm.projectDetailChange):
-#         pm.projectExperiments = value
-#     assert pm.projectExperiments == value
-# 
-# 
-# def test_ProjectManager_projectInstrumentsChanged(pm, qtbot):
-#     value = 'Foo'
-#     assert pm.projectInstruments is None
-#     with qtbot.waitSignal(pm.projectDetailChange):
-#         pm.projectInstruments = value
-#     assert pm.projectInstruments == value
-# 
-# 
-# def test_ProjectManager_projectModifiedChanged(pm, qtbot):
-#     value = datetime.now()
-#     assert isinstance(pm.projectModified, str)
-#     with qtbot.waitSignal(pm.projectDetailChange):
-#         pm.projectModified = value
-#     assert pm.projectModified == value.strftime("%d/%m/%Y, %H:%M")
-# 
-# 
-# def test_ProjectManager_reset(pm):
-#     value = 'Foo'
-#     pm.validSaveState = True
-#     pm.projectName = value
-#     pm.projectKeywords = [value]
-#     pm.projectExperiments = value
-#     pm.projectInstruments = value
-#     now = datetime.now()
-#     pm.projectModified = now
-# 
-#     pm.resetManager()
-#     assert pm.validSaveState is False
-#     assert pm.projectName is None
-#     assert pm.projectKeywords == ''
-#     assert pm.projectExperiments is None
-#     assert pm.projectInstruments is None
-#     assert pm.projectModified == now.strftime("%d/%m/%Y, %H:%M")
+@pytest.fixture
+    def pm():
+        return ProjectManager()
+
 
 @pytest.mark.skipif(sys.platform.startswith("linux"), reason="Skipped on Ubuntu")
 @pytest.mark.parametrize('state', [True, False])
