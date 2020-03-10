@@ -70,7 +70,7 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         self.projectDictChanged.emit()
 
     def removePhase(self, phase_name):
-        CalculatorInterface.removePhase(phase_name)
+        CalculatorInterface.removePhase(self, phase_name)
         self.projectDictChanged.emit()
 
     def setExperimentDefinition(self, experiment_path: str):
@@ -88,7 +88,7 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         self.projectDictChanged.emit()
 
     def removeExperiment(self, experiment_name):
-        CalculatorInterface.removeExperiment(experiment_name)
+        CalculatorInterface.removeExperiment(self, experiment_name)
         self.projectDictChanged.emit()
 
 
