@@ -66,7 +66,8 @@ if __name__ == '__main__':
 
     upgradePip()
 
-    installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2')
+    #installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2')
+    installFromGit(owner='ikibalin', repo='cryspy', branch='license')
     installFromGit(owner='easyDiffraction', repo='easyInterface', branch='master') # Until master branch is uploaded to PIP
 
     install(
