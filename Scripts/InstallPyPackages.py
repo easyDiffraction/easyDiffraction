@@ -66,29 +66,28 @@ if __name__ == '__main__':
 
     upgradePip()
 
-    #installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2')
-    installFromGit(owner='ikibalin', repo='cryspy', branch='license')
-    installFromGit(owner='easyDiffraction', repo='easyInterface', branch='master') # Until master branch is uploaded to PIP
+    installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2')
+    #installFromGit(owner='ikibalin', repo='cryspy', branch='license')
+    #installFromGit(owner='easyDiffraction', repo='easyInterface', branch='master') # Until master branch is uploaded to PIP
 
     install(
         #'cryspy==0.1.13',
         'scipy==1.4.1',
         'numpy==1.18.1',
-        #'easyInterface>=0.0.6',
-        'PySide2==5.13.1',
-        'pyinstaller==3.5',  # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
-        'requests==2.22.0',
-        'uritemplate==3.0.0',
-        'pyyaml==5.1.2',
+        'easyInterface>=0.0.6',
+        'PySide2==5.14.1',
+        'pyinstaller==3.6',  # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+        'requests==2.23.0',
+        'uritemplate==3.0.1',
+        'pyyaml==5.3',
         'dicttoxml==1.7.4',
         'asteval==0.9.18',
-        'pytest==5.3.0',
-        'pytest_mock==1.12.1',
+        'pytest==5.3.5',
+        'pytest_mock==2.0.0',
         'pytest-cov==2.8.1',
-        'pytest-qt==3.2.2',
-        'wily==1.13.0',
-        'codecov==2.0.15',
-        'dicttoxml',
+        'pytest-qt==3.3.0',
+        'wily==1.16.0',
+        'codecov==2.0.16'
     )
 
     if BasicFunctions.osName() == 'windows':

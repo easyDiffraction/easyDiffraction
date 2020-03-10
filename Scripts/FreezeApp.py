@@ -29,7 +29,6 @@ def freezeApp():
             '--distpath', "{0}".format(distribution_dir_path),                          # Where to put the bundled app (default: ./dist)
             '--workpath', os.path.join(distribution_dir_path, 'FreezeAppTmp'),          # Where to put all the temporary work files, .log, .pyz and etc. (default: ./build)
             '--add-data', "{0}{1}cryspy".format(cryspy_path, separator),                # Add CrysPy library
-            '--add-data', "{0}{1}easyInterface".format(easyInterface_path, separator),  # Add easyInterface library
             '--add-data', "{0}/App{1}.".format(project_dir_path, separator),            # Add App Pythnon and QML source files
             '--icon', '{0}/App/QmlImports/{1}/Resources/Icons/App.{2}'.format(project_dir_path, project_name, icon_ext)
             )
