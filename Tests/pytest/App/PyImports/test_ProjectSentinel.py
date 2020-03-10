@@ -177,8 +177,8 @@ def test_create_project_zip():
 
 
 @pytest.fixture
-    def pm():
-        return ProjectManager()
+def pm():
+    return ProjectManager()
 
 
 @pytest.mark.skipif(sys.platform.startswith("linux"), reason="Skipped on Ubuntu")
