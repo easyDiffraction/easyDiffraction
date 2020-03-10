@@ -4,6 +4,7 @@ from PySide2.QtCore import Qt, QUrl
 from PySide2.QtGui import QStandardItemModel
 
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
+from PyImports.QtInterface import QtCalculatorInterface, ProjectDict
 
 from PyImports.QtInterface import QtCalculatorInterface
 import PyImports.DisplayModels.MeasuredDataModel as Model

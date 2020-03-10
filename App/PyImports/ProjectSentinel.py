@@ -214,25 +214,6 @@ class ProjectControl(QObject):
     project_url_absolute_path = Property(str, get_project_url_absolute_path, constant=False)
 
 
-# class saveTracker:
-#     def __init__(self):
-#         self._modified = False
-#
-#     def toSave(self, func):
-#         self._modified = True
-#         def inner(*args, **kwargs):
-#             return func(*args, **kwargs)
-#         return inner
-#
-#     def hasSaved(self, func):
-#         self._modified = False
-#         def inner(*args, **kwargs):
-#             return func(*args, **kwargs)
-#         return inner
-#
-#     def isSaved(self):
-#         return self._modified
-
 class ProjectManager(QObject):
     projectSaveChange = Signal(bool)
     projectDetailChange = Signal()
@@ -287,7 +268,7 @@ class ProjectManager(QObject):
     def get_projectModifiedChanged(self):
         return self._modified.strftime("%d/%m/%Y, %H:%M")
 
-    def set_projectModifiedChanged(self, value):
+    def set_projectModifiedChanged(self, value: datetime):
         self._modified = value
         self.projectDetailChange.emit()
 
