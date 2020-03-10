@@ -55,12 +55,12 @@ ColumnLayout {
         folder: settings.value("lastOpenedProjectFolder", examplesDir)
         onAccepted: {
             settings.setValue("lastOpenedProjectFolder", folder)
-            Specific.Variables.projectControl.loadExperiment(fileUrl, selectedNameFilter)
+            Specific.Variables.projectControl.loadExperiment(fileUrl)
             fileDialogLoadExps.close()
             var old_analysis_state = Generic.Variables.analysisPageFinished
             var old_summary_state = Generic.Variables.summaryPageFinished
             //if (projectControl.validCif) {
-            Generic.Constants.proxy.loadExperimentFromFile()
+            Generic.Constants.proxy.loadExperiment(selectedNameFilter)
             Specific.Variables.projectOpened = true
             //Generic.Variables.projectPageFinished = true
             //Generic.Variables.samplePageFinished = true
