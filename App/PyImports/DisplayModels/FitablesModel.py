@@ -114,10 +114,6 @@ class FitablesModel(BaseModel):
         self._log.debug(f"edit_value: {edit_value}")
         self._log.debug(f"display_value: {display_value}")
 
-        # nothing is really changed
-        #if edit_value == display_value:
-        #    return
-
         fitable_name = '.'.join(keys_list[:-2])
         fitable_value = edit_value
         self._log.debug(f"fitable_name: {fitable_name}")
@@ -198,9 +194,9 @@ class FitablesModel(BaseModel):
             self._log.debug(f"undo_redo_text: {undo_redo_text}")
             self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
             self._calculator_interface.canUndoOrRedoChanged.emit()
-            # TODO: fix setDictByPath below
+            # TODO: try to use setDictByPath below
             #self._calculator_interface.setDictByPath(keys_list, edit_value)
-            # Temporary solution until above is fixed (?)
+            # Temporary (?) solution until above is fixed
             self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
             self._calculator_interface.projectDictChanged.emit()
 
@@ -210,7 +206,6 @@ class FitablesModel(BaseModel):
 
         self._calculator_interface.project_dict.endBulkUpdate()
         self._calculator_interface.canUndoOrRedoChanged.emit()
-
 
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
         """

@@ -73,19 +73,6 @@ def test_onModelChanged():
     m._model.setData(phase_index, new_edit, edit_role)
 
     # ######################
-    # Check wrong phase name
-    # ######################
-
-    display_role = Qt.UserRole + 1  # path display role
-    edit_role = Qt.UserRole + 101   # path edit role
-    old_display = ['phases', 'Fe3O4', 'atoms', 'Fe3A', 'U_iso_or_equiv', 'store']
-    new_display = ['phases', 'H2O', 'atoms', 'Fe3A', 'U_iso_or_equiv', 'store']
-    old_edit = None
-    new_edit = True
-    ###m._model.setData(phase_index, new_display, display_role)
-    ###assert m._model.data(phase_index, display_role) == new_display
-
-    # ######################
     # Check refine parameter
     # ######################
 
@@ -117,10 +104,6 @@ def test_onModelChanged():
     m._model.setData(experiment_index, new_edit, edit_role)
     assert m._model.data(experiment_index, display_role) == new_display
     assert m._model.data(experiment_index, edit_role) == old_edit
-
-    # Edit value = display value
-    #m._model.setData(phase_index, new_edit, edit_role)
-    #assert m._model.data(phase_index, display_role) == new_display
 
     # #####################
     # Check value parameter
