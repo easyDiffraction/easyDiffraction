@@ -268,7 +268,7 @@ class ProjectManager(QObject):
     def get_projectModifiedChanged(self):
         return self._modified.strftime("%d/%m/%Y, %H:%M")
 
-    def set_projectModifiedChanged(self, value: type(datetime)):
+    def set_projectModifiedChanged(self, value):
         self._modified = value
         self.projectDetailChange.emit()
 
