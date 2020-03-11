@@ -13,6 +13,10 @@ class FitablesModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._log = logger.getLogger(__class__.__module__)
+        # limits
+        self._left_limit_for_zero_value = -1
+        self._right_limit_for_zero_value = 1
+        self._limit_percentage_deviation = 0.2
         # minor properties
         self._first_role = Qt.UserRole + 1
         self._edit_role_increment = 100
@@ -173,18 +177,18 @@ class FitablesModel(BaseModel):
             # TODO: the code below duplicates the code from BaseClasses.py - class Base - def updateMinMax
             # stacked changes (for GUI triggered changes)
             if np.isclose([value], [0]):
-                min_value = -1
-                max_value = 1
+                min_value = self._left_limit_for_zero_value
+                max_value = self._right_limit_for_zero_value
             if value < min_value:
                 if value > 0:
-                    min_value = 0.8*value
+                    min_value = value * (1 - self._limit_percentage_deviation)
                 else:
-                    min_value = 1.2*value
+                    min_value = value * (1 + self._limit_percentage_deviation)
             if value > max_value:
                 if value > 0:
-                    max_value = 1.2*value
+                    max_value = value * (1 - self._limit_percentage_deviation)
                 else:
-                    max_value = 0.8*value
+                    max_value = value * (1 - self._limit_percentage_deviation)
             # Update min and max in project dict
             self._log.debug(f"re-calculated min: {min}, max: {max}")
             self._calculator_interface.project_dict.setItemByPath([*keys_list[:-1], 'min'], min_value)
