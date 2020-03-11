@@ -173,22 +173,22 @@ class FitablesModel(BaseModel):
             # TODO: the code below duplicates the code from BaseClasses.py - class Base - def updateMinMax
             # stacked changes (for GUI triggered changes)
             if np.isclose([value], [0]):
-                min = -1
-                max = 1
-            if value < min:
+                min_value = -1
+                max_value = 1
+            if value < min_value:
                 if value > 0:
-                    min = 0.8*value
+                    min_value = 0.8*value
                 else:
-                    min = 1.2*value
-            if value > max:
+                    min_value = 1.2*value
+            if value > max_value:
                 if value > 0:
-                    max = 1.2*value
+                    max_value = 1.2*value
                 else:
-                    max = 0.8*value
+                    max_value = 0.8*value
             # Update min and max in project dict
             self._log.debug(f"re-calculated min: {min}, max: {max}")
-            self._calculator_interface.project_dict.setItemByPath([*keys_list[:-1], 'min'], min)
-            self._calculator_interface.project_dict.setItemByPath([*keys_list[:-1], 'max'], max)
+            self._calculator_interface.project_dict.setItemByPath([*keys_list[:-1], 'min'], min_value)
+            self._calculator_interface.project_dict.setItemByPath([*keys_list[:-1], 'max'], max_value)
             self._calculator_interface.projectDictChanged.emit()
 
         elif display_role_name == 'min' or display_role_name == 'max':
