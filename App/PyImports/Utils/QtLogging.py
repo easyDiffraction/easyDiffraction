@@ -26,7 +26,8 @@ class QtLogger(QObject):
 
     def initialLevel(self, level):
         """
-        ...
+        Allows to set the initial 'qt logger level (QtLogger)' to be different
+        from 'base logger level (Logger)' when creating an object of QtLogger class.
         """
         if level is not None:
             return level
