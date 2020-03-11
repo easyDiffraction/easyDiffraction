@@ -156,6 +156,11 @@ def test_onModelChanged():
     m._model.setData(phase_index, 0, Qt.UserRole + 103)
     assert m._model.data(phase_index, Qt.UserRole + 5) == -1
     assert m._model.data(phase_index, Qt.UserRole + 6) == 1
+    m._model.setData(experiment_index, 0, Qt.UserRole + 105)
+    m._model.setData(experiment_index, 0, Qt.UserRole + 106)
+    m._model.setData(experiment_index, 0, Qt.UserRole + 103)
+    assert m._model.data(experiment_index, Qt.UserRole + 5) == -1
+    assert m._model.data(experiment_index, Qt.UserRole + 6) == 1
 
     # ###################
     # Check min parameter
