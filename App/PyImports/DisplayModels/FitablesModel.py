@@ -187,7 +187,7 @@ class FitablesModel(BaseModel):
                     min_value = value * (1 + self._limit_percentage_deviation)
             if value > max_value:
                 if value > 0:
-                    max_value = value * (1 - self._limit_percentage_deviation)
+                    max_value = value * (1 + self._limit_percentage_deviation)
                 else:
                     max_value = value * (1 - self._limit_percentage_deviation)
             # Update min and max in project dict
