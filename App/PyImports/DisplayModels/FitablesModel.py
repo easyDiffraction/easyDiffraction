@@ -224,6 +224,4 @@ class FitablesModel(BaseModel):
         self._log.debug(f"role_name: {role_name}")
 
         if role_name.endswith(self._edit_role_name_suffix):
-            index = top_left_index
-            edit_role = role
-            self._updateProjectByIndexAndRole(index, edit_role)
+            self._updateProjectByIndexAndRole(top_left_index, role)
