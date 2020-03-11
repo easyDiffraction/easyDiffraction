@@ -204,6 +204,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: 0
+                            validator: DoubleValidator {}
+                            maximumLength: 8
                             color: foregroundColor()
                             text: toFixed(value)
                             onTextChanged: {
@@ -297,6 +299,7 @@ Column {
             selectedTextColor: "white"
             selectionColor: Generic.Style.tableHighlightRowColor
             validator: DoubleValidator {}
+            maximumLength: 8
             text: toFixed(slider.from)
             onEditingFinished: {
                 if (text === toFixed(slider.from))
@@ -374,6 +377,7 @@ Column {
             selectedTextColor: "white"
             selectionColor: Generic.Style.tableHighlightRowColor
             validator: DoubleValidator {}
+            maximumLength: 8
             text: toFixed(slider.to)
             onEditingFinished: {
                 if (text === toFixed(slider.to))
