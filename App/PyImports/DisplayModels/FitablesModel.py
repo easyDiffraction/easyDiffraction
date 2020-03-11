@@ -136,7 +136,6 @@ class FitablesModel(BaseModel):
                 except AttributeError:
                     # In this case the calculator/dict are out of phase :-/ So fallback to manual.
                     self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
-                    # Sync and update so this shouldn't happen again.
                 #self._calculator_interface.updatePhases()
             elif data_block_name == 'experiments':
                 try:
