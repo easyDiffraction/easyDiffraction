@@ -78,6 +78,18 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         Parse the relevant phases file and update the corresponding model
         """
         CalculatorInterface.setExperimentDefinition(self, experiment_path)
+        self.updateCalculations()
+        self.projectDictChanged.emit()
+
+    def setExperimentDefinitionFromString(self, exp_cif_string: str) -> NoReturn:
+        """
+        Parse the relevant phases file and update the corresponding model
+        """
+        CalculatorInterface.setExperimentDefinitionFromString(self, exp_cif_string)
+        # NOTE THAT PbSO4 IS HARD CODDED. THIS SUCKS.
+        self.calculator.disassociatePhaseFromExp('pd', 'PbSO4')
+        self.calculator.associatePhaseToExp('pd', self.phasesIds()[0], 1)
+        self.updateCalculations()
         self.projectDictChanged.emit()
 
     def addExperimentDefinition(self, experiment_path: str):
@@ -85,6 +97,7 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         Parse the relevant phases file and update the corresponding model
         """
         CalculatorInterface.addExperimentDefinition(self, experiment_path)
+        self.updateCalculations()
         self.projectDictChanged.emit()
 
     def removeExperiment(self, experiment_name):
