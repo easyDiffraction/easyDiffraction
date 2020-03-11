@@ -175,6 +175,8 @@ class FitablesModel(BaseModel):
             self._log.debug(f"initial min: {min}, max: {max}")
             # TODO: the code below duplicates the code from BaseClasses.py - class Base - def updateMinMax
             # stacked changes (for GUI triggered changes)
+            min_value = np.Inf
+            max_value = -np.Inf
             if np.isclose([value], [0]):
                 min_value = self._left_limit_for_zero_value
                 max_value = self._right_limit_for_zero_value
