@@ -115,7 +115,7 @@ ColumnLayout {
         onVisibleChanged: {
             if (!visible)
                 return
-            const res = Specific.Variables.refinementResult//Specific.Variables.refinementResult
+            const res = Specific.Variables.refinementResult
             Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
             Generic.Variables.numRefinedPars = res.num_refined_parameters ? res.num_refined_parameters : Generic.Variables.numRefinedPars
         }
@@ -127,7 +127,7 @@ ColumnLayout {
             Text {
                 id: info
                 text: {
-                    const res = Specific.Variables.refinementResult//Specific.Variables.refinementResult
+                    const res = Specific.Variables.refinementResult
                     let s = ""
                     s += res.refinement_message ? `${res.refinement_message}` : ""
                     s += res.final_chi_sq ? `\n\nGoodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
