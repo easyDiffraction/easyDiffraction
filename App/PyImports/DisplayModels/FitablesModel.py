@@ -116,15 +116,17 @@ class FitablesModel(BaseModel):
 
         fitable_name = '.'.join(keys_list[:-2])
         fitable_value = edit_value
+        data_block_name = keys_list[0]
         self._log.debug(f"fitable_name: {fitable_name}")
         self._log.debug(f"fitable_value: {fitable_value}")
+        self._log.debug(f"data_block_name: {data_block_name}")
 
         if display_role_name == 'refine':
             undo_redo_text = f"Changing '{fitable_name}' refine state to '{fitable_value}'"
             self._log.debug(f"undo_redo_text: {undo_redo_text}")
             self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
             self._calculator_interface.canUndoOrRedoChanged.emit()
-            if 'phases' == keys_list[0]:
+            if data_block_name == 'phases':
                 try:
                     self._calculator_interface.setPhaseRefine(keys_list[1], keys_list[2:-2], edit_value)
                 except AttributeError:
@@ -132,7 +134,7 @@ class FitablesModel(BaseModel):
                     self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
                     # Sync and update so this shouldn't happen again.
                 #self._calculator_interface.updatePhases()
-            elif 'experiments' == keys_list[0]:
+            elif data_block_name == 'experiments':
                 try:
                     self._calculator_interface.setExperimentRefine(keys_list[1], keys_list[2:-2], edit_value)
                 except AttributeError:
@@ -147,14 +149,14 @@ class FitablesModel(BaseModel):
             self._log.debug(f"undo_redo_text: {undo_redo_text}")
             self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
             self._calculator_interface.canUndoOrRedoChanged.emit()
-            if 'phases' == keys_list[0]:
+            if data_block_name == 'phases':
                 try:
                     self._calculator_interface.setPhaseValue(keys_list[1], keys_list[2:-2], edit_value)
                 except AttributeError:
                     self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
                     self._calculator_interface.updatePhases()
                 self._calculator_interface.updateCalculations() # phases also updated ?
-            elif 'experiments' == keys_list[0]:
+            elif data_block_name == 'experiments':
                 try:
                     self._calculator_interface.setExperimentValue(keys_list[1], keys_list[2:-2], edit_value)
                 except AttributeError:
