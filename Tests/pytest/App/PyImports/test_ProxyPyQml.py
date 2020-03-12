@@ -25,9 +25,10 @@ def no_project_proxy():
     
     cal = CryspyCalculator(None)
     no_project_proxy._calculator_interface = CalculatorInterface(cal)
-    no_project_proxy._calculator_interface.setPhaseDefinition('Tests/Data/phases.cif')
     
     no_project_proxy.initialize()
+    no_project_proxy._calculator_interface.setPhaseDefinition('Tests/Data/phases.cif')
+    
     return no_project_proxy
 
 
@@ -131,5 +132,9 @@ def test_loadExperimentXYE(no_project_proxy):
     # load test dataset and check
     no_project_proxy._project_control.experiment_rcif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
     no_project_proxy.loadExperiment("boom (*.xye) boom")
+    
+    experiment_added = no_project_proxy._calculator_interface.getExperiment('pd')
+    assert experiment_added['name'] == "pd"
+    assert experiment_added['wavelength'].value == 2.0
 
 
