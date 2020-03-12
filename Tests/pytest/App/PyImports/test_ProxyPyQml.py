@@ -5,6 +5,9 @@ from PyImports.ProxyPyQml import *
 from easyInterface.Utils import Helpers
 from PyImports.QtInterface import QtCalculatorInterface
 
+from easyInterface.Diffraction.Interface import CalculatorInterface
+from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
+
 TEST_FILE = "file:Tests/Data/main.cif"
 release_config_file_path = os.path.join('App', "Release.yml")
 
@@ -15,6 +18,17 @@ def proxy():
     proxy.projectControl.loadProject(TEST_FILE)
     proxy.initialize()
     return proxy
+
+@pytest.fixture
+def no_project_proxy():
+    no_project_proxy = ProxyPyQml(release_config_file_path)
+    
+    cal = CryspyCalculator(None)
+    no_project_proxy._calculator_interface = CalculatorInterface(cal)
+    no_project_proxy._calculator_interface.setPhaseDefinition('Tests/Data/phases.cif')
+    
+    no_project_proxy.initialize()
+    return no_project_proxy
 
 
 def test_Proxy_properties():
@@ -113,9 +127,9 @@ def test_LoadExperiment_xye(proxy, mocker):
     proxy.loadExperiment("boom (*.xye) boom")
     proxy.loadExperimentXYE.assert_called()
 
-def test_loadExperimentXYE(proxy):
+def test_loadExperimentXYE(no_project_proxy):
     # load test dataset and check
-    proxy._project_control.experiment_rcif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
-    proxy.loadExperiment("boom (*.xye) boom")
+    no_project_proxy._project_control.experiment_rcif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
+    no_project_proxy.loadExperiment("boom (*.xye) boom")
 
 
