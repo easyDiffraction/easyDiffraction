@@ -1,3 +1,4 @@
 easyInterface
 pyside2
+numpy
 pyyaml
