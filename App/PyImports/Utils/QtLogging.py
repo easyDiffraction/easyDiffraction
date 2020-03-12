@@ -4,7 +4,7 @@ __version__ = "2020_03_03"
 
 import logging
 from easyInterface import VERBOSE, Logger
-from dicttoxml import dicttoxml
+from dict2xml import dict2xml
 from PySide2.QtCore import QObject, Slot
 
 
@@ -13,16 +13,19 @@ class QtLogger(QObject):
         super().__init__(parent)
         self.__logger = logger
         self.__initial_level = self.initialLevel(level)
-        self.__levels = [
-            { 'level': { 'name': 'Disabled', 'code': logging.NOTSET  } },
-            { 'level': { 'name': 'Verbose',  'code': VERBOSE } },
-            { 'level': { 'name': 'Debug',    'code': logging.DEBUG } },
-            { 'level': { 'name': 'Info',     'code': logging.INFO } },
-            { 'level': { 'name': 'Warning',  'code': logging.WARNING } },
-            { 'level': { 'name': 'Error',    'code': logging.ERROR } },
-            { 'level': { 'name': 'Critical', 'code': logging.CRITICAL } }
-        ]
-        self.setLevel(self.defaultLevelIndex())
+        self.__levels = {
+            'root': {
+                'levels' : [
+                    { 'name': 'Disabled', 'code': logging.NOTSET },
+                    { 'name': 'Verbose',  'code': VERBOSE },
+                    { 'name': 'Debug',    'code': logging.DEBUG },
+                    { 'name': 'Info',     'code': logging.INFO },
+                    { 'name': 'Warning',  'code': logging.WARNING },
+                    { 'name': 'Error',    'code': logging.ERROR },
+                    { 'name': 'Critical', 'code': logging.CRITICAL }
+                ]
+            }
+        }
 
     def initialLevel(self, level):
         """
@@ -41,7 +44,7 @@ class QtLogger(QObject):
         :param index: Logging level as a string name [Disabled, Verbose, Debug, Info, Warning, Error, Critical]
 
         """
-        level = self.__levels[index]['level']['code']
+        level = self.__levels['root']['levels'][index]['code']
         self.__logger.setLevel(level)
         self.__logger.logger.debug('Global debugging level set to: {}'.format(level))
 
@@ -52,8 +55,7 @@ class QtLogger(QObject):
 
         :return: XML level string
         """
-        xml = dicttoxml(self.__levels, attr_type=False)
-        xml = xml.decode()
+        xml = dict2xml(self.__levels, wrap="", indent="", newlines=False)
         return xml
 
     @Slot(result=int)
@@ -61,8 +63,8 @@ class QtLogger(QObject):
         """
         Reset the logger to the default level
         """
-        for index, level in enumerate(self.__levels):
-            if level['level']['code'] == self.__initial_level:
+        for index, level in enumerate(self.__levels['root']['levels']):
+            if level['code'] == self.__initial_level:
                 return index
         self.__logger.logger.debug('Global debugging has been reset to: {}'.format(self.__initial_level))
         return 0
