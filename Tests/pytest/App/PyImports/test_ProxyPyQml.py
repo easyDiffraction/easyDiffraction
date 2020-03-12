@@ -1,5 +1,6 @@
 # tested module
 import pytest
+
 from PyImports.ProxyPyQml import *
 from easyInterface.Utils import Helpers
 from PyImports.QtInterface import QtCalculatorInterface
@@ -99,3 +100,22 @@ def test_saveProject(proxy):
     proxy.saveProjectAs(thisZIP)
     assert os.path.isfile(thisZIP) is True
     os.remove(thisZIP)
+
+def test_LoadExperiment_cif(proxy, mocker):
+    # exchange loadExperimentFromFile with mock and check it was called
+    proxy.loadExperimentFromFile = mocker.MagicMock()
+    proxy.loadExperiment("boom (*.cif) boom")
+    proxy.loadExperimentFromFile.assert_called()
+
+def test_LoadExperiment_xye(proxy, mocker):
+    # exchange loadExperimentXYE with mock and check it was called
+    proxy.loadExperimentXYE = mocker.MagicMock()
+    proxy.loadExperiment("boom (*.xye) boom")
+    proxy.loadExperimentXYE.assert_called()
+
+def test_loadExperimentXYE(proxy):
+    # load test dataset and check
+    proxy._project_control.experiment_rcif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
+    proxy.loadExperiment("boom (*.xye) boom")
+
+

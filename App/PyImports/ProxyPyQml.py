@@ -80,8 +80,9 @@ class ProxyPyQml(QObject):
     @Slot()
     def loadExperimentXYE(self):
         """
-        Loads non cif data files, adds fake cif information, and loads them
+        Loads non cif data files, adds fake cif information, and loads
         """
+        
         self._experiment_rcif_path = self._project_control.experiment_rcif_path
         if "file://" in self._experiment_rcif_path[0:8]:
             experiment_rcif_path = self._experiment_rcif_path.split("file://", 1)[1]
@@ -95,14 +96,14 @@ class ProxyPyQml(QObject):
         unpolarized_cif_start = """
 data_pd
 
-_setup_wavelength      1.912
-_setup_offset_2theta  -0.13846
+_setup_wavelength      2.00
+_setup_offset_2theta   0.00
 
-_pd_instr_resolution_u  0.122083
-_pd_instr_resolution_v -0.335931
-_pd_instr_resolution_w  0.283817
-_pd_instr_resolution_x  0.0
-_pd_instr_resolution_y  0.148719
+_pd_instr_resolution_u  0.15000
+_pd_instr_resolution_v -0.30000
+_pd_instr_resolution_w  0.30000
+_pd_instr_resolution_x  0.00000
+_pd_instr_resolution_y  0.15000
 
 loop_
 _pd_background_2theta
@@ -121,22 +122,22 @@ _pd_meas_2theta
 _pd_meas_intensity
 _pd_meas_intensity_sigma
 """
-            
+  
         polarized_cif_start = """
 data_pd
 
 _setup_wavelength      0.84
 _setup_field           1.00
-_setup_offset_2theta -0.385404
+_setup_offset_2theta   0.00
 
 _diffrn_radiation_polarization -0.87
 _diffrn_radiation_efficiency    1.00
 
-_pd_instr_resolution_u 16.9776
-_pd_instr_resolution_v -2.8357
-_pd_instr_resolution_w  0.5763
-_pd_instr_resolution_x  0.0
-_pd_instr_resolution_y  0.0
+_pd_instr_resolution_u 15.00
+_pd_instr_resolution_v -3.00
+_pd_instr_resolution_w  0.60
+_pd_instr_resolution_x  0.00
+_pd_instr_resolution_y  0.00
 
 _range_2theta_min     4.000
 _range_2theta_max    80.000
@@ -171,7 +172,7 @@ _pd_meas_intensity_up_sigma
 _pd_meas_intensity_down
 _pd_meas_intensity_down_sigma
 """
-            
+
         if data.shape[1] == 3:
             # if 3: insert unpolarized cif start
             cif_string = unpolarized_cif_start + data_string
@@ -180,18 +181,14 @@ _pd_meas_intensity_down_sigma
             cif_string = polarized_cif_start + data_string
         else:
             raise IOError("Given xye file did not contain 3 or 5 columns of data.")
-        
-        print("-"*100)
-        print(cif_string)
-        print("-"*100)
-        
+
         self._calculator_interface.setExperimentDefinitionFromString(cif_string)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
         self.onProjectUnsaved()
-    
+
     @Slot()
     def loadExperimentFromFile(self):
         """
