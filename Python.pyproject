@@ -11,6 +11,7 @@
     "App/PyImports/ReleaseReader.py",
 
     "App/PyImports/Utils/QtLogging.py",
+    "App/PyImports/Utils/Helpers.py",
 
     "App/PyImports/DisplayModels/AtomAdpsModel.py",
     "App/PyImports/DisplayModels/AtomMspsModel.py",
