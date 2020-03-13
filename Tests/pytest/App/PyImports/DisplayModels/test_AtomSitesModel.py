@@ -6,6 +6,7 @@ from PySide2.QtGui import QStandardItemModel
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.QtInterface import QtCalculatorInterface, ProjectDict
 
+from PyImports.QtInterface import QtCalculatorInterface
 import PyImports.DisplayModels.AtomSitesModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"
@@ -57,4 +58,3 @@ def test_AtomSitesModel():
 
     # test asModel
     assert m._model == m.asModel()
-

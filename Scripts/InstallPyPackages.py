@@ -79,7 +79,6 @@ if __name__ == '__main__':
         'requests==2.23.0',
         'uritemplate==3.0.1',
         'pyyaml==5.3',
-        'dicttoxml==1.7.4',
         'asteval==0.9.18',
         'pytest==5.3.5',
         'pytest_mock==2.0.0',
