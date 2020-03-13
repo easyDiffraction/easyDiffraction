@@ -1,4 +1,5 @@
 pragma Singleton
+
 import QtQuick 2.12
 
 QtObject {
@@ -23,8 +24,10 @@ QtObject {
 
     // Measured and calculated data
     property var measuredData: proxyPyQmlObj.measuredData
-    property var measuredDataHeaderModel: projectOpened ? proxyPyQmlObj.measuredData.asHeadersModel() : null
-    property var measuredDataModel: projectOpened ? proxyPyQmlObj.measuredData.asModel() : null
+    property var measuredDataHeaderModel: projectOpened ? proxyPyQmlObj.measuredData.asHeadersModel(
+                                                              ) : null
+    property var measuredDataModel: projectOpened ? proxyPyQmlObj.measuredData.asModel(
+                                                        ) : null
     property var calculatedData: proxyPyQmlObj.calculatedData
     property var braggPeaks: proxyPyQmlObj.braggPeaks
 
@@ -38,9 +41,9 @@ QtObject {
     property var statusInfo: projectOpened ? proxyPyQmlObj.statusInfo : null
 
     // Refinement
-    property var refinementRunning: proxyPyQmlObj.refinementRunning
-    property var refinementDone: proxyPyQmlObj.refinementDone
-    property var refinementResult: proxyPyQmlObj.refinementResult
+    property var refinementRunning: proxyPyQmlObj.refinementStatus[0]
+    property var refinementDone: proxyPyQmlObj.refinementStatus[1]
+    property var refinementResult: proxyPyQmlObj.refinementStatus[2]
 
     // Undo-Redo
     property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
@@ -51,5 +54,4 @@ QtObject {
 
     // Logging
     property var loggerPyQml: _loggerPyQml
-
 }

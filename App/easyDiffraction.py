@@ -31,7 +31,7 @@ if __name__ == '__main__':
     # logger.addNameBlacklistFilter('easyInterface.Diffraction.Calculators', 'easyInterface.Diffraction.DataClasses')
     # logger.addNameFilter('easyDiffraction')
     # logging.getLogger().addFilter(logging.Filter(name='easyInterface'))
-    logger_py_qml = QtLogger(logger)
+    logger_py_qml = QtLogger(logger, level=logging.DEBUG)
 
     # The following way to enable HighDpi support doesn't work.
     # Add 'NSHighResolutionCapable = YES' to 'easyDiffraction.app/Contents/Info.plist'

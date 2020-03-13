@@ -6,10 +6,12 @@
 
     "App/PyImports/ProjectSentinel.py",
     "App/PyImports/ProxyPyQml.py",
+    "App/PyImports/QtInterface.py",
     "App/PyImports/Refinement.py",
     "App/PyImports/ReleaseReader.py",
 
     "App/PyImports/Utils/QtLogging.py",
+    "App/PyImports/Utils/Helpers.py",
 
     "App/PyImports/DisplayModels/AtomAdpsModel.py",
     "App/PyImports/DisplayModels/AtomMspsModel.py",
@@ -22,13 +24,12 @@
     "App/PyImports/DisplayModels/FileStructureModel.py",
     "App/PyImports/DisplayModels/FitablesModel.py",
     "App/PyImports/DisplayModels/MeasuredDataModel.py",
+    "App/PyImports/DisplayModels/ProjectModel.py",
     "App/PyImports/DisplayModels/StatusModel.py",
 
     ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/Interface.py",
-    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/QtInterface.py",
 
     ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/Calculators/CryspyCalculator.py",
-
 
     ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/DataObj/Calculation.py",
     ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/DataObj/Experiment.py",

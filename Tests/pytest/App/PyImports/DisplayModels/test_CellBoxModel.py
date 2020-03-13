@@ -6,6 +6,7 @@ from PySide2.QtGui import QStandardItemModel
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
 from PyImports.QtInterface import QtCalculatorInterface, ProjectDict
 
+from PyImports.QtInterface import QtCalculatorInterface
 import PyImports.DisplayModels.CellBoxModel as Model
 
 TEST_FILE = "file:Tests/Data/main.cif"

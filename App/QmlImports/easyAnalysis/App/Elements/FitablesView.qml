@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
+import easyAnalysis 1.0 as Generic
 import easyDiffraction 1.0 as Specific
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 
@@ -203,6 +204,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: 0
+                            validator: DoubleValidator {}
+                            maximumLength: 8
                             color: foregroundColor()
                             text: toFixed(value)
                             onTextChanged: {
@@ -283,18 +286,39 @@ Column {
         height: cellHeight
         spacing: 10
 
-        Label {
+        // Min edit area
+        TextInput {
             id: sliderFromLabel
             width: 80
             height: parent.height
             verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignRight
+            horizontalAlignment: Text.AlignLeft
             leftPadding: font.pixelSize
             rightPadding: leftPadding
-            background: Rectangle { border.width: borderWidth; border.color: headerBorderColor }
-            text: slider.from.toFixed(4)
+            selectByMouse: true
+            selectedTextColor: "white"
+            selectionColor: Generic.Style.tableHighlightRowColor
+            validator: DoubleValidator {}
+            maximumLength: 8
+            text: toFixed(slider.from)
+            onEditingFinished: {
+                if (text === toFixed(slider.from))
+                    return
+                if (parseFloat(text) > parseFloat(sliderToLabel.text))
+                    return
+                const editValue = parseFloat(text)
+                const editRole = 361 // -> minEdit role in FitablesModel.py
+                setModelData(editValue, editRole)
+            }
+            Rectangle {
+                z: parent.z - 1
+                anchors.fill: parent
+                border.width: borderWidth
+                border.color: headerBorderColor
+            }
         }
 
+        // Slider
         Slider {
             id: slider
             width: parent.width - parent.spacing * 2 - sliderFromLabel.width - sliderToLabel.width
@@ -302,13 +326,6 @@ Column {
             //wheelEnabled: false
             //touchDragThreshold: 10000
             //focus: false
-
-            /*
-            from: Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 5) : 0
-            to: Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 6) : 0
-            value: Specific.Variables.projectOpened ? contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 3) : 0
-            */
-
             handle: Rectangle {
                 id: sliderHandle
                 x: slider.leftPadding + slider.visualPosition * (slider.availableWidth - width)
@@ -322,16 +339,15 @@ Column {
                 ToolTip.text: slider.value.toFixed(4)
 
             }
-
             onPressedChanged: {
                 if (!pressed) {
                     // Change valueEdit in the table model with new value from slider
-                    contentListView.model.setData(contentListView.model.index(contentListView.currentIndex, 0), value, Qt.UserRole + 103)
+                    const editValue = value
+                    const editRole = 359 // -> valueEdit role in FitablesModel.py
+                    setModelData(editValue, editRole)
                 }
             }
-
             //onWheelEnabledChanged:
-
             /*
             MouseArea {
                     anchors.fill: parent
@@ -346,10 +362,10 @@ Column {
                     }
             }
             */
-
         }
 
-        Label {
+        // Max edit area
+        TextInput {
             id: sliderToLabel
             width: sliderFromLabel.width
             height: parent.height
@@ -357,8 +373,27 @@ Column {
             horizontalAlignment: Text.AlignLeft
             leftPadding: font.pixelSize
             rightPadding: leftPadding
-            background: Rectangle { border.width: borderWidth; border.color: headerBorderColor }
-            text: slider.to.toFixed(4)
+            selectByMouse: true
+            selectedTextColor: "white"
+            selectionColor: Generic.Style.tableHighlightRowColor
+            validator: DoubleValidator {}
+            maximumLength: 8
+            text: toFixed(slider.to)
+            onEditingFinished: {
+                if (text === toFixed(slider.to))
+                    return
+                if (parseFloat(text) < parseFloat(sliderFromLabel.text))
+                    return
+                const editValue = parseFloat(text)
+                const editRole = 362 // -> maxEdit role in FitablesModel.py
+                setModelData(editValue, editRole)
+            }
+            Rectangle {
+                z: parent.z - 1
+                anchors.fill: parent
+                border.width: borderWidth
+                border.color: headerBorderColor
+            }
         }
     }
 
@@ -366,16 +401,32 @@ Column {
         id: updateCheckBoxTimer
         interval: 10
         onTriggered: {
-            contentListView.model.setData(contentListView.model.index(contentListView.currentIndex, 0), isRefined, Qt.UserRole + 107)
+            const editValue = isRefined
+            const editRole = 363 // -> refineEdit role in FitablesModel.py
+            setModelData(editValue, editRole)
         }
+    }
+
+    // LOGIC
+
+    function currentModelIndex() {
+        return contentListView.model.index(contentListView.currentIndex, 0)
+    }
+
+    function getModelData(displayRole, modelIndex = currentModelIndex()) {
+        return contentListView.model.data(modelIndex, displayRole)
+    }
+
+    function setModelData(editValue, editRole, modelIndex = currentModelIndex()) {
+        contentListView.model.setData(modelIndex, editValue, editRole)
     }
 
     function updateSlider() {
         if (!Specific.Variables.projectOpened)
             return
-        const from = contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 5)
-        const to = contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 6)
-        const value = contentListView.model.data(contentListView.model.index(contentListView.currentIndex, 0), Qt.UserRole + 3)
+        const from = getModelData(261)  // -> min role in FitablesModel.py
+        const to = getModelData(262)    // -> max role in FitablesModel.py
+        const value = getModelData(259) // -> value role in FitablesModel.py
         if (typeof from !== "undefined" && slider.from !== from) {
             slider.from = from
         }

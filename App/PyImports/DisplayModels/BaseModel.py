@@ -25,6 +25,7 @@ class BaseModel(QObject):
         """
         Set headers and data models from project dictionary
         """
+        self._log.debug("project changed")
         self._setModelsFromProjectDict()
 
     def setCalculatorInterface(self, calculator_interface):
