@@ -29,10 +29,9 @@ def dict2xml(d, root_node=None):
         xml = '<' + root + attr + end_tag
 
     if children:
-        for child in children:
-            xml = xml + child
+        xml += "".join(children)
 
         if wrap or isinstance(d, dict):
-            xml = xml + '</' + root + '>'
+            xml += '</' + root + '>'
 
     return xml
