@@ -59,9 +59,9 @@ class ProjectControl(QObject):
             
             # Determine if the loaded data set is polarized or unpolarized
             if data.shape[1] == n_columns_unpolarized:
-                cif_string = get_unpolarized_cif_header() + data_string
+                cif_string = UNPOLARIZED_CIF_HEADER() + data_string
             elif data.shape[1] == n_columns_polarized:
-                cif_string = get_polarized_cif_header() + data_string
+                cif_string = POLARIZED_CIF_HEADER() + data_string
             else:
                 raise IOError("Given xye file did not contain 3 or 5 columns of data.")
                 
@@ -423,7 +423,7 @@ def writeEmptyProject(projectModel, saveName):
     projectModel._saveSuccess = True
     projectModel._project_file = saveName
 
-def get_unpolarized_cif_header():
+def UNPOLARIZED_CIF_HEADER():
 
     return """
 data_pd
@@ -455,7 +455,7 @@ _pd_meas_intensity
 _pd_meas_intensity_sigma
 """
 
-def get_polarized_cif_header():
+def POLARIZED_CIF_HEADER():
 
     return """
 data_pd
