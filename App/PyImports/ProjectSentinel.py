@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 import zipfile
+import numpy as np
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import *
@@ -34,13 +35,41 @@ class ProjectControl(QObject):
 
         pass
 
-    @Slot(str)
-    def loadExperiment(self, experiment_rcif_path):
+    @Slot(str, str)
+    def loadExperiment(self, experiment_rcif_path, selected_name_filter):
         """
         Load an experiment information from a file.
         :param experiment_rcif_path: URI to experiment (r)cif file
         :return:
         """
+        
+        self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
+        
+        if "(*.cif)" in selected_name_filter:
+            self.experiment_file_format = "cif"
+        elif "(*.xye)" in selected_name_filter:
+            self.experiment_file_format = "xye"
+        
+            data = np.loadtxt(self.experiment_rcif_path)
+            joined = [" ".join(item) for item in data.astype(str)]
+            data_string = "\n".join(joined)
+            
+            n_columns_unpolarized = 3
+            n_columns_polarized = 5
+            
+            # Determine if the loaded data set is polarized or unpolarized
+            if data.shape[1] == n_columns_unpolarized:
+                cif_string = get_unpolarized_cif_header() + data_string
+            elif data.shape[1] == n_columns_polarized:
+                cif_string = get_polarized_cif_header() + data_string
+            else:
+                raise IOError("Given xye file did not contain 3 or 5 columns of data.")
+                
+            self._cif_string = cif_string
+        
+        else:
+            raise IOError("Given selected_name_filter not handled in loadExperiment.")
+        
         self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
 
     @Slot(str)
@@ -395,3 +424,87 @@ def writeEmptyProject(projectModel, saveName):
     saveName = create_empty_project(projectModel.tempDir.name, saveName)
     projectModel._saveSuccess = True
     projectModel._project_file = saveName
+
+def get_unpolarized_cif_header():
+
+    return """
+data_pd
+
+_setup_wavelength      2.00
+_setup_offset_2theta   0.00
+
+_pd_instr_resolution_u  0.15000
+_pd_instr_resolution_v -0.30000
+_pd_instr_resolution_w  0.30000
+_pd_instr_resolution_x  0.00000
+_pd_instr_resolution_y  0.15000
+
+loop_
+_pd_background_2theta
+_pd_background_intensity
+ 0.0000         10.0
+ 180.0000       10.0
+ 
+loop_
+_phase_label
+_phase_scale
+_phase_igsize
+PbSO4 1.1328 0.0
+
+loop_
+_pd_meas_2theta
+_pd_meas_intensity
+_pd_meas_intensity_sigma
+"""
+
+def get_polarized_cif_header():
+
+    return """
+data_pd
+
+_setup_wavelength      0.84
+_setup_field           1.00
+_setup_offset_2theta   0.00
+
+_diffrn_radiation_polarization -0.87
+_diffrn_radiation_efficiency    1.00
+
+_pd_instr_resolution_u 15.00
+_pd_instr_resolution_v -3.00
+_pd_instr_resolution_w  0.60
+_pd_instr_resolution_x  0.00
+_pd_instr_resolution_y  0.00
+
+_range_2theta_min     4.000
+_range_2theta_max    80.000
+
+loop_
+_exclude_2theta_min
+_exclude_2theta_max
+0.0 1.0
+
+loop_
+_pd_background_2theta
+_pd_background_intensity
+ 4.5 256.0
+40.0 158.0
+80.0  65.0
+
+loop_
+_phase_label
+_phase_scale
+_phase_igsize
+Fe3O4 0.02381 0.0
+
+_chi2_sum True
+_chi2_diff False
+_chi2_up False
+_chi2_down False
+
+loop_
+_pd_meas_2theta
+_pd_meas_intensity_up
+_pd_meas_intensity_up_sigma
+_pd_meas_intensity_down
+_pd_meas_intensity_down_sigma
+"""

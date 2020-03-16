@@ -1,6 +1,5 @@
 import os
 import time
-import numpy as np
 from copy import deepcopy
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
@@ -64,42 +63,26 @@ class ProxyPyQml(QObject):
         self.projectChanged.emit()
         self.onProjectUnsaved()
     
-    @Slot(str)
-    def loadExperiment(self, selected_name_filter):
+    @Slot()
+    def loadExperiment(self):
         """
         Selects the appropriate loading algorithm
         """
     
-        if "(*.cif)" in selected_name_filter:
-            self.loadExperimentFromFile()
-        elif "(*.xye)" in selected_name_filter:
-            self.loadExperimentXYE()
+        if self._project_control.experiment_file_format == "cif":
+            self.loadExperimentFromCif()
+        elif self._project_control.experiment_file_format == "xye":
+            self.loadExperimentFromXye()
         else:
-            raise IOError("Given selected_name_filter not handled in loadExperiment.")
+            raise IOError("Unexpected experiment_file_format in ProjectControl.")
 
     @Slot()
-    def loadExperimentXYE(self):
+    def loadExperimentFromXye(self):
         """
         Loads non cif data files, adds fake cif information, and loads
         """
-        
-        self._experiment_rcif_path = self._project_control.experiment_rcif_path
 
-        data = np.loadtxt(self._experiment_rcif_path)
-        joined = [" ".join(item) for item in data.astype(str)]
-        data_string = "\n".join(joined)
-        
-        n_columns_unpolarized = 3
-        n_columns_polarized = 5
-        
-        # Determine if the loaded data set is polarized or unpolarized
-        if data.shape[1] == n_columns_unpolarized:
-            cif_string = get_unpolarized_cif_header() + data_string
-        elif data.shape[1] == n_columns_polarized:
-            cif_string = get_polarized_cif_header() + data_string
-        else:
-            raise IOError("Given xye file did not contain 3 or 5 columns of data.")
-
+        cif_string = self._project_control._cif_string
         self._calculator_interface.setExperimentDefinitionFromString(cif_string)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
@@ -108,7 +91,7 @@ class ProxyPyQml(QObject):
         self.onProjectUnsaved()
 
     @Slot()
-    def loadExperimentFromFile(self):
+    def loadExperimentFromCif(self):
         """
         Replace internal experiment models based on requested content from CIF
         """
@@ -339,87 +322,3 @@ class ProxyPyQml(QObject):
         url = os.path.realpath(full_filename)
         open_url(url=url)
 
-
-def get_unpolarized_cif_header():
-
-    return """
-data_pd
-
-_setup_wavelength      2.00
-_setup_offset_2theta   0.00
-
-_pd_instr_resolution_u  0.15000
-_pd_instr_resolution_v -0.30000
-_pd_instr_resolution_w  0.30000
-_pd_instr_resolution_x  0.00000
-_pd_instr_resolution_y  0.15000
-
-loop_
-_pd_background_2theta
-_pd_background_intensity
- 0.0000         10.0
- 180.0000       10.0
- 
-loop_
-_phase_label
-_phase_scale
-_phase_igsize
-PbSO4 1.1328 0.0
-
-loop_
-_pd_meas_2theta
-_pd_meas_intensity
-_pd_meas_intensity_sigma
-"""
-
-def get_polarized_cif_header():
-
-    return """
-data_pd
-
-_setup_wavelength      0.84
-_setup_field           1.00
-_setup_offset_2theta   0.00
-
-_diffrn_radiation_polarization -0.87
-_diffrn_radiation_efficiency    1.00
-
-_pd_instr_resolution_u 15.00
-_pd_instr_resolution_v -3.00
-_pd_instr_resolution_w  0.60
-_pd_instr_resolution_x  0.00
-_pd_instr_resolution_y  0.00
-
-_range_2theta_min     4.000
-_range_2theta_max    80.000
-
-loop_
-_exclude_2theta_min
-_exclude_2theta_max
-0.0 1.0
-
-loop_
-_pd_background_2theta
-_pd_background_intensity
- 4.5 256.0
-40.0 158.0
-80.0  65.0
-
-loop_
-_phase_label
-_phase_scale
-_phase_igsize
-Fe3O4 0.02381 0.0
-
-_chi2_sum True
-_chi2_diff False
-_chi2_up False
-_chi2_down False
-
-loop_
-_pd_meas_2theta
-_pd_meas_intensity_up
-_pd_meas_intensity_up_sigma
-_pd_meas_intensity_down
-_pd_meas_intensity_down_sigma
-"""

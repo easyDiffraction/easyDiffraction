@@ -118,20 +118,24 @@ def test_saveProject(proxy):
 
 def test_LoadExperiment_cif(proxy, mocker):
     # exchange loadExperimentFromFile with mock and check it was called
-    proxy.loadExperimentFromFile = mocker.MagicMock()
-    proxy.loadExperiment("boom (*.cif) boom")
-    proxy.loadExperimentFromFile.assert_called()
+    proxy.loadExperimentFromCif = mocker.MagicMock()
+    proxy.projectControl.experiment_file_format = "cif"
+    proxy.loadExperiment()
+    proxy.loadExperimentFromCif.assert_called()
 
 def test_LoadExperiment_xye(proxy, mocker):
     # exchange loadExperimentXYE with mock and check it was called
-    proxy.loadExperimentXYE = mocker.MagicMock()
-    proxy.loadExperiment("boom (*.xye) boom")
-    proxy.loadExperimentXYE.assert_called()
+    proxy.loadExperimentFromXye = mocker.MagicMock()
+    proxy.projectControl.experiment_file_format = "xye"
+    proxy.loadExperiment()
+    proxy.loadExperimentFromXye.assert_called()
 
-def test_loadExperimentXYE(no_project_proxy):
+def test_loadExperimentFromXye(no_project_proxy):
     # load test dataset and check
-    no_project_proxy._project_control.experiment_rcif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
-    no_project_proxy.loadExperiment("boom (*.xye) boom")
+    #no_project_proxy._project_control.experiment_rcif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
+    xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
+    no_project_proxy.projectControl.loadExperiment(xye_path, "boom (*.xye) boom")
+    no_project_proxy.loadExperiment()
     
     experiment_added = no_project_proxy._calculator_interface.getExperiment('pd')
     assert experiment_added['name'] == "pd"
