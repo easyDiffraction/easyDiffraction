@@ -88,7 +88,8 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         """
         CalculatorInterface.setExperimentDefinitionFromString(self, exp_cif_string)
         # NOTE THAT PbSO4 IS HARD CODDED. THIS SUCKS.
-        self.calculator.disassociatePhaseFromExp('pd', 'PbSO4')
+        #self.calculator.disassociatePhaseFromExp('pd', 'PbSO4')
+        self.calculator.disassociatePhaseFromExp('pd', self.phasesIds()[0])
         self.calculator.associatePhaseToExp('pd', self.phasesIds()[0], 1)
         self.updateCalculations()
         self.projectDictChanged.emit()

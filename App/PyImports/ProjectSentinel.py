@@ -447,7 +447,7 @@ loop_
 _phase_label
 _phase_scale
 _phase_igsize
-PbSO4 1.1328 0.0
+PHASE_NAME 1.1328 0.0
 
 loop_
 _pd_meas_2theta
@@ -492,7 +492,7 @@ loop_
 _phase_label
 _phase_scale
 _phase_igsize
-Fe3O4 0.02381 0.0
+PHASE_NAME 0.02381 0.0
 
 _chi2_sum True
 _chi2_diff False
