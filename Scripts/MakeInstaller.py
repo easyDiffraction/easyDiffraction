@@ -6,7 +6,6 @@ import datetime
 import Project
 import BasicFunctions
 import Functions
-from App.PyImports.Utils.Helpers import dict2xml
 
 def downloadQtInstallerFramework():
     config = Project.Config()
