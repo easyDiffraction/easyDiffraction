@@ -108,7 +108,7 @@ def installerConfigXml():
                 'ControlScript': config['installer']['config_control_script']['name'],
             }
         }
-        raw_xml = dict2xml(pydict, root_node=None)
+        raw_xml = Functions.dict2xml(pydict)
         pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
         #raw_xml = html.fromstring(raw_xml)
         #raw_xml = etree.tostring(raw_xml, xml_declaration=False, encoding='unicode', pretty_print=True)#.decode()
@@ -143,7 +143,7 @@ def installerPackageXml():
                 'Script': config['installer']['package_install_script']['name'],
             }
         }
-        raw_xml = dict2xml(pydict, root_node=None)
+        raw_xml = Functions.dict2xml(pydict)
         pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
