@@ -120,7 +120,7 @@ def dict2xml(d, root_node=None, add_xml_version=True):
     if isinstance(d, dict):
         for key, value in dict.items(d):
             if isinstance(value, (dict, list)):
-                children.append(dict2xml(value, root=key, add_xml_version=False))
+                children.append(dict2xml(value, root_node=key, add_xml_version=False))
             elif key[0] == '@':
                 attr = attr + ' ' + key[1::] + '="' + str(value) + '"'
             else:
@@ -129,7 +129,7 @@ def dict2xml(d, root_node=None, add_xml_version=True):
 
     elif isinstance(d, list):
         for value in d:
-            children.append(dict2xml(value, root=root_singular, add_xml_version=False))
+            children.append(dict2xml(value, root_node=root_singular, add_xml_version=False))
 
     else:
         raise TypeError(f"Type {type(d)} is not supported")
