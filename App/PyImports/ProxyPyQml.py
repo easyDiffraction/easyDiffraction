@@ -65,17 +65,17 @@ class ProxyPyQml(QObject):
         self.onProjectUnsaved()
     
     @Slot(str)
-    def loadExperiment(self, selectedNameFilter):
+    def loadExperiment(self, selected_name_filter):
         """
         Selects the appropriate loading algorithm
         """
     
-        if "(*.cif)" in selectedNameFilter:
+        if "(*.cif)" in selected_name_filter:
             self.loadExperimentFromFile()
-        elif "(*.xye)" in selectedNameFilter:
+        elif "(*.xye)" in selected_name_filter:
             self.loadExperimentXYE()
         else:
-            raise IOError("Given selectedNameFilter not handled in loadExperiment.")
+            raise IOError("Given selected_name_filter not handled in loadExperiment.")
 
     @Slot()
     def loadExperimentXYE(self):
@@ -84,10 +84,12 @@ class ProxyPyQml(QObject):
         """
         
         self._experiment_rcif_path = self._project_control.experiment_rcif_path
-        if "file://" in self._experiment_rcif_path[0:8]:
-            experiment_rcif_path = self._experiment_rcif_path.split("file://", 1)[1]
-        else:
-            experiment_rcif_path = self._experiment_rcif_path
+        experiment_rcif_path = self._experiment_rcif_path
+        
+        #if "file://" in self._experiment_rcif_path[0:8]:
+        #    experiment_rcif_path = self._experiment_rcif_path.split("file://", 1)[1]
+        #else:
+        #    experiment_rcif_path = self._experiment_rcif_path
 
         data = np.loadtxt(experiment_rcif_path)
         joined = [" ".join(item) for item in data.astype(str)]
