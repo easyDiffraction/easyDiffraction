@@ -1,6 +1,7 @@
 __author__ = 'simonward'
 __version__ = "2020_02_01"
 
+from typing import NoReturn
 from easyInterface.Diffraction.Interface import *
 from PySide2.QtCore import QObject, Signal, Slot
 
@@ -81,7 +82,7 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         self.updateCalculations()
         self.projectDictChanged.emit()
 
-    def setExperimentDefinitionFromString(self, exp_cif_string: str):
+    def setExperimentDefinitionFromString(self, exp_cif_string: str) -> NoReturn:
         """
         Parse the relevant phases file and update the corresponding model
         """
