@@ -69,8 +69,6 @@ class ProjectControl(QObject):
         
         else:
             raise IOError("Given selected_name_filter not handled in loadExperiment.")
-        
-        self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
