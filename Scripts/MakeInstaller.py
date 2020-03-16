@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import os, sys
-import xml, dicttoxml
+import xml
 import datetime
 import Project
 import BasicFunctions
 import Functions
+from App.PyImports.Utils.Helpers import dict2xml
 
 def downloadQtInstallerFramework():
     config = Project.Config()
@@ -108,7 +109,7 @@ def installerConfigXml():
                 'ControlScript': config['installer']['config_control_script']['name'],
             }
         }
-        raw_xml = dicttoxml.dicttoxml(pydict, root=False, attr_type=False)
+        raw_xml = dict2xml(pydict, root_node=None)
         pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
         #raw_xml = html.fromstring(raw_xml)
         #raw_xml = etree.tostring(raw_xml, xml_declaration=False, encoding='unicode', pretty_print=True)#.decode()
@@ -143,7 +144,7 @@ def installerPackageXml():
                 'Script': config['installer']['package_install_script']['name'],
             }
         }
-        raw_xml = dicttoxml.dicttoxml(pydict, root=False, attr_type=False)
+        raw_xml = dict2xml(pydict, root_node=None)
         pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
