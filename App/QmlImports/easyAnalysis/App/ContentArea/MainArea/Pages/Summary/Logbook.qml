@@ -83,8 +83,8 @@ Rectangle {
             const index = Specific.Variables.fitables.index(row_index, 0)
             const label = Specific.Variables.fitables.data(index, Qt.UserRole + 2)
             const refine = Specific.Variables.fitables.data(index, Qt.UserRole + 7)
-            const value = refine ? Specific.Variables.fitables.data(index, Qt.UserRole + 3).toFixed(5) : ''
-            const error = refine ? Specific.Variables.fitables.data(index, Qt.UserRole + 4).toFixed(5) : ''
+            const value = refine ? Specific.Variables.fitables.data(index, Qt.UserRole + 3).toFixed(5) + ' ' + Specific.Variables.fitables.data(index, Qt.UserRole + 8): ''
+            const error = refine ? Specific.Variables.fitables.data(index, Qt.UserRole + 4).toFixed(5) + ' ' + Specific.Variables.fitables.data(index, Qt.UserRole + 8): ''
             const fit = refine ? '+' : ''
             s += '<tr>'
             s += '<td align="right">' + (row_index + 1) + '</td>'
