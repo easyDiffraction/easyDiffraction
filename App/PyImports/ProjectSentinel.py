@@ -40,6 +40,7 @@ class ProjectControl(QObject):
         """
         Load an experiment information from a file.
         :param experiment_rcif_path: URI to experiment (r)cif file
+        :param selected_name_filter: QML name filter from file loading dialog
         :return:
         """
         
@@ -59,13 +60,11 @@ class ProjectControl(QObject):
             
             # Determine if the loaded data set is polarized or unpolarized
             if data.shape[1] == n_columns_unpolarized:
-                cif_string = UNPOLARIZED_CIF_HEADER() + data_string
+                self._cif_string = UNPOLARIZED_CIF_HEADER() + data_string
             elif data.shape[1] == n_columns_polarized:
-                cif_string = POLARIZED_CIF_HEADER() + data_string
+                self._cif_string = POLARIZED_CIF_HEADER() + data_string
             else:
                 raise IOError("Given xye file did not contain 3 or 5 columns of data.")
-                
-            self._cif_string = cif_string
         
         else:
             raise IOError("Given selected_name_filter not handled in loadExperiment.")

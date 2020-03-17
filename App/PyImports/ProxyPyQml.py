@@ -76,16 +76,13 @@ class ProxyPyQml(QObject):
         else:
             raise IOError("Unexpected experiment_file_format in ProjectControl.")
 
-    @Slot()
     def loadExperimentFromXye(self):
         """
         Loads non cif data files, adds fake cif information, and loads
         """
 
         cif_string = self._project_control._cif_string
-        
-        if "PHASE_NAME" in cif_string:
-            cif_string = cif_string.replace("PHASE_NAME", self._calculator_interface.phasesIds()[0])
+        cif_string = cif_string.replace("PHASE_NAME", self._calculator_interface.phasesIds()[0])
         
         self._calculator_interface.setExperimentDefinitionFromString(cif_string)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
@@ -94,7 +91,6 @@ class ProxyPyQml(QObject):
         self.projectChanged.emit()
         self.onProjectUnsaved()
 
-    @Slot()
     def loadExperimentFromCif(self):
         """
         Replace internal experiment models based on requested content from CIF
