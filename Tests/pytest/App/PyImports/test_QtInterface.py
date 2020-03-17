@@ -124,6 +124,7 @@ def test_setPhaseDefinition_EmptyStr():
 def test_setExperimentDefinition(cal):
     calc = CryspyCalculator('')
     interface = QtCalculatorInterface(calc)
+    interface.setPhaseDefinition(phase_path)
     interface.setExperimentDefinition(exp_path)
     exp_added = interface.getExperiment('pd')
     exp_ref = cal.getExperiment('pd')
@@ -137,6 +138,7 @@ def test_setExperimentDefinition(cal):
 def test_addExperimentDefinition(cal):
     calc = CryspyCalculator('')
     interface = QtCalculatorInterface(calc)
+    interface.setPhaseDefinition(phase_path)
     interface.addExperimentDefinition(exp_path)
     exp_added = interface.getExperiment('pd')
     exp_ref = cal.getExperiment('pd')

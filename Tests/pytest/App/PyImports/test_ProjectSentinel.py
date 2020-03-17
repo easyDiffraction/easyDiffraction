@@ -175,6 +175,31 @@ def test_create_project_zip():
         isSaved, saveName2 = create_project_zip('Dummy/Dir', FILE)
     temp1.cleanup()
 
+def test_LoadExperiment_cif():
+    model = ProjectControl()
+    model.loadExperiment("test_path", "boom (*.cif) boom")
+    assert model.experiment_file_format == "cif"
+    assert model.experiment_rcif_path == "test_path"
+
+def test_LoadExperiment_xye_unpolarized():
+    model = ProjectControl()
+    xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
+    model.loadExperiment(xye_path, "boom (*.xye) boom")
+    assert "PHASE_NAME" in model._cif_string
+    assert "_setup_wavelength      2.00" in model._cif_string
+
+def test_LoadExperiment_xye_polarized():
+    model = ProjectControl()
+    xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data5.xye')
+    model.loadExperiment(xye_path, "boom (*.xye) boom")
+    assert "PHASE_NAME" in model._cif_string
+    assert "_setup_wavelength      0.84" in model._cif_string
+
+def test_LoadExperiment_exception():
+    model = ProjectControl()
+    xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data5.xye')
+    with pytest.raises(IOError):
+        model.loadExperiment(xye_path, "boom")
 
 @pytest.fixture
 def pm():
@@ -252,3 +277,5 @@ def test_ProjectManager_reset(pm):
     assert pm.projectExperiments is None
     assert pm.projectInstruments is None
     assert pm.projectModified == now.strftime("%d/%m/%Y, %H:%M")
+
+
