@@ -181,12 +181,19 @@ def test_LoadExperiment_cif():
     assert model.experiment_file_format == "cif"
     assert model.experiment_rcif_path == "test_path"
 
-def test_LoadExperiment_xye():
+def test_LoadExperiment_xye_unpolarized():
     model = ProjectControl()
     xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
     model.loadExperiment(xye_path, "boom (*.xye) boom")
     assert "PHASE_NAME" in model._cif_string
     assert "_setup_wavelength      2.00" in model._cif_string
+
+def test_LoadExperiment_xye_polarized():
+    model = ProjectControl()
+    xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data5.xye')
+    model.loadExperiment(xye_path, "boom (*.xye) boom")
+    assert "PHASE_NAME" in model._cif_string
+    assert "_setup_wavelength      0.84" in model._cif_string
 
 @pytest.fixture
 def pm():
