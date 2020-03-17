@@ -195,6 +195,12 @@ def test_LoadExperiment_xye_polarized():
     assert "PHASE_NAME" in model._cif_string
     assert "_setup_wavelength      0.84" in model._cif_string
 
+def test_LoadExperiment_exception():
+    model = ProjectControl()
+    xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data5.xye')
+    with pytest.raises(IOError):
+        model.loadExperiment(xye_path, "boom")
+
 @pytest.fixture
 def pm():
     return ProjectManager()
