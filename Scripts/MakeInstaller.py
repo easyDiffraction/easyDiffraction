@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os, sys
-import xml, dicttoxml
+import xml
 import datetime
 import Project
 import BasicFunctions
@@ -108,8 +108,8 @@ def installerConfigXml():
                 'ControlScript': config['installer']['config_control_script']['name'],
             }
         }
-        raw_xml = dicttoxml.dicttoxml(pydict, root=False, attr_type=False)
-        pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
+        raw_xml = Functions.dict2xml(pydict)
+        pretty_xml = raw_xml #xml.dom.minidom.parseString(raw_xml).toprettyxml()
         #raw_xml = html.fromstring(raw_xml)
         #raw_xml = etree.tostring(raw_xml, xml_declaration=False, encoding='unicode', pretty_print=True)#.decode()
     except Exception as exception:
@@ -143,8 +143,8 @@ def installerPackageXml():
                 'Script': config['installer']['package_install_script']['name'],
             }
         }
-        raw_xml = dicttoxml.dicttoxml(pydict, root=False, attr_type=False)
-        pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
+        raw_xml = Functions.dict2xml(pydict)
+        pretty_xml = raw_xml # xml.dom.minidom.parseString(raw_xml).toprettyxml()
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()
