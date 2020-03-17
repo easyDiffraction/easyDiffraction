@@ -20,8 +20,14 @@ class MeasuredDataModel(BaseModel):
         self._log.info("-> start")
 
         for experiment_id, experiment_dict in self._project_dict['experiments'].items():
-            column_count = len(experiment_dict['measured_pattern'].items())
-            row_count = len(list(experiment_dict['measured_pattern'].items())[0][1])
+
+            reduced_experiment_dict = {}
+            for key, value in experiment_dict['measured_pattern'].items():
+                if value is not None:
+                    reduced_experiment_dict[key] = value
+
+            column_count = len(reduced_experiment_dict)
+            row_count = len(list(reduced_experiment_dict.values())[0])
 
             self._model.blockSignals(True)
             self._headers_model.blockSignals(True)
@@ -35,16 +41,13 @@ class MeasuredDataModel(BaseModel):
             self._headers_model.setRowCount(1)
 
             # Add all the columns from experiment_dict['measured_pattern'] to self._model
-            for colum_index, (data_id, data_list) in enumerate(experiment_dict['measured_pattern'].items()):
+            for colum_index, (data_id, data_list) in enumerate(reduced_experiment_dict.items()):
                 index = self._headers_model.index(0, colum_index)
                 self._headers_model.setData(index, data_id, Qt.DisplayRole)
-                if data_list is None:
-                    index = self._model.index(0, colum_index)
-                    self._model.setData(index, None, Qt.DisplayRole)
-                else:
-                    for row_index, value in enumerate(data_list):
-                        index = self._model.index(row_index, colum_index)
-                        self._model.setData(index, value, Qt.DisplayRole)
+
+                for row_index, value in enumerate(data_list):
+                    index = self._model.index(row_index, colum_index)
+                    self._model.setData(index, value, Qt.DisplayRole)
 
             self._model.blockSignals(False)
             self._headers_model.blockSignals(False)
