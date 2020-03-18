@@ -38,7 +38,7 @@ def test_FitablesModelModel():
     assert m._model.item(0, 0).data(role=Qt.UserRole+5) == pytest.approx(6.68969)
     assert m._model.item(0, 0).data(role=Qt.UserRole+6) == 10.034544
     assert m._model.item(0, 0).data(role=Qt.UserRole+7) is True
-    assert m._model.item(0, 0).data(role=Qt.UserRole+8) == 'ang'
+    assert m._model.item(0, 0).data(role=Qt.UserRole+8) == '\u212B'
 
     assert m._model.item(21, 0).data(role=Qt.UserRole+2) == 'experiments pd resolution y'
     assert m._model.item(21, 0).data(role=Qt.UserRole+3) == 0.0
