@@ -151,7 +151,7 @@ ColumnLayout {
                 onAccepted: {
                     fileDialogCreateProject.close()
                     Generic.Constants.proxy.createProject(fileUrl)
-                    titleInput.text = Specific.Variables.projectControl.projectFileNameWithoutExt()
+                    titleInput.text = Specific.Variables.projectControl.projectFileNameWithoutExt() + '\n'
                     projectInfoDialog.visible = true
                     Generic.Variables.projectPageFinished = true
                     Generic.Variables.dataPageFinished = Generic.Variables.isDebug ? true : false
