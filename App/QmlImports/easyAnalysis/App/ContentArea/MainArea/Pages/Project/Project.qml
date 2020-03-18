@@ -83,7 +83,7 @@ Rectangle {
             Text {
                 font.pointSize: Generic.Style.fontPointSize + 1
                 font.family: Generic.Style.fontFamily
-                color: Generic.Style.buttonBkgHighlightedColor
+                color: Specific.Variables.projectDict.info.phase_ids.length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
                 text: Specific.Variables.projectDict.info.phase_ids.length ? Specific.Variables.projectDict.info.phase_ids.join(", ") : "None loaded"
             }
 
@@ -95,7 +95,7 @@ Rectangle {
             Text {
                 font.pointSize: Generic.Style.fontPointSize + 1
                 font.family: Generic.Style.fontFamily
-                color: Generic.Style.buttonBkgHighlightedColor
+                color: Specific.Variables.projectDict.info.experiment_ids.length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
                 text: Specific.Variables.projectDict.info.experiment_ids.length ? Specific.Variables.projectDict.info.experiment_ids.join(", ") : "None loaded"
             }
 
