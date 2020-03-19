@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
+
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea

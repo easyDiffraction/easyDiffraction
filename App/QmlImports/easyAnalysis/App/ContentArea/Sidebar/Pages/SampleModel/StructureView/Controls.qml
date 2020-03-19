@@ -124,8 +124,8 @@ ColumnLayout {
                 //enabled: false
 
                 Text { text: "Crystal system"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Space Group"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Setting"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
 
                 GenericAppElements.ComboBox {
                     model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.crystal_system.store.value : ""]
