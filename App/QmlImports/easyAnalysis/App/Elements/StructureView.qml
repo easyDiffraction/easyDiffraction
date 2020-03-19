@@ -88,6 +88,7 @@ Rectangle {
             height: Math.min(parent.width, parent.height)
             anchors.centerIn: parent
             clip: true
+            visible: Specific.Variables.projectDict.info.phase_ids.length
 
             // Camera view settings
             orthoProjection: false
@@ -145,6 +146,17 @@ Rectangle {
                     zPosRole: "zPos"
                 }
             }
+        }
+        Text {
+            visible: !Specific.Variables.projectDict.info.phase_ids.length
+            height: parent.height
+            width: parent.width
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: "No Phases Loaded"
+            font.pointSize: Generic.Style.fontPointSize * 3
+            font.family: Generic.Style.fontFamily
+            color: "lightgrey"
         }
     }
 
