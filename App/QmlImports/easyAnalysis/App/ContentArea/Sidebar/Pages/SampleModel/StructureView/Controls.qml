@@ -5,6 +5,7 @@ import QtQuick.Dialogs 1.3 as Dialogs1
 import QtQuick.Layouts 1.12
 
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
@@ -61,22 +62,26 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 2
                 GenericAppContentAreaButtons.Add {
-                    enabled: false;
+                    //enabled: false;
                     text: "Add new phase manually"
-                    }
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
                 GenericAppContentAreaButtons.RemoveAll {
                     id: removeButton;
-                    enabled: false;
-                    text: "Remove all phases" }
+                    //enabled: false;
+                    text: "Remove all phases"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
                 GenericAppContentAreaButtons.Import {
                     text: "Import new phase from CIF"
                     enabled: !Specific.Variables.refinementRunning
                     onClicked: fileDialogLoadPhase.open()
-                    }
+                }
                 GenericAppContentAreaButtons.Export {
-                    enabled: false;
+                    //enabled: false;
                     text: "Export selected phase to CIF"
-                    }
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
             }
             // Open project dialog
             Dialogs1.FileDialog{
@@ -116,15 +121,24 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 3
                 rowSpacing: 2
-                enabled: false
+                //enabled: false
 
                 Text { text: "Crystal system"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Space Group"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Setting"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
 
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.crystal_system.store.value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.space_group_IT_number.store.value + '.  ' + Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.space_group_name_HM_alt.store.value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.origin_choice.store.value : ""] }
+                GenericAppElements.ComboBox {
+                    model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.crystal_system.store.value : ""]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                }
+                GenericAppElements.ComboBox {
+                    model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.space_group_IT_number.store.value + '.  ' + Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.space_group_name_HM_alt.store.value : ""]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                }
+                GenericAppElements.ComboBox {
+                    model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.origin_choice.store.value : ""]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                }
             }
 
             GenericAppElements.GridLayout {
@@ -163,8 +177,16 @@ ColumnLayout {
             // Buttons
             GenericAppElements.GridLayout {
                 columns: 2
-                GenericAppContentAreaButtons.Add { enabled: false; text: "Add new atom"; }
-                GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all atoms" }
+                GenericAppContentAreaButtons.Add {
+                    //enabled: false
+                    text: "Add new atom"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppContentAreaButtons.RemoveAll {
+                    //enabled: false
+                    text: "Remove all atoms"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
             }
         }
     }

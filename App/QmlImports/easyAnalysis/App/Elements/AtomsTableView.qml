@@ -1,8 +1,11 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
+
 import easyDiffraction 1.0 as Specific
 
 Column {
@@ -259,6 +262,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: label
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         Text {
                             width: cellWidthProvider(3)
@@ -271,6 +275,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: atom
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         Rectangle {
                             width: cellWidthProvider(4)
@@ -278,6 +283,7 @@ Column {
                             y: 3
                             //color: type_symbol_dict[atom]
                             color: colorProvider(atom)
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         Text {
                             width: cellWidthProvider(5)
@@ -290,6 +296,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(xPos)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider(6)
@@ -302,6 +309,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(yPos)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider(7)
@@ -314,6 +322,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(zPos)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider(8)
@@ -326,10 +335,11 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(occupancy)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         GenericAppContentArea.Button {
                             id: button
-                            enabled: false
+                            //enabled: false
                             ToolTip.visible: hovered
                             ToolTip.text: qsTr("Remove this row from the table")
                             width: cellWidthProvider(9)
@@ -354,6 +364,7 @@ Column {
                                 }
                             }
                             icon.source: Generic.Variables.thirdPartyIconsPath + "minus-circle.svg"
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                         }
                     }
 

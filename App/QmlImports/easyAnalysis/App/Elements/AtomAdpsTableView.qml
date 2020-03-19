@@ -1,6 +1,9 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
+
 import easyDiffraction 1.0 as Specific
 
 Column {
@@ -241,6 +244,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: label
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         Text {
                             width: cellWidthProvider(3)
@@ -253,6 +257,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: type
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -265,6 +270,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: typeof uiso === 'number' ? uiso.toFixed(4) : uiso
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { show: typeof uiso === 'number' ? uiso.toFixed(4) : uiso; type: GenericControls.EditingToolTip.OnAnalysisPage; }
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -277,6 +283,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(u11)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { show: toFixed(u11); type: GenericControls.EditingToolTip.OnAnalysisPage; }
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -289,6 +296,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(u22)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { show: toFixed(u22); type: GenericControls.EditingToolTip.OnAnalysisPage; }
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -301,6 +309,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(u33)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { show: toFixed(u33); type: GenericControls.EditingToolTip.OnAnalysisPage; }
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -313,6 +322,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(u12)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { show: toFixed(u12); type: GenericControls.EditingToolTip.OnAnalysisPage; }
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -325,6 +335,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(u13)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { show: toFixed(u13); type: GenericControls.EditingToolTip.OnAnalysisPage; }
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -337,6 +348,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(u23)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { show: toFixed(u23); type: GenericControls.EditingToolTip.OnAnalysisPage; }
                         }
                     }
 
