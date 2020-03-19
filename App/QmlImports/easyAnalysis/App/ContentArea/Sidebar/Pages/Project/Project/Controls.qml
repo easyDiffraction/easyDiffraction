@@ -12,6 +12,7 @@ import easyAnalysis.App.Dialog 1.0 as GenericAppDialog
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
+
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -248,7 +249,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Recent Projects"
-        enabled: false
+        //enabled: false
         content: GenericAppElements.ColumnLayout {
             spacing: 0
 
@@ -269,6 +270,7 @@ ColumnLayout {
                 Controls1.TableViewColumn { title:"Creation date";  role:"cdate";   resizable: false }
                 Controls1.TableViewColumn { role:"remove";          title:"Remove"; resizable: false }
             }
+            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
         }
 
         GenericAppElements.GuideWindow {
@@ -285,7 +287,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Examples"
-        enabled: false
+        //enabled: false
         content: GenericAppElements.ColumnLayout {
             spacing: 0
 
@@ -302,6 +304,7 @@ ColumnLayout {
                 Controls1.TableViewColumn { title:"Name";               role:"name" }
                 Controls1.TableViewColumn { title:"Short description";  role:"description" }
             }
+            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
         }
     }
 
