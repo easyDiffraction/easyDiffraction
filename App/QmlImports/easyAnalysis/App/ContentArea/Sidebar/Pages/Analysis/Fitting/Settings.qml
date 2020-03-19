@@ -30,28 +30,54 @@ ColumnLayout {
     // Groupbox
     ///////////
     GenericAppElements.GroupBox {
+        title: "Calculator"
+        //enabled: false
+        content: GenericAppElements.GridLayout {
+            columns: 2
+            columnSpacing: 20
+            // Row
+            Text { text: qsTr("Library") }
+            GenericAppElements.ComboBox {
+                model: ["Cryspy"]
+                Layout.fillWidth: true
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+            }
+        }
+    }
+
+    ///////////
+    // Groupbox
+    ///////////
+    GenericAppElements.GroupBox {
         title: "Minimizer"
         //enabled: false
         content: GenericAppElements.GridLayout {
             columns: 2
             columnSpacing: 20
             // Row
+            Text { text: qsTr("Library") }
+            GenericAppElements.ComboBox {
+                model: ["Scipy"]
+                Layout.fillWidth: true
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+            }
+            // Row
             Text { text: qsTr("Type") }
             GenericAppElements.ComboBox {
-                model: ["Minuit2", "GSL Levenberg-Marquat", "TMVA Genetic"]
+                model: ["Local optimization"]
                 Layout.fillWidth: true
                 GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
             }
             // Row
-            Text { text: qsTr("Algorithm") }
+            Text { text: qsTr("Method") }
             GenericAppElements.ComboBox {
-                model: ["Migrad", "Simplex", "Combined", "Scan"]
+                model: ["Broyden–Fletcher–Goldfarb–Shanno (BFGS)"]
                 Layout.fillWidth: true
                 GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
             }
             // Row
-            Text { text: qsTr("Tolerance") }
-            TextField { Layout.fillWidth: true; implicitHeight: 32; text: "0.01"; GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }}
+            Text { text: qsTr("Max. iterations") }
+            TextField { Layout.fillWidth: true; implicitHeight: 32; text: "100"; GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }}
         }
     }
 
