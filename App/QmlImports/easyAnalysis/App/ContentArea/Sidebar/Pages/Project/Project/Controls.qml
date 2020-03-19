@@ -60,8 +60,9 @@ ColumnLayout {
             }
 
             GenericAppContentAreaButtons.Clone {
-                enabled: false
+                //enabled: false
                 text: qsTr("Clone an existing project")
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
 
             GenericAppContentAreaButtons.Save {
@@ -70,7 +71,6 @@ ColumnLayout {
                 text: qsTr("Save project as...")
 
                 onClicked: Generic.Variables.showSaveDialog = 1
-
                 /*
                 GenericAppElements.GuideWindow {
                     message: "Click here to save a project."
