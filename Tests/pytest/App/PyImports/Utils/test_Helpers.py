@@ -19,5 +19,9 @@ def test_dict2xml():
     expected = "<root><b>2</b></root><root><c>3</c></root>"
     assert converted == expected
 
+    converted = dict2xml({'levels' : [ { 'name': 'Disabled', 'code': 'NOSET' }, { 'name': 'Verbose',  'code': 'VERBOSE' } ] })
+    expected = "<root><level><name>Disabled</name><code>NOSET</code></level><level><name>Verbose</name><code>VERBOSE</code></level></root>"
+    assert converted == expected
+
     with pytest.raises(TypeError):
         dict2xml("string")

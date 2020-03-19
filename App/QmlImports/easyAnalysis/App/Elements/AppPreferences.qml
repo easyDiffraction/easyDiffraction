@@ -110,10 +110,11 @@ GenericControls.Dialog {
             width: 250
             model: XmlListModel {
                 xml: Specific.Variables.loggerPyQml.levelsAsXml()
-                query: "/root/levels"
+                query: "/root/level"
                 XmlRole { name: "name"; query: "name/string()" }
             }
             onActivated: Specific.Variables.loggerPyQml.setLevel(currentIndex)
+            onCurrentIndexChanged: Specific.Variables.loggerPyQml.setLevel(currentIndex)
             Component.onCompleted: currentIndex = Specific.Variables.loggerPyQml.defaultLevelIndex()
         }
     }
