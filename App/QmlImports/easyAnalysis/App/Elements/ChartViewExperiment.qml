@@ -188,17 +188,6 @@ ColumnLayout {
                 }
 
             }
-            Text {
-                visible: !Specific.Variables.projectDict.info.experiment_ids.length
-                height: parent.height
-                width: parent.width
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                text: "No Experiments Loaded"
-                font.pointSize: Generic.Style.fontPointSize * 3
-                font.family: Generic.Style.fontFamily
-                color: "lightgrey"
-            }
 
             //////////////////////////
             // Zoom area for top chart
