@@ -132,13 +132,41 @@ ColumnLayout {
                 backgroundRoundness: 0
                 backgroundColor: "transparent"
                 titleFont: commonFont
-                
-                legend.visible: true
-                legend.alignment: Qt.AlignTop
-                legend.font: commonFont
+
+                legend.visible: false
+                //legend.alignment: Qt.AlignTop
+                //legend.font: commonFont
                 //legend.color: "red"
                 //legend.borderColor: "red"
                 //legend.labelColor: "red"
+
+                // Custom Legend
+                Item {
+                    y: topChart.plotArea.top + 10
+                    x: topChart.plotArea.right - width - 10
+                    width: childrenRect.width
+                    height: childrenRect.height
+
+                    // Background
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        opacity: 0.65
+                        color: "white"
+                        border.color: "#ddd"
+                    }
+
+                    // Info
+                    Grid {
+                        padding: 10
+                        spacing: 10
+                        columns: 2
+                        Text { text: "\u25A0"; color: obsArea.color }
+                        Text { text: obsArea.name }
+                        Text { text: "\u25A0"; color: calcSeries.color }
+                        Text { text: calcSeries.name }
+                    }
+                }
 
                 animationDuration: globalAnimationDuration
 
