@@ -11,7 +11,9 @@ QtObject {
     property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     property var cif: projectOpened ? proxyPyQmlObj.fileStructure : null
     property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
+    property var phaseIds: projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: {}
     property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
+    property var experimentIds: projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: {}
     property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
     property var needToSave: projectOpened ? proxyPyQmlObj.needToSave : false
     property var projectFilePathSelected: proxyPyQmlObj.projectFilePathSelected
@@ -54,4 +56,12 @@ QtObject {
 
     // Logging
     property var loggerPyQml: _loggerPyQml
-}
+
+    function phaseList (phase_index) {
+        if (phaseIds) {
+            return proxyPyQmlObj.projectDict.phases[phase_index]
+        } else {
+            return { sites : [] }
+        }
+    }
+    }

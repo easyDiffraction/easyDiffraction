@@ -120,7 +120,7 @@ Column {
                 ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
                 ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 1 / rowCountToDisplayWithoutHeader2 }
 
-                model: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.phase_ids : 1
+                model: Specific.Variables.projectOpened ? Specific.Variables.phaseIds : 1
 
                 // Content row
                 delegate: Rectangle {
@@ -160,7 +160,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.phase_ids[index] : ""
+                            text: Specific.Variables.projectOpened ? Specific.Variables.phaseIds[index] : ""
                             color: foregroundColor()
                         }
                         TextInput {
@@ -172,7 +172,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: 0
                             color: foregroundColor()
-                            text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].phase[Specific.Variables.projectDict.info.phase_ids[0]].scale.store.value.toFixed(4) : ""
+                            text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.experimentIds[0]].phase[Specific.Variables.phaseIds[0]].scale.store.value.toFixed(4) : ""
 //                            onTextChanged: {
 //                                updateSlider()
 //                            }

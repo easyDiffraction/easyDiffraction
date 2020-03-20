@@ -101,7 +101,7 @@ ColumnLayout {
 
             ChartView {
                 id: topChart
-                visible: Specific.Variables.projectDict.info.experiment_ids.length
+                visible: Specific.Variables.experimentIds.length? true: false
                 //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
@@ -128,8 +128,8 @@ ColumnLayout {
                     labelsVisible: !showDiff
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_max : 1
+                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.experimentIds[0]].limits.main.x_min : 0
+                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.experimentIds[0]].limits.main.x_max : 1
                 }
 
                 // Y-axis for measured and calculated data
@@ -144,8 +144,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_max : 0
+                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.experimentIds[0]].limits.main.y_min : 0
+                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.experimentIds[0]].limits.main.y_max : 0
                 }
 
                 // Measured curve
@@ -189,7 +189,7 @@ ColumnLayout {
 
             }
             Text {
-                visible: !Specific.Variables.projectDict.info.experiment_ids.length
+                visible: !Specific.Variables.experimentIds.length
                 height: parent.height
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
