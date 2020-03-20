@@ -256,13 +256,10 @@ ColumnLayout {
             GenericAppElements.ParametersTable {
                 Layout.fillWidth: true
                 model: ListModel {
-                    ListElement { number:"1"; name:"SiO_experiment";  path:"~/Exp/ESS/2019-03/";  cdate:"11.04.2019" }
-                    ListElement { number:"2"; name:"Simulation_test"; path:"~/Exp/ESS/2019-02/";  cdate:"02.04.2019" }
-                    ListElement { number:"3"; name:"Fitting_test";    path:"~/Exp/ESS/2018-11/";  cdate:"15.03.2019" }
-                    ListElement { number:"4"; name:"Neutron_custom";  path:"~/Exp/ILL/2018-10/";  cdate:"08.03.2019" }
-                    ListElement { number:"5"; name:"SiO_test";        path:"~/Exp/ESS/2018-07/";  cdate:"07.02.2019" }
-                    ListElement { number:"6"; name:"First_test";      path:"~/Exp/ESS/2018-07/";  cdate:"03.02.2019" }
-                    ListElement { number:"7"; name:"X-ray_custom";    path:"~/Exp/ESRF/2016-03/"; cdate:"01.02.2019" }
+                    ListElement { number:"1"; name:"Fe3O4";           path:"~/Exp/LLB/2019-03/";  cdate:"11.03.2019" }
+                    ListElement { number:"2"; name:"PbSO4";           path:"~/Exp/ILL/2010-02/";  cdate:"02.02.2010" }
+                    ListElement { number:"3"; name:"Fitting_test";    path:"~/Exp/ESS/2020-11/";  cdate:"15.11.2020" }
+                    ListElement { number:"4"; name:"SiO_test";        path:"~/Exp/MLZ/2018-07/";  cdate:"23.07.2018" }
                 }
                 Controls1.TableViewColumn { title:"No.";            role:"number";  resizable: false }
                 Controls1.TableViewColumn { title:"Name";           role:"name" }
@@ -294,15 +291,12 @@ ColumnLayout {
             GenericAppElements.ParametersTable {
                 Layout.fillWidth: true
                 model: ListModel {
-                    ListElement { number:"1"; name:"SiO_experiment";    description:"Neutron powder diffraction" }
-                    ListElement { number:"2"; name:"Simulation_test";   description:"Neutron powder diffraction" }
-                    ListElement { number:"3"; name:"Fitting_test";      description:"Neutron powder diffraction" }
-                    ListElement { number:"4"; name:"Neutron_custom";    description:"Neutron powder diffraction" }
-                    ListElement { number:"5"; name:"SiO_test";          description:"Neutron powder diffraction" }
+                    ListElement { number:"1"; name:"Fe3O4";    keywords:"neutron diffraction, powder, 1d, polarised, LLB" }
+                    ListElement { number:"2"; name:"PbSO4";    keywords:"neutron diffraction, powder, 1d, unpolarised, ILL" }
                 }
                 Controls1.TableViewColumn { title:"No.";                role:"number";  resizable: false }
                 Controls1.TableViewColumn { title:"Name";               role:"name" }
-                Controls1.TableViewColumn { title:"Short description";  role:"description" }
+                Controls1.TableViewColumn { title:"Keywords";           role:"keywords" }
             }
             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
         }
