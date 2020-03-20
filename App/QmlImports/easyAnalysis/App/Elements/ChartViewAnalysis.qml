@@ -129,10 +129,16 @@ ColumnLayout {
                 anchors.margins: -extraPadding
                 anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
-                legend.visible: false
                 backgroundRoundness: 0
                 backgroundColor: "transparent"
                 titleFont: commonFont
+                
+                legend.visible: true
+                legend.alignment: Qt.AlignTop
+                legend.font: commonFont
+                //legend.color: "red"
+                //legend.borderColor: "red"
+                //legend.labelColor: "red"
 
                 animationDuration: globalAnimationDuration
 
@@ -181,6 +187,7 @@ ColumnLayout {
                     opacity: 0.4
                     borderColor: Qt.darker(Generic.Style.blueColor, 1.1)
                     borderWidth: 1.5
+                    name: "Measured data"
                     //useOpenGL: true
 
                     lowerSeries: LineSeries {
@@ -218,6 +225,7 @@ ColumnLayout {
                     axisY: axisY
                     color: Generic.Style.redColor
                     width: 2
+                    name: "Model"
                     //useOpenGL: true
 
                     // New approach (fast): pass a reference to LineSeries to python for updating
