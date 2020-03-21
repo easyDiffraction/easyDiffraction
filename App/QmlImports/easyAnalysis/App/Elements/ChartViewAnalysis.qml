@@ -132,13 +132,7 @@ ColumnLayout {
                 backgroundRoundness: 0
                 backgroundColor: "transparent"
                 titleFont: commonFont
-
                 legend.visible: false
-                //legend.alignment: Qt.AlignTop
-                //legend.font: commonFont
-                //legend.color: "red"
-                //legend.borderColor: "red"
-                //legend.labelColor: "red"
 
                 // Custom Legend
                 Item {
@@ -151,7 +145,7 @@ ColumnLayout {
                     Rectangle {
                         width: parent.width
                         height: parent.height
-                        opacity: 0.65
+                        opacity: 0.75
                         color: "white"
                         border.color: "#ddd"
                     }
@@ -161,10 +155,10 @@ ColumnLayout {
                         padding: 10
                         spacing: 10
                         columns: 2
-                        Text { text: "\u25A0"; color: obsArea.color }
-                        Text { text: obsArea.name }
-                        Text { text: "\u25A0"; color: calcSeries.color }
-                        Text { text: calcSeries.name }
+                        Text { text: "\u25A0"; color: obsArea.color; font.pointSize: 15 }
+                        Text { text: obsArea.name; font: commonFont}
+                        Text { text: "\u25A0"; color: calcSeries.color; font.pointSize: 15 }
+                        Text { text: calcSeries.name; font: commonFont}
                     }
                 }
 
