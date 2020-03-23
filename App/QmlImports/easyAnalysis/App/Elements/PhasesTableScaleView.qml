@@ -172,7 +172,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: 0
                             color: foregroundColor()
-                            text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.experimentIds[0]].phase[Specific.Variables.phaseIds[0]].scale.store.value.toFixed(4) : ""
+                            text: Specific.Variables.experimentByIndex(0).phase[0].scale.toFixed(4)
 //                            onTextChanged: {
 //                                updateSlider()
 //                            }

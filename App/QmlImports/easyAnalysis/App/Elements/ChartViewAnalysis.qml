@@ -150,8 +150,8 @@ ColumnLayout {
                     labelsVisible: !showDiff
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.calculationList(Specific.Variables.experimentIds[0]).limits.main.x_min
-                    max: Specific.Variables.calculationList(Specific.Variables.experimentIds[0]).limits.main.x_max
+                    min: Specific.Variables.calculationByIndex(0).limits.main.x_min
+                    max: Specific.Variables.calculationByIndex(0).limits.main.x_max
                 }
 
                 // Y-axis for measured and calculated data
@@ -166,8 +166,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.calculationList(Specific.Variables.experimentIds[0]).limits.main.y_min
-                    max: Specific.Variables.calculationList(Specific.Variables.experimentIds[0]).limits.main.x_max
+                    min: Specific.Variables.calculationByIndex(0).limits.main.y_min
+                    max: Specific.Variables.calculationByIndex(0).limits.main.x_max
                 }
 
                 // Measured curve
@@ -473,7 +473,7 @@ ColumnLayout {
                     titleFont: commonFont
                     min: {
                         if (Specific.Variables.projectOpened) {
-                            let calc = Specific.Variables.calculationList(Specific.Variables.experimentIds[0])
+                            let calc = Specific.Variables.calculationByIndex(0)
                             let min = calc.limits.difference.y_min
                             let max = calc.limits.difference.y_max
                             let MAX = Math.max(Math.abs(min), Math.abs(max))
@@ -483,7 +483,7 @@ ColumnLayout {
                     }
                     max: {
                         if (Specific.Variables.projectOpened) {
-                            let calc = Specific.Variables.calculationList(Specific.Variables.experimentIds[0])
+                            let calc = Specific.Variables.calculationByIndex(0)
                             let min = calc.limits.difference.y_min
                             let max = calc.limits.difference.y_max
                             let MAX = Math.max(Math.abs(min), Math.abs(max))

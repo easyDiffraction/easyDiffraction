@@ -128,8 +128,8 @@ ColumnLayout {
                     labelsVisible: !showDiff
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.calculationList(Specific.Variables.experimentIds[0]).limits.main.x_min
-                    max: Specific.Variables.calculationList(Specific.Variables.experimentIds[0]).limits.main.x_max
+                    min: Specific.Variables.calculationByIndex(0).limits.main.x_min
+                    max: Specific.Variables.calculationByIndex(0).limits.main.x_max
                 }
 
                 // Y-axis for measured and calculated data
@@ -144,8 +144,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.calculationList(Specific.Variables.experimentIds[0]).limits.main.y_min
-                    max: Specific.Variables.calculationList(Specific.Variables.experimentIds[0]).limits.main.y_max
+                    min: Specific.Variables.calculationByIndex(0).limits.main.y_min
+                    max: Specific.Variables.calculationByIndex(0).limits.main.y_max
                 }
 
                 // Measured curve
