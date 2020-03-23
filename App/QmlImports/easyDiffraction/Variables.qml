@@ -57,11 +57,29 @@ QtObject {
     // Logging
     property var loggerPyQml: _loggerPyQml
 
-    function phaseList (phase_index) {
-        if (phaseIds) {
-            return proxyPyQmlObj.projectDict.phases[phase_index]
-        } else {
-            return { sites : [] }
+    // Dummy Phase
+    function jsPhase() {
+        this.sites = {
+            fract_x: [],
+            fract_y: [],
+            fract_z: [],
         }
+
+        this.cell = {}
+        this.cell.length_a = 0
+        this.cell.length_b = 0
+        this.cell.length_c = 0
     }
+    // Get Phase
+    function phaseList(phase_index) {
+        let this_phase = new jsPhase()
+        if (!!phaseIds.len) {
+            phase = proxyPyQmlObj.projectDict.phases[phase_index]
+            this_phase.sites = phase.sites
+            this.cell.length_a = phase.cell.length_a.store.value
+            this.cell.length_b = phase.cell.length_b.store.value
+            this.cell.length_c = phase.cell.length_c.store.value
+        }
+        return this_phase
     }
+}

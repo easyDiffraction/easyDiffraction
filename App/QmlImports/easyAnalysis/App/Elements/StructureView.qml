@@ -31,7 +31,7 @@ Rectangle {
             if (Specific.Variables.projectOpened) {
                 // Create dictionary b_scattering:color
                 // At the moment only get 1st phase.
-                const phase = Specific.Variables.phasesList(Specific.Variables.phaseIds[0])
+                const phase = Specific.Variables.phaseList(Specific.Variables.phaseIds[0])
                 const atom_site_list = phase.sites
                 const bscatList = Array.from(new Set(atom_site_list.scat_length_neutron))
                 let bscatColorDict = {}
@@ -40,9 +40,9 @@ Rectangle {
                 }
 
                 // Unit cell parameters
-                const a = Specific.Variables.projectDict.phases[Specific.Variables.phaseIds[0]].cell.length_a.store.value
-                const b = Specific.Variables.projectDict.phases[Specific.Variables.phaseIds[0]].cell.length_b.store.value
-                const c = Specific.Variables.projectDict.phases[Specific.Variables.phaseIds[0]].cell.length_c.store.value
+                const a = phase.cell.length_a
+                const b = phase.cell.length_b
+                const c = phase.cell.length_c
 
                 // Remove old atom scatters, but unit cell box (number 1)
                 for (let i = 1, len = chart.seriesList.length; i < len; i++) {
