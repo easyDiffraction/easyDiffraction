@@ -1,6 +1,7 @@
 __author__ = 'simonward'
 __version__ = "2020_02_01"
 
+from typing import NoReturn
 from easyInterface.Diffraction.Interface import *
 from PySide2.QtCore import QObject, Signal, Slot
 
@@ -36,13 +37,13 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
     @Slot()
     def undo(self):
         CalculatorInterface.undo(self)
-        self.setCalculatorFromProject()
+        # self.setCalculatorFromProject()
         self.projectDictChanged.emit()
 
     @Slot()
     def redo(self):
         CalculatorInterface.redo(self)
-        self.setCalculatorFromProject()
+        # self.setCalculatorFromProject()
         self.projectDictChanged.emit()
 
     def __repr__(self) -> str:
@@ -78,6 +79,15 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         Parse the relevant phases file and update the corresponding model
         """
         CalculatorInterface.setExperimentDefinition(self, experiment_path)
+        self.updateCalculations()
+        self.projectDictChanged.emit()
+
+    def setExperimentDefinitionFromString(self, exp_cif_string: str) -> NoReturn:
+        """
+        Parse the relevant phases file and update the corresponding model
+        """
+        CalculatorInterface.setExperimentDefinitionFromString(self, exp_cif_string)
+        self.updateCalculations()
         self.projectDictChanged.emit()
 
     def addExperimentDefinition(self, experiment_path: str):
@@ -85,6 +95,7 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         Parse the relevant phases file and update the corresponding model
         """
         CalculatorInterface.addExperimentDefinition(self, experiment_path)
+        self.updateCalculations()
         self.projectDictChanged.emit()
 
     def removeExperiment(self, experiment_name):

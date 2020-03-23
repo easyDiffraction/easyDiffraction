@@ -27,8 +27,8 @@ class QtLogger(QObject):
 
     def initialLevel(self, level):
         """
-        Allows to set the initial 'qt logger level (QtLogger)' to be different
-        from 'base logger level (Logger)' when creating an object of QtLogger class.
+        Return the 'qt logger level (QtLogger)' if not None, otherwise return the
+        'base logger level (Logger)'.
         """
         if level is not None:
             return level
@@ -59,10 +59,9 @@ class QtLogger(QObject):
     @Slot(result=int)
     def defaultLevelIndex(self):
         """
-        Reset the logger to the default level
+        Return the default logger level
         """
         for index, level in enumerate(self.__levels['levels']):
             if level['code'] == self.__initial_level:
                 return index
-        self.__logger.logger.debug('Global debugging has been reset to: {}'.format(self.__initial_level))
         return 0

@@ -1,8 +1,11 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
+
 import easyDiffraction 1.0 as Specific
 
 Column {
@@ -167,10 +170,11 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.phase_ids[index] : ""
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         GenericAppContentArea.Button {
                             id: button
-                            enabled: false
+                            //enabled: false
                             ToolTip.visible: hovered
                             ToolTip.text: qsTr("Remove this row from the table")
                             width: cellWidthProvider(3)
@@ -195,6 +199,7 @@ Column {
                                 }
                             }
                             icon.source: Generic.Variables.thirdPartyIconsPath + "minus-circle.svg"
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                         }
                     }
 

@@ -1,8 +1,12 @@
 # tested module
 import pytest
+
 from PyImports.ProxyPyQml import *
 from easyInterface.Utils import Helpers
 from PyImports.QtInterface import QtCalculatorInterface
+
+from easyInterface.Diffraction.Interface import CalculatorInterface
+from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
 
 TEST_FILE = "file:Tests/Data/main.cif"
 release_config_file_path = os.path.join('App', "Release.yml")
@@ -14,6 +18,18 @@ def proxy():
     proxy.projectControl.loadProject(TEST_FILE)
     proxy.initialize()
     return proxy
+
+@pytest.fixture
+def no_project_proxy():
+    no_project_proxy = ProxyPyQml(release_config_file_path)
+    
+    cal = CryspyCalculator(None)
+    no_project_proxy._calculator_interface = CalculatorInterface(cal)
+    
+    no_project_proxy.initialize()
+    no_project_proxy._calculator_interface.setPhaseDefinition('Tests/Data/phases.cif')
+    
+    return no_project_proxy
 
 
 def test_Proxy_properties():
@@ -99,3 +115,30 @@ def test_saveProject(proxy):
     proxy.saveProjectAs(thisZIP)
     assert os.path.isfile(thisZIP) is True
     os.remove(thisZIP)
+
+def test_LoadExperiment_cif(proxy, mocker):
+    # exchange loadExperimentFromFile with mock and check it was called
+    proxy.loadExperimentFromCif = mocker.MagicMock()
+    proxy.projectControl.experiment_file_format = "cif"
+    proxy.loadExperiment()
+    proxy.loadExperimentFromCif.assert_called()
+
+def test_LoadExperiment_xye(proxy, mocker):
+    # exchange loadExperimentXYE with mock and check it was called
+    proxy.loadExperimentFromXye = mocker.MagicMock()
+    proxy.projectControl.experiment_file_format = "xye"
+    proxy.loadExperiment()
+    proxy.loadExperimentFromXye.assert_called()
+
+def test_loadExperimentFromXye(no_project_proxy):
+    # load test dataset and check
+    #no_project_proxy._project_control.experiment_rcif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
+    xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
+    no_project_proxy.projectControl.loadExperiment(xye_path, "boom (*.xye) boom")
+    no_project_proxy.loadExperiment()
+    
+    experiment_added = no_project_proxy._calculator_interface.getExperiment('pd')
+    assert experiment_added['name'] == "pd"
+    assert experiment_added['wavelength'].value == 2.0
+
+

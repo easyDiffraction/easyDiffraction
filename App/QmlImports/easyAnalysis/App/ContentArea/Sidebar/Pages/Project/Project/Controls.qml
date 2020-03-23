@@ -12,6 +12,7 @@ import easyAnalysis.App.Dialog 1.0 as GenericAppDialog
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
+
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -60,8 +61,9 @@ ColumnLayout {
             }
 
             GenericAppContentAreaButtons.Clone {
-                enabled: false
+                //enabled: false
                 text: qsTr("Clone an existing project")
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
 
             GenericAppContentAreaButtons.Save {
@@ -70,7 +72,6 @@ ColumnLayout {
                 text: qsTr("Save project as...")
 
                 onClicked: Generic.Variables.showSaveDialog = 1
-
                 /*
                 GenericAppElements.GuideWindow {
                     message: "Click here to save a project."
@@ -248,20 +249,17 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Recent Projects"
-        enabled: false
+        //enabled: false
         content: GenericAppElements.ColumnLayout {
             spacing: 0
 
             GenericAppElements.ParametersTable {
                 Layout.fillWidth: true
                 model: ListModel {
-                    ListElement { number:"1"; name:"SiO_experiment";  path:"~/Exp/ESS/2019-03/";  cdate:"11.04.2019" }
-                    ListElement { number:"2"; name:"Simulation_test"; path:"~/Exp/ESS/2019-02/";  cdate:"02.04.2019" }
-                    ListElement { number:"3"; name:"Fitting_test";    path:"~/Exp/ESS/2018-11/";  cdate:"15.03.2019" }
-                    ListElement { number:"4"; name:"Neutron_custom";  path:"~/Exp/ILL/2018-10/";  cdate:"08.03.2019" }
-                    ListElement { number:"5"; name:"SiO_test";        path:"~/Exp/ESS/2018-07/";  cdate:"07.02.2019" }
-                    ListElement { number:"6"; name:"First_test";      path:"~/Exp/ESS/2018-07/";  cdate:"03.02.2019" }
-                    ListElement { number:"7"; name:"X-ray_custom";    path:"~/Exp/ESRF/2016-03/"; cdate:"01.02.2019" }
+                    ListElement { number:"1"; name:"Fe3O4";           path:"~/Exp/LLB/2019-03/";  cdate:"11.03.2019" }
+                    ListElement { number:"2"; name:"PbSO4";           path:"~/Exp/ILL/2010-02/";  cdate:"02.02.2010" }
+                    ListElement { number:"3"; name:"Fitting_test";    path:"~/Exp/ESS/2020-11/";  cdate:"15.11.2020" }
+                    ListElement { number:"4"; name:"SiO_test";        path:"~/Exp/MLZ/2018-07/";  cdate:"23.07.2018" }
                 }
                 Controls1.TableViewColumn { title:"No.";            role:"number";  resizable: false }
                 Controls1.TableViewColumn { title:"Name";           role:"name" }
@@ -269,6 +267,7 @@ ColumnLayout {
                 Controls1.TableViewColumn { title:"Creation date";  role:"cdate";   resizable: false }
                 Controls1.TableViewColumn { role:"remove";          title:"Remove"; resizable: false }
             }
+            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
         }
 
         GenericAppElements.GuideWindow {
@@ -285,23 +284,21 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Examples"
-        enabled: false
+        //enabled: false
         content: GenericAppElements.ColumnLayout {
             spacing: 0
 
             GenericAppElements.ParametersTable {
                 Layout.fillWidth: true
                 model: ListModel {
-                    ListElement { number:"1"; name:"SiO_experiment";    description:"Neutron powder diffraction" }
-                    ListElement { number:"2"; name:"Simulation_test";   description:"Neutron powder diffraction" }
-                    ListElement { number:"3"; name:"Fitting_test";      description:"Neutron powder diffraction" }
-                    ListElement { number:"4"; name:"Neutron_custom";    description:"Neutron powder diffraction" }
-                    ListElement { number:"5"; name:"SiO_test";          description:"Neutron powder diffraction" }
+                    ListElement { number:"1"; name:"Fe3O4";    keywords:"neutron diffraction, powder, 1d, polarised, LLB" }
+                    ListElement { number:"2"; name:"PbSO4";    keywords:"neutron diffraction, powder, 1d, unpolarised, ILL" }
                 }
                 Controls1.TableViewColumn { title:"No.";                role:"number";  resizable: false }
                 Controls1.TableViewColumn { title:"Name";               role:"name" }
-                Controls1.TableViewColumn { title:"Short description";  role:"description" }
+                Controls1.TableViewColumn { title:"Keywords";           role:"keywords" }
             }
+            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
         }
     }
 

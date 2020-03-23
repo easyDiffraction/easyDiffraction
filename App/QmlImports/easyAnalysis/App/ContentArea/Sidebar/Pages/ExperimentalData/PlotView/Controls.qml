@@ -5,9 +5,11 @@ import QtQuick.Dialogs 1.3 as Dialogs1
 import QtQuick.Layouts 1.12
 
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
+
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -41,9 +43,22 @@ ColumnLayout {
                  text: "Import data from local drive";
                  onClicked: fileDialogLoadExps.open()
                 }
-                GenericAppContentAreaButtons.Link { enabled: false; text: "Link to data on local drive"; }
-                GenericAppContentAreaButtons.Cloud { enabled: false; id: cloudButton; text: "Import data from SciCat" }
-                GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all data" }
+                GenericAppContentAreaButtons.Link {
+                    //enabled: false
+                    text: "Link to data on local drive"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppContentAreaButtons.Cloud {
+                    id: cloudButton
+                    //enabled: false
+                    text: "Import data from SciCat"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppContentAreaButtons.RemoveAll {
+                    //enabled: false
+                    text: "Remove all data"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
             }
         }
     }
@@ -51,16 +66,16 @@ ColumnLayout {
     // Loader
     Dialogs1.FileDialog{
         id: fileDialogLoadExps
-        nameFilters: [ "CIF files (*.cif)"]
+        nameFilters: [ "CIF files (*.cif)", "ASCII data files (*.xye)"]
         folder: settings.value("lastOpenedProjectFolder", examplesDir)
         onAccepted: {
             settings.setValue("lastOpenedProjectFolder", folder)
-            Specific.Variables.projectControl.loadExperiment(fileUrl)
+            Specific.Variables.projectControl.loadExperiment(fileUrl, selectedNameFilter)
             fileDialogLoadExps.close()
             var old_analysis_state = Generic.Variables.analysisPageFinished
             var old_summary_state = Generic.Variables.summaryPageFinished
             //if (projectControl.validCif) {
-            Generic.Constants.proxy.loadExperimentFromFile()
+            Generic.Constants.proxy.loadExperiment()
             Specific.Variables.projectOpened = true
             //Generic.Variables.projectPageFinished = true
             //Generic.Variables.samplePageFinished = true
@@ -77,20 +92,36 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.GroupBox {
-        title: "Instrument"//"Diffractometer"
+        title: "Instrument and experiment type"//"Diffractometer"
         enabled: Specific.Variables.projectDict.info.experiment_ids.length
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
-                enabled: false
+                //enabled: false
                 columns: 3
                 rowSpacing: 2
 
-                Text { text: "Facility           "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Instrument    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Facility            "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Instrument      "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 Text { text: "Configuration"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                GenericAppElements.ComboBox { currentIndex: 5; model: ["ESS", "ISIS", "SNS", "ILL", "MLZ", "LLB", "Custom"] }
-                GenericAppElements.ComboBox { currentIndex: 0; model: ["6T2", "Custom"] }
-                GenericAppElements.ComboBox { currentIndex: 0; model: ["Standard"] }
+
+                GenericAppElements.ComboBox {
+                    implicitWidth: 1
+                    currentIndex: 5
+                    model: ["ESS", "ISIS", "SNS", "ILL", "MLZ", "LLB", "Custom"]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppElements.ComboBox {
+                    implicitWidth: 1
+                    currentIndex: 0
+                    model: ["6T2", "Custom"]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppElements.ComboBox {
+                    implicitWidth: 1
+                    currentIndex: 0
+                    model: ["Standard"]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
 
                 Item { height: 5 }
                 Item { height: 5 }
@@ -99,26 +130,21 @@ ColumnLayout {
                 Text { text: "Radiation"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 Text { text: "Mode"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 } //Technique/Data
                 Text { text: "Method"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 } //Method/Sample
-                GenericAppElements.ComboBox { currentIndex: 0; model: ["Neutron", "X-ray", "Electron"] }
-                GenericAppElements.ComboBox { currentIndex: 0; model: ["Constant wavelength", "Time-of-flight"] }
-                GenericAppElements.ComboBox { currentIndex: 0; model: ["Powder", "Single crystal"] }
-            }
 
-            GenericAppElements.GridLayout {
-                columns: 6
-                columnSpacing: 15
-                rowSpacing: 10
-
-                Text { text: qsTr("Wavelength") }
-                GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].wavelength.store.value.toFixed(4) : ""
-                    units: "\u212B"
+                GenericAppElements.ComboBox {
+                    currentIndex: 0
+                    model: ["Neutron", "X-ray", "Electron"]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
-                Text {}
-                Text { text: qsTr("Zero shift") }
-                GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].offset.store.value.toFixed(4) : ""
-                    units: "\u00B0"
+                GenericAppElements.ComboBox {
+                    currentIndex: 0
+                    model: ["Constant wavelength", "Time-of-flight"]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppElements.ComboBox {
+                    currentIndex: 0
+                    model: ["Powder", "Single crystal"]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
             }
         }
@@ -134,41 +160,93 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.GroupBox {
+        title: "Setup parameters"
+        content: GenericAppElements.ColumnLayout {
+            GenericAppElements.GridLayout {
+                columns: 6
+                columnSpacing: 15
+                rowSpacing: 10
+
+                Text { text: qsTr("Wavelength") }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].wavelength.store.value.toFixed(4) : ""
+                    units: "\u212B"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
+                Text {}
+                Text { text: qsTr("Zero shift") }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].offset.store.value.toFixed(4) : ""
+                    units: "\u00B0"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
+            }
+        }
+    }
+
+    // Groupbox
+
+    GenericAppElements.GroupBox {
         title: "Peak profile" // https://wiki-ext.aps.anl.gov/ug11bm/index.php/GSAS_Profile_Terms
         enabled: Specific.Variables.projectDict.info.experiment_ids.length
 
         content: GenericAppElements.ColumnLayout {
             spacing: 12
-            enabled: false
+            //enabled: false
             ColumnLayout {
                 spacing: 2
                 Text { text: "Instrument resolution function"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 ///GenericAppElements.ComboBox { currentIndex: 3; model: ["Gaussian", "Lorentz", "Pseudo-Voigt", "Thompson-Cox-Hastings pseudo-Voigt"] }
-                GenericAppElements.ComboBox { currentIndex: 2; model: ["Gaussian", "Lorentz", "Pseudo-Voigt"] }
+                GenericAppElements.ComboBox {
+                    currentIndex: 2
+                    model: ["Gaussian", "Lorentz", "Pseudo-Voigt"]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                }
             }
             GridLayout {
                 columns: 8
                 columnSpacing: 15
                 rowSpacing: 10
-                enabled: false
+                //enabled: false
+
                 // Row
                 Text { text: qsTr("U") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.u.store.value.toFixed(4) : "" }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.u.store.value.toFixed(4) : ""
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
                 Text {}
+
                 Text { text: qsTr("V") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.v.store.value.toFixed(4) : "" }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.v.store.value.toFixed(4) : ""
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
                 Text {}
+
                 Text { text: qsTr("W") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.w.store.value.toFixed(4) : "" }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.w.store.value.toFixed(4) : ""
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
+
                 // Row
                 Text { text: qsTr("X") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.x.store.value.toFixed(4) : "" }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.x.store.value.toFixed(4) : ""
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
                 Text {}
+
                 Text { text: qsTr("Y") }
-                GenericAppElements.TextField { text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.y.store.value.toFixed(4) : "" }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.y.store.value.toFixed(4) : ""
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
             }
         }
     }
+
 
     // Groupbox
 
@@ -188,15 +266,20 @@ ColumnLayout {
 //            }
 //
 //        }
-        content:             // Table
-        GenericAppElements.PhasesTableScaleView {
-            Layout.fillWidth: true
-            GenericAppElements.GuideWindow {
-                message: "Here you can see labels of the structural phases."
-                position: "left"
-                guideCurrentIndex: 0
-                toolbarCurrentIndex: Generic.Variables.SampleIndex
-                guidesCount: Generic.Variables.SampleGuidesCount
+
+        content: GenericAppElements.ColumnLayout {
+
+            // Table
+            GenericAppElements.PhasesTableScaleView {
+                Layout.fillWidth: true
+
+                GenericAppElements.GuideWindow {
+                    message: "Here you can see labels of the structural phases."
+                    position: "left"
+                    guideCurrentIndex: 0
+                    toolbarCurrentIndex: Generic.Variables.SampleIndex
+                    guidesCount: Generic.Variables.SampleGuidesCount
+                }
             }
         }
     }

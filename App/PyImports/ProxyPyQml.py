@@ -62,9 +62,36 @@ class ProxyPyQml(QObject):
         # explicit emit required for the view to reload the model content
         self.projectChanged.emit()
         self.onProjectUnsaved()
-
+    
     @Slot()
-    def loadExperimentFromFile(self):
+    def loadExperiment(self):
+        """
+        Selects the appropriate loading algorithm
+        """
+    
+        if self._project_control.experiment_file_format == "cif":
+            self.loadExperimentFromCif()
+        elif self._project_control.experiment_file_format == "xye":
+            self.loadExperimentFromXye()
+        else:
+            raise IOError("Unexpected experiment_file_format in ProjectControl.")
+
+    def loadExperimentFromXye(self):
+        """
+        Loads non cif data files, adds fake cif information, and loads
+        """
+
+        cif_string = self._project_control._cif_string
+        cif_string = cif_string.replace("PHASE_NAME", self._calculator_interface.phasesIds()[0])
+        
+        self._calculator_interface.setExperimentDefinitionFromString(cif_string)
+        self._measured_data_model.setCalculatorInterface(self._calculator_interface)
+        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
+        # explicit emit required for the view to reload the model content
+        self.projectChanged.emit()
+        self.onProjectUnsaved()
+
+    def loadExperimentFromCif(self):
         """
         Replace internal experiment models based on requested content from CIF
         """
@@ -295,3 +322,4 @@ class ProxyPyQml(QObject):
         # Show the generated report in the default browser
         url = os.path.realpath(full_filename)
         open_url(url=url)
+
