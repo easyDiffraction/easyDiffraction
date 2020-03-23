@@ -63,23 +63,30 @@ QtObject {
             fract_x: [],
             fract_y: [],
             fract_z: [],
+            scat_length_neutron: [],
         }
 
-        this.cell = {}
-        this.cell.length_a = 0
-        this.cell.length_b = 0
-        this.cell.length_c = 0
+        this.cell = {
+            length_a: 0,
+            length_b: 0,
+            length_c: 0,
+        }
     }
     // Get Phase
     function phaseList(phase_index) {
         let this_phase = new jsPhase()
-        if (!!phaseIds.len) {
-            phase = proxyPyQmlObj.projectDict.phases[phase_index]
-            this_phase.sites = phase.sites
-            this.cell.length_a = phase.cell.length_a.store.value
-            this.cell.length_b = phase.cell.length_b.store.value
-            this.cell.length_c = phase.cell.length_c.store.value
+        if (!!phaseIds.length) {
+            let phase = proxyPyQmlObj.projectDict.phases[phase_index]
+            console.log(phase)
+            this_phase.sites.fract_x = phase.sites.fract_x
+            this_phase.sites.fract_y = phase.sites.fract_y
+            this_phase.sites.fract_z = phase.sites.fract_z
+            this_phase.sites.scat_length_neutron = phase.sites.scat_length_neutron
+            this_phase.cell.length_a = phase.cell.length_a.store.value
+            this_phase.cell.length_b = phase.cell.length_b.store.value
+            this_phase.cell.length_c = phase.cell.length_c.store.value
         }
+        console.log(this_phase)
         return this_phase
     }
 }
