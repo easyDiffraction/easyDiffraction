@@ -48,7 +48,8 @@ Column {
         text: Specific.Variables.projectChangedTime
         onTextChanged: {
             if (Specific.Variables.projectOpened) {
-                const atom_site_dict = Specific.Variables.projectDict.phases[Specific.Variables.phaseIds[0]].atom_site
+                let phase = Specific.Variables.phaseList(Specific.Variables.phaseIds[0])
+                const atom_site_dict = phase.atom_site
                 let type_symbol_list = []
                 for (let atom_id in atom_site_dict) {
                     type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
