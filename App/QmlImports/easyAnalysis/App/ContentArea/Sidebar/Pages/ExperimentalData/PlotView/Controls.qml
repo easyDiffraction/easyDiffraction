@@ -78,6 +78,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Instrument"//"Diffractometer"
+        enabled: Specific.Variables.projectDict.info.experiment_ids.length
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 enabled: false
@@ -134,6 +135,8 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Peak profile" // https://wiki-ext.aps.anl.gov/ug11bm/index.php/GSAS_Profile_Terms
+        enabled: Specific.Variables.projectDict.info.experiment_ids.length
+
         content: GenericAppElements.ColumnLayout {
             spacing: 12
             enabled: false
@@ -171,6 +174,8 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Associated phases"//"Instrument parameters"
+        enabled: Specific.Variables.projectDict.info.experiment_ids.length
+
 //        content: GridLayout {
 //            columns: 4
 //            columnSpacing: 15
