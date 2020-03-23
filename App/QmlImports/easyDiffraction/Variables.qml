@@ -71,6 +71,11 @@ QtObject {
             length_b: 0,
             length_c: 0,
         }
+        this_phase.spacegroup = {
+            crystal_system: "",
+            space_group_with_number: "",
+            origin_choice: ""
+        }
         return this_phase
     }
 
@@ -87,11 +92,19 @@ QtObject {
             this_phase.sites.fract_x = phase.sites.fract_x
             this_phase.sites.fract_y = phase.sites.fract_y
             this_phase.sites.fract_z = phase.sites.fract_z
+
             this_phase.sites.scat_length_neutron = phase.sites.scat_length_neutron
+
             this_phase.cell.length_a = phase.cell.length_a.store.value
             this_phase.cell.length_b = phase.cell.length_b.store.value
             this_phase.cell.length_c = phase.cell.length_c.store.value
-        } else {
+
+            this_phase.spacegroup.crystal_system = phase.spacegroup.crystal_system.store.value
+            this_phase.spacegroup.space_group_with_number = phase.spacegroup.space_group_IT_number.store.value + '.  ' + phase.spacegroup.space_group_name_HM_alt.store.value
+            this_phase.spacegroup.origin_choice = phase.spacegroup.crystal_system.store.value
+        }
+        else
+        {
             print("No phases yet")
         }
         return this_phase

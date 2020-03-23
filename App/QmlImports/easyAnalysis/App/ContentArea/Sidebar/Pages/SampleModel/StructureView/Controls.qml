@@ -98,9 +98,9 @@ ColumnLayout {
                 Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
                 Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
 
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.phaseIds[0]].spacegroup.crystal_system.store.value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.phaseIds[0]].spacegroup.space_group_IT_number.store.value + '.  ' + Specific.Variables.projectDict.phases[Specific.Variables.phaseIds[0]].spacegroup.space_group_name_HM_alt.store.value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.phaseIds[0]].spacegroup.origin_choice.store.value : ""] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.phaseByIndex(0).spacegroup.crystal_system] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.phaseByIndex(0).spacegroup.space_group_with_number] }
+                GenericAppElements.ComboBox { model: [Specific.Variables.phaseByIndex(0).spacegroup.origin_choice] }
             }
 
             GenericAppElements.GridLayout {
