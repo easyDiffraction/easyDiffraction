@@ -17,8 +17,8 @@ ColumnLayout {
         //enabled: false
         content: GenericAppElements.GridLayout {
             columns: 2
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Display labels for atoms"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet } }
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Display coordinate system"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet } }
+            GenericAppElements.CheckBox { checked:false; text:qsTr("Display labels for atoms"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
+            GenericAppElements.CheckBox { checked:false; text:qsTr("Display coordinate system"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
             //GenericAppElements.CheckBox { Layout.fillWidth:true; checked:true;  text:qsTr("Display coordinate system") }
         }
     }

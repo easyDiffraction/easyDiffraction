@@ -20,7 +20,7 @@ ColumnLayout {
         //enabled: false
         content: GenericAppElements.RowLayout {
             TextField { Layout.fillWidth: true; implicitHeight: 29; placeholderText: "Search text";  GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }}
-            CheckBox { implicitHeight: 32; checked: true; text: qsTr("Ignore case");  GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet } }
+            CheckBox { implicitHeight: 32; checked: true; text: qsTr("Ignore case");  GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
         }
     }
 

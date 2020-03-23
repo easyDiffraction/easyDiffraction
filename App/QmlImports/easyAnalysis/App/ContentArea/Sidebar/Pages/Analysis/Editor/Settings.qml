@@ -17,8 +17,8 @@ ColumnLayout {
         //enabled: false
         content: GenericAppElements.GridLayout {
             columns: 2
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Highlight syntax"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet } }
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Wrap text"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet } }
+            GenericAppElements.CheckBox { checked:false; text:qsTr("Highlight syntax"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
+            GenericAppElements.CheckBox { checked:false; text:qsTr("Wrap text"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
         }
     }
 

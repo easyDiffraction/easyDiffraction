@@ -63,32 +63,32 @@ ColumnLayout {
             GenericAppElements.CheckBox {
                 checked:true
                 text:qsTr("Project info")
-                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
             GenericAppElements.CheckBox {
                 checked:true
                 text:qsTr("Parameters table")
-                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
             GenericAppElements.CheckBox {
                 checked:true
                 text:qsTr("Fitting figure")
-                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
             GenericAppElements.CheckBox {
                 checked:true
                 text:qsTr("Structure plot")
-                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
             GenericAppElements.CheckBox {
                 checked:false
                 text:qsTr("Reliability factors")
-                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
             GenericAppElements.CheckBox {
                 checked:false
                 text:qsTr("Constraints table")
-                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
         }
     }

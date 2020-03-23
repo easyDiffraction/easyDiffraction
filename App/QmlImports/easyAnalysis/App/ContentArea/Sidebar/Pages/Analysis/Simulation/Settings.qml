@@ -17,10 +17,10 @@ ColumnLayout {
         //enabled: false
         content: GenericAppElements.GridLayout {
             columns: 2
-            GenericAppElements.CheckBox { checked:true;  text:qsTr("Show experimental data"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet } }
-            GenericAppElements.CheckBox { checked:true;  text:qsTr("Show difference plot"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet } }
+            GenericAppElements.CheckBox { checked:true;  text:qsTr("Show experimental data"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
+            GenericAppElements.CheckBox { checked:true;  text:qsTr("Show difference plot"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
             //GenericAppElements.CheckBox { checked:false; text:qsTr("Show Bragg positions") }
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Show legend"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet } }
+            GenericAppElements.CheckBox { checked:false; text:qsTr("Show legend"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
             //GenericAppElements.CheckBox { Layout.fillWidth:true; checked:true;  text:qsTr("Display coordinate system") }
         }
     }

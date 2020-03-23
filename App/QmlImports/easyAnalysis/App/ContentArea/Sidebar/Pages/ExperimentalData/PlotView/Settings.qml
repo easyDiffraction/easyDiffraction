@@ -17,7 +17,7 @@ ColumnLayout {
         content: GenericAppElements.GridLayout {
             //enabled: false
             columns: 2
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Show legend"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet } }
+            GenericAppElements.CheckBox { checked:false; text:qsTr("Show legend"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
             //GenericAppElements.CheckBox { checked:true;  text:qsTr("Display coordinate system") }
             //GenericAppElements.CheckBox { Layout.fillWidth:true; checked:true;  text:qsTr("Display coordinate system") }
         }
