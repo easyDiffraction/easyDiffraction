@@ -11,7 +11,7 @@ QtObject {
     property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     property var cif: projectOpened ? proxyPyQmlObj.fileStructure : null
     property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
-    property var phaseIds: projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: {}
+    property var phaseIds: projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: []
     property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
     property var experimentIds: projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: {}
     property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
@@ -57,26 +57,33 @@ QtObject {
     // Logging
     property var loggerPyQml: _loggerPyQml
 
-    // Dummy Phase
-    function jsPhase() {
-        this.sites = {
+    // Dummy phase
+    function _emptyPhase() {
+        let this_phase = {}
+        this_phase.sites = {
             fract_x: [],
             fract_y: [],
             fract_z: [],
             scat_length_neutron: [],
         }
-
-        this.cell = {
+        this_phase.cell = {
             length_a: 0,
             length_b: 0,
             length_c: 0,
         }
+        return this_phase
     }
-    // Get Phase
-    function phaseList(phase_index) {
-        let this_phase = new jsPhase()
-        if (!!phaseIds.length) {
-            let phase = proxyPyQmlObj.projectDict.phases[phase_index]
+
+    // Get phase by index
+    function phaseByIndex(phase_index) {
+        let this_phase = _emptyPhase()
+
+        if (phaseIds.length) {
+            print("Phases loaded")
+            const phases = proxyPyQmlObj.projectDict.phases
+            const phase_name = Object.keys(phases)[phase_index]
+            const phase = phases[phase_name]
+
             this_phase.sites.fract_x = phase.sites.fract_x
             this_phase.sites.fract_y = phase.sites.fract_y
             this_phase.sites.fract_z = phase.sites.fract_z
@@ -84,6 +91,8 @@ QtObject {
             this_phase.cell.length_a = phase.cell.length_a.store.value
             this_phase.cell.length_b = phase.cell.length_b.store.value
             this_phase.cell.length_c = phase.cell.length_c.store.value
+        } else {
+            print("No phases yet")
         }
         return this_phase
     }
