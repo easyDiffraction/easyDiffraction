@@ -155,9 +155,9 @@ ColumnLayout {
                         padding: 10
                         spacing: 10
                         columns: 2
-                        Text { text: "\u25A0"; color: obsArea.color; font.pointSize: 15 }
+                        Text { text: "\u25fc"; color: obsArea.color; font: commonFont}
                         Text { text: obsArea.name; font: commonFont}
-                        Text { text: "\u25A0"; color: calcSeries.color; font.pointSize: 15 }
+                        Text { text: "\u25fc"; color: calcSeries.color; font: commonFont}
                         Text { text: calcSeries.name; font: commonFont}
                     }
                 }
