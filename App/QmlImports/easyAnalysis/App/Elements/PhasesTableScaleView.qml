@@ -1,9 +1,12 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
+
 import easyDiffraction 1.0 as Specific
 
 Column {
@@ -162,6 +165,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.info.phase_ids[index] : ""
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         TextInput {
                             width: cellWidthProvider(3)
@@ -171,22 +175,17 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize
                             rightPadding: 0
-                            color: foregroundColor()
                             text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].phase[Specific.Variables.projectDict.info.phase_ids[0]].scale.store.value.toFixed(4) : ""
-//                            onTextChanged: {
-//                                updateSlider()
-//                            }
-//                            onEditingFinished: {
-//                                if (valueEdit !== text) {
-//                                    valueEdit = parseFloat(text)
-//                                }
-//                            }
+                            color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         GenericAppElements.CheckBox {
-                            checked: true;
-                            text: qsTr("Add phase to experiment")
-                            height: 0.8*parent.height
+                            checked: true
+                            //text: qsTr("Add phase to experiment")
+                            //height: 0.8*parent.height
 //                            anchors.baseline: parent.verticalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                         }
                     }
                 }

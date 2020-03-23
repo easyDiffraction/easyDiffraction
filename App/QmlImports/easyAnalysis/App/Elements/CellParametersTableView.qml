@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyDiffraction 1.0 as Specific
 
 Column {
@@ -198,6 +199,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(length_a)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider()
@@ -210,6 +212,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(length_b)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider()
@@ -222,6 +225,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(length_c)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider()
@@ -234,6 +238,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(angle_alpha)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider()
@@ -246,6 +251,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(angle_beta)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider()
@@ -258,6 +264,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: toFixed(angle_gamma)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                     }
 

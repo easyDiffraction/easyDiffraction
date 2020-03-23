@@ -182,7 +182,7 @@ Controls1.TableView {
             // Remove-button
             GenericAppContentArea.Button {
                 id: button
-                enabled: false
+                //enabled: false
                 visible: styleData.role === "remove" ? true : false
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Remove this row from the table")
