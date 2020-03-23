@@ -105,7 +105,7 @@ QtObject {
     }
 
     // Get Calculation
-    function calulationList(calculation_index){
+    function calculationList(calculation_index){
         let this_calculation = new jsCalculation()
         if (!!phaseIds.length && !!experimentIds.length){
             let calc = proxyPyQmlObj.projectDict.calculations[calculation_index]
