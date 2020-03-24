@@ -31,38 +31,36 @@ Rectangle {
             if (Specific.Variables.projectOpened) {
                 // Create dictionary b_scattering:color
                 // At the moment only get 1st phase.
-                const atom_site_list = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].sites
-                const bscatList = Array.from(new Set(atom_site_list.scat_length_neutron))
+                const phase = Specific.Variables.phaseByIndex(0)
+
+                const bscatList = Array.from(new Set(phase.sites.scat_length_neutron))
                 let bscatColorDict = {}
                 for (let i = 0; i < bscatList.length; i++ ) {
                     bscatColorDict[bscatList[i]] = Generic.Style.atomColorList[i]
                 }
 
                 // Unit cell parameters
-                const a = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].cell.length_a.store.value
-                const b = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].cell.length_b.store.value
-                const c = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].cell.length_c.store.value
-
-                // Remove old atom scatters, but unit cell box (number 1)
-                for (let i = 1, len = chart.seriesList.length; i < len; i++) {
-                    chart.removeSeries(chart.seriesList[1])
-                }
+                const a = phase.cell.length_a
+                const b = phase.cell.length_b
+                const c = phase.cell.length_c
 
                 // Populate chart with atoms. Every atom is an individual scatter serie
-                for (let i = 0, len = atom_site_list.fract_x.length; i < len; i++ ) {
+                for (let i = 0, len = phase.sites.fract_x.length; i < len; i++ ) {
                     var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml")
                     if (component.status === Component.Ready) {
                         var series = component.createObject()
                         if (series === null) {
                             console.log("Error creating object")
                         } else {
-                            series.atomSize = Math.abs(atom_site_list.scat_length_neutron[i]) * 0.4
-                            series.atomColor = bscatColorDict[atom_site_list.scat_length_neutron[i]]
+                            //print(i, phase.sites.fract_x[i], phase.sites.scat_length_neutron[i])
+
+                            series.atomSize = Math.abs(phase.sites.scat_length_neutron[i]) * 0.4
+                            series.atomColor = bscatColorDict[phase.sites.scat_length_neutron[i]]
                             //print(a, atom_site_list.fract_x[i] * a)
                             series.atomModel.append({
-                                x: atom_site_list.fract_x[i] * a,
-                                y: atom_site_list.fract_y[i] * b,
-                                z: atom_site_list.fract_z[i] * c
+                                x: phase.sites.fract_x[i] * a,
+                                y: phase.sites.fract_y[i] * b,
+                                z: phase.sites.fract_z[i] * c
                             })
                         }
                         chart.addSeries(series)
@@ -88,7 +86,7 @@ Rectangle {
             height: Math.min(parent.width, parent.height)
             anchors.centerIn: parent
             clip: true
-            visible: Specific.Variables.projectDict.info.phase_ids.length
+            visible: Specific.Variables.phaseIds.length ? true: false
 
             // Camera view settings
             orthoProjection: false
