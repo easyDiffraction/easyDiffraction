@@ -129,10 +129,38 @@ ColumnLayout {
                 anchors.margins: -extraPadding
                 anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
-                legend.visible: false
                 backgroundRoundness: 0
                 backgroundColor: "transparent"
                 titleFont: commonFont
+                legend.visible: false
+
+                // Custom Legend
+                Item {
+                    y: topChart.plotArea.top + 10
+                    x: topChart.plotArea.right - width - 10
+                    width: childrenRect.width
+                    height: childrenRect.height
+
+                    // Background
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        opacity: 0.75
+                        color: "white"
+                        border.color: "#ddd"
+                    }
+
+                    // Info
+                    Grid {
+                        padding: 10
+                        spacing: 10
+                        columns: 2
+                        Text { text: "\u25fc"; color: obsArea.color; font: commonFont}
+                        Text { text: obsArea.name; font: commonFont}
+                        Text { text: "\u25fc"; color: calcSeries.color; font: commonFont}
+                        Text { text: calcSeries.name; font: commonFont}
+                    }
+                }
 
                 animationDuration: globalAnimationDuration
 
@@ -181,6 +209,7 @@ ColumnLayout {
                     opacity: 0.4
                     borderColor: Qt.darker(Generic.Style.blueColor, 1.1)
                     borderWidth: 1.5
+                    name: "Measured data"
                     //useOpenGL: true
 
                     lowerSeries: LineSeries {
@@ -218,6 +247,7 @@ ColumnLayout {
                     axisY: axisY
                     color: Generic.Style.redColor
                     width: 2
+                    name: "Model"
                     //useOpenGL: true
 
                     // New approach (fast): pass a reference to LineSeries to python for updating
