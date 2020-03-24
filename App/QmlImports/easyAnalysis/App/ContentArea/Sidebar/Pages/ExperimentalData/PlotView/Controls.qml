@@ -93,6 +93,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Instrument and experiment type"//"Diffractometer"
+        enabled: Specific.Variables.projectDict.info.experiment_ids.length
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 //enabled: false
@@ -187,6 +188,8 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Peak profile" // https://wiki-ext.aps.anl.gov/ug11bm/index.php/GSAS_Profile_Terms
+        enabled: Specific.Variables.projectDict.info.experiment_ids.length
+
         content: GenericAppElements.ColumnLayout {
             spacing: 12
             //enabled: false
@@ -248,7 +251,22 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.GroupBox {
-        title: "Associated phases"
+        title: "Associated phases"//"Instrument parameters"
+        enabled: Specific.Variables.projectDict.info.experiment_ids.length
+
+//        content: GridLayout {
+//            columns: 4
+//            columnSpacing: 15
+//            rowSpacing: 10
+//            enabled: false
+//            Text { text: qsTr("Scale") }
+//            GenericAppElements.TextField {
+//                text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].phase[Specific.Variables.projectDict.info.phase_ids[0]].scale.store.value.toFixed(4) : ""
+//                units: ""
+//            }
+//
+//        }
+
         content: GenericAppElements.ColumnLayout {
 
             // Table

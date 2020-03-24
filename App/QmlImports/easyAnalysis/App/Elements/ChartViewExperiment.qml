@@ -101,6 +101,7 @@ ColumnLayout {
 
             ChartView {
                 id: topChart
+                visible: Specific.Variables.projectDict.info.experiment_ids.length
                 //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding

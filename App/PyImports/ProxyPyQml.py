@@ -100,6 +100,7 @@ class ProxyPyQml(QObject):
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
+        self._calculator_interface.updateCalculations()
         self.projectChanged.emit()
         self.onProjectUnsaved()
 

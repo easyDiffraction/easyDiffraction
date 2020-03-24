@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
+
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 
@@ -8,6 +9,7 @@ RowLayout {
     property alias mainAreaContent: mainArea.children
     property var tabBarContent: null
     property var sideBarContent: null
+    property string notLoadedInfoText: ""
 
     spacing: 0
 
@@ -19,6 +21,7 @@ RowLayout {
 
         // ContentArea TabBar
         TabBar {
+            visible: !notLoadedInfo.visible
             Layout.alignment: Qt.AlignLeft
             id: tabBar
             height: tabBarContent ? Generic.Style.contentAreaTabbarHeight : 0
@@ -27,10 +30,11 @@ RowLayout {
         }
 
         // TabBar bottom border
-        GenericAppElements.HorizontalBorder { height: tabBarContent ? Generic.Style.appBorderThickness : 0 }
+        GenericAppElements.HorizontalBorder { visible: !notLoadedInfo.visible; height: tabBarContent ? Generic.Style.appBorderThickness : 0 }
 
         // ContentArea without TabBar
         Rectangle {
+            visible: !notLoadedInfo.visible
             Layout.fillWidth: true
             Layout.fillHeight: true
             color: "white"
@@ -43,7 +47,21 @@ RowLayout {
         }
 
         // Status bar
-        GenericAppElements.StatusBar {}
+        GenericAppElements.StatusBar { visible: !notLoadedInfo.visible }
+
+        // Not loaded info container
+        Text {
+            id: notLoadedInfo
+            visible: notLoadedInfoText
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: notLoadedInfoText
+            font.pointSize: Generic.Style.fontPointSize * 3
+            font.family: Generic.Style.fontFamily
+            color: "lightgrey"
+        }
     }
 
     // ContentArea right border

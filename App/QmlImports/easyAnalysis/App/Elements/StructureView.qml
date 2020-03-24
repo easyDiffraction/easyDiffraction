@@ -88,6 +88,7 @@ Rectangle {
             height: Math.min(parent.width, parent.height)
             anchors.centerIn: parent
             clip: true
+            visible: Specific.Variables.projectDict.info.phase_ids.length
 
             // Camera view settings
             orthoProjection: false
@@ -146,6 +147,7 @@ Rectangle {
                 }
             }
         }
+
     }
 
     /////////////

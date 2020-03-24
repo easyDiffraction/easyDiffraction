@@ -1,11 +1,14 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
+
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea.MainArea 1.0 as GenericMainArea
 import easyAnalysis.App.ContentArea.MainArea.Pages.ExperimentalData 1.0 as GenericMainAreaSampleModel
 import easyAnalysis.App.ContentArea.Sidebar.Pages.ExperimentalData 1.0 as GenericSidebarSampleModel
+
+import easyDiffraction 1.0 as Specific
 
 GenericAppElements.ContentAreaStack {
 
@@ -54,5 +57,7 @@ GenericAppElements.ContentAreaStack {
         GenericSidebarSampleModel.TableView { }
         GenericSidebarSampleModel.TextView { }
     }
+
+    notLoadedInfoText: !Specific.Variables.projectDict.info.experiment_ids.length ? "No Experiments Loaded" : ""
 
 }
