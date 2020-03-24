@@ -13,8 +13,9 @@ QtObject {
     property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
     property var phaseIds: projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: []
     property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
-    property var experimentIds: projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: {}
+    property var experimentIds: projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: []
     property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
+    property var calculationIds: projectOpened ? Object.keys(proxyPyQmlObj.projectDict.calculations): []
     property var needToSave: projectOpened ? proxyPyQmlObj.needToSave : false
     property var projectFilePathSelected: proxyPyQmlObj.projectFilePathSelected
 
@@ -128,7 +129,7 @@ QtObject {
     function calculationByIndex(calculation_index){
         let this_calculation = new _emptyCalculation()
 
-        if (!!phaseIds.length && !!experimentIds.length){
+        if (!!calculationIds.length) {
 
             print("Calculation loaded")
             const calculations = proxyPyQmlObj.projectDict.calculations
@@ -166,7 +167,7 @@ QtObject {
     function experimentByIndex(exp_index){
         let this_exp = new _emptyExperiment()
 
-        if (!!experimentIds.length){
+        if (!!experimentIds.length && !!calculationIds.length){
 
             print("Experiemnt loaded")
             const experiments = proxyPyQmlObj.projectDict.experiments
