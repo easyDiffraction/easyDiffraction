@@ -46,6 +46,6 @@ GenericAppElements.ContentAreaStack {
         GenericSidebarSampleModel.TextView { }
     }
 
-    notLoadedInfoText: !Specific.Variables.projectDict.info.phase_ids.length ? "No Phases Loaded" : ""
+    notLoadedInfoText: !Specific.Variables.phaseIds.length ? "No Phases Loaded" : ""
 
 }

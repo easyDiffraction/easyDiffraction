@@ -194,8 +194,14 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.calculationByIndex(0).limits.main.y_min
-                    max: Specific.Variables.calculationByIndex(0).limits.main.x_max
+                    min: {
+                        let calc = Specific.Variables.calculationByIndex(0)
+                        return calc.limits.main.y_min
+                    }
+                    max: {
+                        let calc = Specific.Variables.calculationByIndex(0)
+                        return calc.limits.main.y_max
+                    }
                 }
 
                 // Measured curve
