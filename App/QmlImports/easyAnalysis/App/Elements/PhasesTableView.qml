@@ -182,7 +182,7 @@ Column {
 
                 // Default info
                 Label {
-                    visible: Specific.Variables.phaseIds
+                    visible: !Specific.Variables.phaseIds.length
                     enabled: false
                     anchors.fill: parent
                     leftPadding: font.pixelSize

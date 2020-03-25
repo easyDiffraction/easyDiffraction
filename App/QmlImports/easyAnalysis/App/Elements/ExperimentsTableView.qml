@@ -181,7 +181,7 @@ Column {
 
                 // Default info
                 Label {
-                    visible: Specific.Variables.experimentIds
+                    visible: !Specific.Variables.experimentIds.length
                     enabled: false
                     anchors.fill: parent
                     leftPadding: font.pixelSize
