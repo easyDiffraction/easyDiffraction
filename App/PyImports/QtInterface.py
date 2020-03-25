@@ -2,14 +2,17 @@ __author__ = 'simonward'
 __version__ = "2020_02_01"
 
 from typing import NoReturn
-from easyInterface.Diffraction.Interface import *
+
 from PySide2.QtCore import QObject, Signal, Slot
 
+from easyInterface import logger
+from easyInterface.Diffraction.Interface import *
 
 class QtCalculatorInterface(CalculatorInterface, QObject):
     def __init__(self, calculator, parent=None):
         QObject.__init__(self, parent)
         CalculatorInterface.__init__(self, calculator)
+        self._log = logger.getLogger(__class__.__module__)
 
     projectDictChanged = Signal()
     canUndoOrRedoChanged = Signal()
@@ -102,25 +105,26 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         CalculatorInterface.removeExperiment(self, experiment_name)
         self.projectDictChanged.emit()
 
-
-    def updatePhases(self, emit: bool = True):
+    def updatePhases(self):
+    #def updatePhases(self, emit: bool = True):
         CalculatorInterface.updatePhases(self)
-
         # This will notify the GUI models changed
-        if emit:
-            self.projectDictChanged.emit()
+        #if emit:
+        #    self.projectDictChanged.emit()
 
-    def updateExperiments(self, emit: bool = True):
+    def updateExperiments(self):
+    #def updateExperiments(self, emit: bool = True):
         CalculatorInterface.updateExperiments(self)
         # This will notify the GUI models changed
-        if emit:
-            self.projectDictChanged.emit()
+        #if emit:
+        #    self.projectDictChanged.emit()
 
-    def updateCalculations(self, emit: bool = True):
+    def updateCalculations(self):
+    #def updateCalculations(self, emit: bool = True):
         CalculatorInterface.updateCalculations(self)
         # This will notify the GUI models changed
-        if emit:
-            self.projectDictChanged.emit()
+        #if emit:
+        #    self.projectDictChanged.emit()
 
     def setDictByPath(self, keys: list, value):
         CalculatorInterface.setDictByPath(self, keys, value)
