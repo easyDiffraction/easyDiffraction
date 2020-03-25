@@ -2,7 +2,7 @@
 release:
   name: easyDiffraction
   version: 0.5.0
-  date: 25 March 2020
+  date: 25 Mar 2020
   url: http://easydiffraction.org
   changes: # Get from pull requests description?
   - Add experimental dataset fro XYE
