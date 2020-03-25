@@ -2,6 +2,8 @@ pragma Singleton
 
 import QtQuick 2.12
 
+import easyAnalysis 1.0 as Generic
+
 QtObject {
 
     property bool projectOpened: false
@@ -47,6 +49,15 @@ QtObject {
     property var refinementRunning: proxyPyQmlObj.refinementStatus[0]
     property var refinementDone: proxyPyQmlObj.refinementStatus[1]
     property var refinementResult: proxyPyQmlObj.refinementStatus[2]
+
+    onRefinementResultChanged: {
+        if (Object.entries(refinementResult)) {
+            Generic.Variables.refinementMessage = refinementResult.refinement_message ? refinementResult.refinement_message : Generic.Variables.refinementMessage
+            Generic.Variables.chiSquared = refinementResult.final_chi_sq ? refinementResult.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
+            Generic.Variables.numRefinedPars = refinementResult.num_refined_parameters ? refinementResult.num_refined_parameters.toFixed(0) : Generic.Variables.numRefinedPars
+
+        }
+    }
 
     // Undo-Redo
     property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
