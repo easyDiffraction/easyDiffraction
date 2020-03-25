@@ -59,7 +59,11 @@ QtObject {
     property var loggerPyQml: _loggerPyQml
     property int debugLevel : 10
     function isDebugging(){
-        return loggerPyQml.getLevel() <= debugLevel
+        let level = 30
+        if ((typeof(loggerPyQml) !== 'undefined') && (loggerPyQml !== null)) {
+            level = loggerPyQml.getLevel()
+        }
+        return level <= debugLevel
     }
 
     // Dummy phase

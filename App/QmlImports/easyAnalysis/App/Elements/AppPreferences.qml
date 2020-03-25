@@ -109,7 +109,7 @@ GenericControls.Dialog {
         GenericAppElements.ComboBox {
             width: 250
             model: XmlListModel {
-                xml: Specific.Variables.loggerPyQml.levelsAsXml()
+                xml: ((typeof(loggerPyQml) !== 'undefined') && (loggerPyQml !== null)) ? Specific.Variables.loggerPyQml.levelsAsXml() : ''
                 query: "/root/level"
                 XmlRole { name: "name"; query: "name/string()" }
             }

@@ -79,7 +79,7 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         Parse the relevant phases file and update the corresponding model
         """
         CalculatorInterface.setExperimentDefinition(self, experiment_path)
-        self.updateCalculations()
+        # self.updateCalculations()
         self.projectDictChanged.emit()
 
     def setExperimentDefinitionFromString(self, exp_cif_string: str) -> NoReturn:
