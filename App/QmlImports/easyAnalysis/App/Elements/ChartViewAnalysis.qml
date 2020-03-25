@@ -68,56 +68,6 @@ ColumnLayout {
             color: "transparent"
             clip: true
 
-            Rectangle {
-                id: plotInfoRect
-                z: 100
-
-                anchors.top: topChart.top
-                anchors.right: topChart.right
-                anchors.topMargin: extraPadding + infoPadding + 30
-                anchors.rightMargin: extraPadding + infoPadding + 30
-
-                width: childrenRect.width
-                height: childrenRect.height
-
-                color: Generic.Style.tableHeaderRowColor //Generic.Style.buttonBkgFinishedColor
-                border.color: Generic.Style.mainAreaTabBorderColor //Generic.Style.buttonBorderFinishedColor
-                border.width: Generic.Style.appBorderThickness //1
-
-                opacity: 0.8
-
-                Label {
-                    id: plotInfo
-                    topPadding: infoPadding/2
-                    bottomPadding: topPadding
-                    leftPadding: topPadding + font.pixelSize/4
-                    rightPadding: leftPadding
-
-                    font.family: Generic.Style.fontFamily
-                    font.pointSize: Generic.Style.fontPointSize
-                    color: Generic.Style.tableTextColor //Generic.Style.buttonTextFinishedColor
-
-                    text: {
-                        const showPars = {
-                            'Goodness-of-fit (\u03c7\u00b2)': Generic.Variables.chiSquared,
-                            'Num. refined parameters': Generic.Variables.numRefinedPars
-                        }
-                        let out = ""
-                        for (let key in showPars) {
-                            if (showPars[key]) {
-                                out += "%1: %2\n".arg(key).arg(showPars[key])
-                            }
-                        }
-                        if (out) {
-                            plotInfoRect.visible = true
-                        } else {
-                            plotInfoRect.visible = false
-                        }
-                        return out.slice(0, -1)
-                    }
-                }
-            }
-
             //////////////////////////
             // Top chart (Iobs, Icalc)
             //////////////////////////
@@ -146,19 +96,53 @@ ColumnLayout {
                         width: parent.width
                         height: parent.height
                         opacity: 0.75
-                        color: "white"
-                        border.color: "#ddd"
+                        color: Generic.Style.tableHeaderRowColor //"white"
+                        border.color: Generic.Style.mainAreaTabBorderColor //"#ddd"
+                        border.width: Generic.Style.appBorderThickness //1
                     }
 
                     // Info
                     Grid {
                         padding: 10
-                        spacing: 10
+                        columnSpacing: 10
+                        rowSpacing: 5
                         columns: 2
                         Text { text: "\u25fc"; color: obsArea.color; font: commonFont}
                         Text { text: obsArea.name; font: commonFont}
                         Text { text: "\u25fc"; color: calcSeries.color; font: commonFont}
                         Text { text: calcSeries.name; font: commonFont}
+                    }
+                }
+
+                // Plot Info (after refinement)
+                Item {
+                    visible: Generic.Variables.numRefinedPars !== " " && Generic.Variables.chiSquared !==  " "
+
+                    y: topChart.plotArea.top + 10
+                    x: topChart.plotArea.left + 10
+                    width: childrenRect.width
+                    height: childrenRect.height
+
+                    // Background
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        opacity: 0.75
+                        color: Generic.Style.tableHeaderRowColor //"white"
+                        border.color: Generic.Style.mainAreaTabBorderColor //"#ddd"
+                        border.width: Generic.Style.appBorderThickness //1
+                    }
+
+                    // Info
+                    Grid {
+                        padding: 10
+                        columnSpacing: 10
+                        rowSpacing: 5
+                        columns: 2
+                        Text { text: 'Goodness-of-fit (\u03c7\u00b2):'; font: commonFont }
+                        Text { text: Generic.Variables.chiSquared; font: commonFont } // Generic.Variables.chiSquared
+                        Text { text: 'Num. refined parameters:'; font: commonFont }
+                        Text { text: Generic.Variables.numRefinedPars; font: commonFont } // Generic.Variables.numRefinedPars
                     }
                 }
 
@@ -178,8 +162,8 @@ ColumnLayout {
                     labelsVisible: !showDiff
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_max : 1
+                    min: Specific.Variables.calculationByIndex(0).limits.main.x_min
+                    max: Specific.Variables.calculationByIndex(0).limits.main.x_max
                 }
 
                 // Y-axis for measured and calculated data
@@ -194,8 +178,14 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_max : 0
+                    min: {
+                        let calc = Specific.Variables.calculationByIndex(0)
+                        return calc.limits.main.y_min
+                    }
+                    max: {
+                        let calc = Specific.Variables.calculationByIndex(0)
+                        return calc.limits.main.y_max
+                    }
                 }
 
                 // Measured curve
@@ -247,7 +237,7 @@ ColumnLayout {
                     axisY: axisY
                     color: Generic.Style.redColor
                     width: 2
-                    name: "Model"
+                    name: "Calculated model"
                     //useOpenGL: true
 
                     // New approach (fast): pass a reference to LineSeries to python for updating
@@ -503,8 +493,9 @@ ColumnLayout {
                     titleFont: commonFont
                     min: {
                         if (Specific.Variables.projectOpened) {
-                            let min = Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.difference.y_min
-                            let max = Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.difference.y_max
+                            let calc = Specific.Variables.calculationByIndex(0)
+                            let min = calc.limits.difference.y_min
+                            let max = calc.limits.difference.y_max
                             let MAX = Math.max(Math.abs(min), Math.abs(max))
                             return Math.sign(min) * MAX
                         }
@@ -512,8 +503,9 @@ ColumnLayout {
                     }
                     max: {
                         if (Specific.Variables.projectOpened) {
-                            let min = Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.difference.y_min
-                            let max = Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.difference.y_max
+                            let calc = Specific.Variables.calculationByIndex(0)
+                            let min = calc.limits.difference.y_min
+                            let max = calc.limits.difference.y_max
                             let MAX = Math.max(Math.abs(min), Math.abs(max))
                             return Math.sign(max) * MAX
                         }

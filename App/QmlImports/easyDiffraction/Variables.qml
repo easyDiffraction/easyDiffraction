@@ -2,6 +2,8 @@ pragma Singleton
 
 import QtQuick 2.12
 
+import easyAnalysis 1.0 as Generic
+
 QtObject {
 
     property bool projectOpened: false
@@ -11,8 +13,11 @@ QtObject {
     property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     property var cif: projectOpened ? proxyPyQmlObj.fileStructure : null
     property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
+    property var phaseIds: projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: []
     property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
+    property var experimentIds: projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: []
     property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
+    property var calculationIds: projectOpened ? Object.keys(proxyPyQmlObj.projectDict.calculations): []
     property var needToSave: projectOpened ? proxyPyQmlObj.needToSave : false
     property var projectFilePathSelected: proxyPyQmlObj.projectFilePathSelected
 
@@ -45,6 +50,15 @@ QtObject {
     property var refinementDone: proxyPyQmlObj.refinementStatus[1]
     property var refinementResult: proxyPyQmlObj.refinementStatus[2]
 
+    onRefinementResultChanged: {
+        if (Object.entries(refinementResult)) {
+            Generic.Variables.refinementMessage = refinementResult.refinement_message ? refinementResult.refinement_message : Generic.Variables.refinementMessage
+            Generic.Variables.chiSquared = refinementResult.final_chi_sq ? refinementResult.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
+            Generic.Variables.numRefinedPars = refinementResult.num_refined_parameters ? refinementResult.num_refined_parameters.toFixed(0) : Generic.Variables.numRefinedPars
+
+        }
+    }
+
     // Undo-Redo
     property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
     property var undoText: calculatorInterface ? proxyPyQmlObj.undoText : ""
@@ -54,4 +68,147 @@ QtObject {
 
     // Logging
     property var loggerPyQml: _loggerPyQml
+    property int debugLevel : 10
+    function isDebugging(){
+        let level = 30
+        if ((typeof(loggerPyQml) !== 'undefined') && (loggerPyQml !== null)) {
+            level = loggerPyQml.getLevel()
+        }
+        return level <= debugLevel
+    }
+
+    // Dummy phase
+    function _emptyPhase() {
+        this.sites = {
+            fract_x: [],
+            fract_y: [],
+            fract_z: [],
+            scat_length_neutron: [],
+        }
+        this.cell = {
+            length_a: 0,
+            length_b: 0,
+            length_c: 0,
+        }
+        this.spacegroup = {
+            crystal_system: "",
+            space_group_with_number: "",
+            origin_choice: ""
+        }
+    }
+
+    // Get phase by index
+    function phaseByIndex(phase_index) {
+        let this_phase = new _emptyPhase()
+
+        if (!!phaseIds.length) {
+            isDebugging() && console.debug("Phases loaded")
+            const phases = proxyPyQmlObj.projectDict.phases
+            const phase_name = Object.keys(phases)[phase_index]
+            const phase = phases[phase_name]
+
+            this_phase.sites.fract_x = phase.sites.fract_x
+            this_phase.sites.fract_y = phase.sites.fract_y
+            this_phase.sites.fract_z = phase.sites.fract_z
+
+            this_phase.sites.scat_length_neutron = phase.sites.scat_length_neutron
+
+            this_phase.cell.length_a = phase.cell.length_a.store.value
+            this_phase.cell.length_b = phase.cell.length_b.store.value
+            this_phase.cell.length_c = phase.cell.length_c.store.value
+
+            this_phase.spacegroup.crystal_system = phase.spacegroup.crystal_system.store.value
+            this_phase.spacegroup.space_group_with_number = phase.spacegroup.space_group_IT_number.store.value + '.  ' + phase.spacegroup.space_group_name_HM_alt.store.value
+            this_phase.spacegroup.origin_choice = phase.spacegroup.crystal_system.store.value
+        }
+        else
+        {
+            isDebugging() && console.debug("No phases yet")
+        }
+        return this_phase
+    }
+
+    // Dummy Calculation
+    function _emptyCalculation(){
+        this.limits = {
+            difference: {
+                y_min: -1,
+                y_max: 1,
+            },
+            main: {
+                x_min: -1,
+                x_max: 1,
+                y_min : -1,
+                y_max: 1,
+            },
+        }
+    }
+
+    // Get Calculation
+    function calculationByIndex(calculation_index){
+        let this_calculation = new _emptyCalculation()
+
+        if (!!calculationIds.length) {
+
+            isDebugging() && console.debug("Calculation loaded")
+            const calculations = proxyPyQmlObj.projectDict.calculations
+            const calcultion_name = Object.keys(calculations)[calculation_index]
+            const calc = calculations[calcultion_name]
+
+            this_calculation.limits.main.y_min = calc.limits.main.y_min
+            this_calculation.limits.main.y_max = calc.limits.main.y_max
+            this_calculation.limits.main.x_min = calc.limits.main.x_min
+            this_calculation.limits.main.x_max = calc.limits.main.x_max
+            this_calculation.limits.difference.y_min = calc.limits.difference.y_min
+            this_calculation.limits.difference.y_max = calc.limits.difference.y_max
+        }
+        else
+        {
+            isDebugging() && console.debug("No calculations yet")
+        }
+        return this_calculation
+    }
+
+    //Dummy Experiment
+    function _emptyExperiment(){
+        this.resolution = {
+            x: 0,
+            y: 0,
+            u: 0,
+            v: 0,
+            w: 0,
+        },
+        this.offset = 0
+        this.wavelength = 0
+        this.phase = [{scale: 0}]
+    }
+
+    function experimentByIndex(exp_index){
+        let this_exp = new _emptyExperiment()
+
+        if (!!experimentIds.length && !!calculationIds.length){
+
+            isDebugging() && console.debug("Experiemnt loaded")
+            const experiments = proxyPyQmlObj.projectDict.experiments
+            const experiment_name = Object.keys(experiments)[exp_index]
+            const exp = experiments[experiment_name]
+
+            this_exp.resolution.u = exp.resolution.u.store.value
+            this_exp.resolution.v = exp.resolution.v.store.value
+            this_exp.resolution.w = exp.resolution.w.store.value
+            this_exp.resolution.x = exp.resolution.x.store.value
+            this_exp.resolution.y = exp.resolution.y.store.value
+
+            this_exp.offset = exp.offset.store.value
+
+            this_exp.wavelength = exp.wavelength.store.value
+
+            this_exp.phase[0].scale = exp.phase[phaseIds[0]].scale.store.value
+        }
+        else
+        {
+            isDebugging() && console.debug("No calculations yet")
+        }
+        return this_exp
+    }
 }

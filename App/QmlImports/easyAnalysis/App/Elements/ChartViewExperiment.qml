@@ -63,6 +63,7 @@ ColumnLayout {
 
                 opacity: 0.8
 
+                /*
                 Label {
                     id: plotInfo
                     topPadding: infoPadding/2
@@ -92,7 +93,7 @@ ColumnLayout {
                         }
                         return out.slice(0, -1)
                     }
-                }
+                }*/
             }
 
             //////////////////////////
@@ -101,7 +102,7 @@ ColumnLayout {
 
             ChartView {
                 id: topChart
-                visible: Specific.Variables.projectDict.info.experiment_ids.length
+                visible: Specific.Variables.experimentIds.length? true: false
                 //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
@@ -128,8 +129,8 @@ ColumnLayout {
                     labelsVisible: !showDiff
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.x_max : 1
+                    min: Specific.Variables.calculationByIndex(0).limits.main.x_min
+                    max: Specific.Variables.calculationByIndex(0).limits.main.x_max
                 }
 
                 // Y-axis for measured and calculated data
@@ -144,8 +145,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_min : 0
-                    max: Specific.Variables.projectOpened ? Specific.Variables.projectDict.calculations[Specific.Variables.projectDict.info.experiment_ids[0]].limits.main.y_max : 0
+                    min: Specific.Variables.calculationByIndex(0).limits.main.y_min
+                    max: Specific.Variables.calculationByIndex(0).limits.main.y_max
                 }
 
                 // Measured curve

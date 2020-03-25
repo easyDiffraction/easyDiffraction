@@ -5,6 +5,7 @@ import QtGraphicalEffects 1.12
 import easyAnalysis 1.0 as Generic
 import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
+import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
 
 import easyDiffraction 1.0 as Specific
 
@@ -55,7 +56,7 @@ Column {
     function colorProvider(atom) {
         if (!Specific.Variables.projectOpened)
             return "black"
-        const atom_site_dict = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].atoms
+        const atom_site_dict = Specific.Variables.projectDict.phases[Specific.Variables.phaseIds[0]].atoms
         let type_symbol_list = []
         for (let atom_id in atom_site_dict) {
             type_symbol_list.push(atom_site_dict[atom_id].type_symbol.store.value)
@@ -337,42 +338,12 @@ Column {
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
-                        GenericAppContentArea.Button {
-                            id: button
-                            //enabled: false
-                            ToolTip.visible: hovered
-                            ToolTip.text: qsTr("Remove this row from the table")
-                            width: cellWidthProvider(9)
-                            height: width
-                            padding: 3
-                            leftPadding: padding
-                            rightPadding: padding
-                            background: Rectangle {
-                                anchors.fill: parent
-                                anchors.margins: button.padding
-                                anchors.leftMargin: button.leftPadding
-                                anchors.rightMargin: button.rightPadding
-                                radius: Generic.Style.toolbarButtonRadius
-                                border.color: button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.appBorderColor
-                                color: {
-                                    if (!button.enabled)
-                                        return Generic.Style.buttonBkgDisabledColor
-                                    var color1 = button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgEnabledColor
-                                    var color2 = Generic.Style.buttonBkgBlendColor
-                                    var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
-                                    return Color.blend(color1, color2, alpha)
-                                }
-                            }
-                            icon.source: Generic.Variables.thirdPartyIconsPath + "minus-circle.svg"
+                        GenericAppContentAreaButtons.Remove {
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                         }
                     }
-
-
                 }
-
             }
         }
     }
-
 }

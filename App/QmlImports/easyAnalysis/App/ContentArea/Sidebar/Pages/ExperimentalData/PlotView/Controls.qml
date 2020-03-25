@@ -93,7 +93,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Instrument and experiment type"//"Diffractometer"
-        enabled: Specific.Variables.projectDict.info.experiment_ids.length
+        enabled: Specific.Variables.experimentIds.length
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 //enabled: false
@@ -161,6 +161,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Setup parameters"
+        enabled: Specific.Variables.experimentIds.length
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 6
@@ -169,14 +170,14 @@ ColumnLayout {
 
                 Text { text: qsTr("Wavelength") }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].wavelength.store.value.toFixed(4) : ""
+                    text: Specific.Variables.experimentByIndex(0).wavelength.toFixed(4)
                     units: "\u212B"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text {}
                 Text { text: qsTr("Zero shift") }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].offset.store.value.toFixed(4) : ""
+                    text: Specific.Variables.experimentByIndex(0).offset.toFixed(4)
                     units: "\u00B0"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
@@ -188,7 +189,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Peak profile" // https://wiki-ext.aps.anl.gov/ug11bm/index.php/GSAS_Profile_Terms
-        enabled: Specific.Variables.projectDict.info.experiment_ids.length
+        enabled: Specific.Variables.experimentIds.length
 
         content: GenericAppElements.ColumnLayout {
             spacing: 12
@@ -212,35 +213,35 @@ ColumnLayout {
                 // Row
                 Text { text: qsTr("U") }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.u.store.value.toFixed(4) : ""
+                    text: Specific.Variables.experimentByIndex(0).resolution.u.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text {}
 
                 Text { text: qsTr("V") }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.v.store.value.toFixed(4) : ""
+                    text: Specific.Variables.experimentByIndex(0).resolution.v.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text {}
 
                 Text { text: qsTr("W") }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.w.store.value.toFixed(4) : ""
+                    text: Specific.Variables.experimentByIndex(0).resolution.w.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
 
                 // Row
                 Text { text: qsTr("X") }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.x.store.value.toFixed(4) : ""
+                    text: Specific.Variables.experimentByIndex(0).resolution.x.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text {}
 
                 Text { text: qsTr("Y") }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].resolution.y.store.value.toFixed(4) : ""
+                    text: Specific.Variables.experimentByIndex(0).resolution.y.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
             }
@@ -252,7 +253,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Associated phases"//"Instrument parameters"
-        enabled: Specific.Variables.projectDict.info.experiment_ids.length
+        enabled: Specific.Variables.experimentIds.length
 
 //        content: GridLayout {
 //            columns: 4

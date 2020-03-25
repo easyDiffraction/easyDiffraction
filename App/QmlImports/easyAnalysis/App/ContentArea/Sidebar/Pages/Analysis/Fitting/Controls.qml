@@ -112,29 +112,13 @@ ColumnLayout {
         visible: Specific.Variables.refinementDone && Boolean(Specific.Variables.refinementResult)
         title: "Refinement Results"
 
-        onVisibleChanged: {
-            if (!visible)
-                return
-            const res = Specific.Variables.refinementResult
-            Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
-            Generic.Variables.numRefinedPars = res.num_refined_parameters ? res.num_refined_parameters : Generic.Variables.numRefinedPars
-        }
-
         Column {
             padding: 20
-            spacing: 15
+            spacing: 10
 
-            Text {
-                id: info
-                text: {
-                    const res = Specific.Variables.refinementResult
-                    let s = ""
-                    s += res.refinement_message ? `${res.refinement_message}` : ""
-                    s += res.final_chi_sq ? `\n\nGoodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
-                    s += res.num_refined_parameters ? `\nNum. refined parameters: ${res.num_refined_parameters}` : ""
-                    return s
-                }
-            }
+            Text { text: `${Generic.Variables.refinementMessage}`; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize }
+            Text { text: `Goodness-of-fit (\u03c7\u00b2): ${Generic.Variables.chiSquared}`; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize }
+            Text { text: `Num. refined parameters: ${Generic.Variables.numRefinedPars}`; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize }
         }
     }
 }

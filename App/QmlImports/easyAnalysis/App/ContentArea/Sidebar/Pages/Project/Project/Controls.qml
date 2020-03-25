@@ -266,8 +266,8 @@ ColumnLayout {
                 Controls1.TableViewColumn { title:"Path";           role:"path" }
                 Controls1.TableViewColumn { title:"Creation date";  role:"cdate";   resizable: false }
                 Controls1.TableViewColumn { role:"remove";          title:"Remove"; resizable: false }
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
-            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
         }
 
         GenericAppElements.GuideWindow {
@@ -297,8 +297,8 @@ ColumnLayout {
                 Controls1.TableViewColumn { title:"No.";                role:"number";  resizable: false }
                 Controls1.TableViewColumn { title:"Name";               role:"name" }
                 Controls1.TableViewColumn { title:"Keywords";           role:"keywords" }
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
             }
-            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
         }
     }
 

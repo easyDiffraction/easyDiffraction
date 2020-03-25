@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 
-from PySide2.QtCore import Qt, QObject, QCoreApplication, QUrl, Slot
+from PySide2.QtCore import QUrl
 from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import QApplication
 from PySide2.QtQml import QQmlApplicationEngine
@@ -10,6 +10,8 @@ from PySide2.QtQml import QQmlApplicationEngine
 from PyImports.ProxyPyQml import ProxyPyQml
 from easyInterface import logger, logging
 from PyImports.Utils.QtLogging import QtLogger
+
+defaultDebugLevel = logging.WARNING
 
 if __name__ == '__main__':
 
@@ -23,15 +25,15 @@ if __name__ == '__main__':
         try:
             logger.setLevel(int(args.debug))
         except ValueError:
-            logger.setLevel(logging.WARNING)
+            logger.setLevel(defaultDebugLevel)
             logger.logger.warning('Debug level %s could no be parsed. Setting to WARNING (30)', args.debug)
     else:
-        logger.setLevel(logging.WARNING)
+        logger.setLevel(defaultDebugLevel)
     logger.addSysOutput()
     # logger.addNameBlacklistFilter('easyInterface.Diffraction.Calculators', 'easyInterface.Diffraction.DataClasses')
     # logger.addNameFilter('easyDiffraction')
     # logging.getLogger().addFilter(logging.Filter(name='easyInterface'))
-    logger_py_qml = QtLogger(logger, level=logging.DEBUG)
+    logger_py_qml = QtLogger(logger, level=defaultDebugLevel)
 
     # The following way to enable HighDpi support doesn't work.
     # Add 'NSHighResolutionCapable = YES' to 'easyDiffraction.app/Contents/Info.plist'

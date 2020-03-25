@@ -2,14 +2,18 @@ __author__ = 'simonward'
 __version__ = "2020_02_01"
 
 from typing import NoReturn
-from easyInterface.Diffraction.Interface import *
+
 from PySide2.QtCore import QObject, Signal, Slot
+
+from easyInterface import logger
+from easyInterface.Diffraction.Interface import *
 
 
 class QtCalculatorInterface(CalculatorInterface, QObject):
     def __init__(self, calculator, parent=None):
         QObject.__init__(self, parent)
         CalculatorInterface.__init__(self, calculator)
+        self._log = logger.getLogger(__class__.__module__)
 
     projectDictChanged = Signal()
     canUndoOrRedoChanged = Signal()
@@ -79,7 +83,7 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         Parse the relevant phases file and update the corresponding model
         """
         CalculatorInterface.setExperimentDefinition(self, experiment_path)
-        self.updateCalculations()
+        # self.updateCalculations()
         self.projectDictChanged.emit()
 
     def setExperimentDefinitionFromString(self, exp_cif_string: str) -> NoReturn:
@@ -101,26 +105,6 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
     def removeExperiment(self, experiment_name):
         CalculatorInterface.removeExperiment(self, experiment_name)
         self.projectDictChanged.emit()
-
-
-    def updatePhases(self, emit: bool = True):
-        CalculatorInterface.updatePhases(self)
-
-        # This will notify the GUI models changed
-        if emit:
-            self.projectDictChanged.emit()
-
-    def updateExperiments(self, emit: bool = True):
-        CalculatorInterface.updateExperiments(self)
-        # This will notify the GUI models changed
-        if emit:
-            self.projectDictChanged.emit()
-
-    def updateCalculations(self, emit: bool = True):
-        CalculatorInterface.updateCalculations(self)
-        # This will notify the GUI models changed
-        if emit:
-            self.projectDictChanged.emit()
 
     def setDictByPath(self, keys: list, value):
         CalculatorInterface.setDictByPath(self, keys, value)

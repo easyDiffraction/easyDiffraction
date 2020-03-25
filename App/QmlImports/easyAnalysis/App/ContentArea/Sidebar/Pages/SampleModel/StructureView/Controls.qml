@@ -14,30 +14,6 @@ import easyDiffraction 1.0 as Specific
 ColumnLayout {
     spacing: 0
 
-    property var type_symbol_dict: ({})
-
-    ////////////////////////
-    // Check if data changed
-    ////////////////////////
-
-    Text {
-        visible: false
-        text: Specific.Variables.projectChangedTime
-        onTextChanged: {
-            if (Specific.Variables.projectOpened) {
-                const atom_site_dict = Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].atoms
-                let type_symbol_list = []
-                for (let atom_id in atom_site_dict) {
-                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.store.value)
-                }
-                type_symbol_list = Array.from(new Set(type_symbol_list))
-                for (let i = 0; i < type_symbol_list.length; i++) {
-                    type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
-                }
-            }
-        }
-    }
-
     ///////////
     // Groupbox
     ///////////
@@ -119,7 +95,7 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         id: group1
         title: "Symmetry and cell parameters"
-        enabled: Specific.Variables.projectDict.info.phase_ids.length
+        enabled: Specific.Variables.phaseIds.length
 
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
@@ -132,15 +108,15 @@ ColumnLayout {
                 Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
 
                 GenericAppElements.ComboBox {
-                    model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.crystal_system.store.value : ""]
+                    model: [Specific.Variables.phaseByIndex(0).spacegroup.crystal_system]
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                 }
                 GenericAppElements.ComboBox {
-                    model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.space_group_IT_number.store.value + '.  ' + Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.space_group_name_HM_alt.store.value : ""]
+                    model: [Specific.Variables.phaseByIndex(0).spacegroup.space_group_with_number]
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                 }
                 GenericAppElements.ComboBox {
-                    model: [Specific.Variables.projectOpened ? Specific.Variables.projectDict.phases[Specific.Variables.projectDict.info.phase_ids[0]].spacegroup.origin_choice.store.value : ""]
+                    model: [Specific.Variables.phaseByIndex(0).spacegroup.origin_choice]
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                 }
             }
@@ -170,7 +146,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Atoms, atomic coordinates and occupations"
-        enabled: Specific.Variables.projectDict.info.phase_ids.length
+        enabled: Specific.Variables.phaseIds.length
 
         content: GenericAppElements.ColumnLayout {
 
@@ -201,7 +177,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Atomic displacement parameters" //(\u200A\u00D7\u200A10\u2075\u200A)"
-        enabled: Specific.Variables.projectDict.info.phase_ids.length
+        enabled: Specific.Variables.phaseIds.length
         content: GenericAppElements.ColumnLayout {
 
             // Table
@@ -216,7 +192,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Magnetic susceptibility parameters"
-        enabled: Specific.Variables.projectDict.info.phase_ids.length
+        enabled: Specific.Variables.phaseIds.length
 
         content: GenericAppElements.ColumnLayout {
 
