@@ -8,6 +8,7 @@ from PySide2.QtCore import QObject, Signal, Slot
 from easyInterface import logger
 from easyInterface.Diffraction.Interface import *
 
+
 class QtCalculatorInterface(CalculatorInterface, QObject):
     def __init__(self, calculator, parent=None):
         QObject.__init__(self, parent)
@@ -104,27 +105,6 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
     def removeExperiment(self, experiment_name):
         CalculatorInterface.removeExperiment(self, experiment_name)
         self.projectDictChanged.emit()
-
-    def updatePhases(self):
-    #def updatePhases(self, emit: bool = True):
-        CalculatorInterface.updatePhases(self)
-        # This will notify the GUI models changed
-        #if emit:
-        #    self.projectDictChanged.emit()
-
-    def updateExperiments(self):
-    #def updateExperiments(self, emit: bool = True):
-        CalculatorInterface.updateExperiments(self)
-        # This will notify the GUI models changed
-        #if emit:
-        #    self.projectDictChanged.emit()
-
-    def updateCalculations(self):
-    #def updateCalculations(self, emit: bool = True):
-        CalculatorInterface.updateCalculations(self)
-        # This will notify the GUI models changed
-        #if emit:
-        #    self.projectDictChanged.emit()
 
     def setDictByPath(self, keys: list, value):
         CalculatorInterface.setDictByPath(self, keys, value)
