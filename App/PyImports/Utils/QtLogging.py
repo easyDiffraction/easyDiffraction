@@ -57,6 +57,10 @@ class QtLogger(QObject):
         return xml
 
     @Slot(result=int)
+    def getLevel(self):
+        return self.__logger.logging_level
+
+    @Slot(result=int)
     def defaultLevelIndex(self):
         """
         Return the default logger level

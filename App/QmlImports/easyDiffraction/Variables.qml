@@ -83,7 +83,7 @@ QtObject {
         let this_phase = new _emptyPhase()
 
         if (!!phaseIds.length) {
-            print("Phases loaded")
+            loggerPyQml.getLevel() < 20 && console.debug("Phases loaded")
             const phases = proxyPyQmlObj.projectDict.phases
             const phase_name = Object.keys(phases)[phase_index]
             const phase = phases[phase_name]
@@ -104,7 +104,7 @@ QtObject {
         }
         else
         {
-            print("No phases yet")
+            loggerPyQml.getLevel() < 20 && console.debug("No phases yet")
         }
         return this_phase
     }
@@ -131,7 +131,7 @@ QtObject {
 
         if (!!calculationIds.length) {
 
-            print("Calculation loaded")
+            loggerPyQml.getLevel() < 20 && console.debug("Calculation loaded")
             const calculations = proxyPyQmlObj.projectDict.calculations
             const calcultion_name = Object.keys(calculations)[calculation_index]
             const calc = calculations[calcultion_name]
@@ -145,7 +145,7 @@ QtObject {
         }
         else
         {
-            print("No calculations yet")
+            loggerPyQml.getLevel() < 20 && console.debug("No calculations yet")
         }
         return this_calculation
     }
@@ -169,7 +169,7 @@ QtObject {
 
         if (!!experimentIds.length && !!calculationIds.length){
 
-            print("Experiemnt loaded")
+            loggerPyQml.getLevel() < 20 && console.debug("Experiemnt loaded")
             const experiments = proxyPyQmlObj.projectDict.experiments
             const experiment_name = Object.keys(experiments)[exp_index]
             const exp = experiments[experiment_name]
@@ -188,7 +188,7 @@ QtObject {
         }
         else
         {
-            print("No calculations yet")
+            loggerPyQml.getLevel() < 20 && console.debug("No calculations yet")
         }
         return this_exp
     }
