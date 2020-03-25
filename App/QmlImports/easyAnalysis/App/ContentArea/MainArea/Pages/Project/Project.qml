@@ -108,7 +108,7 @@ Rectangle {
                 font.pointSize: Generic.Style.fontPointSize + 1
                 font.family: Generic.Style.fontFamily
                 color: Generic.Style.buttonBkgHighlightedColor
-                text: "6T2 at LLB"
+                text: "Unknown"
             }
 
             Text {

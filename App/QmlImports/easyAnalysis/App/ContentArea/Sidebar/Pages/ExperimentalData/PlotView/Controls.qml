@@ -106,14 +106,14 @@ ColumnLayout {
 
                 GenericAppElements.ComboBox {
                     implicitWidth: 1
-                    currentIndex: 5
-                    model: ["ESS", "ISIS", "SNS", "ILL", "MLZ", "LLB", "Custom"]
+                    currentIndex: 0
+                    model: ["Unknown", "ESS", "ISIS", "SNS", "ILL", "MLZ", "LLB", "Custom"]
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
                 GenericAppElements.ComboBox {
                     implicitWidth: 1
                     currentIndex: 0
-                    model: ["6T2", "Custom"]
+                    model: ["Unknown", "6T2", "Custom"]
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
                 GenericAppElements.ComboBox {
