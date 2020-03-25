@@ -161,6 +161,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Setup parameters"
+        enabled: Specific.Variables.experimentIds.length
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 6
