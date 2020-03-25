@@ -63,6 +63,7 @@ ColumnLayout {
 
                 opacity: 0.8
 
+                /*
                 Label {
                     id: plotInfo
                     topPadding: infoPadding/2
@@ -92,7 +93,7 @@ ColumnLayout {
                         }
                         return out.slice(0, -1)
                     }
-                }
+                }*/
             }
 
             //////////////////////////
