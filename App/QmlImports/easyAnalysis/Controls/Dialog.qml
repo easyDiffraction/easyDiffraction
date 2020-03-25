@@ -9,7 +9,7 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 Dialog {
     id: dialog
 
-    property int animationDuration: 500
+    property int animationDuration: 300
     property real initialDimmedAreaTransparency: 0.5
     property string dimmedAreaColor: "black"
     property string dialogBackgroundColor: "#efefef"

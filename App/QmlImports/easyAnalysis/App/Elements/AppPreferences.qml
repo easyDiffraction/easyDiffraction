@@ -50,11 +50,12 @@ GenericControls.Dialog {
         }
 
         GenericAppElements.CheckBox {
-            enabled: false
             text: qsTr("Automatically check for updates")
             checked: false
+            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
         }
 
+        /*
         // Spacer
 
         Item { height: 10; width: 1 }
@@ -92,6 +93,7 @@ GenericControls.Dialog {
             enabled: false
             model: ["Light", "Dark"]
         }
+        */
 
         // Spacer
 
