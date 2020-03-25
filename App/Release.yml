@@ -9,3 +9,4 @@ release:
   - Added Undo/Redo functionality
   - Code separation to easyInterfacee
   - Save dialogues
+  - Save reporting as PDF
