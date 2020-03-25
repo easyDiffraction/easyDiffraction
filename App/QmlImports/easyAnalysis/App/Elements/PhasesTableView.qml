@@ -179,6 +179,16 @@ Column {
                         }
                     }
                 }
+
+                // Default info
+                Label {
+                    visible: Specific.Variables.phaseIds
+                    enabled: false
+                    anchors.fill: parent
+                    leftPadding: font.pixelSize
+                    verticalAlignment: Text.AlignVCenter
+                    text: "No Phases Loaded"
+                }
             }
         }
     }

@@ -178,6 +178,16 @@ Column {
                         }
                     }
                 }
+
+                // Default info
+                Label {
+                    visible: Specific.Variables.experimentIds
+                    enabled: false
+                    anchors.fill: parent
+                    leftPadding: font.pixelSize
+                    verticalAlignment: Text.AlignVCenter
+                    text: "No Experiments Loaded"
+                }
             }
         }
     }
