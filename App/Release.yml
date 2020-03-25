@@ -1,13 +1,11 @@
 # release
 release:
   name: easyDiffraction
-  version: 0.4.0
-  date: 31 Jan 2020
+  version: 0.5.0
+  date: 25 March 2020
   url: http://easydiffraction.org
   changes: # Get from pull requests description?
-  - Add loading crystal structure from CIF
-  - Add loading experimental datasets from CIF
-  - Add installer for Linux (Ubuntu)
-  - Add application window icon
-  - Change data processing workflow order
-  - Improve charts performance
+  - Add experimental dataset fro XYE
+  - Added Undo/Redo functionality
+  - Code separation to easyInterfacee
+  - Save dialogues
