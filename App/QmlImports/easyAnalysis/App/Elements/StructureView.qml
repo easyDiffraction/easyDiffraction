@@ -44,6 +44,11 @@ Rectangle {
                 const b = phase.cell.length_b
                 const c = phase.cell.length_c
 
+                // Remove old atom scatters, but unit cell box (number 1)
+                for (let i = 1, len = chart.seriesList.length; i < len; i++) {
+                    chart.removeSeries(chart.seriesList[1])
+                }
+
                 // Populate chart with atoms. Every atom is an individual scatter serie
                 for (let i = 0, len = phase.sites.fract_x.length; i < len; i++ ) {
                     var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml")
