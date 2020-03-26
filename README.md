@@ -12,6 +12,8 @@ Please, visit <https://easyDiffraction.org> for more details.
 
 [![][28]][21]
 
+[![][82]][81]
+
 <!---Travis CI Build Status--->
 
 [20]: https://travis-ci.org/easyDiffraction/easyDiffraction
@@ -71,3 +73,9 @@ Please, visit <https://easyDiffraction.org> for more details.
 [71]: https://zenodo.org/badge/latestdoi/203730285
 
 [72]: https://zenodo.org/badge/203730285.svg
+
+<!---Repl.it--->
+
+[82]: https://repl.it/badge/github/easyDiffraction/easyDiffraction
+
+[81]: https://repl.it/github/easyDiffraction/easyDiffraction
