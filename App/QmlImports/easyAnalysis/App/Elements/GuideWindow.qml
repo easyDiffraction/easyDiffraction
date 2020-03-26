@@ -80,6 +80,27 @@ Dialog {
     Canvas {
         id: canvas
 
+        // Cross (close button)
+        Button {
+            id: buttonClose
+            x: position === "right" ? arrowLength : 0
+            y: position === "bottom" ? arrowLength : 0
+
+            text: "\u2715"
+            background: Rectangle {
+                color: "transparent"
+            }
+            contentItem: Text {
+                text: parent.text
+                font: parent.font
+                opacity: parent.down ? 0.4 : 0.8
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignTop
+            }
+            onPressed: dialog.close()
+        }
+
         width: {
             if (position === "left" || position === "right") {
                 return layout.width + arrowThikness }
@@ -149,28 +170,6 @@ Dialog {
             ctx.fill()
         }
 
-        // Cross (close button)
-        Button {
-            id: buttonClose
-            //x: position === "right" ? arrowLength : 0
-            //y: position === "bottom" ? arrowLength : 0
-            x: parent.width - width - 13
-            y: 0
-
-            text: "\u2715"
-            background: Rectangle {
-                color: "transparent"
-            }
-            contentItem: Text {
-                text: parent.text
-                font: parent.font
-                opacity: parent.down ? 0.4 : 0.8
-                color: "white"
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignTop
-            }
-            onPressed: dialog.close()
-        }
 
         // Content
         ColumnLayout {
@@ -274,4 +273,6 @@ Dialog {
             }
         }
     }
+
+
 }
