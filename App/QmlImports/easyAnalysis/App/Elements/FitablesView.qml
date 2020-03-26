@@ -410,7 +410,8 @@ Column {
     // LOGIC
 
     function currentModelIndex() {
-        return contentListView.model.index(contentListView.currentIndex, 0)
+        if (contentListView.model !== null)
+            return contentListView.model.index(contentListView.currentIndex, 0)
     }
 
     function getModelData(displayRole, modelIndex = currentModelIndex()) {
