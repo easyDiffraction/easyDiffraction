@@ -42,6 +42,14 @@ ColumnLayout {
                     guidesCount: Generic.Variables.ProjectGuidesCount
                 }
                 */
+
+                GenericAppElements.GuideWindow {
+                    message: "Or here to create a new one."
+                    position: "bottom"
+                    guideCurrentIndex: 1
+                    toolbarCurrentIndex: Generic.Variables.ProjectIndex
+                    guidesCount: Generic.Variables.ProjectGuidesCount
+                }
             }
 
             GenericAppContentAreaButtons.Open {
@@ -52,7 +60,7 @@ ColumnLayout {
                 onClicked: fileDialogLoadProject.open()
 
                 GenericAppElements.GuideWindow {
-                    message: "Click here to open existing project."
+                    message: "Click here to open existing project..."
                     position: "left"
                     guideCurrentIndex: 0
                     toolbarCurrentIndex: Generic.Variables.ProjectIndex
@@ -271,9 +279,9 @@ ColumnLayout {
         }
 
         GenericAppElements.GuideWindow {
-            message: "The sidebar groups can be folded and unfolded.\n\nClick on the group name to unfold the group.\n\nDisabled groups are not implemented yet."
+            message: "The sidebar groups can be folded and unfolded.\n\nClick on the group name to unfold the group."
             position: "left"
-            guideCurrentIndex: 2
+            guideCurrentIndex: 3
             toolbarCurrentIndex: Generic.Variables.ProjectIndex
             guidesCount: Generic.Variables.ProjectGuidesCount
         }
@@ -348,9 +356,9 @@ ColumnLayout {
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.SampleIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the next step: Sample."
+                message: "Click here to go to the next page: Sample."
                 position: "top"
-                guideCurrentIndex: 3
+                guideCurrentIndex: 4
                 toolbarCurrentIndex: Generic.Variables.ProjectIndex
                 guidesCount: Generic.Variables.ProjectGuidesCount
             }

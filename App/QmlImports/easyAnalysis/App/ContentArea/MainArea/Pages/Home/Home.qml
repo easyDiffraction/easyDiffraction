@@ -136,6 +136,13 @@ Rectangle {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
                     Generic.Variables.homePageFinished = true
                 }
+                GenericAppElements.GuideWindow {
+                    message: "Click here to start your journey to easyDiffraction!"
+                    position: "bottom"
+                    guideCurrentIndex: 3
+                    toolbarCurrentIndex: Generic.Variables.HomeIndex
+                    guidesCount: Generic.Variables.HomeGuidesCount
+                }
             }
         }
 
@@ -164,6 +171,14 @@ Rectangle {
                     cursorShape: Qt.PointingHandCursor
                     onClicked: Generic.Variables.showAbout = 1
                 }
+
+                GenericAppElements.GuideWindow {
+                    message: "Click here to show about window."
+                    position: "bottom"
+                    guideCurrentIndex: 0
+                    toolbarCurrentIndex: Generic.Variables.HomeIndex
+                    guidesCount: Generic.Variables.HomeGuidesCount
+                }
             }
 
             Text {
@@ -180,6 +195,14 @@ Rectangle {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
                     onClicked: Qt.openUrlExternally("https://easydiffraction.org/tutorials_start.html")
+                }
+
+                GenericAppElements.GuideWindow {
+                    message: "Links to the online resources."
+                    position: "top"
+                    guideCurrentIndex: 1
+                    toolbarCurrentIndex: Generic.Variables.HomeIndex
+                    guidesCount: Generic.Variables.HomeGuidesCount
                 }
             }
 
@@ -272,11 +295,14 @@ Rectangle {
 
     SequentialAnimation {
         id: animo
+
         //running: true
         PauseAnimation {
+            onStarted: print("aaa")
             duration: 1*Generic.Variables.introAnimationDuration
         }
         ParallelAnimation {
+            onStarted: print("bbb")
             // appearing
             NumberAnimation { easing.type: Easing.Linear; target: making;      property: "opacity"; to: 1; duration: 2*animationDuration }
             NumberAnimation { easing.type: Easing.Linear; target: diffraction; property: "opacity"; to: 1; duration: 2*animationDuration }
@@ -306,6 +332,7 @@ Rectangle {
             NumberAnimation { easing.type: Easing.Linear; target: diffraction;  property: "opacity"; from: 0 ; to: 1; duration: Generic.Variables.showIntro ? 0 : Generic.Variables.introAnimationDuration }
         }
         ParallelAnimation {
+            onStarted: print("ccc")
             // show app icon, version, links: opacity
             PropertyAnimation { easing.type: Easing.OutExpo; target: appIcon;           property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
             PropertyAnimation { easing.type: Easing.OutExpo; target: appVersion;        property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
@@ -331,10 +358,21 @@ Rectangle {
             // change app window flags
             NumberAnimation { target: window; property: "flags"; to: Qt.Window; duration: 0 }
         }
+
         // change background color
         PropertyAction { target: window; property: "color"; value: Generic.Style.appBkgColor }
         // activate links and tooltips
         PropertyAction { target: mainRectangle; property: "enabled"; value: true }
+
+        onFinished: {
+            introFinishedTimer.start()
+        }
+    }
+
+    Timer {
+        id: introFinishedTimer
+        interval: 3000
+        onTriggered: Generic.Variables.introFinished = 1
     }
 
 }

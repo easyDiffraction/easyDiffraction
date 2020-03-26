@@ -81,6 +81,13 @@ ColumnLayout{
             GenericAppToolbarTabButtons.Analysis {
                 enabled: Specific.Variables.projectOpened && Generic.Variables.dataPageFinished
                 onClicked: Generic.Variables.toolbarCurrentIndex = Generic.Variables.AnalysisIndex
+                GenericAppElements.GuideWindow {
+                    message: "This button is blinking during the fitting process."
+                    position: "bottom"
+                    guideCurrentIndex: 4
+                    toolbarCurrentIndex: Generic.Variables.AnalysisIndex
+                    guidesCount: Generic.Variables.AnalysisGuidesCount
+                }
             }
 
             GenericAppToolbarTabButtons.Summary {

@@ -46,7 +46,7 @@ ColumnLayout {
                         Generic.Variables.analysisPageFinished = true
                     }
                     GenericAppElements.GuideWindow {
-                        message: "Click here to start or stop fitting."
+                        message: "Click here to start fitting." //"Click here to start or stop fitting."
                         position: "left"
                         guideCurrentIndex: 3
                         toolbarCurrentIndex: Generic.Variables.AnalysisIndex
@@ -83,7 +83,7 @@ ColumnLayout {
             GenericAppElements.GuideWindow {
                 message: "Click here to go to the previous step: Experiment.\n\nAlternatively, you can click on the 'Experiment' button in toolbar."
                 position: "top"
-                guideCurrentIndex: 4
+                guideCurrentIndex: 5
                 toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                 guidesCount: Generic.Variables.AnalysisGuidesCount
             }
@@ -99,7 +99,7 @@ ColumnLayout {
             GenericAppElements.GuideWindow {
                 message: "Click here to go to the next step: Summary.\n\nThis button will be enabled after fitting is done."
                 position: "top"
-                guideCurrentIndex: 5
+                guideCurrentIndex: 6
                 toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                 guidesCount: Generic.Variables.AnalysisGuidesCount
             }

@@ -199,7 +199,7 @@ ColumnLayout {
                     opacity: 0.4
                     borderColor: Qt.darker(Generic.Style.blueColor, 1.1)
                     borderWidth: 1.5
-                    name: "Measured data"
+                    name: "Measured data (Iobs)"
                     //useOpenGL: true
 
                     lowerSeries: LineSeries {
@@ -237,7 +237,7 @@ ColumnLayout {
                     axisY: axisY
                     color: Generic.Style.redColor
                     width: 2
-                    name: "Calculated model"
+                    name: "Calculated data (Icalc)"
                     //useOpenGL: true
 
                     // New approach (fast): pass a reference to LineSeries to python for updating

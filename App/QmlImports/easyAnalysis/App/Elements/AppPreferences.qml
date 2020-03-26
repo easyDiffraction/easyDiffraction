@@ -25,15 +25,17 @@ GenericControls.Dialog {
         }
 
         GenericAppElements.CheckBox {
+            id: showAnimatedIntro
             text: qsTr("Show Animated Intro")
             checked: Generic.Variables.showIntro
-            onCheckedChanged: Generic.Variables.showIntro = checked
+            //onCheckedChanged: Generic.Variables.showIntro = checked
         }
 
         GenericAppElements.CheckBox {
+            id: showUserGuides
             text: qsTr("Show User Guides")
             checked: Generic.Variables.showGuide
-            onCheckStateChanged: Generic.Variables.showGuide = checked
+            //onCheckStateChanged: Generic.Variables.showGuide = checked
         }
 
         // Spacer
@@ -119,6 +121,11 @@ GenericControls.Dialog {
             onCurrentIndexChanged: Specific.Variables.loggerPyQml.setLevel(currentIndex)
             Component.onCompleted: currentIndex = Specific.Variables.loggerPyQml.defaultLevelIndex()
         }
+    }
+
+    onClosed: {
+        Generic.Variables.showGuide = showUserGuides.checked
+        Generic.Variables.showIntro = showAnimatedIntro.checked
     }
 }
 

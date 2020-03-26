@@ -7,6 +7,7 @@ QtObject {
     property int showIntro: 1       // bool doesn't work on windows
     property int homepageVisible: 1 // bool doesn't work on windows
     property int showGuide: 1       // bool doesn't work on windows
+    property int introFinished: 0   // bool doesn't work on windows
     property int showPreferences: 0 // bool doesn't work on windows
     property int showAbout: 0       // bool doesn't work on windows
     property int showSaveDialog: 0  // bool doesn't work on windows
@@ -47,11 +48,11 @@ QtObject {
     // User guides
     property int guideCurrentIndex: 0
     enum GuideCountEnum {
-        HomeGuidesCount = 0,
-        ProjectGuidesCount = 4,
+        HomeGuidesCount = 4,
+        ProjectGuidesCount = 5,
         SampleGuidesCount = 6,
         ExperimentGuidesCount = 7,
-        AnalysisGuidesCount = 6,
+        AnalysisGuidesCount = 7,
         SummaryGuidesCount = 4
     }
 

@@ -49,6 +49,13 @@ ApplicationWindow {
         GenericAppToolbar.Toolbar {
             y: toolBarY                 // needed for animation
             opacity: toolBarOpacity     // needed for animation
+            GenericAppElements.GuideWindow {
+                message: "Here you can see the steps in the data analysis workflow.\n\nThese buttons also allows you to easily navigate between the application pages.\n\nThe next page becomes enabled when the previous page is fully completed."
+                position: "bottom"
+                guideCurrentIndex: 2
+                toolbarCurrentIndex: Generic.Variables.HomeIndex
+                guidesCount: Generic.Variables.HomeGuidesCount
+            }
         }
         GenericAppContentArea.ContentArea {}
     }

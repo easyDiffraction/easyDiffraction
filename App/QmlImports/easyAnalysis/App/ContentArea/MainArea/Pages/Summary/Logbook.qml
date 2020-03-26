@@ -139,7 +139,7 @@ Rectangle {
     }
 
     GenericAppElements.GuideWindow {
-        message: "A report which includes brief project details,\nlist of fitable parameters, fitting and\nstructure plot is shown in the main area."
+        message: "A report here includes brief project details,\nlist of fitable parameters, fitting plot and\nstructure view."
         position: "right"
         guideCurrentIndex: 0
         toolbarCurrentIndex: Generic.Variables.SummaryIndex
