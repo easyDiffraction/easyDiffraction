@@ -58,6 +58,6 @@ GenericAppElements.ContentAreaStack {
         GenericSidebarSampleModel.TextView { }
     }
 
-    notLoadedInfoText: !Specific.Variables.experimentIds.length ? "No Experiments Loaded" : ""
+    notLoadedInfoText: !Specific.Variables.experimentIds().length ? "No Experiments Loaded" : ""
 
 }

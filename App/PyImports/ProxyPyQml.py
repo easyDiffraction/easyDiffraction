@@ -153,7 +153,11 @@ class ProxyPyQml(QObject):
     @Slot(str)
     def createProject(self, file_path):
         self._project_control.createProject(file_path)
+        # Note that the main rcif of self._project_control.main_rcif_path has not ben cleared
+        self._project_control.main_rcif_path = ''
         self.onProjectSaved()
+        self.initialize()
+        self.projectChanged.emit()
 
     @Slot(str)
     def saveProjectAs(self, file_path):

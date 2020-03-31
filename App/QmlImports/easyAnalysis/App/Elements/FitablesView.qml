@@ -160,9 +160,15 @@ Column {
                     color: backgroundColor()
 
                     function foregroundColor() {
+                        if ((typeof(index) == 'undefined') && (inxex == null)) {
+                            return rowForegroundColor
+                        }
                         return index === contentListView.currentIndex ? highlightedRowForegroundColor : rowForegroundColor
                     }
                     function foregroundColor2() {
+                        if ((typeof(index) == 'undefined') && (inxex == null)) {
+                            return "#999"
+                        }
                         return index === contentListView.currentIndex ? highlightedRowForegroundColor : "#999"
                     }
                     function backgroundColor() {
@@ -171,7 +177,9 @@ Column {
                         else
                             return index % 2 ? alternateRowBackgroundColor : rowBackgroundColor
                     }
-
+                    function thisLabel(){ return ((typeof(label) !== 'undefined') && (label !== null)) ? label : ''}
+                    function thisRefine(){ return ((typeof(refine) !== 'undefined') && (refine !== null)) ? refine : ''}
+                    function thisUnit(){ return ((typeof(unit) !== 'undefined') && (unit !== null)) ? unit : ''}
                     Row {
                         anchors.fill: parent
                         spacing: 0
@@ -193,7 +201,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
-                            text: label
+                            text: thisLabel()
                             color: foregroundColor()
                         }
                         TextInput {
@@ -224,7 +232,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize * 0.5
                             rightPadding: font.pixelSize
-                            text: unit
+                            text: thisUnit()
                             color: foregroundColor2()
                         }
                         Text {
@@ -241,7 +249,7 @@ Column {
                             width: cellWidthProvider(5)
                             height: parent.height
                             enabled: !Specific.Variables.refinementRunning
-                            checked: refine
+                            checked: thisRefine()
                             onToggled: {
                                 // proper, but slow update of the checkbox
                                 // It waits until python updates project, etc.

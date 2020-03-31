@@ -13,11 +13,12 @@ QtObject {
     property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     property var cif: projectOpened ? proxyPyQmlObj.fileStructure : null
     property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
-    property var phaseIds: projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: []
+    function phaseIds(){ return projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: []}
     property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
-    property var experimentIds: projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: []
+    function experimentIds(){return projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: []}
+//    property var experimentIds: projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: []
     property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
-    property var calculationIds: projectOpened ? Object.keys(proxyPyQmlObj.projectDict.calculations): []
+    function calculationIds(){ return projectOpened ? Object.keys(proxyPyQmlObj.projectDict.calculations): []}
     property var needToSave: projectOpened ? proxyPyQmlObj.needToSave : false
     property var projectFilePathSelected: proxyPyQmlObj.projectFilePathSelected
 
@@ -85,6 +86,9 @@ QtObject {
             fract_z: [],
             scat_length_neutron: [],
         }
+
+        this.atoms = []
+
         this.cell = {
             length_a: 0,
             length_b: 0,
@@ -101,11 +105,13 @@ QtObject {
     function phaseByIndex(phase_index) {
         let this_phase = new _emptyPhase()
 
-        if (!!phaseIds.length) {
+        if (!!phaseIds().length) {
             isDebugging() && console.debug("Phases loaded")
             const phases = proxyPyQmlObj.projectDict.phases
             const phase_name = Object.keys(phases)[phase_index]
             const phase = phases[phase_name]
+
+            this_phase.atoms = phase.atoms
 
             this_phase.sites.fract_x = phase.sites.fract_x
             this_phase.sites.fract_y = phase.sites.fract_y
@@ -148,7 +154,7 @@ QtObject {
     function calculationByIndex(calculation_index){
         let this_calculation = new _emptyCalculation()
 
-        if (!!calculationIds.length) {
+        if (!!calculationIds().length) {
 
             isDebugging() && console.debug("Calculation loaded")
             const calculations = proxyPyQmlObj.projectDict.calculations
@@ -186,7 +192,7 @@ QtObject {
     function experimentByIndex(exp_index){
         let this_exp = new _emptyExperiment()
 
-        if (!!experimentIds.length && !!calculationIds.length){
+        if (!!experimentIds().length && !!calculationIds().length){
 
             isDebugging() && console.debug("Experiemnt loaded")
             const experiments = proxyPyQmlObj.projectDict.experiments
@@ -203,7 +209,7 @@ QtObject {
 
             this_exp.wavelength = exp.wavelength.store.value
 
-            this_exp.phase[0].scale = exp.phase[phaseIds[0]].scale.store.value
+            this_exp.phase[0].scale = exp.phase[phaseIds()[0]].scale.store.value
         }
         else
         {

@@ -95,7 +95,7 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         id: group1
         title: "Symmetry and cell parameters"
-        enabled: Specific.Variables.phaseIds.length
+        enabled: Specific.Variables.phaseIds().length
 
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
@@ -146,7 +146,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Atoms, atomic coordinates and occupations"
-        enabled: Specific.Variables.phaseIds.length
+        enabled: Specific.Variables.phaseIds().length
 
         content: GenericAppElements.ColumnLayout {
 
@@ -177,7 +177,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Atomic displacement parameters" //(\u200A\u00D7\u200A10\u2075\u200A)"
-        enabled: Specific.Variables.phaseIds.length
+        enabled: Specific.Variables.phaseIds().length
         content: GenericAppElements.ColumnLayout {
 
             // Table
@@ -192,7 +192,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Magnetic susceptibility parameters"
-        enabled: Specific.Variables.phaseIds.length
+        enabled: Specific.Variables.phaseIds().length
 
         content: GenericAppElements.ColumnLayout {
 

@@ -129,7 +129,7 @@ Column {
                 ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
                 ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 1 / rowCountToDisplayWithoutHeader }
 
-                model: Specific.Variables.projectOpened ? Specific.Variables.experimentIds : 1
+                model: Specific.Variables.projectOpened ? Specific.Variables.experimentIds() : 1
 
                 // Content row
                 delegate: Rectangle {
@@ -169,7 +169,7 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: Specific.Variables.projectOpened ? Specific.Variables.experimentIds[index] : ""
+                            text: Specific.Variables.projectOpened ? Specific.Variables.experimentIds()[index] : ""
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
@@ -181,7 +181,7 @@ Column {
 
                 // Default info
                 Label {
-                    visible: !Specific.Variables.experimentIds.length
+                    visible: !Specific.Variables.experimentIds().length
                     enabled: false
                     anchors.fill: parent
                     leftPadding: font.pixelSize

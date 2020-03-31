@@ -91,7 +91,7 @@ Rectangle {
             height: Math.min(parent.width, parent.height)
             anchors.centerIn: parent
             clip: true
-            visible: Specific.Variables.phaseIds.length ? true: false
+            visible: Specific.Variables.phaseIds().length ? true: false
 
             // Camera view settings
             orthoProjection: false

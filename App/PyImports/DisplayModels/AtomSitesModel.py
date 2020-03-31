@@ -40,7 +40,7 @@ class AtomSitesModel(BaseModel):
             data = []
             for atom_id, atom_dict in phase_dict['atoms'].items():
                 label = atom_id
-                atom = atom_dict['type_symbol'].value
+                atom = str(atom_dict['type_symbol'].value)
                 color = atom_dict['scat_length_neutron'].value.real
                 x = atom_dict['fract_x'].value
                 y = atom_dict['fract_x'].value

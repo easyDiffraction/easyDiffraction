@@ -102,7 +102,7 @@ ColumnLayout {
 
             ChartView {
                 id: topChart
-                visible: Specific.Variables.experimentIds.length? true: false
+                visible: Specific.Variables.experimentIds().length? true: false
                 //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
