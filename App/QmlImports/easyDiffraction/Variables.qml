@@ -15,7 +15,7 @@ QtObject {
     property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
     function phaseIds(){ return projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: []}
     property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
-    function experimentIds(){return projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: []}
+    function experimentIds(){return projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: []}
 //    property var experimentIds: projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: []
     property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
     function calculationIds(){ return projectOpened ? Object.keys(proxyPyQmlObj.projectDict.calculations): []}
