@@ -28,7 +28,7 @@ class ProxyPyQml(QObject):
         self._main_rcif_path = None
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
-        self._calculator_interface = None
+        self._calculator_interface = QtCalculatorInterface(CryspyCalculator())
         self._project_dict_copy = {}
 
         self._project_control = ProjectControl()
@@ -208,11 +208,11 @@ class ProxyPyQml(QObject):
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
+    calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
 
     needToSave = Property(bool, lambda self: self._needToSave, notify=projectSaveStateChanged)
     projectFilePathSelected = Property(bool, lambda self: bool(self._project_control._project_file), notify=projectSaveStateChanged)
 
-    calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
     undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
     redoText = Property('QVariant', lambda self: self._calculator_interface.redoText(), notify=canUndoOrRedoChanged)
     canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)

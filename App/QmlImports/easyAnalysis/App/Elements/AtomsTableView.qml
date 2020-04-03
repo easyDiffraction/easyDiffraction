@@ -54,18 +54,22 @@ Column {
     }
 
     function colorProvider(atom) {
-        if ((!Specific.Variables.projectOpened) || !Specific.Variables.phaseIds().length)
-            return "black"
         const atom_site_dict = Specific.Variables.phaseByIndex(0).atoms
+        if (!Object.keys(atom_site_dict).length) {
+            return "black"
+        }
+
         let type_symbol_list = []
         for (let atom_id in atom_site_dict) {
             type_symbol_list.push(atom_site_dict[atom_id].type_symbol.store.value)
         }
         type_symbol_list = Array.from(new Set(type_symbol_list))
+
         let type_symbol_dict = {}
         for (let i = 0; i < type_symbol_list.length; i++) {
             type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
         }
+
         return type_symbol_dict[atom]
     }
 

@@ -78,143 +78,192 @@ QtObject {
         return level <= debugLevel
     }
 
-    // Dummy phase
+
+
+    ////////////////
+
+    property var phases: projectOpened ? _loadedPhases() : _defaultPhases()
+    property var experiments: projectOpened ? _loadedExperiments() : _defaultExperiments()
+    property var calculations: projectOpened ? _loadedCalculations() : _defaultCalculations()
+
     function _emptyPhase() {
-        this.sites = {
-            fract_x: [],
-            fract_y: [],
-            fract_z: [],
-            scat_length_neutron: [],
-        }
-
-        this.atoms = []
-
-        this.cell = {
-            length_a: 0,
-            length_b: 0,
-            length_c: 0,
-        }
-        this.spacegroup = {
-            crystal_system: "",
-            space_group_with_number: "",
-            origin_choice: ""
-        }
-    }
-
-    // Get phase by index
-    function phaseByIndex(phase_index) {
-        let this_phase = new _emptyPhase()
-
-        if (!!phaseIds().length) {
-            isDebugging() && console.debug("Phases loaded")
-            const phases = proxyPyQmlObj.projectDict.phases
-            const phase_name = Object.keys(phases)[phase_index]
-            const phase = phases[phase_name]
-
-            this_phase.atoms = phase.atoms
-
-            this_phase.sites.fract_x = phase.sites.fract_x
-            this_phase.sites.fract_y = phase.sites.fract_y
-            this_phase.sites.fract_z = phase.sites.fract_z
-
-            this_phase.sites.scat_length_neutron = phase.sites.scat_length_neutron
-
-            this_phase.cell.length_a = phase.cell.length_a.store.value
-            this_phase.cell.length_b = phase.cell.length_b.store.value
-            this_phase.cell.length_c = phase.cell.length_c.store.value
-
-            this_phase.spacegroup.crystal_system = phase.spacegroup.crystal_system.store.value
-            this_phase.spacegroup.space_group_with_number = phase.spacegroup.space_group_IT_number.store.value + '.  ' + phase.spacegroup.space_group_name_HM_alt.store.value
-            this_phase.spacegroup.origin_choice = phase.spacegroup.crystal_system.store.value
-        }
-        else
-        {
-            isDebugging() && console.debug("No phases yet")
-        }
-        return this_phase
-    }
-
-    // Dummy Calculation
-    function _emptyCalculation(){
-        this.limits = {
-            difference: {
-                y_min: -1,
-                y_max: 1,
+        return {
+            "sites": {
+                "fract_x": [],
+                "fract_y": [],
+                "fract_z": [],
+                "scat_length_neutron": [],
             },
-            main: {
-                x_min: -1,
-                x_max: 1,
-                y_min : -1,
-                y_max: 1,
+            "atoms": {},
+            "cell": {
+                "length_a": 0,
+                "length_b": 0,
+                "length_c": 0
             },
+            "spacegroup": {
+                "crystal_system": "",
+                "space_group_with_number": "",
+                "origin_choice": ""
+            }
         }
     }
 
-    // Get Calculation
-    function calculationByIndex(calculation_index){
-        let this_calculation = new _emptyCalculation()
-
-        if (!!calculationIds().length) {
-
-            isDebugging() && console.debug("Calculation loaded")
-            const calculations = proxyPyQmlObj.projectDict.calculations
-            const calcultion_name = Object.keys(calculations)[calculation_index]
-            const calc = calculations[calcultion_name]
-
-            this_calculation.limits.main.y_min = calc.limits.main.y_min
-            this_calculation.limits.main.y_max = calc.limits.main.y_max
-            this_calculation.limits.main.x_min = calc.limits.main.x_min
-            this_calculation.limits.main.x_max = calc.limits.main.x_max
-            this_calculation.limits.difference.y_min = calc.limits.difference.y_min
-            this_calculation.limits.difference.y_max = calc.limits.difference.y_max
+    function _emptyExperiment() {
+        return {
+            "resolution": {
+                "x": 0,
+                "y": 0,
+                "u": 0,
+                "v": 0,
+                "w": 0
+            },
+            "offset": 0,
+            "wavelength": 0,
+            "phase": [ { "scale": 0 } ]
         }
-        else
-        {
-            isDebugging() && console.debug("No calculations yet")
-        }
-        return this_calculation
     }
 
-    //Dummy Experiment
-    function _emptyExperiment(){
-        this.resolution = {
-            x: 0,
-            y: 0,
-            u: 0,
-            v: 0,
-            w: 0,
-        },
-        this.offset = 0
-        this.wavelength = 0
-        this.phase = [{scale: 0}]
+    function _emptyCalculation() {
+        return {
+            "limits": {
+                "difference": {
+                    "y_min": -1,
+                    "y_max": 1
+                },
+                "main": {
+                    "x_min": -1,
+                    "x_max": 100,
+                    "y_min" : -1,
+                    "y_max": 10000
+                }
+            }
+        }
     }
 
-    function experimentByIndex(exp_index){
-        let this_exp = new _emptyExperiment()
-
-        if (!!experimentIds().length && !!calculationIds().length){
-
-            isDebugging() && console.debug("Experiemnt loaded")
-            const experiments = proxyPyQmlObj.projectDict.experiments
-            const experiment_name = Object.keys(experiments)[exp_index]
-            const exp = experiments[experiment_name]
-
-            this_exp.resolution.u = exp.resolution.u.store.value
-            this_exp.resolution.v = exp.resolution.v.store.value
-            this_exp.resolution.w = exp.resolution.w.store.value
-            this_exp.resolution.x = exp.resolution.x.store.value
-            this_exp.resolution.y = exp.resolution.y.store.value
-
-            this_exp.offset = exp.offset.store.value
-
-            this_exp.wavelength = exp.wavelength.store.value
-
-            this_exp.phase[0].scale = exp.phase[phaseIds()[0]].scale.store.value
-        }
-        else
-        {
-            isDebugging() && console.debug("No calculations yet")
-        }
-        return this_exp
+    function _defaultPhases() {
+        return { "empty_phase": _emptyPhase() }
     }
+
+    function _defaultExperiments() {
+        return { "empty_experiment": _emptyExperiment() }
+    }
+
+    function _defaultCalculations() {
+        return { "empty_calculation": _emptyCalculation() }
+    }
+
+    function _loadedPhases() {
+        const those_phases = proxyPyQmlObj.projectDict.phases
+
+        if (!Object.keys(those_phases).length) {
+            return _defaultPhases()
+        }
+
+        let these_phases = {}
+
+        for (const name in those_phases) {
+            print("----->>>>>> _loadedPhases", name)
+
+            const this_phase = _emptyPhase()
+            const that_phase = those_phases[name]
+
+            this_phase.atoms = that_phase.atoms
+
+            this_phase.sites.fract_x = that_phase.sites.fract_x
+            this_phase.sites.fract_y = that_phase.sites.fract_y
+            this_phase.sites.fract_z = that_phase.sites.fract_z
+
+            this_phase.sites.scat_length_neutron = that_phase.sites.scat_length_neutron
+
+            this_phase.cell.length_a = that_phase.cell.length_a.store.value
+            this_phase.cell.length_b = that_phase.cell.length_b.store.value
+            this_phase.cell.length_c = that_phase.cell.length_c.store.value
+
+            this_phase.spacegroup.crystal_system = that_phase.spacegroup.crystal_system.store.value
+            this_phase.spacegroup.space_group_with_number = that_phase.spacegroup.space_group_IT_number.store.value + '.  ' + that_phase.spacegroup.space_group_name_HM_alt.store.value
+            this_phase.spacegroup.origin_choice = that_phase.spacegroup.crystal_system.store.value
+
+            these_phases[name] = this_phase
+        }
+
+        return these_phases
+    }
+
+    function _loadedExperiments() {
+        const those_experiments = proxyPyQmlObj.projectDict.experiments
+
+        if (!Object.keys(those_experiments).length) {
+            return _defaultExperiments()
+        }
+
+        let these_experiments = {}
+
+        for (const name in those_experiments) {
+            print("----->>>>>> _loadedExperiment", name)
+
+            const this_experiment = _emptyExperiment()
+            const that_experiment = those_experiments[name]
+
+            this_experiment.resolution.u = that_experiment.resolution.u.store.value
+            this_experiment.resolution.v = that_experiment.resolution.v.store.value
+            this_experiment.resolution.w = that_experiment.resolution.w.store.value
+            this_experiment.resolution.x = that_experiment.resolution.x.store.value
+            this_experiment.resolution.y = that_experiment.resolution.y.store.value
+
+            this_experiment.offset = that_experiment.offset.store.value
+
+            this_experiment.wavelength = that_experiment.wavelength.store.value
+
+            this_experiment.phase[0].scale = that_experiment.phase[phaseIds()[0]].scale.store.value
+
+            these_experiments[name] = this_experiment
+        }
+
+        return these_experiments
+    }
+
+    function _loadedCalculations() {
+        const those_calculations = proxyPyQmlObj.projectDict.calculations
+
+        if (!Object.keys(those_calculations).length) {
+            return _defaultCalculations()
+        }
+
+        let these_calculations = {}
+
+        for (const name in those_calculations) {
+            print("----->>>>>> _loadedCalculations", name)
+
+            const this_calculation = _emptyCalculation()
+            const that_calculation = those_calculations[name]
+
+            this_calculation.limits.main.y_min = that_calculation.limits.main.y_min
+            this_calculation.limits.main.y_max = that_calculation.limits.main.y_max
+            this_calculation.limits.main.x_min = that_calculation.limits.main.x_min
+            this_calculation.limits.main.x_max = that_calculation.limits.main.x_max
+            this_calculation.limits.difference.y_min = that_calculation.limits.difference.y_min
+            this_calculation.limits.difference.y_max = that_calculation.limits.difference.y_max
+
+            these_calculations[name] = this_calculation
+        }
+
+        return these_calculations
+    }
+
+    function phaseByIndex(index) {
+        const name = Object.keys(phases)[index]
+        return phases[name]
+    }
+
+    function experimentByIndex(index) {
+        const name = Object.keys(experiments)[index]
+        return experiments[name]
+    }
+
+    function calculationByIndex(index) {
+        const name = Object.keys(calculations)[index]
+        return calculations[name]
+    }
+
 }
+
