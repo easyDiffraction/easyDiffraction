@@ -11,7 +11,9 @@ Column {
 
     property int borderWidth: 1
     property int cellHeight: 34
-    property int rowCountToDisplayWithoutHeader: 10
+    property int rowCountToDisplayWithoutHeader: 12
+
+    property real scrollBarPosition: 0
 
     property bool isRefined: false
 
@@ -149,8 +151,16 @@ Column {
                 clip: true
                 boundsBehavior: Flickable.StopAtBounds
 
-                ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
-                ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 1 / rowCountToDisplayWithoutHeader }
+                ScrollBar.horizontal: ScrollBar {
+                    policy: ScrollBar.AlwaysOff
+                }
+                ScrollBar.vertical: ScrollBar {
+                    id: verticalScrollBar
+                    policy: ScrollBar.AsNeeded
+                    minimumSize: 1 / rowCountToDisplayWithoutHeader
+                }
+
+
 
                 // Content row
                 delegate: Rectangle {
@@ -216,14 +226,15 @@ Column {
                             maximumLength: 8
                             color: foregroundColor()
                             text: toFixed(value)
-                            onTextChanged: {
-                                updateSlider()
-                            }
+                            onTextChanged: updateSlider()
                             onEditingFinished: {
                                 if (valueEdit !== text) {
+                                    scrollBarPosition = verticalScrollBar.position
+                                    print("1 scrollBarPosition", scrollBarPosition, verticalScrollBar.position)
                                     valueEdit = parseFloat(text)
                                 }
                             }
+
                         }
                         Text {
                             width: cellWidthProvider(6)
@@ -277,11 +288,11 @@ Column {
                     }
 
                 }
+
                 // Content row changed
                 onCurrentIndexChanged: {
                     updateSlider()
                 }
-
             }
         }
     }
@@ -411,7 +422,9 @@ Column {
         onTriggered: {
             const editValue = isRefined
             const editRole = 363 // -> refineEdit role in FitablesModel.py
+            scrollBarPosition = verticalScrollBar.position
             setModelData(editValue, editRole)
+            verticalScrollBar.position = scrollBarPosition
         }
     }
 
@@ -444,7 +457,10 @@ Column {
         }
         if (typeof value !== "undefined" && slider.value !== value) {
             slider.value = value
+
         }
+
+            //print("slide")
     }
 
 }
