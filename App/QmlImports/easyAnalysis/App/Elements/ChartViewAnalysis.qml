@@ -35,18 +35,13 @@ ColumnLayout {
     Timer {
         id: projectChangedTimer
         interval: 100
-        //running: bottomChart.visible
         repeat: false
-        onTriggered: {
-            if (Specific.Variables.projectOpened) {
-                adjustLeftAxesAnchor()
-            }
-        }
+        onTriggered: adjustLeftAxesAnchor()
     }
 
     Text {
         visible: false
-        text: Specific.Variables.projectChangedTime
+        text: JSON.stringify(Specific.Variables.projectDict)
         onTextChanged: projectChangedTimer.restart()
     }
 

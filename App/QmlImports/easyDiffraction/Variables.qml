@@ -26,8 +26,6 @@ QtObject {
     property var projectKeywords: projectOpened ? proxyPyQmlObj.projectManager.projectKeywords : null
     property var projectModifiedDate: projectOpened ? proxyPyQmlObj.projectManager.projectModified : null
 
-    property var projectChangedTime: projectOpened ? proxyPyQmlObj.projectChangedTime : ""
-
     // Measured and calculated data
     property var measuredData: proxyPyQmlObj.measuredData
     property var measuredDataHeaderModel: projectOpened ? proxyPyQmlObj.measuredData.asHeadersModel(
@@ -46,6 +44,13 @@ QtObject {
     property var atomMsps: projectOpened ? proxyPyQmlObj.atomMsps : null
     property var statusInfo: projectOpened ? proxyPyQmlObj.statusInfo : null
 
+    // Undo-Redo
+    property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
+    property var undoText: calculatorInterface ? proxyPyQmlObj.undoText : ""
+    property var redoText: calculatorInterface ? proxyPyQmlObj.redoText : ""
+    property var canUndo: calculatorInterface ? proxyPyQmlObj.canUndo : false
+    property var canRedo: calculatorInterface ? proxyPyQmlObj.canRedo : false
+
     // Refinement
     property var refinementRunning: proxyPyQmlObj.refinementStatus[0]
     property var refinementDone: proxyPyQmlObj.refinementStatus[1]
@@ -60,31 +65,29 @@ QtObject {
         }
     }
 
-    // Undo-Redo
-    property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
-    property var undoText: calculatorInterface ? proxyPyQmlObj.undoText : ""
-    property var redoText: calculatorInterface ? proxyPyQmlObj.redoText : ""
-    property var canUndo: calculatorInterface ? proxyPyQmlObj.canUndo : false
-    property var canRedo: calculatorInterface ? proxyPyQmlObj.canRedo : false
-
     // Logging
     property var loggerPyQml: _loggerPyQml
-    property int debugLevel : 10
-    function isDebugging(){
-        let level = 30
+    function debug(obj) {
+        const debugLevel = 10
+        let currentLevel = 30
         if ((typeof(loggerPyQml) !== 'undefined') && (loggerPyQml !== null)) {
-            level = loggerPyQml.getLevel()
+            currentLevel = loggerPyQml.getLevel()
         }
-        return level <= debugLevel
+        if (currentLevel > debugLevel) {
+            return
+        }
+        if (typeof obj === 'object') {
+            print(JSON.stringify(obj))
+        } else {
+            print(obj)
+        }
     }
 
+    // Phases, Experiments, Calculations
 
-
-    ////////////////
-
-    property var phases: projectOpened ? _loadedPhases() : _defaultPhases()
-    property var experiments: projectOpened ? _loadedExperiments() : _defaultExperiments()
-    property var calculations: projectOpened ? _loadedCalculations() : _defaultCalculations()
+    property var phases: projectDict ? _loadedPhases() : _defaultPhases()
+    property var experiments: projectDict ? _loadedExperiments() : _defaultExperiments()
+    property var calculations: projectDict ? _loadedCalculations() : _defaultCalculations()
 
     function _emptyPhase() {
         return {
@@ -162,7 +165,7 @@ QtObject {
         let these_phases = {}
 
         for (const name in those_phases) {
-            print("----->>>>>> _loadedPhases", name)
+            debug(`_loadedPhases: ${name}`)
 
             const this_phase = _emptyPhase()
             const that_phase = those_phases[name]
@@ -199,7 +202,7 @@ QtObject {
         let these_experiments = {}
 
         for (const name in those_experiments) {
-            print("----->>>>>> _loadedExperiment", name)
+            debug(`_loadedExperiments: ${name}`)
 
             const this_experiment = _emptyExperiment()
             const that_experiment = those_experiments[name]
@@ -232,7 +235,7 @@ QtObject {
         let these_calculations = {}
 
         for (const name in those_calculations) {
-            print("----->>>>>> _loadedCalculations", name)
+            debug(`_loadedCalculations: ${name}`)
 
             const this_calculation = _emptyCalculation()
             const that_calculation = those_calculations[name]
