@@ -35,6 +35,36 @@ ColumnLayout {
         id: chartContainer
         spacing: 0
 
+        ////////////////
+        // Data selector
+        ////////////////
+
+        Row {
+            z: 1000
+            Layout.alignment: Qt.AlignHCenter
+            topPadding: 10
+            bottomPadding: -20
+            spacing: 10
+
+            RadioButton {
+                checked: true
+                text: qsTr("Sum")
+                onClicked: Specific.Variables.measuredData.setDataType(text)
+            }
+            RadioButton {
+                text: qsTr("Difference")
+                onClicked: Specific.Variables.measuredData.setDataType(text)
+            }
+            RadioButton {
+                text: qsTr("Up")
+                onClicked: Specific.Variables.measuredData.setDataType(text)
+            }
+            RadioButton {
+                text: qsTr("Down")
+                onClicked: Specific.Variables.measuredData.setDataType(text)
+            }
+        }
+
         //////////////////////
         // Top chart container
         //////////////////////
@@ -145,8 +175,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.calculationByIndex(0).limits.main.y_min
-                    max: Specific.Variables.calculationByIndex(0).limits.main.y_max
+                    min: Specific.Variables.measuredData.yMin //Specific.Variables.calculationByIndex(0).limits.main.y_min
+                    max: Specific.Variables.measuredData.yMax //Specific.Variables.calculationByIndex(0).limits.main.y_max
                 }
 
                 // Measured curve
