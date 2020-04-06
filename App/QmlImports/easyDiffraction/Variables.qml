@@ -34,6 +34,11 @@ QtObject {
                                                         ) : null
     property var calculatedData: proxyPyQmlObj.calculatedData
     property var braggPeaks: proxyPyQmlObj.braggPeaks
+    property string dataType: "Sum"
+    onDataTypeChanged: {
+        measuredData.setDataType(dataType)
+        calculatedData.setDataType(dataType)
+    }
 
     // Models
     property var fitables: projectOpened ? proxyPyQmlObj.fitables : null

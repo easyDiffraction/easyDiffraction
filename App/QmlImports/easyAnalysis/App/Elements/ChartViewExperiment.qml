@@ -56,21 +56,24 @@ ColumnLayout {
                 spacing: 10
 
                 RadioButton {
-                    checked: true
+                    checked: Specific.Variables.dataType === "Sum"
                     text: qsTr("Sum")
-                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                    onClicked: Specific.Variables.dataType = text
                 }
                 RadioButton {
+                    checked: Specific.Variables.dataType === "Difference"
                     text: qsTr("Difference")
-                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                    onClicked: Specific.Variables.dataType = text
                 }
                 RadioButton {
+                    checked: Specific.Variables.dataType === "Up"
                     text: qsTr("Up")
-                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                    onClicked: Specific.Variables.dataType = text
                 }
                 RadioButton {
+                    checked: Specific.Variables.dataType === "Down"
                     text: qsTr("Down")
-                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                    onClicked: Specific.Variables.dataType = text
                 }
             }
 
