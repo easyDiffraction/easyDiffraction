@@ -125,7 +125,12 @@ QtObject {
             "field": 0,
             "polarization": 90.0,
             "efficiency": 95.0,
-            "phase": [ { "scale": 0 } ]
+            "phase": [ { "scale": 0 } ],
+            "background": [
+                { "ttheta":   "0.0", "intensity": 100.0 },
+                { "ttheta":  "90.0", "intensity": 100.0 },
+                { "ttheta": "180.0", "intensity": 100.0 }
+            ]
         }
     }
 
@@ -221,6 +226,12 @@ QtObject {
             this_experiment.wavelength = that_experiment.wavelength.store.value
 
             this_experiment.phase[0].scale = that_experiment.phase[phaseIds()[0]].scale.store.value
+
+            this_experiment.background = []
+            for (let ttheta in that_experiment.background) {
+                const intensity = that_experiment.background[ttheta].intensity.store.value
+                this_experiment.background.push({ "ttheta": ttheta, "intensity": intensity })
+            }
 
             these_experiments[name] = this_experiment
         }

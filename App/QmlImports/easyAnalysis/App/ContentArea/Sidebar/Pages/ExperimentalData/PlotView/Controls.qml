@@ -283,25 +283,26 @@ ColumnLayout {
         }
     }
 
+    // Groupbox
+
+    GenericAppElements.GroupBox {
+        title: "Background"
+        enabled: Specific.Variables.phaseIds().length
+        content: GenericAppElements.ColumnLayout {
+
+            // Table
+            GenericAppElements.BackgroundTableView {
+                Layout.fillWidth: true
+                model: Specific.Variables.experimentByIndex(0).background
+            }
+        }
+    }
 
     // Groupbox
 
     GenericAppElements.GroupBox {
         title: "Associated phases"//"Instrument parameters"
         enabled: Specific.Variables.experimentIds().length
-
-//        content: GridLayout {
-//            columns: 4
-//            columnSpacing: 15
-//            rowSpacing: 10
-//            enabled: false
-//            Text { text: qsTr("Scale") }
-//            GenericAppElements.TextField {
-//                text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].phase[Specific.Variables.projectDict.info.phase_ids[0]].scale.store.value.toFixed(4) : ""
-//                units: ""
-//            }
-//
-//        }
 
         content: GenericAppElements.ColumnLayout {
 
