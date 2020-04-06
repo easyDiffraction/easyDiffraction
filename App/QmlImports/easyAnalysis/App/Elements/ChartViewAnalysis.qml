@@ -76,12 +76,12 @@ ColumnLayout {
 
                 RadioButton {
                     checked: Specific.Variables.dataType === "Sum"
-                    text: qsTr("Sum")
+                    text: qsTr("Up \uff0b Down")
                     onClicked: Specific.Variables.dataType = text
                 }
                 RadioButton {
                     checked: Specific.Variables.dataType === "Difference"
-                    text: qsTr("Difference")
+                    text: qsTr("Up \uff0d Down")
                     onClicked: Specific.Variables.dataType = text
                 }
                 RadioButton {
