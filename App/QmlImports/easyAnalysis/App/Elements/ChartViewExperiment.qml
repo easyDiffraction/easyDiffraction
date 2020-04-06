@@ -35,35 +35,6 @@ ColumnLayout {
         id: chartContainer
         spacing: 0
 
-        ////////////////
-        // Data selector
-        ////////////////
-
-        Row {
-            z: 1000
-            Layout.alignment: Qt.AlignHCenter
-            topPadding: 10
-            bottomPadding: -20
-            spacing: 10
-
-            RadioButton {
-                checked: true
-                text: qsTr("Sum")
-                onClicked: Specific.Variables.measuredData.setDataType(text)
-            }
-            RadioButton {
-                text: qsTr("Difference")
-                onClicked: Specific.Variables.measuredData.setDataType(text)
-            }
-            RadioButton {
-                text: qsTr("Up")
-                onClicked: Specific.Variables.measuredData.setDataType(text)
-            }
-            RadioButton {
-                text: qsTr("Down")
-                onClicked: Specific.Variables.measuredData.setDataType(text)
-            }
-        }
 
         //////////////////////
         // Top chart container
@@ -74,6 +45,34 @@ ColumnLayout {
             Layout.fillHeight: true
             color: "transparent"
             clip: true
+
+            // Data selector
+            Row {
+                z: 1000
+                anchors.top: topChart.top
+                anchors.topMargin: -7
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                spacing: 10
+
+                RadioButton {
+                    checked: true
+                    text: qsTr("Sum")
+                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                }
+                RadioButton {
+                    text: qsTr("Difference")
+                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                }
+                RadioButton {
+                    text: qsTr("Up")
+                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                }
+                RadioButton {
+                    text: qsTr("Down")
+                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                }
+            }
 
             Rectangle {
                 id: plotInfoRect
@@ -136,6 +135,7 @@ ColumnLayout {
                 //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
+                anchors.topMargin: 18
                 anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false

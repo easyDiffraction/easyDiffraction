@@ -90,13 +90,13 @@ class MeasuredDataModel(BaseModel):
             y_obs_lower_list.append(y_obs - sy_obs)
             y_obs_upper_list.append(y_obs + sy_obs)
 
-        # Clear series
-        upperSeries = []
-        lowerSeries = []
-
         # Update Min and Max
         self._setYMax(max(y_obs_upper_list))
         self._setYMin(min(y_obs_lower_list))
+
+        # Clear series
+        upperSeries = []
+        lowerSeries = []
 
         # Insert data into the Series format with QPointF's
         for x, y_obs_lower, y_obs_upper in zip(x_list, y_obs_lower_list, y_obs_upper_list):
@@ -117,6 +117,20 @@ class MeasuredDataModel(BaseModel):
         """
         pass
 
+    @Slot(QtCharts.QXYSeries)
+    def setLowerSeries(self, series):
+        """
+        Sets lower series to be a reference to the QML LineSeries of ChartView.
+        """
+        self._lowerSeriesRefs.append(series)
+
+    @Slot(QtCharts.QXYSeries)
+    def setUpperSeries(self, series):
+        """
+        Sets upper series to be a reference to the QML LineSeries of ChartView.
+        """
+        self._upperSeriesRefs.append(series)
+
     @Slot(str)
     def setDataType(self, type):
         """
@@ -136,20 +150,6 @@ class MeasuredDataModel(BaseModel):
             self._y_obs_column = 5
             self._sy_obs_column = 6
         self._updateQmlChartViewSeries()
-
-    @Slot(QtCharts.QXYSeries)
-    def setLowerSeries(self, series):
-        """
-        Sets lower series to be a reference to the QML LineSeries of ChartView.
-        """
-        self._lowerSeriesRefs.append(series)
-
-    @Slot(QtCharts.QXYSeries)
-    def setUpperSeries(self, series):
-        """
-        Sets upper series to be a reference to the QML LineSeries of ChartView.
-        """
-        self._upperSeriesRefs.append(series)
 
     def _yMax(self):
         """
