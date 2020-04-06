@@ -164,21 +164,28 @@ ColumnLayout {
         enabled: Specific.Variables.experimentIds().length
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
-                columns: 6
-                columnSpacing: 15
-                rowSpacing: 10
+                columns: 8
+                columnSpacing: 5
+                //rowSpacing: 10
 
-                Text { text: qsTr("Wavelength") }
+                Text { text: qsTr("Zero shift:") }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.experimentByIndex(0).offset.toFixed(4)
+                    units: "\u00B0"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
+                Text { width: 5 }
+                Text { text: qsTr("Wavelength:") }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).wavelength.toFixed(4)
                     units: "\u212B"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
-                Text {}
-                Text { text: qsTr("Zero shift") }
+                Text { width: 5 }
+                Text { text: qsTr("Magnetic field:") }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.experimentByIndex(0).offset.toFixed(4)
-                    units: "\u00B0"
+                    text: Specific.Variables.experimentByIndex(0).field.toFixed(4)
+                    units: "T"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
             }

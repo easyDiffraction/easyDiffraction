@@ -122,6 +122,7 @@ QtObject {
             },
             "offset": 0,
             "wavelength": 0,
+            "field": 0,
             "phase": [ { "scale": 0 } ]
         }
     }
