@@ -141,14 +141,14 @@ class MeasuredDataModel(BaseModel):
             self._y_obs_column = 1
             self._sy_obs_column = 2
         elif (type == "Difference"):
-            self._y_obs_column = 1
-            self._sy_obs_column = 2
-        elif (type == "Up"):
             self._y_obs_column = 3
             self._sy_obs_column = 4
-        elif (type == "Down"):
+        elif (type == "Up"):
             self._y_obs_column = 5
             self._sy_obs_column = 6
+        elif (type == "Down"):
+            self._y_obs_column = 7
+            self._sy_obs_column = 8
         self._updateQmlChartViewSeries()
 
     def _yMax(self):

@@ -9,7 +9,7 @@ from PyImports.DisplayModels.BaseModel import BaseModel
 class CalculatedDataModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._y_calc_name = "y_calc"
+        self._y_calc_name = "y_calc_sum"
         self._y_obs_name = "y_obs"
         self._sy_obs_name = "sy_obs"
         self._y_max = 1
@@ -129,7 +129,7 @@ class CalculatedDataModel(BaseModel):
         """
         self._log.debug(type)
         if (type == "Sum"):
-            self._y_calc_name = "y_calc"
+            self._y_calc_name = "y_calc_sum"
             self._y_obs_name = "y_obs"
             self._sy_obs_name = "sy_obs"
         elif (type == "Difference"):
