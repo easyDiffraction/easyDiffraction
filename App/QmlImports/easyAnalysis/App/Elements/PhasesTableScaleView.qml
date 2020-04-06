@@ -17,7 +17,6 @@ Column {
     property int rowCountToDisplayWithoutHeader: 1
     property int rowCountToDisplayWithoutHeader2: 1
 
-
     property string rowBackgroundColor: 'white'
     property string alternateRowBackgroundColor: '#f7f7f7'
     property string highlightedRowBackgroundColor: "#2a99d9"
@@ -101,12 +100,23 @@ Column {
                             width: cellWidthProvider(3)
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignLeft
+                            horizontalAlignment: Text.AlignRight
+                            leftPadding: font.pixelSize
+                            rightPadding: leftPadding * 2
+                            font.family: Generic.Style.fontFamily
+                            font.pointSize: Generic.Style.fontPointSize
+                            text: "Scale"
+                        }
+                        Text {
+                            width: cellWidthProvider(4)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: "Scale"
+                            text: " "
                         }
                     }
                 }
@@ -172,26 +182,22 @@ Column {
                             height: parent.height
                             enabled: !Specific.Variables.refinementRunning
                             verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignLeft
+                            horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
-                            rightPadding: 0
+                            rightPadding: leftPadding * 2
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                             text: Specific.Variables.experimentByIndex(0).phase[0].scale.toFixed(4)
                         }
                         GenericAppElements.CheckBox {
+                            width: cellWidthProvider(4)
                             checked: true
-                            //text: qsTr("Add phase to experiment")
-                            //height: 0.8*parent.height
-//                            anchors.baseline: parent.verticalCenter
                             anchors.verticalCenter: parent.verticalCenter
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                         }
                     }
                 }
-
             }
         }
     }
-
 }
