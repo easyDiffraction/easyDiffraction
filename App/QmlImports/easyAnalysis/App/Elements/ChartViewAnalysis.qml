@@ -1,5 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+//import QtQuick.Controls.Universal 2.12
+//import QtQuick.Controls.Universal.impl 2.12
 import QtQuick.Layouts 1.12
 import QtCharts 2.3
 import easyAnalysis 1.0 as Generic
@@ -63,6 +65,34 @@ ColumnLayout {
             color: "transparent"
             clip: true
 
+            // Data selector
+            Row {
+                z: 1000
+                anchors.top: topChart.top
+                anchors.topMargin: -7
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                spacing: 10
+
+                RadioButton {
+                    checked: true
+                    text: qsTr("Sum")
+                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                }
+                RadioButton {
+                    text: qsTr("Difference")
+                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                }
+                RadioButton {
+                    text: qsTr("Up")
+                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                }
+                RadioButton {
+                    text: qsTr("Down")
+                    onClicked: Specific.Variables.measuredData.setDataType(text)
+                }
+            }
+
             //////////////////////////
             // Top chart (Iobs, Icalc)
             //////////////////////////
@@ -72,6 +102,7 @@ ColumnLayout {
                 //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
+                anchors.topMargin: 18
                 anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 backgroundRoundness: 0
@@ -173,14 +204,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: {
-                        let calc = Specific.Variables.calculationByIndex(0)
-                        return calc.limits.main.y_min
-                    }
-                    max: {
-                        let calc = Specific.Variables.calculationByIndex(0)
-                        return calc.limits.main.y_max
-                    }
+                    min: Math.min(Specific.Variables.measuredData.yMin, Specific.Variables.calculatedData.yMin)
+                    max: Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
                 }
 
                 // Measured curve
@@ -487,26 +512,17 @@ ColumnLayout {
                     labelsFont: commonFont
                     titleFont: commonFont
                     min: {
-                        if (Specific.Variables.projectOpened) {
-                            let calc = Specific.Variables.calculationByIndex(0)
-                            let min = calc.limits.difference.y_min
-                            let max = calc.limits.difference.y_max
-                            let MAX = Math.max(Math.abs(min), Math.abs(max))
-                            return Math.sign(min) * MAX
-                        }
-                        return 0
+                        const min = Specific.Variables.calculatedData.yDiffMin
+                        const max = Specific.Variables.calculatedData.yDiffMax
+                        const MAX = Math.max(Math.abs(min), Math.abs(max))
+                        return Math.sign(min) * MAX
                     }
                     max: {
-                        if (Specific.Variables.projectOpened) {
-                            let calc = Specific.Variables.calculationByIndex(0)
-                            let min = calc.limits.difference.y_min
-                            let max = calc.limits.difference.y_max
-                            let MAX = Math.max(Math.abs(min), Math.abs(max))
-                            return Math.sign(max) * MAX
-                        }
-                        return 1
+                        const min = Specific.Variables.calculatedData.yDiffMin
+                        const max = Specific.Variables.calculatedData.yDiffMax
+                        const MAX = Math.max(Math.abs(min), Math.abs(max))
+                        return Math.sign(max) * MAX
                     }
-
                 }
 
                 AreaSeries {
