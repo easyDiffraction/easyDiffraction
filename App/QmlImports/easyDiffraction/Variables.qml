@@ -123,6 +123,8 @@ QtObject {
             "offset": 0,
             "wavelength": 0,
             "field": 0,
+            "polarization": 90.0,
+            "efficiency": 95.0,
             "phase": [ { "scale": 0 } ]
         }
     }

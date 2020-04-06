@@ -160,6 +160,34 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.GroupBox {
+        title: "Diffraction radiation"
+        enabled: Specific.Variables.experimentIds().length
+        content: GenericAppElements.ColumnLayout {
+            GenericAppElements.GridLayout {
+                columns: 5
+                columnSpacing: 5
+                //rowSpacing: 10
+
+                Text { text: qsTr("Polarization:") }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.experimentByIndex(0).polarization.toFixed(1)
+                    units: "%"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
+                Text { width: 5 }
+                Text { text: qsTr("Polarising efficiency:") }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.experimentByIndex(0).efficiency.toFixed(1)
+                    units: "%"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
+            }
+        }
+    }
+
+    // Groupbox
+
+    GenericAppElements.GroupBox {
         title: "Setup parameters"
         enabled: Specific.Variables.experimentIds().length
         content: GenericAppElements.ColumnLayout {
@@ -213,40 +241,40 @@ ColumnLayout {
             }
             GridLayout {
                 columns: 8
-                columnSpacing: 15
+                columnSpacing: 5
                 rowSpacing: 10
                 //enabled: false
 
                 // Row
-                Text { text: qsTr("U") }
+                Text { text: "U:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.u.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
-                Text {}
+                Text { width: 5 }
 
-                Text { text: qsTr("V") }
+                Text { text: "V:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.v.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
-                Text {}
+                Text { width: 5 }
 
-                Text { text: qsTr("W") }
+                Text { text: "W:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.w.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
 
                 // Row
-                Text { text: qsTr("X") }
+                Text { text: "X:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.x.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
-                Text {}
+                Text { width: 5 }
 
-                Text { text: qsTr("Y") }
+                Text { text: "Y:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.y.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
