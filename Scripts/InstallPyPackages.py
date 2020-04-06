@@ -71,21 +71,21 @@ if __name__ == '__main__':
 
     install(
         #'cryspy==0.1.13',
-        'scipy==1.4.1',
-        'numpy==1.18.1',
+        'scipy>=1.4.1',
+        'numpy>=1.18.1',
         'easyInterface>=0.0.8',
-        'PySide2==5.14.1',
-        'pyinstaller==3.6',  # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
-        'requests==2.23.0',
-        'uritemplate==3.0.1',
-        'pyyaml==5.3',
-        'asteval==0.9.18',
-        'pytest==5.3.5',
-        'pytest_mock==2.0.0',
-        'pytest-cov==2.8.1',
-        'pytest-qt==3.3.0',
-        'wily==1.16.0',
-        'codecov==2.0.16'
+        'PySide2>=5.14.1',
+        'pyinstaller>=3.6',  # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+        'requests>=2.23.0',
+        'uritemplate>=3.0.1',
+        'pyyaml>=5.3',
+        'asteval>=0.9.18',
+        'pytest>=5.3.5',
+        'pytest_mock>=2.0.0',
+        'pytest-cov>=2.8.1',
+        'pytest-qt>=3.3.0',
+        'wily>=1.16.0',
+        'codecov>=2.0.16'
     )
 
     if BasicFunctions.osName() == 'windows':
