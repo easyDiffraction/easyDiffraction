@@ -5,7 +5,7 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyDiffraction 1.0 as Specific
 
-GenericAppToolbar.Button {
+GenericAppToolbar.ToolButton {
     enabled: Specific.Variables.needToSave
     attention: true
     icon.source: Generic.Variables.thirdPartyIconsPath + "save.svg"
