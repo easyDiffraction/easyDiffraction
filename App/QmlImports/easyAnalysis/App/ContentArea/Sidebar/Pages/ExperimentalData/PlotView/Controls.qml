@@ -309,14 +309,6 @@ ColumnLayout {
             // Table
             GenericAppElements.PhasesTableScaleView {
                 Layout.fillWidth: true
-
-                GenericAppElements.GuideWindow {
-                    message: "Here you can see labels of the structural phases."
-                    position: "left"
-                    guideCurrentIndex: 0
-                    toolbarCurrentIndex: Generic.Variables.SampleIndex
-                    guidesCount: Generic.Variables.SampleGuidesCount
-                }
             }
         }
     }
