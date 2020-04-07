@@ -331,16 +331,14 @@ ColumnLayout {
 
                 GenericAppElements.CheckBox {
                     text: "Up \uff0b Down"
-                    checked: Specific.Variables.experimentByIndex(0).chi2.sum
+                    checked: Specific.Variables.refineSum
                     onClicked: Specific.Variables.refineSum = checked
-                    //GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
 
                 GenericAppElements.CheckBox {
                     text: "Up \uff0d Down"
-                    checked: Specific.Variables.experimentByIndex(0).chi2.diff
+                    checked: Specific.Variables.refineDiff
                     onClicked: Specific.Variables.refineDiff = checked
-                    //GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
             }
         }
