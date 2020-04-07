@@ -237,8 +237,6 @@ QtObject {
 
             this_experiment.chi2.sum = that_experiment.chi2._sum
             this_experiment.chi2.diff = that_experiment.chi2._diff
-            this_experiment.chi2.up = that_experiment.chi2._up
-            this_experiment.chi2.down = that_experiment.chi2._down
 
             this_experiment.phase[0].scale = that_experiment.phase[phaseIds()[0]].scale.store.value
 
