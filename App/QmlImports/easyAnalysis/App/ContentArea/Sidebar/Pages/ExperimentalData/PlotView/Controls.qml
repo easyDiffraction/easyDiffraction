@@ -319,6 +319,43 @@ ColumnLayout {
         }
     }
 
+    // Groupbox
+
+    GenericAppElements.GroupBox {
+        title: "Refinement"
+        visible: Specific.Variables.isPolarized
+        enabled: Specific.Variables.experimentIds().length
+        content: GenericAppElements.ColumnLayout {
+            GenericAppElements.RowLayout {
+                spacing: 10
+
+                GenericAppElements.CheckBox {
+                    text: "Up \uff0b Down"
+                    checked: Specific.Variables.experimentByIndex(0).chi2.sum
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+
+                GenericAppElements.CheckBox {
+                    text: "Up \uff0d Down"
+                    checked: Specific.Variables.experimentByIndex(0).chi2.diff
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+
+                GenericAppElements.CheckBox {
+                    text: "Up"
+                    checked: Specific.Variables.experimentByIndex(0).chi2.up
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+
+                GenericAppElements.CheckBox {
+                    text: "Down"
+                    checked: Specific.Variables.experimentByIndex(0).chi2.down
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+            }
+        }
+    }
+
     // Spacer
 
     Item { Layout.fillHeight: true }

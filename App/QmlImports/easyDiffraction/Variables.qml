@@ -129,6 +129,12 @@ QtObject {
             "offset": 0,
             "wavelength": 0,
             "field": 0,
+            "chi2" : {
+                "sum": false,
+                "diff": false,
+                "up": false,
+                "down": false
+            },
             "polarization": 90.0,
             "efficiency": 95.0,
             "phase": [ { "scale": 0 } ],
@@ -230,6 +236,11 @@ QtObject {
             this_experiment.offset = that_experiment.offset.store.value
             this_experiment.field = that_experiment.field.store.value
             this_experiment.wavelength = that_experiment.wavelength.store.value
+
+            this_experiment.chi2.sum = that_experiment.chi2._sum
+            this_experiment.chi2.diff = that_experiment.chi2._diff
+            this_experiment.chi2.up = that_experiment.chi2._up
+            this_experiment.chi2.down = that_experiment.chi2._down
 
             this_experiment.phase[0].scale = that_experiment.phase[phaseIds()[0]].scale.store.value
 

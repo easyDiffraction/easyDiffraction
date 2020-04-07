@@ -39,17 +39,6 @@ ColumnLayout {
             // Buttons
             GenericAppElements.GridLayout {
                 columns: 2
-                GenericAppContentAreaButtons.Add {
-                    //enabled: false;
-                    text: "Add new phase manually"
-                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
-                }
-                GenericAppContentAreaButtons.RemoveAll {
-                    id: removeButton;
-                    //enabled: false;
-                    text: "Remove all phases"
-                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
-                }
                 GenericAppContentAreaButtons.Import {
                     text: "Import new phase from CIF"
                     enabled: !Specific.Variables.refinementRunning
@@ -63,6 +52,17 @@ ColumnLayout {
                 GenericAppContentAreaButtons.Export {
                     //enabled: false;
                     text: "Export selected phase to CIF"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppContentAreaButtons.Add {
+                    //enabled: false;
+                    text: "Add new phase manually"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppContentAreaButtons.RemoveAll {
+                    id: removeButton;
+                    //enabled: false;
+                    text: "Remove all phases"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
             }
