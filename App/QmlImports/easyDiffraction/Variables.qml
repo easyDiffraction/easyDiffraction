@@ -137,8 +137,10 @@ QtObject {
                 "sum": false,
                 "diff": false
             },
-            "polarization": 90.0,
-            "efficiency": 95.0,
+            "polarization": {
+                "polarization": 90.0,
+                "efficiency": 95.0
+             },
             "phase": [ { "scale": 0 } ],
             "background": [
                 { "ttheta":   "0.0", "intensity": 100.0 },
@@ -241,6 +243,8 @@ QtObject {
 
             this_experiment.chi2.sum = that_experiment.chi2._sum
             this_experiment.chi2.diff = that_experiment.chi2._diff
+            this_experiment.polarization.polarization = that_experiment.polarization.polarization.store.value
+            this_experiment.polarization.efficiency = that_experiment.polarization.efficiency.store.value
 
             this_experiment.phase[0].scale = that_experiment.phase[phaseIds()[0]].scale.store.value
 
