@@ -131,9 +131,7 @@ QtObject {
             "field": 0,
             "chi2" : {
                 "sum": false,
-                "diff": false,
-                "up": false,
-                "down": false
+                "diff": false
             },
             "polarization": 90.0,
             "efficiency": 95.0,

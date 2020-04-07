@@ -340,18 +340,6 @@ ColumnLayout {
                     checked: Specific.Variables.experimentByIndex(0).chi2.diff
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
-
-                GenericAppElements.CheckBox {
-                    text: "Up"
-                    checked: Specific.Variables.experimentByIndex(0).chi2.up
-                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
-                }
-
-                GenericAppElements.CheckBox {
-                    text: "Down"
-                    checked: Specific.Variables.experimentByIndex(0).chi2.down
-                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
-                }
             }
         }
     }
