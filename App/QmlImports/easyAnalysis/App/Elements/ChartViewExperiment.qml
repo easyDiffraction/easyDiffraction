@@ -48,6 +48,8 @@ ColumnLayout {
 
             // Data selector
             Row {
+                visible: Specific.Variables.isPolarized
+                height: Specific.Variables.isPolarized ? implicitHeight : 0
                 z: 1000
                 anchors.top: topChart.top
                 anchors.topMargin: -7
@@ -138,7 +140,7 @@ ColumnLayout {
                 //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
-                anchors.topMargin: 18
+                anchors.topMargin: Specific.Variables.isPolarized ? 18 : -extraPadding
                 anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false

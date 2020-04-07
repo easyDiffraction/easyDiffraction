@@ -39,6 +39,7 @@ QtObject {
         measuredData.setDataType(dataType)
         calculatedData.setDataType(dataType)
     }
+    property bool isPolarized: experimentCif ? experimentCif.includes("_pd_meas_intensity_up") : false
 
     // Models
     property var fitables: projectOpened ? proxyPyQmlObj.fitables : null

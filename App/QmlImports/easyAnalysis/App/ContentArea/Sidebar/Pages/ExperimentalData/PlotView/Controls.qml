@@ -160,6 +160,7 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.GroupBox {
+        visible: Specific.Variables.isPolarized
         title: "Diffraction radiation"
         enabled: Specific.Variables.experimentIds().length
         content: GenericAppElements.ColumnLayout {

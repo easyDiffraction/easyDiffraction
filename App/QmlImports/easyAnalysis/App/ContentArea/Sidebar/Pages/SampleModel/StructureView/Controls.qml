@@ -192,6 +192,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Magnetic susceptibility parameters"
+        visible: Specific.Variables.isPolarized
         enabled: Specific.Variables.phaseIds().length
 
         content: GenericAppElements.ColumnLayout {
