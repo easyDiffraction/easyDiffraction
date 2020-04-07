@@ -40,6 +40,10 @@ QtObject {
         calculatedData.setDataType(dataType)
     }
     property bool isPolarized: experimentCif ? experimentCif.includes("_pd_meas_intensity_up") : false
+    property bool refineSum: proxyPyQmlObj._refineSum
+    property bool refineDiff: proxyPyQmlObj._refineDiff
+    onRefineSumChanged: proxyPyQmlObj._refineSum = refineSum
+    onRefineDiffChanged: proxyPyQmlObj._refineDiff = refineDiff
 
     // Models
     property var fitables: projectOpened ? proxyPyQmlObj.fitables : null

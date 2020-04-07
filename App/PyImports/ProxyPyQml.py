@@ -44,6 +44,9 @@ class ProxyPyQml(QObject):
         self._status_model = StatusModel()
         self._file_structure_model = FileStructureModel()
 
+        self._refine_sum = False
+        self._refine_diff = False
+
         self._refine_thread = None
         self._refinement_running = False
         self._refinement_done = False
@@ -247,6 +250,33 @@ class ProxyPyQml(QObject):
     fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
 
     releaseInfo = Property('QVariant', lambda self: self.info, constant=True)
+
+    # ###############
+    # REFINEMENT TYPE
+    # ###############
+
+    def refineSum(self):
+        return self._refine_sum
+
+    def refineDiff(self):
+        return self._refine_diff
+
+    def setRefineSum(self, state):
+        if self._refine_sum == state:
+            return
+        self._refine_sum = state
+        self.__log.warning(f"self._refine_sum: {self._refine_sum}")
+        #... now, update cryspy object, etc.
+
+    def setRefineDiff(self, state):
+        if self._refine_diff == state:
+            return
+        self._refine_diff = state
+        self.__log.warning(f"self._refine_diff: {self._refine_diff}")
+        #... now, update cryspy object, etc.
+
+    _refineSum = Property(bool, refineSum, setRefineSum, notify=projectChanged)
+    _refineDiff = Property(bool, refineDiff, setRefineDiff, notify=projectChanged)
 
     # ##########
     # REFINEMENT
