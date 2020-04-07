@@ -5,16 +5,20 @@ MouseArea {
     enum Type {
         NotYet,
         NoEditingYet,
-        OnAnalysisPage
+        OnAnalysisPage,
+        Custom
     }
     property int type: EditingToolTip.NotYet
-    property string text: {
+    property string text: ""
+    readonly property string _text: {
         if (type === EditingToolTip.NotYet) {
             return qsTr("This functionality has not yet been implemented.")
         } else if (type === EditingToolTip.NoEditingYet) {
                 return qsTr("Editing here has not yet been implemented.")
         } else if (type === EditingToolTip.OnAnalysisPage) {
             return qsTr("Editing here has not yet been implemented. To do this, please go to the analysis page.")
+        } else if (type === EditingToolTip.Custom && text !== "") {
+            return text
         } else {
             show = false
             return ""
@@ -30,5 +34,5 @@ MouseArea {
     onExited: _show = false
 
     ToolTip.visible: _show && show
-    ToolTip.text: text
+    ToolTip.text: _text
 }

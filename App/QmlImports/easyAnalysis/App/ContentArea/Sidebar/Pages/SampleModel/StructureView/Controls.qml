@@ -54,6 +54,11 @@ ColumnLayout {
                     text: "Import new phase from CIF"
                     enabled: !Specific.Variables.refinementRunning
                     onClicked: fileDialogLoadPhase.open()
+                    GenericControls.EditingToolTip {
+                        visible: Specific.Variables.phaseIds().length
+                        type: GenericControls.EditingToolTip.Custom
+                        text: qsTr("Multiple phases are not supported yet.")
+                    }
                 }
                 GenericAppContentAreaButtons.Export {
                     //enabled: false;

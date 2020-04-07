@@ -42,6 +42,11 @@ ColumnLayout {
                  enabled: !Specific.Variables.refinementRunning
                  text: "Import data from local drive";
                  onClicked: fileDialogLoadExps.open()
+                 GenericControls.EditingToolTip {
+                     visible: Specific.Variables.experimentIds().length
+                     type: GenericControls.EditingToolTip.Custom
+                     text: qsTr("Multiple experiments are not supported yet.")
+                 }
                 }
                 GenericAppContentAreaButtons.Link {
                     //enabled: false
