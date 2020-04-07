@@ -256,29 +256,25 @@ class ProxyPyQml(QObject):
         if not self._calculator_interface.experimentsIds():
             return False
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        refine_sum = self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum
-        return refine_sum
+        return self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum
 
     def refineDiff(self):
         if not self._calculator_interface.experimentsIds():
             return False
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        refine_diff = self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff
-        return refine_diff
+        return self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff
 
     def setRefineSum(self, state):
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        refine_sum = self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum
-        if refine_sum == state:
+        if self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum == state:
             return
-        refine_sum = state
+        self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum = state
 
     def setRefineDiff(self, state):
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        refine_diff = self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff
-        if refine_diff == state:
+        if self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff == state:
             return
-        refine_diff = state
+        self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff = state
 
     _refineSum = Property(bool, refineSum, setRefineSum, notify=projectChanged)
     _refineDiff = Property(bool, refineDiff, setRefineDiff, notify=projectChanged)
