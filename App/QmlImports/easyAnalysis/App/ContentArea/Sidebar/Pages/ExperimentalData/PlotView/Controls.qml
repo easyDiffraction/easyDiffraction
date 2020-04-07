@@ -293,7 +293,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Background"
-        enabled: Specific.Variables.phaseIds().length
+        enabled: Specific.Variables.experimentIds().length
         content: GenericAppElements.ColumnLayout {
 
             // Table
