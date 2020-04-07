@@ -307,7 +307,7 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.GroupBox {
-        title: "Associated phases"//"Instrument parameters"
+        title: "Structural phases"//"Instrument parameters"
         enabled: Specific.Variables.experimentIds().length
 
         content: GenericAppElements.ColumnLayout {
