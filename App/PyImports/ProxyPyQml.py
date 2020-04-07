@@ -60,8 +60,11 @@ class ProxyPyQml(QObject):
         self._calculator_interface.addPhaseDefinition(self._phases_rcif_path)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
+        self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
-        self.onProjectUnsaved()
+        self._needToSave = False
+        self.projectSaveStateChanged.emit()
+        #self.onProjectUnsaved()
     
     @Slot()
     def loadExperiment(self):
@@ -88,8 +91,11 @@ class ProxyPyQml(QObject):
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
+        self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
-        self.onProjectUnsaved()
+        self._needToSave = False
+        self.projectSaveStateChanged.emit()
+        #self.onProjectUnsaved()
 
     def loadExperimentFromCif(self):
         """
@@ -101,8 +107,11 @@ class ProxyPyQml(QObject):
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.updateCalculations()
+        self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
-        self.onProjectUnsaved()
+        self._needToSave = False
+        self.projectSaveStateChanged.emit()
+        #self.onProjectUnsaved()
 
     # Load CIF method, accessible from QML
     @Slot()
@@ -171,8 +180,7 @@ class ProxyPyQml(QObject):
         self.onProjectSaved()
 
     def onProjectSaved(self):
-        if self._calculator_interface is not None:
-            self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
+        self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
         self._needToSave = False
         self.projectSaveStateChanged.emit()
 
