@@ -27,10 +27,10 @@ def test_CalculatedDataModel():
 
     # assure _setModelFromProject got called
     assert m._model.rowCount() == 381
-    assert m._model.columnCount() == 4
+    assert m._model.columnCount() == 7
 
     assert m._headers_model.rowCount() == 1
-    assert m._headers_model.columnCount() == 4
+    assert m._headers_model.columnCount() == 7
 
     # Test stuff from _setModelFromProject here
     assert m._model.item(0, 0).data(role=Qt.DisplayRole) == 4.0

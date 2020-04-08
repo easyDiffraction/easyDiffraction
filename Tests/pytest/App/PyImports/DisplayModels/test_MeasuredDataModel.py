@@ -27,24 +27,26 @@ def test_MeasuredDataModel():
 
     # assure _setModelFromProject got called
     assert m._model.rowCount() == 381
-    assert m._model.columnCount() == 7
+    assert m._model.columnCount() == 9
 
     assert m._headers_model.rowCount() == 1
-    assert m._headers_model.columnCount() == 7
+    assert m._headers_model.columnCount() == 9
 
     # Test stuff from _setModelFromProject here
     assert m._model.item(0, 0).data(role=Qt.DisplayRole) == 4.0
-    assert m._model.item(0, 6).data(role=Qt.DisplayRole) == 129.3
+    assert m._model.item(0, 6).data(role=Qt.DisplayRole) == 128.97
     assert m._model.item(380, 0).data(role=Qt.DisplayRole) == 80.0
-    assert m._model.item(380, 6).data(role=Qt.DisplayRole) == 28.01
+    assert m._model.item(380, 6).data(role=Qt.DisplayRole) == 27.81
 
     assert m._headers_model.item(0, 0).data(role=Qt.DisplayRole) == 'x'
     assert m._headers_model.item(0, 1).data(role=Qt.DisplayRole) == 'y_obs'
     assert m._headers_model.item(0, 2).data(role=Qt.DisplayRole) == 'sy_obs'
-    assert m._headers_model.item(0, 3).data(role=Qt.DisplayRole) == 'y_obs_up'
-    assert m._headers_model.item(0, 4).data(role=Qt.DisplayRole) == 'sy_obs_up'
-    assert m._headers_model.item(0, 5).data(role=Qt.DisplayRole) == 'y_obs_down'
-    assert m._headers_model.item(0, 6).data(role=Qt.DisplayRole) == 'sy_obs_down'
+    assert m._headers_model.item(0, 3).data(role=Qt.DisplayRole) == 'y_obs_diff'
+    assert m._headers_model.item(0, 4).data(role=Qt.DisplayRole) == 'sy_obs_diff'
+    assert m._headers_model.item(0, 5).data(role=Qt.DisplayRole) == 'y_obs_up'
+    assert m._headers_model.item(0, 6).data(role=Qt.DisplayRole) == 'sy_obs_up'
+    assert m._headers_model.item(0, 7).data(role=Qt.DisplayRole) == 'y_obs_down'
+    assert m._headers_model.item(0, 8).data(role=Qt.DisplayRole) == 'sy_obs_down'
 
     # test asModel
     assert m._model == m.asModel()
