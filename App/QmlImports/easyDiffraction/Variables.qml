@@ -138,8 +138,8 @@ QtObject {
                 "diff": false
             },
             "polarization": {
-                "polarization": 90.0,
-                "efficiency": 95.0
+                "polarization": 0.90,
+                "efficiency": 0.95
              },
             "phase": [ { "scale": 0 } ],
             "background": [

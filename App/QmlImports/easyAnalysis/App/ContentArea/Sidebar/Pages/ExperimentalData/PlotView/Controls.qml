@@ -176,14 +176,14 @@ ColumnLayout {
 
                 Text { text: qsTr("Polarization:") }
                 GenericAppElements.TextField {
-                    text: {return 100*Specific.Variables.experimentByIndex(0).polarization.polarization.toFixed(3)}
+                    text: 100 * Specific.Variables.experimentByIndex(0).polarization.polarization.toFixed(3)
                     units: "%"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
                 Text { text: qsTr("Polarising efficiency:") }
                 GenericAppElements.TextField {
-                    text: {return 100*Specific.Variables.experimentByIndex(0).polarization.efficiency.toFixed(3)}
+                    text: 100 * Specific.Variables.experimentByIndex(0).polarization.efficiency.toFixed(3)
                     units: "%"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
