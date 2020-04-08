@@ -22,7 +22,7 @@ loop_
 _phase_label
 _phase_scale
 _phase_igsize
-Fe3O4 0.178 0.0
+Fe3O4 0.162() 0.0
 
 loop_
 _pd_background_2theta
