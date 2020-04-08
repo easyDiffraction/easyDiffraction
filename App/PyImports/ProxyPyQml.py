@@ -150,7 +150,9 @@ class ProxyPyQml(QObject):
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
 
         # We can't link signals as the manager signals emitted before the dict is updated :-(
-        # self.projectChanged.emit()
+        self.projectChanged.emit()
+        self._needToSave = False
+        self.projectSaveStateChanged.emit()
 
 
     @Slot()
@@ -211,6 +213,7 @@ class ProxyPyQml(QObject):
     # self._projectChanged.connect(self.set_SaveState)
 
     projectDict = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
+    projectCifDict = Property('QVariant', lambda self: self._calculator_interface.asCifDict(), notify=projectChanged)
     phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
     experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
     calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)

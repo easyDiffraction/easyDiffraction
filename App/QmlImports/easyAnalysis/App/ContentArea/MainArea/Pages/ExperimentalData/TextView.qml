@@ -22,7 +22,8 @@ Rectangle {
             font.pointSize: Generic.Style.fontPointSize
             //antialiasing: true
             wrapMode: Text.NoWrap
-            text: showContent ? Specific.Variables.experimentCif : ""
+            //text: showContent ? Specific.Variables.experimentCif : ""
+            text: proxyPyQmlObj.projectCifDict["experiments"].toString()
         }
     }
 
