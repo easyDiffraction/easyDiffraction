@@ -358,7 +358,7 @@ class ProxyPyQml(QObject):
             document = QTextDocument(parent=None)
             document.setHtml(self.report_html)
             printer = QPdfWriter(full_filename)
-            printer.setPageSize(printer.A4)
+            printer.setPageSize(printer.A3) # A3 to fit A4 page
             document.print_(printer)
         else:
             raise NotImplementedError
