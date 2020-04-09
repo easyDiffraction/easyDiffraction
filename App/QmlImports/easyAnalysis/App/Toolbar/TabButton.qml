@@ -72,7 +72,7 @@ TabButton {
     }
 
     function backgroundColor() {
-        const alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
+        const alpha = button.hovered ? (button.down ? 0.25 : 0.15) : 0.0
         if (button.checked) {
             const color1 = Generic.Style.buttonBkgHighlightedColor
             const color2 = Generic.Style.buttonBkgBlendColor
@@ -80,17 +80,21 @@ TabButton {
         }
         if (!button.enabled)
             return Generic.Style.toolbarButtonBkgDisabledColor
-        var color1 = Generic.Style.buttonBkgFinishedColor
-        var color2 = Generic.Style.buttonBkgBlendColor
+        const color1 = Generic.Style.buttonBkgFinishedColor
+        const color2 = Generic.Style.buttonBkgBlendColor
         return Color.blend(color1, color2, alpha)
     }
 
     function borderColor() {
-        if (button.checked)
-            return Generic.Style.buttonBorderHighlightedColor
+        const alpha = button.hovered ? (button.down ? 0.25 : 0.15) : 0.0
+        if (button.checked) {
+            const color = Generic.Style.buttonBorderHighlightedColor
+            return Color.blend(color, color, alpha)
+        }
         if (!button.enabled)
-            return buttonBorderDisabledColor
-        return Generic.Style.buttonBorderFinishedColor
+            return Generic.Style.buttonBorderDisabledColor
+        const color = Generic.Style.buttonBorderFinishedColor
+        return Color.blend(color, color, alpha)
     }
 
     function iconColor() {
