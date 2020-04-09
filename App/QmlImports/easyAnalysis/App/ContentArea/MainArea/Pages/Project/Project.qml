@@ -66,7 +66,7 @@ Rectangle {
             Text {
                 font.pointSize: Generic.Style.fontPointSize + 1
                 font.family: Generic.Style.fontFamily
-                text: "Project Keywords:"
+                text: "Keywords:"
             }
             Text {
                 font.pointSize: Generic.Style.fontPointSize + 1
