@@ -74,9 +74,9 @@ def test_ProjectModel_writeMain():
         os.remove(model.main_rcif_path)
 
     model.writeMain()
-    checker('Undefined', 'neutron diffraction, powder, 1d')
+    checker('Undefined', 'neutron powder diffraction, 1d')
     model.writeMain('Test')
-    checker('Test', 'neutron diffraction, powder, 1d')
+    checker('Test', 'neutron powder diffraction, 1d')
     model.writeMain('Test', 'Testing')
     checker('Test', 'Testing')
 
@@ -193,7 +193,7 @@ def test_LoadExperiment_xye_polarized():
     xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data5.xye')
     model.loadExperiment(xye_path, "boom (*.xye) boom")
     assert "PHASE_NAME" in model._cif_string
-    assert "_setup_wavelength      0.84" in model._cif_string
+    assert "_setup_wavelength      2.40" in model._cif_string
 
 def test_LoadExperiment_exception():
     model = ProjectControl()
@@ -277,5 +277,3 @@ def test_ProjectManager_reset(pm):
     assert pm.projectExperiments is None
     assert pm.projectInstruments is None
     assert pm.projectModified == now.strftime("%d/%m/%Y, %H:%M")
-
-
