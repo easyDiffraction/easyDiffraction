@@ -199,6 +199,29 @@ class ProxyPyQml(QObject):
         self.__log.debug(f"needToSave: {self._needToSave}")
         self.projectSaveStateChanged.emit()
 
+
+
+    def __projectDict(self):
+        self.__log.info("---")
+        return self._calculator_interface.asDict()
+    def __projectCifDict(self):
+        self.__log.info("---")
+        return self._calculator_interface.asCifDict()
+    def __phaseCif(self):
+        self.__log.info("---")
+        return self._file_structure_model.asPhaseString()
+    def __experimentCif(self):
+        self.__log.info("---")
+        return self._file_structure_model.asExperimentString()
+    def __calculationCif(self):
+        self.__log.info("---")
+        return self._file_structure_model.asCalculationString()
+    def __calculatorInterface(self):
+        self.__log.info("---")
+        return self._calculator_interface
+
+
+
     # ##############
     # QML Properties
     # ##############
@@ -212,12 +235,19 @@ class ProxyPyQml(QObject):
 
     # self._projectChanged.connect(self.set_SaveState)
 
-    projectDict = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
-    projectCifDict = Property('QVariant', lambda self: self._calculator_interface.asCifDict(), notify=projectChanged)
-    phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
-    experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
-    calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
-    calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
+    projectDict = Property('QVariant', __projectDict, notify=projectChanged)
+    projectCifDict = Property('QVariant', __projectCifDict, notify=projectChanged)
+    phaseCif = Property('QVariant', __phaseCif, notify=projectChanged)
+    experimentCif = Property('QVariant', __experimentCif, notify=projectChanged)
+    calculationCif = Property('QVariant', __calculationCif, notify=projectChanged)
+    calculatorInterface = Property('QVariant', __calculatorInterface, notify=projectChanged)
+
+    #projectDict = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
+    #projectCifDict = Property('QVariant', lambda self: self._calculator_interface.asCifDict(), notify=projectChanged)
+    #phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
+    #experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
+    #calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
+    #calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
 
     needToSave = Property(bool, lambda self: self._needToSave, notify=projectSaveStateChanged)
     projectFilePathSelected = Property(bool, lambda self: bool(self._project_control._project_file), notify=projectSaveStateChanged)

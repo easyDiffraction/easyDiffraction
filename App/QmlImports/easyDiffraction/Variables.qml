@@ -10,17 +10,26 @@ QtObject {
 
     // Main
     property var projectControl: proxyPyQmlObj.projectControl ? proxyPyQmlObj.projectControl : null
+
+    ///property var projectDict: projectOpened ? projectDict : null
     property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
+    property var projectCifDict: projectOpened ? proxyPyQmlObj.projectCifDict : {"phases": {}, "experiments": {}, "calculations": {}}
+
     property var cif: projectOpened ? proxyPyQmlObj.fileStructure : null
+
     property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
-    function phaseIds(){ return projectOpened ? proxyPyQmlObj.projectDict.info.phase_ids: []}
+    //property var phaseIds: projectOpened ? projectDict.info.phases_ids: []
+    function phaseIds(){ return projectOpened ? projectDict.info.phase_ids: []}
+
     property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
-    function experimentIds(){return projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: []}
-//    property var experimentIds: projectOpened ? proxyPyQmlObj.projectDict.info.experiment_ids: []
+    //property var experimentIds: projectOpened ? projectDict.info.experiment_ids: []
+    function experimentIds(){return projectOpened ? projectDict.info.experiment_ids: []}
+
     property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
-    function calculationIds(){ return projectOpened ? Object.keys(proxyPyQmlObj.projectDict.calculations): []}
+    function calculationIds(){ return projectOpened ? Object.keys(projectDict.calculations): []}
+
     property var needToSave: projectOpened ? proxyPyQmlObj.needToSave : false
-    property var projectFilePathSelected: proxyPyQmlObj.projectFilePathSelected
+    property var projectFilePathSelected: projectOpened ? proxyPyQmlObj.projectFilePathSelected : ""
 
     property var projectName: projectOpened ? proxyPyQmlObj.projectManager.projectName : null
     property var projectKeywords: projectOpened ? proxyPyQmlObj.projectManager.projectKeywords : null
@@ -180,7 +189,7 @@ QtObject {
     }
 
     function _loadedPhases() {
-        const those_phases = proxyPyQmlObj.projectDict.phases
+        const those_phases = projectDict.phases
 
         if (!Object.keys(those_phases).length) {
             return _defaultPhases()
@@ -217,7 +226,7 @@ QtObject {
     }
 
     function _loadedExperiments() {
-        const those_experiments = proxyPyQmlObj.projectDict.experiments
+        const those_experiments = projectDict.experiments
 
         if (!Object.keys(those_experiments).length) {
             return _defaultExperiments()
@@ -261,7 +270,7 @@ QtObject {
     }
 
     function _loadedCalculations() {
-        const those_calculations = proxyPyQmlObj.projectDict.calculations
+        const those_calculations = projectDict.calculations
 
         if (!Object.keys(those_calculations).length) {
             return _defaultCalculations()

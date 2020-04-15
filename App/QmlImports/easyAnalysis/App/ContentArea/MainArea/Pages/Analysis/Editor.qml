@@ -30,7 +30,7 @@ Rectangle {
             // to allow for the iffy view update.
             // Otherwise, one needs to click in the TextView to redraw the content.
             //text: showContent ? Specific.Variables.calculationCif : ""
-            text: proxyPyQmlObj.projectCifDict["calculations"].toString()
+            text: Specific.Variables.projectCifDict["calculations"].toString()
         }
     }
 }

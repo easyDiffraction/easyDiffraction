@@ -23,7 +23,7 @@ Rectangle {
             //antialiasing: true
             wrapMode: Text.Wrap //Text.NoWrap
             //text: showContent ? Specific.Variables.phaseCif : ""
-            text: proxyPyQmlObj.projectCifDict["phases"].toString()
+            text: Specific.Variables.projectCifDict["phases"].toString()
         }
     }
 
