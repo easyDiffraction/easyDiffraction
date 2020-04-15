@@ -17,6 +17,7 @@ class CalculatedDataModel(BaseModel):
         self._y_diff_max = 1
         self._y_diff_min = 0
         self._calcSeriesRef = None
+        self._calcBkgSeriesRef = None
         self._lowerDiffSeriesRef = None
         self._upperDiffSeriesRef = None
         self._log = logger.getLogger(__class__.__module__)
@@ -72,18 +73,21 @@ class CalculatedDataModel(BaseModel):
         self._log.info("=====> start")
 
         calcSeries = []
+        calcBkgSeries = []
         lowerDiffSeries = []
         upperDiffSeries = []
 
         for calc_dict, experiment_dict in zip(self._project_dict['calculations'].values(), self._project_dict['experiments'].values()):
             x_list = calc_dict['calculated_pattern']['x']
             y_calc_list = calc_dict['calculated_pattern'][self._y_calc_name]
+            y_calc_bkg_list = calc_dict['calculated_pattern']['y_calc_bkg']
             y_obs_list = experiment_dict['measured_pattern'][self._y_obs_name]
             sy_obs_list = experiment_dict['measured_pattern'][self._sy_obs_name]
 
             # Insert data into the Series format with QPointF's
-            for x, y_calc, y_obs, sy_obs in zip(x_list, y_calc_list, y_obs_list, sy_obs_list):
+            for x, y_calc, y_calc_bkg, y_obs, sy_obs in zip(x_list, y_calc_list, y_calc_bkg_list, y_obs_list, sy_obs_list):
                 calcSeries.append(QPointF(x, y_calc))
+                calcBkgSeries.append(QPointF(x, y_calc_bkg))
                 upperDiffSeries.append(QPointF(x, y_obs + sy_obs - y_calc))
                 lowerDiffSeries.append(QPointF(x, y_obs - sy_obs - y_calc))
 
@@ -96,6 +100,7 @@ class CalculatedDataModel(BaseModel):
         # Replace series
         if self._calcSeriesRef is not None:
             self._calcSeriesRef.replace(calcSeries)
+            self._calcBkgSeriesRef.replace(calcBkgSeries)
             self._lowerDiffSeriesRef.replace(lowerDiffSeries)
             self._upperDiffSeriesRef.replace(upperDiffSeries)
 
@@ -107,6 +112,13 @@ class CalculatedDataModel(BaseModel):
         Sets calculated series to be a reference to the QML LineSeries of ChartView.
         """
         self._calcSeriesRef = series
+
+    @Slot(QtCharts.QXYSeries)
+    def setCalcBkgSeries(self, series):
+        """
+        Sets calculated background series to be a reference to the QML LineSeries of ChartView.
+        """
+        self._calcBkgSeriesRef = series
 
     @Slot(QtCharts.QXYSeries)
     def setLowerDiffSeries(self, series):

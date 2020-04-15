@@ -24,6 +24,7 @@ QtObject {
     readonly property string greenColor: "#7ab03c"
     readonly property string ultraLightGreenColor: "#daebc7"
     readonly property string darkGreenColor: "#669431"
+    readonly property string greyColor: "#aaa"
     readonly property var atomColorList: [redColor, greenColor, blueColor, "orange", "grey"]
 
     // StatusBar

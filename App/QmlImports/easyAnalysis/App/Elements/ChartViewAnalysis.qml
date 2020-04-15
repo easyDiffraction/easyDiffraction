@@ -138,10 +138,12 @@ ColumnLayout {
                         columnSpacing: 10
                         rowSpacing: 5
                         columns: 2
-                        Text { text: "\u25fc"; color: obsArea.color; font: commonFont}
+                        Text { text: "■"; color: obsArea.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
                         Text { text: obsArea.name; font: commonFont}
-                        Text { text: "\u25fc"; color: calcSeries.color; font: commonFont}
+                        Text { text: "–"; color: calcSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
                         Text { text: calcSeries.name; font: commonFont}
+                        Text { text: "--"; color: calcBkgSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
+                        Text { text: calcBkgSeries.name; font: commonFont}
                     }
                 }
 
@@ -206,7 +208,7 @@ ColumnLayout {
                     tickCount: 5
                     minorTickCount: 1
                     labelFormat: "%.0f" //"%.0e"
-                    titleText: showCalc ? "Iobs, Icalc" : "Iobs"
+                    titleText: showCalc ? "Iobs, Icalc, Ibkg" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
                     min: Math.min(Specific.Variables.measuredData.yMin, Specific.Variables.calculatedData.yMin)
@@ -251,6 +253,35 @@ ColumnLayout {
                         infoToolTip.background.border.color = Qt.lighter(Generic.Style.blueColor, 1.9)
                     }
 
+                }
+
+                // Calculated background curve
+
+                LineSeries {
+                    id: calcBkgSeries
+                    visible: showCalc
+                    axisX: axisX
+                    axisY: axisY
+                    color: Generic.Style.greyColor
+                    width: 2
+                    style: Qt.DotLine
+                    name: "Background (Ibkg)"
+                    //useOpenGL: true
+
+                    // New approach (fast): pass a reference to LineSeries to python for updating
+                    Component.onCompleted: Specific.Variables.calculatedData.setCalcBkgSeries(calcBkgSeries)
+
+                    onHovered: {
+                        const p = topChart.mapToPosition(point)
+                        const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
+                        infoToolTip.parent = topChart
+                        infoToolTip.x = p.x
+                        infoToolTip.y = p.y - infoToolTip.height
+                        infoToolTip.visible = state
+                        infoToolTip.contentItem.text = text
+                        infoToolTip.contentItem.color = Generic.Style.greyColor
+                        infoToolTip.background.border.color = Qt.lighter(Generic.Style.greyColor, 1.5)
+                    }
                 }
 
                 // Calculated curve
