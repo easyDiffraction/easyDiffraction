@@ -117,6 +117,13 @@ ColumnLayout {
 
                 // Custom Legend
                 Item {
+                    opacity: Generic.Variables.showLegend ? 1 : 0
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 500
+                        }
+                    }
+
                     y: topChart.plotArea.top + 10
                     x: topChart.plotArea.right - width - 10
                     width: childrenRect.width
@@ -150,6 +157,13 @@ ColumnLayout {
                 // Plot Info (after refinement)
                 Item {
                     visible: Generic.Variables.numRefinedPars !== " " && Generic.Variables.chiSquared !==  " "
+
+                    opacity: Generic.Variables.showRefinemetResults ? 1 : 0
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 500
+                        }
+                    }
 
                     y: topChart.plotArea.top + 10
                     x: topChart.plotArea.left + 10

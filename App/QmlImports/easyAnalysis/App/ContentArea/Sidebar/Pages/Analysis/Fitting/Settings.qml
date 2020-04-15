@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 
+import easyAnalysis 1.0 as Generic
 import easyAnalysis.Controls 1.0 as GenericControls
 
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
@@ -18,10 +19,31 @@ ColumnLayout {
         //collapsed: false
         content: GenericAppElements.GridLayout {
             columns: 2
+
+            GenericAppElements.CheckBox {
+                checked: Generic.Variables.showLegend
+                text: qsTr("Show legend")
+                onToggled: {
+                    if (Generic.Variables.showLegend !== checked) {
+                        Generic.Variables.showLegend = checked
+                    }
+                }
+            }
+            GenericAppElements.CheckBox {
+                checked: Generic.Variables.showRefinemetResults
+                text:qsTr("Show refinement results")
+                onToggled: {
+                    if (Generic.Variables.showRefinemetResults !== checked) {
+                        Generic.Variables.showRefinemetResults = checked
+                    }
+                }
+            }
+
             GenericAppElements.CheckBox { checked:true;  text:qsTr("Show experimental data"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
             GenericAppElements.CheckBox { checked:true;  text:qsTr("Show difference plot"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
+            GenericAppElements.CheckBox { checked:true;  text:qsTr("Show background plot"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
             GenericAppElements.CheckBox { checked:true;  text:qsTr("Show Bragg positions"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Show legend"); GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet } }
+
             //GenericAppElements.CheckBox { Layout.fillWidth:true; checked:true;  text:qsTr("Display coordinate system") }
         }
     }
