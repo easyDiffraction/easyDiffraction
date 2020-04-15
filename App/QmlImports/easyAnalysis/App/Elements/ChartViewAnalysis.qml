@@ -279,8 +279,8 @@ ColumnLayout {
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Generic.Style.greyColor
-                        infoToolTip.background.border.color = Qt.lighter(Generic.Style.greyColor, 1.5)
+                        infoToolTip.contentItem.color = Qt.darker(Generic.Style.greyColor, 1.4)
+                        infoToolTip.background.border.color = Generic.Style.greyColor
                     }
                 }
 

@@ -1,3 +1,5 @@
+import numpy as np
+
 from easyInterface import logger
 
 from PySide2.QtCore import Qt, QPointF, Slot, Signal, Property
@@ -80,9 +82,15 @@ class CalculatedDataModel(BaseModel):
         for calc_dict, experiment_dict in zip(self._project_dict['calculations'].values(), self._project_dict['experiments'].values()):
             x_list = calc_dict['calculated_pattern']['x']
             y_calc_list = calc_dict['calculated_pattern'][self._y_calc_name]
-            y_calc_bkg_list = calc_dict['calculated_pattern']['y_calc_bkg']
             y_obs_list = experiment_dict['measured_pattern'][self._y_obs_name]
             sy_obs_list = experiment_dict['measured_pattern'][self._sy_obs_name]
+
+            if self._y_calc_name == 'y_calc_sum':
+                y_calc_bkg_list = calc_dict['calculated_pattern']['y_calc_bkg']
+            elif self._y_calc_name == 'y_calc_up' or self._y_calc_name == 'y_calc_down':
+                y_calc_bkg_list = np.divide(np.array(calc_dict['calculated_pattern']['y_calc_bkg']), 2).tolist()
+            elif self._y_calc_name == 'y_calc_diff':
+                y_calc_bkg_list = [0] * len(x_list)
 
             # Insert data into the Series format with QPointF's
             for x, y_calc, y_calc_bkg, y_obs, sy_obs in zip(x_list, y_calc_list, y_calc_bkg_list, y_obs_list, sy_obs_list):
