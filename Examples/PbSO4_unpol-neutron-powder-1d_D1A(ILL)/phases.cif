@@ -19,8 +19,8 @@ _atom_site_fract_z
 _atom_site_occupancy
 _atom_site_adp_type
 _atom_site_u_iso_or_equiv
-Pb  Pb  0.18782  0.25     0.16741  1.0   Uiso 0.0
-S   S   0.06450  0.25     0.68797  1.0   Uiso 0.0
-O1  O   0.90924  0.25     0.59597  1.0   Uiso 0.0
-O2  O   0.19198  0.25     0.54405  1.0   Uiso 0.0
-O3  O   0.08112  0.02654  0.80888  1.0   Uiso 0.0
+Pb  Pb  0.18741  0.25     0.16716  1.0   Uiso 0.0
+S   S   0.06510  0.25     0.68520  1.0   Uiso 0.0
+O1  O   0.90881  0.25     0.59610  1.0   Uiso 0.0
+O2  O   0.19402  0.25     0.54370  1.0   Uiso 0.0
+O3  O   0.08114  0.02736  0.80855  1.0   Uiso 0.0

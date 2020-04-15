@@ -174,7 +174,7 @@ ColumnLayout {
                         columns: 2
                         Text { text: 'Goodness-of-fit (\u03c7\u00b2):'; font: commonFont }
                         Text { text: Generic.Variables.chiSquared; font: commonFont } // Generic.Variables.chiSquared
-                        Text { text: 'Num. refined parameters:'; font: commonFont }
+                        Text { text: 'Fit parameters:'; font: commonFont }
                         Text { text: Generic.Variables.numRefinedPars; font: commonFont } // Generic.Variables.numRefinedPars
                     }
                 }
