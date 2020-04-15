@@ -1,36 +1,36 @@
 data_pd
 
-_setup_wavelength      1.912
-_setup_offset_2theta  -0.13846()
+_setup_wavelength        1.912
+_setup_offset_2theta     0.0()
 
-_pd_instr_resolution_u  0.122083
-_pd_instr_resolution_v -0.335931
-_pd_instr_resolution_w  0.283817
-_pd_instr_resolution_x  0.0
-_pd_instr_resolution_y  0.148719
-
-loop_
-_pd_background_2theta
-_pd_background_intensity
- 10.0000       209.6
- 15.0000       197.7
- 20.0000       193.0
- 25.0000       193.1
- 30.0000       188.2
- 35.0000       182.9
- 45.0000       191.2
- 50.0000       190.0
- 55.0000       176.2
- 60.0000       201.4
- 65.0000       200.5
- 70.0000       207.6
- 77.0000       195.0
+_pd_instr_resolution_u   0.690
+_pd_instr_resolution_v  -1.094
+_pd_instr_resolution_w   0.557
+_pd_instr_resolution_x   0.0
+_pd_instr_resolution_y   0.1258
 
 loop_
 _phase_label
 _phase_scale
 _phase_igsize
-PbSO4 1.28 0.0
+PbSO4  0.7329(65) 0.0
+
+loop_
+_pd_background_2theta
+_pd_background_intensity
+    10.0  209
+    15.0  194
+    20.0  193
+    25.0  192
+    30.0  193
+    35.0  184
+    45.0  193
+    50.0  192
+    55.0  183
+    60.0  207
+    65.0  199
+    70.0  202
+    77.0  194
 
 loop_
 _pd_meas_2theta
