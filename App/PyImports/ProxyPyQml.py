@@ -49,7 +49,7 @@ class ProxyPyQml(QObject):
         self._refinement_done = False
         self._refinement_result = {}
 
-        self._needToSave = False
+        self._need_to_save = False
 
     @Slot()
     def loadPhasesFromFile(self):
@@ -62,7 +62,7 @@ class ProxyPyQml(QObject):
         # explicit emit required for the view to reload the model content
         self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
-        self._needToSave = False
+        self._need_to_save = False
         self.projectSaveStateChanged.emit()
         #self.onProjectUnsaved()
     
@@ -93,7 +93,7 @@ class ProxyPyQml(QObject):
         # explicit emit required for the view to reload the model content
         self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
-        self._needToSave = False
+        self._need_to_save = False
         self.projectSaveStateChanged.emit()
         #self.onProjectUnsaved()
 
@@ -109,7 +109,7 @@ class ProxyPyQml(QObject):
         self._calculator_interface.updateCalculations()
         self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
-        self._needToSave = False
+        self._need_to_save = False
         self.projectSaveStateChanged.emit()
         #self.onProjectUnsaved()
 
@@ -151,7 +151,7 @@ class ProxyPyQml(QObject):
 
         # We can't link signals as the manager signals emitted before the dict is updated :-(
         self.projectChanged.emit()
-        self._needToSave = False
+        self._need_to_save = False
         self.projectSaveStateChanged.emit()
 
 
@@ -183,44 +183,33 @@ class ProxyPyQml(QObject):
 
     def onProjectSaved(self):
         self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
-        self._needToSave = False
+        self._need_to_save = False
         self.projectSaveStateChanged.emit()
 
     def onProjectUnsaved(self):
-        self._needToSave = True
+        self._need_to_save = True
         self.projectSaveStateChanged.emit()
 
     def onProjectChanged(self):
         keys, _ = self._calculator_interface.project_dict.dictComparison(self._project_dict_copy)
         self.__log.debug(f"keys: {keys}")
-        self._needToSave = True
+        self._need_to_save = True
         if not keys:
-            self._needToSave = False
-        self.__log.debug(f"needToSave: {self._needToSave}")
+            self._need_to_save = False
+        self.__log.debug(f"needToSave: {self._need_to_save}")
         self.projectSaveStateChanged.emit()
 
-
-
-    def __projectDict(self):
-        self.__log.info("---")
-        return self._calculator_interface.asDict()
-    def __projectCifDict(self):
-        self.__log.info("---")
-        return self._calculator_interface.asCifDict()
-    def __phaseCif(self):
-        self.__log.info("---")
-        return self._file_structure_model.asPhaseString()
-    def __experimentCif(self):
-        self.__log.info("---")
-        return self._file_structure_model.asExperimentString()
-    def __calculationCif(self):
-        self.__log.info("---")
-        return self._file_structure_model.asCalculationString()
-    def __calculatorInterface(self):
-        self.__log.info("---")
+    def calculatorInterface(self):
+        self.__log.warning("---")
         return self._calculator_interface
 
+    def needToSave(self):
+        self.__log.warning("+++")
+        return self._need_to_save
 
+    def projectFilePathSelected(self):
+        self.__log.warning("***")
+        return bool(self._project_control._project_file)
 
     # ##############
     # QML Properties
@@ -233,29 +222,9 @@ class ProxyPyQml(QObject):
     projectSaveStateChanged = Signal()
     canUndoOrRedoChanged = Signal()
 
-    # self._projectChanged.connect(self.set_SaveState)
-
-    projectDict = Property('QVariant', __projectDict, notify=projectChanged)
-    projectCifDict = Property('QVariant', __projectCifDict, notify=projectChanged)
-    phaseCif = Property('QVariant', __phaseCif, notify=projectChanged)
-    experimentCif = Property('QVariant', __experimentCif, notify=projectChanged)
-    calculationCif = Property('QVariant', __calculationCif, notify=projectChanged)
-    calculatorInterface = Property('QVariant', __calculatorInterface, notify=projectChanged)
-
-    #projectDict = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
-    #projectCifDict = Property('QVariant', lambda self: self._calculator_interface.asCifDict(), notify=projectChanged)
-    #phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
-    #experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
-    #calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
-    #calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
-
-    needToSave = Property(bool, lambda self: self._needToSave, notify=projectSaveStateChanged)
-    projectFilePathSelected = Property(bool, lambda self: bool(self._project_control._project_file), notify=projectSaveStateChanged)
-
-    undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
-    redoText = Property('QVariant', lambda self: self._calculator_interface.redoText(), notify=canUndoOrRedoChanged)
-    canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)
-    canRedo = Property('QVariant', lambda self: self._calculator_interface.canRedo(), notify=canUndoOrRedoChanged)
+    _calculatorInterface = Property('QVariant', calculatorInterface, notify=projectChanged)
+    _needToSave = Property(bool, needToSave, notify=projectSaveStateChanged)
+    _projectFilePathSelected = Property(bool, projectFilePathSelected, notify=projectSaveStateChanged)
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals

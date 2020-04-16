@@ -11,9 +11,13 @@ QtObject {
     // Main
     property var projectControl: proxyPyQmlObj.projectControl ? proxyPyQmlObj.projectControl : null
 
+    property var calculatorInterface: proxyPyQmlObj._calculatorInterface
+    //property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
+    property var projectDict: projectOpened ? calculatorInterface.asDict() : null
+    property var projectCifDict: projectOpened ? calculatorInterface.asCifDict() : {"phases": {}, "experiments": {}, "calculations": {}}
     ///property var projectDict: projectOpened ? projectDict : null
-    property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
-    property var projectCifDict: projectOpened ? proxyPyQmlObj.projectCifDict : {"phases": {}, "experiments": {}, "calculations": {}}
+    ////property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
+    ////property var projectCifDict: projectOpened ? proxyPyQmlObj.projectCifDict : {"phases": {}, "experiments": {}, "calculations": {}}
 
     property var cif: projectOpened ? proxyPyQmlObj.fileStructure : null
 
@@ -28,8 +32,8 @@ QtObject {
     property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
     function calculationIds(){ return projectOpened ? Object.keys(projectDict.calculations): []}
 
-    property var needToSave: projectOpened ? proxyPyQmlObj.needToSave : false
-    property var projectFilePathSelected: projectOpened ? proxyPyQmlObj.projectFilePathSelected : ""
+    property var needToSave: projectOpened ? proxyPyQmlObj._needToSave : false
+    property var projectFilePathSelected: projectOpened ? proxyPyQmlObj._projectFilePathSelected : ""
 
     property var projectName: projectOpened ? proxyPyQmlObj.projectManager.projectName : null
     property var projectKeywords: projectOpened ? proxyPyQmlObj.projectManager.projectKeywords : null
@@ -64,11 +68,10 @@ QtObject {
     property var statusInfo: projectOpened ? proxyPyQmlObj.statusInfo : null
 
     // Undo-Redo
-    property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
-    property var undoText: calculatorInterface ? proxyPyQmlObj.undoText : ""
-    property var redoText: calculatorInterface ? proxyPyQmlObj.redoText : ""
-    property var canUndo: calculatorInterface ? proxyPyQmlObj.canUndo : false
-    property var canRedo: calculatorInterface ? proxyPyQmlObj.canRedo : false
+    property var undoText: calculatorInterface ? calculatorInterface.undoText() : ""
+    property var redoText: calculatorInterface ? calculatorInterface.redoText() : ""
+    property var canUndo: calculatorInterface ? calculatorInterface.canUndo() : false
+    property var canRedo: calculatorInterface ? calculatorInterface.canRedo() : false
 
     // Refinement
     property var refinementRunning: proxyPyQmlObj.refinementStatus[0]

@@ -110,3 +110,10 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         CalculatorInterface.setDictByPath(self, keys, value)
         self.projectDictChanged.emit()
 
+    @Slot(result='QVariant')
+    def asDict(self):
+        return CalculatorInterface.asDict(self)
+
+    @Slot(result='QVariant')
+    def asCifDict(self):
+        return CalculatorInterface.asCifDict(self)
