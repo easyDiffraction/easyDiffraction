@@ -21,15 +21,15 @@ QtObject {
 
     property var cif: projectOpened ? proxyPyQmlObj.fileStructure : null
 
-    property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
+    //property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
     //property var phaseIds: projectOpened ? projectDict.info.phases_ids: []
     function phaseIds(){ return projectOpened ? projectDict.info.phase_ids: []}
 
-    property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
+    //property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
     //property var experimentIds: projectOpened ? projectDict.info.experiment_ids: []
     function experimentIds(){return projectOpened ? projectDict.info.experiment_ids: []}
 
-    property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
+    //property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
     function calculationIds(){ return projectOpened ? Object.keys(projectDict.calculations): []}
 
     property var needToSave: projectOpened ? proxyPyQmlObj._needToSave : false
@@ -52,7 +52,7 @@ QtObject {
         measuredData.setDataType(dataType)
         calculatedData.setDataType(dataType)
     }
-    property bool isPolarized: experimentCif ? experimentCif.includes("_pd_meas_intensity_up") : false
+    property bool isPolarized: projectCifDict["experiments"].toString().includes("_pd_meas_intensity_up")
     property bool refineSum: projectOpened ? proxyPyQmlObj._refineSum : false
     property bool refineDiff: projectOpened ? proxyPyQmlObj._refineDiff : false
     onRefineSumChanged: proxyPyQmlObj._refineSum = refineSum
