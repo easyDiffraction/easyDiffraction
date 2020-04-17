@@ -308,6 +308,7 @@ class ProxyPyQml(QObject):
         """
         Start refinement as a separate thread
         """
+        self._calculator_interface.setCalculatorFromProject()
         self.__log.info("")
         if self._refinement_running:
             self.__log.info("Fitting stopped")
