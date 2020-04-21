@@ -9,7 +9,7 @@ QtObject {
     property bool projectOpened: false
 
     // Main
-    property var projectControl: proxyPyQmlObj._projectControl ? proxyPyQmlObj._projectControl : null
+    property var projectControl: proxyPyQmlObj && proxyPyQmlObj._projectControl ? proxyPyQmlObj._projectControl : null
 
     property var calculatorInterface: proxyPyQmlObj._calculatorInterface
     //property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
@@ -19,7 +19,7 @@ QtObject {
     ////property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     ////property var projectCifDict: projectOpened ? proxyPyQmlObj.projectCifDict : {"phases": {}, "experiments": {}, "calculations": {}}
 
-    property var cif: projectOpened ? proxyPyQmlObj._fileStructure : null
+    property var cif: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._fileStructure : null
 
     //property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
     //property var phaseIds: projectOpened ? projectDict.info.phases_ids: []
@@ -32,19 +32,19 @@ QtObject {
     //property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
     function calculationIds(){ return projectOpened ? Object.keys(projectDict.calculations): []}
 
-    property var needToSave: projectOpened ? proxyPyQmlObj._needToSave : false
+    property var needToSave: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._needToSave : false
     property var projectFilePathSelected: projectOpened ? proxyPyQmlObj._projectFilePathSelected : ""
 
-    property var projectName: projectOpened ? proxyPyQmlObj._projectManager.projectName : null
-    property var projectKeywords: projectOpened ? proxyPyQmlObj._projectManager.projectKeywords : null
-    property var projectModifiedDate: projectOpened ? proxyPyQmlObj._projectManager.projectModified : null
+    property var projectName: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectName : null
+    property var projectKeywords: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectKeywords : null
+    property var projectModifiedDate: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectModified : null
 
     // Measured and calculated data
     property var measuredData: proxyPyQmlObj._measuredData
-    property var measuredDataHeaderModel: projectOpened ? proxyPyQmlObj._measuredData.asHeadersModel(
-                                                              ) : null
-    property var measuredDataModel: projectOpened ? proxyPyQmlObj._measuredData.asModel(
-                                                        ) : null
+    property var measuredDataHeaderModel: proxyPyQmlObj && projectOpened ?
+                                              proxyPyQmlObj._measuredData.asHeadersModel() : null
+    property var measuredDataModel: proxyPyQmlObj && projectOpened ?
+                                        proxyPyQmlObj._measuredData.asModel() : null
     property var calculatedData: proxyPyQmlObj._calculatedData
     property var braggPeaks: proxyPyQmlObj._braggPeaks
     property string dataType: "Sum"
@@ -53,19 +53,19 @@ QtObject {
         calculatedData.setDataType(dataType)
     }
     property bool isPolarized: projectCifDict["experiments"].toString().includes("_pd_meas_intensity_up")
-    property bool refineSum: projectOpened ? proxyPyQmlObj._refineSum : false
-    property bool refineDiff: projectOpened ? proxyPyQmlObj._refineDiff : false
+    property bool refineSum: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._refineSum : false
+    property bool refineDiff: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._refineDiff : false
     onRefineSumChanged: proxyPyQmlObj._refineSum = refineSum
     onRefineDiffChanged: proxyPyQmlObj._refineDiff = refineDiff
 
     // Models
-    property var fitables: projectOpened ? proxyPyQmlObj._fitables : null
-    property var cellParameters: projectOpened ? proxyPyQmlObj._cellParameters : null
-    property var cellBox: projectOpened ? proxyPyQmlObj._cellBox : null
-    property var atomSites: projectOpened ? proxyPyQmlObj._atomSites : null
-    property var atomAdps: projectOpened ? proxyPyQmlObj._atomAdps : null
-    property var atomMsps: projectOpened ? proxyPyQmlObj._atomMsps : null
-    property var statusInfo: projectOpened ? proxyPyQmlObj._statusInfo : null
+    property var fitables: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._fitables : null
+    property var cellParameters: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._cellParameters : null
+    property var cellBox: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._cellBox : null
+    property var atomSites: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._atomSites : null
+    property var atomAdps: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._atomAdps : null
+    property var atomMsps: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._atomMsps : null
+    property var statusInfo: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._statusInfo : null
 
     // Undo-Redo
     property var undoText: calculatorInterface ? proxyPyQmlObj._undoText : ""

@@ -436,7 +436,8 @@ Column {
     }
 
     function getModelData(displayRole, modelIndex = currentModelIndex()) {
-        return contentListView.model.data(modelIndex, displayRole)
+        if (contentListView.model !== null)
+            return contentListView.model.data(modelIndex, displayRole)
     }
 
     function setModelData(editValue, editRole, modelIndex = currentModelIndex()) {
