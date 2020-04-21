@@ -440,8 +440,8 @@ ColumnLayout {
                     lineVisible: false
                     labelsVisible: false
                     gridVisible:false
-                    min: 0
-                    max: 10
+                    min: -1
+                    max: 1
                     labelFormat: "%.0f"
                     labelsFont: commonFont
                 }
@@ -466,17 +466,29 @@ ColumnLayout {
                     visible: showBragg
                     axisX: axisXbragg
                     axisY: axisYbragg
+
+                    useOpenGL: false
+
                     markerShape: ScatterSeries.MarkerShapeRectangle
+                    markerSize: 10
+
+                    borderWidth: 0.0001
+                    borderColor: "transparent"
+
+                    brushFilename: Generic.Variables.originalIconsPath.replace("file:", "") + "bragg.svg"
+
                     /*
                     markerSize: 1
                     borderWidth: 0.0001
                     borderColor: "transparent"
                     color: "#333"
                     */
+                    /*
                     markerSize: 1
                     borderWidth: 0.00000001
                     borderColor: color
                     color: "#333"
+                    */
 
                     // New approach (fast): pass a reference to LineSeries to python for updating
                     Component.onCompleted: Specific.Variables.braggPeaks.setSeries(braggSeries)
@@ -603,7 +615,7 @@ ColumnLayout {
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
+                        infoToolTip.text = text
                         infoToolTip.backgroundColor = diffArea.color
                         infoToolTip.borderColor = Qt.darker(diffArea.color, 1.1)
                     }

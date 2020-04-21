@@ -296,32 +296,6 @@ ColumnLayout {
             }
 
         }
-
-        /////////////////////////////
-        // Middle chart (Bragg peaks)
-        /////////////////////////////
-
-        Rectangle {
-            id: middleChartContainer
-            visible: showBragg
-            Layout.fillWidth: true
-            height: 2*extraPadding
-            color: "transparent"
-            clip: true
-        }
-
-        //////////////////////////////
-        // Bottom chart (Iobs - Icalc)
-        //////////////////////////////
-
-        Rectangle {
-            id: bottomChartContainer
-            visible: showDiff
-            Layout.fillWidth: true
-            height: 150
-            color: "transparent"
-            clip: true
-        }
     }
 
     ////////////

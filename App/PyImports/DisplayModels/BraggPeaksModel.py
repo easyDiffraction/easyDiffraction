@@ -65,9 +65,7 @@ class BraggPeaksModel(BaseModel):
             for phase_id in self._project_dict['phases'].keys():
                 x_list = calc_dict['bragg_peaks'][phase_id]['ttheta']
                 for x in x_list:
-                    vertical_points = 11
-                    for vertical_index in range(vertical_points):
-                        series.append(QPointF(x, vertical_index))
+                    series.append(QPointF(x, 0))
 
         # Replace series
         if self._seriesRef is not None:
