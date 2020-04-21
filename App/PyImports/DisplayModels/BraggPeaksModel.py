@@ -59,13 +59,15 @@ class BraggPeaksModel(BaseModel):
         """
         self._log.info("=====> start")
 
-        series = []
+        experiment_id = self._calculator_interface.experimentsIds()[0]
+        ttheta_offset = self._project_dict['experiments'][experiment_id]['offset'].value
 
+        series = []
         for calc_dict in self._project_dict['calculations'].values():
             for phase_id in self._project_dict['phases'].keys():
                 x_list = calc_dict['bragg_peaks'][phase_id]['ttheta']
                 for x in x_list:
-                    series.append(QPointF(x, 0))
+                    series.append(QPointF(x - ttheta_offset, 0))
 
         # Replace series
         if self._seriesRef is not None:
