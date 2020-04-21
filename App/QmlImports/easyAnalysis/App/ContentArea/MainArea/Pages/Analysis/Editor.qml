@@ -44,6 +44,7 @@ Rectangle {
 
     color: "white"
 
+
     ScrollView {
         anchors.fill: parent
         clip: true
@@ -58,7 +59,7 @@ Rectangle {
             //antialiasing: true
             wrapMode: Text.NoWrap
             //text: showContent ? Specific.Variables.experimentCif : ""
-            text: Specific.Variables.projectCifDict["calculations"].toString()
+            text: showContent ? Specific.Variables.projectCifDict["calculations"].toString() : ""
         }
     }
 }
