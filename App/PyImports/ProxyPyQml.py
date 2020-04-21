@@ -49,6 +49,7 @@ class ProxyPyQml(QObject):
         self._refinement_done = False
         self._refinement_result = {}
 
+        self._calculator_interface.clearUndoStack()
         self._need_to_save = False
 
     @Slot()
