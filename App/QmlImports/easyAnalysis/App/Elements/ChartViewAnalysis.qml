@@ -440,10 +440,14 @@ ColumnLayout {
                     lineVisible: false
                     labelsVisible: false
                     gridVisible:false
+                    //tickCount: 0
+                    tickType: ValueAxis.TicksDynamic
+                    tickAnchor: -2
+                    tickInterval: 4
                     min: -1
                     max: 1
-                    labelFormat: "%.0f"
-                    labelsFont: commonFont
+                    ///labelFormat: "%.0f"
+                    ///labelsFont: commonFont
                 }
 
                 /*
@@ -734,6 +738,7 @@ ColumnLayout {
         let bottomChartTickMaxWidth = 0.0
         let textHeight = 0.0
         const lineHeight = 1.5
+        const extraXShift = 2
 
         dummyText.text = axisY.max.toFixed(0) // follow axisY.labelFormat
         topChartTickMaxWidth = dummyText.width
@@ -756,7 +761,7 @@ ColumnLayout {
             topChart.anchors.leftMargin = -leftMargin - extraPadding
             bottomChart.anchors.leftMargin = -extraPadding
         }
-        middleChart.anchors.leftMargin = leftBraggMargin - extraPadding + textHeight
+        middleChart.anchors.leftMargin = leftBraggMargin - extraPadding + textHeight + extraXShift
 
         //print(topChart.x, topChart.y, topChart.width, topChart.height)
 
