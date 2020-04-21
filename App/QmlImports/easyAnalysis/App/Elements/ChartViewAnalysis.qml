@@ -264,10 +264,9 @@ ColumnLayout {
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.text = text
-                        infoToolTip.textColor = Generic.Style.blueColor
-                        infoToolTip.borderColor = Qt.lighter(Generic.Style.blueColor, 1.9)
+                        infoToolTip.backgroundColor = obsArea.color
+                        infoToolTip.borderColor = Qt.darker(obsArea.color, 1.1)
                     }
-
                 }
 
                 // Calculated background curve
@@ -294,8 +293,8 @@ ColumnLayout {
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.text = text
-                        infoToolTip.textColor = Qt.darker(Generic.Style.greyColor, 1.4)
-                        infoToolTip.borderColor = Generic.Style.greyColor
+                        infoToolTip.backgroundColor = calcBkgSeries.color
+                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.1)
                     }
                 }
 
@@ -322,8 +321,8 @@ ColumnLayout {
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.text = text
-                        infoToolTip.textColor = Generic.Style.redColor
-                        infoToolTip.borderColor = Qt.lighter(Generic.Style.redColor, 1.5)
+                        infoToolTip.backgroundColor = calcSeries.color
+                        infoToolTip.borderColor = Qt.darker(calcSeries.color, 1.1)
                     }
                 }
             }
@@ -605,8 +604,8 @@ ColumnLayout {
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Generic.Style.darkGreenColor
-                        infoToolTip.background.border.color = Generic.Style.ultraLightGreenColor
+                        infoToolTip.backgroundColor = diffArea.color
+                        infoToolTip.borderColor = Qt.darker(diffArea.color, 1.1)
                     }
                 }
             }
@@ -653,7 +652,7 @@ ColumnLayout {
 
     GenericControls.ToolTip {
         id: infoToolTip
-        backgroundColor: "white"
+        textColor: "white"
         backgroundOpacity: 0.95
     }
 

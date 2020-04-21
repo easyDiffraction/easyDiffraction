@@ -220,8 +220,8 @@ ColumnLayout {
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.text = text
-                        infoToolTip.textColor = Generic.Style.blueColor
-                        infoToolTip.borderColor = Qt.lighter(Generic.Style.blueColor, 1.9)
+                        infoToolTip.backgroundColor = obsArea.color
+                        infoToolTip.borderColor = Qt.darker(obsArea.color, 1.1)
                     }
                 }
             }
@@ -291,7 +291,7 @@ ColumnLayout {
                     infoToolTip.visible = false
                     topChart.zoomReset()
                     //setAxesNiceNumbers()
-                    adjustLeftAxesAnchor()
+                    //adjustLeftAxesAnchor()
                 }
             }
 
@@ -364,7 +364,7 @@ ColumnLayout {
 
     GenericControls.ToolTip {
         id: infoToolTip
-        backgroundColor: "white"
+        textColor: "white"
         backgroundOpacity: 0.95
     }
 
