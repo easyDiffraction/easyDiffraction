@@ -201,15 +201,15 @@ class ProxyPyQml(QObject):
         self.projectSaveStateChanged.emit()
 
     def calculatorInterface(self):
-        self.__log.warning("---")
+        self.__log.debug("---")
         return self._calculator_interface
 
     def needToSave(self):
-        self.__log.warning("+++")
+        self.__log.debug("+++")
         return self._need_to_save
 
     def projectFilePathSelected(self):
-        self.__log.warning("***")
+        self.__log.debug("***")
         return bool(self._project_control._project_file)
 
     # ##############
