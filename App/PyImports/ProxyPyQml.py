@@ -235,26 +235,27 @@ class ProxyPyQml(QObject):
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
 
-    proxy = Property('QVariant', lambda self: self, constant=True)
+    _proxy = Property('QVariant', lambda self: self, constant=True)
+    _releaseInfo = Property('QVariant', lambda self: self.releaseInfo, constant=True)
 
-    projectControl = Property('QVariant', lambda self: self._project_control, constant=True)
-    projectManager = Property('QVariant', lambda self: self._project_control.manager, constant=True)
+    _projectControl = Property('QVariant', lambda self: self._project_control, constant=True)
+    _projectManager = Property('QVariant', lambda self: self._project_control.manager, constant=True)
 
-    measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
-    calculatedData = Property('QVariant', lambda self: self._calculated_data_model, constant=True)
-    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model, constant=True)
-    cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
-    cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), constant=True)
-    atomSites = Property('QVariant', lambda self: self._atom_sites_model.asModel(), constant=True)
-    atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), constant=True)
-    atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), constant=True)
-    fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
+    _measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
+    _calculatedData = Property('QVariant', lambda self: self._calculated_data_model, constant=True)
+    _braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model, constant=True)
+    _cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
+    _cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), constant=True)
+    _atomSites = Property('QVariant', lambda self: self._atom_sites_model.asModel(), constant=True)
+    _atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), constant=True)
+    _atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), constant=True)
+    _fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
 
-    statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
-    chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
-    fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
+    _statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
+    _chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
+    _fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
 
-    releaseInfo = Property('QVariant', lambda self: self.info, constant=True)
+    _releaseInfo = Property('QVariant', lambda self: self.info, constant=True)
 
     # ###############
     # REFINEMENT TYPE
@@ -329,7 +330,7 @@ class ProxyPyQml(QObject):
         self._refine_thread.start()
 
     refinementStatusChanged = Signal()
-    refinementStatus = Property('QVariant', lambda self: [self._refinement_running, self._refinement_done, self._refinement_result], notify=refinementStatusChanged)
+    _refinementStatus = Property('QVariant', lambda self: [self._refinement_running, self._refinement_done, self._refinement_result], notify=refinementStatusChanged)
 
     # ######
     # REPORT
