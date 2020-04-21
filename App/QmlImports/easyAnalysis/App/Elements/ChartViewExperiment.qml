@@ -2,8 +2,11 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtCharts 2.3
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
+
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -216,13 +219,11 @@ ColumnLayout {
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Generic.Style.blueColor
-                        infoToolTip.background.border.color = Qt.lighter(Generic.Style.blueColor, 1.9)
+                        infoToolTip.text = text
+                        infoToolTip.textColor = Generic.Style.blueColor
+                        infoToolTip.borderColor = Qt.lighter(Generic.Style.blueColor, 1.9)
                     }
-
                 }
-
             }
 
             //////////////////////////
@@ -277,7 +278,7 @@ ColumnLayout {
                     const height = recZoom.height
                     topChart.zoomIn(Qt.rect(x, y, width, height))
                     //setAxesNiceNumbers()
-                    adjustLeftAxesAnchor()
+                    //adjustLeftAxesAnchor()
                 }
             }
 
@@ -361,9 +362,10 @@ ColumnLayout {
         font: commonFont
     }
 
-    ToolTip {
+    GenericControls.ToolTip {
         id: infoToolTip
-        background: Rectangle { color: "white"; opacity: 0.95 }
+        backgroundColor: "white"
+        backgroundOpacity: 0.95
     }
 
     // Set animation timers to skip animation once, when you see chart for the 1st time.

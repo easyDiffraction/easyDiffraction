@@ -44,7 +44,6 @@ Rectangle {
 
     color: "white"
 
-
     ScrollView {
         anchors.fill: parent
         clip: true

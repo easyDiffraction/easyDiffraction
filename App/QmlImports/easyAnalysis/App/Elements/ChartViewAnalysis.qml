@@ -1,11 +1,12 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-//import QtQuick.Controls.Universal 2.12
-//import QtQuick.Controls.Universal.impl 2.12
 import QtQuick.Layouts 1.12
 import QtCharts 2.3
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
+
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -262,9 +263,9 @@ ColumnLayout {
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Generic.Style.blueColor
-                        infoToolTip.background.border.color = Qt.lighter(Generic.Style.blueColor, 1.9)
+                        infoToolTip.text = text
+                        infoToolTip.textColor = Generic.Style.blueColor
+                        infoToolTip.borderColor = Qt.lighter(Generic.Style.blueColor, 1.9)
                     }
 
                 }
@@ -292,9 +293,9 @@ ColumnLayout {
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Qt.darker(Generic.Style.greyColor, 1.4)
-                        infoToolTip.background.border.color = Generic.Style.greyColor
+                        infoToolTip.text = text
+                        infoToolTip.textColor = Qt.darker(Generic.Style.greyColor, 1.4)
+                        infoToolTip.borderColor = Generic.Style.greyColor
                     }
                 }
 
@@ -320,9 +321,9 @@ ColumnLayout {
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Generic.Style.redColor
-                        infoToolTip.background.border.color = Qt.lighter(Generic.Style.redColor, 1.5)
+                        infoToolTip.text = text
+                        infoToolTip.textColor = Generic.Style.redColor
+                        infoToolTip.borderColor = Qt.lighter(Generic.Style.redColor, 1.5)
                     }
                 }
             }
@@ -650,9 +651,10 @@ ColumnLayout {
         font: commonFont
     }
 
-    ToolTip {
+    GenericControls.ToolTip {
         id: infoToolTip
-        background: Rectangle { color: "white"; opacity: 0.95 }
+        backgroundColor: "white"
+        backgroundOpacity: 0.95
     }
 
     // Save chart onRefinementDone
