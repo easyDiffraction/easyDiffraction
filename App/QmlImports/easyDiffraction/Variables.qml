@@ -68,10 +68,10 @@ QtObject {
     property var statusInfo: projectOpened ? proxyPyQmlObj.statusInfo : null
 
     // Undo-Redo
-    property var undoText: calculatorInterface ? calculatorInterface.undoText() : ""
-    property var redoText: calculatorInterface ? calculatorInterface.redoText() : ""
-    property var canUndo: calculatorInterface ? calculatorInterface.canUndo() : false
-    property var canRedo: calculatorInterface ? calculatorInterface.canRedo() : false
+    property var undoText: calculatorInterface ? proxyPyQmlObj._undoText : ""
+    property var redoText: calculatorInterface ? proxyPyQmlObj._redoText : ""
+    property var canUndo: calculatorInterface ? proxyPyQmlObj._canUndo : false
+    property var canRedo: calculatorInterface ? proxyPyQmlObj._canRedo : false
 
     // Refinement
     property var refinementRunning: proxyPyQmlObj.refinementStatus[0]

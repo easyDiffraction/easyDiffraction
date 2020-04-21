@@ -227,6 +227,11 @@ class ProxyPyQml(QObject):
     _needToSave = Property(bool, needToSave, notify=projectSaveStateChanged)
     _projectFilePathSelected = Property(bool, projectFilePathSelected, notify=projectSaveStateChanged)
 
+    _undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
+    _redoText = Property('QVariant', lambda self: self._calculator_interface.redoText(), notify=canUndoOrRedoChanged)
+    _canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)
+    _canRedo = Property('QVariant', lambda self: self._calculator_interface.canRedo(), notify=canUndoOrRedoChanged)
+
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
 
