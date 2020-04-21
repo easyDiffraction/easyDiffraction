@@ -58,6 +58,7 @@ class FitablesModel(BaseModel):
 
         # reset model
         self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
+        self._model.setRowCount(0)
         project_dict = self._project_dict
 
         # set column
