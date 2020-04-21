@@ -23,7 +23,7 @@ GenericAppContentArea.Button {
         icon: button.icon
         text: button.text
         font: button.font
-        color: textColor()
+        color: iconColor()
     }
 
     background: Rectangle {
