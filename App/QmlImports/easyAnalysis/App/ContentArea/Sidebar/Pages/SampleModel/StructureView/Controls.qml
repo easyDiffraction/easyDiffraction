@@ -220,7 +220,7 @@ ColumnLayout {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.4.-sample-model"
         goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
             text: "Project"
-            ToolTip.text: qsTr("Go to the previous step: Project")
+            toolTipText: qsTr("Go to the previous step: Project")
             onClicked: {
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
             }
@@ -234,7 +234,7 @@ ColumnLayout {
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Experiment"
-            ToolTip.text: qsTr("Go to the next step: Experiment")
+            toolTipText: qsTr("Go to the next step: Experiment")
             enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
             highlighted: Specific.Variables.projectOpened
             onClicked: {

@@ -16,6 +16,6 @@ Item {
         anchors.rightMargin: 4
         padding: 0
         icon.source: Generic.Variables.thirdPartyIconsPath + "minus-circle.svg"
-        ToolTip.text: qsTr("Remove this row from the table")
+        toolTipText: qsTr("Remove this row from the table")
     }
 }

@@ -114,7 +114,7 @@ Rectangle {
                 buttonBorderDisabledColor: "#eee"
                 //font.bold: true
                 text: "Modelling"
-                ToolTip.text: "Simulation of diffraction data"
+                toolTipText: "Simulation of diffraction data"
                 onClicked: print("Not implemented yet")
             }
             GenericAppToolbar.TabButton { width: 1; opacity: 0 }
@@ -128,7 +128,7 @@ Rectangle {
                 width: 230
                 font.bold: true
                 text: "Start Simulation/Refinement"
-                ToolTip.text: "Simulation of the diffraction pattern or structure model refinement"
+                toolTipText: "Simulation of the diffraction pattern or structure model refinement"
                 onClicked: {
                     //dialog.close() // Only needed in dialog version
                     analysisButton.checked = true

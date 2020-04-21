@@ -185,7 +185,7 @@ Controls1.TableView {
                 //enabled: false
                 visible: styleData.role === "remove" ? true : false
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("Remove this row from the table")
+                toolTipText: qsTr("Remove this row from the table")
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 padding: 2

@@ -9,7 +9,7 @@ import easyDiffraction 1.0 as Specific
 GenericAppToolbar.TabButton {
     icon.source: Generic.Variables.thirdPartyIconsPath + "calculator.svg"
     text: qsTr("Analysis")
-    ToolTip.text: qsTr("Analysis and modelling page")
+    toolTipText: qsTr("Analysis and modelling page")
     //finished: Generic.Variables.analysisPageFinished
     blinking: Specific.Variables.refinementRunning
 }

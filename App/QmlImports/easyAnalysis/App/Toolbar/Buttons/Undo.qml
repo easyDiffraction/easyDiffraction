@@ -8,7 +8,7 @@ import easyDiffraction 1.0 as Specific
 GenericAppToolbar.ToolButton {
     enabled: Specific.Variables.canUndo
     icon.source: Generic.Variables.thirdPartyIconsPath + "undo-alt.svg"
-    ToolTip.text: qsTr("Undo") + " " + Specific.Variables.undoText
+    toolTipText: qsTr("Undo") + " " + Specific.Variables.undoText
 
     onClicked: Specific.Variables.calculatorInterface.undo()
 }

@@ -2,12 +2,15 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls.impl 2.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 
 Button {
     property bool fillWidthEqually: false
     property bool blinking: false
     property int colorAnimationDuration: 250
+    property alias toolTipText: toolTip.text
 
     id: button
 
@@ -21,7 +24,12 @@ Button {
     icon.color: iconColor() //button.enabled ? Generic.Style.buttonIconEnabledColor : Generic.Style.buttonIconDisabledColor
     Behavior on icon.color { ColorAnimation { duration: colorAnimationDuration } }
 
-    ToolTip.visible: ToolTip.text !== "" ? hovered : false
+    //ToolTip.visible: ToolTip.text !== "" ? hovered : false
+
+    GenericControls.ToolTip {
+        id: toolTip
+        visible: text !== "" ? hovered : false
+    }
 
     contentItem: IconLabel {
         id: buttonIcon

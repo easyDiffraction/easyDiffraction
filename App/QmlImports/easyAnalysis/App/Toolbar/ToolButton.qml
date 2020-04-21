@@ -10,6 +10,7 @@ GenericAppContentArea.Button {
     id: button
 
     property bool attention: false
+    //property alias toolTipText: button.toolTipText
 
     Layout.fillWidth: false
     implicitWidth: implicitHeight

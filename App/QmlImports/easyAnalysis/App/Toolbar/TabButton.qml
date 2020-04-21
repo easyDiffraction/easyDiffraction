@@ -2,7 +2,9 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
 import QtQuick.Layouts 1.4
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 
 TabButton {
     id: button
@@ -11,6 +13,13 @@ TabButton {
     property int blinkingAnimationDuration: 500
     property int colorAnimationDuration: 250
     property string buttonBorderDisabledColor: Generic.Style.buttonBorderDisabledColor
+
+    property alias toolTipText: toolTip.text
+
+    GenericControls.ToolTip {
+        id: toolTip
+        visible: text !== "" ? hovered : false
+    }
 
     autoExclusive: true
 

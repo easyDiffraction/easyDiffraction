@@ -8,7 +8,7 @@ import easyDiffraction 1.0 as Specific
 GenericAppToolbar.ToolButton {
     enabled: Specific.Variables.canRedo
     icon.source: Generic.Variables.thirdPartyIconsPath + "redo-alt.svg"
-    ToolTip.text: qsTr("Redo") + " " + Specific.Variables.redoText
+    toolTipText: qsTr("Redo") + " " + Specific.Variables.redoText
 
     onClicked: Specific.Variables.calculatorInterface.redo()
 }

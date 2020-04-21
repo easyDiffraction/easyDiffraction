@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
+import easyAnalysis.Controls 1.0 as GenericControls
+
 MouseArea {
     enum Type {
         NotYet,
@@ -33,6 +35,13 @@ MouseArea {
     onEntered: _show = true
     onExited: _show = false
 
+    /*
     ToolTip.visible: _show && show
     ToolTip.text: _text
+    */
+
+    GenericControls.ToolTip {
+        text: _text
+        visible: _show && show
+    }
 }

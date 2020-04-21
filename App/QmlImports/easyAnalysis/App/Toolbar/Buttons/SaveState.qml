@@ -9,7 +9,7 @@ GenericAppToolbar.ToolButton {
     enabled: Specific.Variables.needToSave
     attention: true
     icon.source: Generic.Variables.thirdPartyIconsPath + "save.svg"
-    ToolTip.text: qsTr("Save current state of the project")
+    toolTipText: qsTr("Save current state of the project")
 
     onClicked: {
         Generic.Variables.showSaveDialog = 0

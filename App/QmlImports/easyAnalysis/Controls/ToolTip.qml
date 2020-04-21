@@ -6,10 +6,10 @@ import QtQuick.Templates 2.12 as T
 T.ToolTip {
     id: control
 
-    property color textColor: control.palette.toolTipText
-    property color backgroundColor: control.palette.toolTipBase
-    property color borderColor: control.palette.dark
-    property real backgroundOpacity: 1.0
+    property color textColor: Qt.darker("grey", 1.95)//control.palette.toolTipText
+    property color backgroundColor: Qt.lighter("grey", 1.95)//control.palette.toolTipBase
+    property color borderColor: Qt.lighter("grey", 1.65)//control.palette.dark
+    property real backgroundOpacity: 0.95
 
     x: parent ? (parent.width - implicitWidth) / 2 : 0
     y: -implicitHeight - 3
@@ -34,5 +34,6 @@ T.ToolTip {
     background: Rectangle {
         border.color: borderColor
         color: backgroundColor
+        opacity: backgroundOpacity
     }
 }
