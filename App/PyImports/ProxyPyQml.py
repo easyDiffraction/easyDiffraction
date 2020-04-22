@@ -130,7 +130,7 @@ class ProxyPyQml(QObject):
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
         self._calculator_interface.clearUndoStack()
-        self.onProjectSaved()
+        # self.onProjectSaved() # generates dictdiffer ValueError: The truth value of an array with more than one element is ambiguous
         self.projectChanged.connect(self.onProjectChanged)
 
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
@@ -152,8 +152,6 @@ class ProxyPyQml(QObject):
 
         # We can't link signals as the manager signals emitted before the dict is updated :-(
         self.projectChanged.emit()
-        self._need_to_save = False
-        self.projectSaveStateChanged.emit()
 
 
     @Slot()
