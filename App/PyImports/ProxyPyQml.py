@@ -130,7 +130,7 @@ class ProxyPyQml(QObject):
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
         self._calculator_interface.clearUndoStack()
-        # self.onProjectSaved() # generates dictdiffer ValueError: The truth value of an array with more than one element is ambiguous
+        self.onProjectSaved() # generates dictdiffer ValueError: The truth value of an array with more than one element is ambiguous - TEMP. FIXED
         self.projectChanged.connect(self.onProjectChanged)
 
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import sys
+import sys, os
+import Project
 import BasicFunctions
-
 
 # FUNCTIONS
 
@@ -58,6 +58,20 @@ def install(*packages):
         else:
             BasicFunctions.printSuccessMessage(message)
 
+def fixDictdifferNumpy():
+    from_str = "    LIST_TYPES += (numpy.ndarray, )"
+    to_str = (from_str + os.linesep + os.linesep +
+        "#Temporary fix for PyInstaller assuming numpy is installed" + os.linesep +
+        "HAS_NUMPY = True" + os.linesep +
+        "import numpy" + os.linesep +
+        "LIST_TYPES += (numpy.ndarray, )")
+    config = Project.Config()
+    dictdiffer_init_py_path = os.path.join(config['pyinstaller']['lib_path']['dictdiffer'], '__init__.py')
+    with open(dictdiffer_init_py_path, 'r') as file:
+        filedata = file.read()
+    filedata = filedata.replace(from_str, to_str)
+    with open(dictdiffer_init_py_path, 'w') as file:
+        file.write(filedata)
 
 # MAIN
 
@@ -90,3 +104,5 @@ if __name__ == '__main__':
 
     if BasicFunctions.osName() == 'windows':
         install('pypiwin32')
+
+    fixDictdifferNumpy()

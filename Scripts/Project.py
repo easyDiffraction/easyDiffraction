@@ -4,6 +4,7 @@ import os, sys
 import subprocess
 import yaml
 import cryspy
+import dictdiffer
 import easyInterface
 import PySide2, shiboken2
 import BasicFunctions
@@ -38,6 +39,7 @@ class Config():
         self.__dict__['pyinstaller']['lib_path']['easyInterface'] = easyInterface.__path__[0]
         self.__dict__['pyinstaller']['lib_path']['shiboken2'] = shiboken2.__path__[0]
         self.__dict__['pyinstaller']['lib_path']['pyside2'] = PySide2.__path__[0]
+        self.__dict__['pyinstaller']['lib_path']['dictdiffer'] = dictdiffer.__path__[0]
         # freezed app
         self.__dict__['app']['freezed']['path'] = os.path.join(self.__dict__['project']['subdirs']['distribution']['path'], self.__dict__['app']['name'] + self.__dict__['app']['freezed']['ext'][BasicFunctions.osName()])
         # installer framework
