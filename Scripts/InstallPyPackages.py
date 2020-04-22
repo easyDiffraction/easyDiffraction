@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys, os
-import Project
 import BasicFunctions
 
 # FUNCTIONS
@@ -65,6 +64,7 @@ def fixDictdifferNumpy():
         "HAS_NUMPY = True" + os.linesep +
         "import numpy" + os.linesep +
         "LIST_TYPES += (numpy.ndarray, )")
+    import Project
     config = Project.Config()
     dictdiffer_init_py_path = os.path.join(config['pyinstaller']['lib_path']['dictdiffer'], '__init__.py')
     with open(dictdiffer_init_py_path, 'r') as file:
