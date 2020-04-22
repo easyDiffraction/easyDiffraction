@@ -66,7 +66,7 @@ Rectangle {
             Text {
                 font.pointSize: Generic.Style.fontPointSize + 1
                 font.family: Generic.Style.fontFamily
-                text: "Project Keywords:"
+                text: "Keywords:"
             }
             Text {
                 font.pointSize: Generic.Style.fontPointSize + 1
@@ -83,8 +83,8 @@ Rectangle {
             Text {
                 font.pointSize: Generic.Style.fontPointSize + 1
                 font.family: Generic.Style.fontFamily
-                color: Specific.Variables.phaseIds.length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
-                text: Specific.Variables.phaseIds.length ? Specific.Variables.phaseIds.join(", ") : "None loaded"
+                color: Specific.Variables.phaseIds().length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
+                text: Specific.Variables.phaseIds().length ? Specific.Variables.phaseIds().join(", ") : "None loaded"
             }
 
             Text {
@@ -95,8 +95,8 @@ Rectangle {
             Text {
                 font.pointSize: Generic.Style.fontPointSize + 1
                 font.family: Generic.Style.fontFamily
-                color: Specific.Variables.experimentIds.length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
-                text: Specific.Variables.experimentIds.length ? Specific.Variables.experimentIds.join(", ") : "None loaded"
+                color: Specific.Variables.experimentIds().length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
+                text: Specific.Variables.experimentIds().length ? Specific.Variables.experimentIds().join(", ") : "None loaded"
             }
 
             Text {

@@ -1,6 +1,5 @@
-from PySide2.QtCore import Qt, QPointF, Slot
+from PySide2.QtCore import Qt, QPointF, Slot, Signal, Property
 from PySide2.QtCharts import QtCharts
-
 
 from easyInterface import logger
 from PyImports.DisplayModels.BaseModel import BaseModel
@@ -9,6 +8,10 @@ from PyImports.DisplayModels.BaseModel import BaseModel
 class MeasuredDataModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self._y_obs_column = 1
+        self._sy_obs_column = 2
+        self._y_max = 1
+        self._y_min = 0
         self._upperSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
         self._lowerSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
         self._log = logger.getLogger(__class__.__module__)
@@ -72,8 +75,8 @@ class MeasuredDataModel(BaseModel):
 
         # Indices of the self._model columns to be plotted on chart
         x_column = 0
-        y_obs_column = 1
-        sy_obs_column = 2
+        #y_obs_column = 1
+        #sy_obs_column = 2
 
         # Get values from model
         x_list = []
@@ -81,11 +84,15 @@ class MeasuredDataModel(BaseModel):
         y_obs_upper_list = []
         for row_index in range(self._model.rowCount()):
             x = self._model.data(self._model.index(row_index, x_column))
-            y_obs = self._model.data(self._model.index(row_index, y_obs_column))
-            sy_obs = self._model.data(self._model.index(row_index, sy_obs_column))
+            y_obs = self._model.data(self._model.index(row_index, self._y_obs_column))
+            sy_obs = self._model.data(self._model.index(row_index, self._sy_obs_column))
             x_list.append(x)
             y_obs_lower_list.append(y_obs - sy_obs)
             y_obs_upper_list.append(y_obs + sy_obs)
+
+        # Update Min and Max
+        self._setYMax(max(y_obs_upper_list))
+        self._setYMin(min(y_obs_lower_list))
 
         # Clear series
         upperSeries = []
@@ -123,3 +130,55 @@ class MeasuredDataModel(BaseModel):
         Sets upper series to be a reference to the QML LineSeries of ChartView.
         """
         self._upperSeriesRefs.append(series)
+
+    @Slot(str)
+    def setDataType(self, type):
+        """
+        Sets data type to be displayed on QML ChartView.
+        """
+        self._log.debug(type)
+        if (type == "Sum"):
+            self._y_obs_column = 1
+            self._sy_obs_column = 2
+        elif (type == "Difference"):
+            self._y_obs_column = 3
+            self._sy_obs_column = 4
+        elif (type == "Up"):
+            self._y_obs_column = 5
+            self._sy_obs_column = 6
+        elif (type == "Down"):
+            self._y_obs_column = 7
+            self._sy_obs_column = 8
+        self._updateQmlChartViewSeries()
+
+    def _yMax(self):
+        """
+        Returns max value for Y-axis.
+        """
+        return self._y_max
+
+    def _yMin(self):
+        """
+        Returns min value for Y-axis.
+        """
+        return self._y_min
+
+    def _setYMax(self, value):
+        """
+        Sets max value for Y-axis.
+        """
+        self._y_max = value
+        self._yMaxChanged.emit()
+
+    def _setYMin(self, value):
+        """
+        Sets min value for Y-axis.
+        """
+        self._y_min = value
+        self._yMinChanged.emit()
+
+    _yMaxChanged = Signal()
+    _yMinChanged = Signal()
+
+    yMax = Property(float, _yMax, notify=_yMaxChanged)
+    yMin = Property(float, _yMin, notify=_yMinChanged)

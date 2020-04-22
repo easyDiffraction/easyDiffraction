@@ -42,6 +42,11 @@ ColumnLayout {
                  enabled: !Specific.Variables.refinementRunning
                  text: "Import data from local drive";
                  onClicked: fileDialogLoadExps.open()
+                 GenericControls.EditingToolTip {
+                     visible: Specific.Variables.experimentIds().length
+                     type: GenericControls.EditingToolTip.Custom
+                     text: qsTr("Multiple experiments are not supported yet.")
+                 }
                 }
                 GenericAppContentAreaButtons.Link {
                     //enabled: false
@@ -66,11 +71,11 @@ ColumnLayout {
     // Loader
     Dialogs1.FileDialog{
         id: fileDialogLoadExps
-        nameFilters: [ "CIF files (*.cif)", "ASCII data files (*.xye)"]
+        nameFilters: [ "CIF or ASCII data files (*.cif *.xye *.dat)"]
         folder: settings.value("lastOpenedProjectFolder", examplesDir)
         onAccepted: {
             settings.setValue("lastOpenedProjectFolder", folder)
-            Specific.Variables.projectControl.loadExperiment(fileUrl, selectedNameFilter)
+            Specific.Variables.projectControl.loadExperiment(fileUrl)
             fileDialogLoadExps.close()
             var old_analysis_state = Generic.Variables.analysisPageFinished
             var old_summary_state = Generic.Variables.summaryPageFinished
@@ -93,7 +98,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Instrument and experiment type"//"Diffractometer"
-        enabled: Specific.Variables.experimentIds.length
+        enabled: Specific.Variables.experimentIds().length
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 //enabled: false
@@ -160,25 +165,61 @@ ColumnLayout {
     // Groupbox
 
     GenericAppElements.GroupBox {
-        title: "Setup parameters"
-        enabled: Specific.Variables.experimentIds.length
+        visible: Specific.Variables.isPolarized
+        title: "Diffraction radiation"
+        enabled: Specific.Variables.experimentIds().length
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
-                columns: 6
-                columnSpacing: 15
-                rowSpacing: 10
+                columns: 5
+                columnSpacing: 5
+                //rowSpacing: 10
 
-                Text { text: qsTr("Wavelength") }
+                Text { text: qsTr("Polarization:") }
+                GenericAppElements.TextField {
+                    text: 100 * Specific.Variables.experimentByIndex(0).polarization.polarization.toFixed(3)
+                    units: "%"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
+                Text { width: 5 }
+                Text { text: qsTr("Polarising efficiency:") }
+                GenericAppElements.TextField {
+                    text: 100 * Specific.Variables.experimentByIndex(0).polarization.efficiency.toFixed(3)
+                    units: "%"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
+            }
+        }
+    }
+
+    // Groupbox
+
+    GenericAppElements.GroupBox {
+        title: "Setup parameters"
+        enabled: Specific.Variables.experimentIds().length
+        content: GenericAppElements.ColumnLayout {
+            GenericAppElements.GridLayout {
+                columns: 8
+                columnSpacing: 5
+                //rowSpacing: 10
+
+                Text { text: qsTr("Zero shift:") }
+                GenericAppElements.TextField {
+                    text: Specific.Variables.experimentByIndex(0).offset.toFixed(4)
+                    units: "\u00B0"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                }
+                Text { width: 5 }
+                Text { text: qsTr("Wavelength:") }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).wavelength.toFixed(4)
                     units: "\u212B"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
-                Text {}
-                Text { text: qsTr("Zero shift") }
+                Text { width: 5 }
+                Text { text: qsTr("Magnetic field:") }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.experimentByIndex(0).offset.toFixed(4)
-                    units: "\u00B0"
+                    text: Specific.Variables.experimentByIndex(0).field.toFixed(4)
+                    units: "T"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
             }
@@ -189,7 +230,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Peak profile" // https://wiki-ext.aps.anl.gov/ug11bm/index.php/GSAS_Profile_Terms
-        enabled: Specific.Variables.experimentIds.length
+        enabled: Specific.Variables.experimentIds().length
 
         content: GenericAppElements.ColumnLayout {
             spacing: 12
@@ -206,40 +247,40 @@ ColumnLayout {
             }
             GridLayout {
                 columns: 8
-                columnSpacing: 15
+                columnSpacing: 5
                 rowSpacing: 10
                 //enabled: false
 
                 // Row
-                Text { text: qsTr("U") }
+                Text { text: "U:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.u.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
-                Text {}
+                Text { width: 5 }
 
-                Text { text: qsTr("V") }
+                Text { text: "V:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.v.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
-                Text {}
+                Text { width: 5 }
 
-                Text { text: qsTr("W") }
+                Text { text: "W:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.w.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
 
                 // Row
-                Text { text: qsTr("X") }
+                Text { text: "X:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.x.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
-                Text {}
+                Text { width: 5 }
 
-                Text { text: qsTr("Y") }
+                Text { text: "Y:" }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.y.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
@@ -248,38 +289,56 @@ ColumnLayout {
         }
     }
 
+    // Groupbox
+
+    GenericAppElements.GroupBox {
+        title: "Background"
+        enabled: Specific.Variables.experimentIds().length
+        content: GenericAppElements.ColumnLayout {
+
+            // Table
+            GenericAppElements.BackgroundTableView {
+                Layout.fillWidth: true
+                model: Specific.Variables.experimentByIndex(0).background
+            }
+        }
+    }
 
     // Groupbox
 
     GenericAppElements.GroupBox {
-        title: "Associated phases"//"Instrument parameters"
-        enabled: Specific.Variables.experimentIds.length
-
-//        content: GridLayout {
-//            columns: 4
-//            columnSpacing: 15
-//            rowSpacing: 10
-//            enabled: false
-//            Text { text: qsTr("Scale") }
-//            GenericAppElements.TextField {
-//                text: Specific.Variables.projectOpened ? Specific.Variables.projectDict.experiments[Specific.Variables.projectDict.info.experiment_ids[0]].phase[Specific.Variables.projectDict.info.phase_ids[0]].scale.store.value.toFixed(4) : ""
-//                units: ""
-//            }
-//
-//        }
+        title: "Structural phases"//"Instrument parameters"
+        enabled: Specific.Variables.experimentIds().length
 
         content: GenericAppElements.ColumnLayout {
 
             // Table
             GenericAppElements.PhasesTableScaleView {
                 Layout.fillWidth: true
+            }
+        }
+    }
 
-                GenericAppElements.GuideWindow {
-                    message: "Here you can see labels of the structural phases."
-                    position: "left"
-                    guideCurrentIndex: 0
-                    toolbarCurrentIndex: Generic.Variables.SampleIndex
-                    guidesCount: Generic.Variables.SampleGuidesCount
+    // Groupbox
+
+    GenericAppElements.GroupBox {
+        title: "Refinement"
+        visible: Specific.Variables.isPolarized
+        enabled: Specific.Variables.experimentIds().length
+        content: GenericAppElements.ColumnLayout {
+            GenericAppElements.RowLayout {
+                spacing: 10
+
+                GenericAppElements.CheckBox {
+                    text: "Up \uff0b Down"
+                    checked: Specific.Variables.refineSum
+                    onClicked: Specific.Variables.refineSum = checked
+                }
+
+                GenericAppElements.CheckBox {
+                    text: "Up \uff0d Down"
+                    checked: Specific.Variables.refineDiff
+                    onClicked: Specific.Variables.refineDiff = checked
                 }
             }
         }

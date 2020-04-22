@@ -35,20 +35,19 @@ class ProjectControl(QObject):
 
         pass
 
-    @Slot(str, str)
-    def loadExperiment(self, experiment_rcif_path, selected_name_filter):
+    @Slot(str)
+    def loadExperiment(self, experiment_rcif_path):
         """
         Load an experiment information from a file.
         :param experiment_rcif_path: URI to experiment (r)cif file
-        :param selected_name_filter: QML name filter from file loading dialog
         :return:
         """
-        
         self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
-        
-        if "(*.cif)" in selected_name_filter:
+        _, file_ext = os.path.splitext(self.experiment_rcif_path)
+
+        if file_ext == ".cif":
             self.experiment_file_format = "cif"
-        elif "(*.xye)" in selected_name_filter:
+        elif file_ext == ".xye" or file_ext == ".dat":
             self.experiment_file_format = "xye"
         
             data = np.loadtxt(self.experiment_rcif_path)
@@ -64,10 +63,10 @@ class ProjectControl(QObject):
             elif data.shape[1] == n_columns_polarized:
                 self._cif_string = POLARIZED_CIF_HEADER() + data_string
             else:
-                raise IOError("Given xye file did not contain 3 or 5 columns of data.")
+                raise IOError("Given file did not contain 3 or 5 columns of data.")
         
         else:
-            raise IOError("Given selected_name_filter not handled in loadExperiment.")
+            raise IOError(f"Given file format .{file_ext} is not supported")
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
@@ -107,7 +106,7 @@ class ProjectControl(QObject):
             self.manager.validSaveState = False
 
     @Slot(str, str)
-    def writeMain(self, name='Undefined', keywords='neutron diffraction, powder, 1d'):
+    def writeMain(self, name='Undefined', keywords='neutron powder diffraction, 1d'):
         """
         Writes a main.cif file in the temp file location.
         :param string name: What is the project name
@@ -459,44 +458,42 @@ def POLARIZED_CIF_HEADER():
     return """
 data_pd
 
-_setup_wavelength      0.84
+_setup_wavelength      2.40
 _setup_field           1.00
 _setup_offset_2theta   0.00
 
-_diffrn_radiation_polarization -0.87
+_diffrn_radiation_polarization  0.80
 _diffrn_radiation_efficiency    1.00
 
-_pd_instr_resolution_u 15.00
+_pd_instr_resolution_u 11.00
 _pd_instr_resolution_v -3.00
-_pd_instr_resolution_w  0.60
+_pd_instr_resolution_w  1.00
 _pd_instr_resolution_x  0.00
 _pd_instr_resolution_y  0.00
 
-_range_2theta_min     4.000
-_range_2theta_max    80.000
-
-loop_
-_exclude_2theta_min
-_exclude_2theta_max
-0.0 1.0
+_chi2_sum True
+_chi2_diff True
+_chi2_up False
+_chi2_down False
 
 loop_
 _pd_background_2theta
 _pd_background_intensity
- 4.5 256.0
-40.0 158.0
-80.0  65.0
+10.0 183.0
+15.0 189.0
+20.0 210.0
+35.0 253.0
+40.0 258.0
+50.0 285.0
+60.0 369.0
+65.0 385.0
+70.0 361.0
 
 loop_
 _phase_label
 _phase_scale
 _phase_igsize
-PHASE_NAME 0.02381 0.0
-
-_chi2_sum True
-_chi2_diff False
-_chi2_up False
-_chi2_down False
+PHASE_NAME 0.15 0.0
 
 loop_
 _pd_meas_2theta

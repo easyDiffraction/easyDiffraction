@@ -116,7 +116,7 @@ Dialog {
 
         onPaint:{
             let ctx = canvas.getContext('2d');
-            ctx.fillStyle = Generic.Style.darkGreenColor//"#d29072"//Generic.Style.redColor//Qt.rgba(0.9, 0.9, 0.9, 1)
+            ctx.fillStyle = Qt.darker("lightsalmon", 1.1)//Qt.darker("sandybrown", 1.1)//"#d29072"//Generic.Style.redColor//Qt.rgba(0.9, 0.9, 0.9, 1)
             //ctx.strokeStyle = "#999"
             ctx.lineWidth = 1.5
 

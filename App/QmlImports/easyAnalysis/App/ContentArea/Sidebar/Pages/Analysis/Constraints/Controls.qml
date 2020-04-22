@@ -66,7 +66,7 @@ ColumnLayout {
         content: GenericAppElements.RowLayout {
             GenericAppContentAreaButtons.GoNext {
                 text: "Next step: Data analysis"
-                ToolTip.text: qsTr("Go to the next step: Data analysis")
+                toolTipText: qsTr("Go to the next step: Data analysis")
                 onClicked: {
                     Generic.Variables.analysisPageFinished = true
                     Generic.Variables.summaryPageFinished = true

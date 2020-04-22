@@ -2,8 +2,11 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtCharts 2.3
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
+
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -35,6 +38,7 @@ ColumnLayout {
         id: chartContainer
         spacing: 0
 
+
         //////////////////////
         // Top chart container
         //////////////////////
@@ -44,6 +48,39 @@ ColumnLayout {
             Layout.fillHeight: true
             color: "transparent"
             clip: true
+
+            // Data selector
+            Row {
+                visible: Specific.Variables.isPolarized
+                height: Specific.Variables.isPolarized ? implicitHeight : 0
+                z: 1000
+                anchors.top: topChart.top
+                anchors.topMargin: -7
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                spacing: 10
+
+                RadioButton {
+                    text: qsTr("Up \uff0b Down")
+                    checked: Specific.Variables.dataType === "Sum"
+                    onClicked: Specific.Variables.dataType = "Sum"
+                }
+                RadioButton {
+                    text: qsTr("Up \uff0d Down")
+                    checked: Specific.Variables.dataType === "Difference"
+                    onClicked: Specific.Variables.dataType = "Difference"
+                }
+                RadioButton {
+                    text: qsTr("Up")
+                    checked: Specific.Variables.dataType === "Up"
+                    onClicked: Specific.Variables.dataType = "Up"
+                }
+                RadioButton {
+                    text: qsTr("Down")
+                    checked: Specific.Variables.dataType === "Down"
+                    onClicked: Specific.Variables.dataType = "Down"
+                }
+            }
 
             Rectangle {
                 id: plotInfoRect
@@ -102,10 +139,11 @@ ColumnLayout {
 
             ChartView {
                 id: topChart
-                visible: Specific.Variables.experimentIds.length? true: false
+                visible: Specific.Variables.experimentIds().length? true: false
                 //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
+                anchors.topMargin: Specific.Variables.isPolarized ? 18 : -extraPadding
                 anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false
@@ -145,8 +183,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.calculationByIndex(0).limits.main.y_min
-                    max: Specific.Variables.calculationByIndex(0).limits.main.y_max
+                    min: Specific.Variables.measuredData.yMin //Specific.Variables.calculationByIndex(0).limits.main.y_min
+                    max: Specific.Variables.measuredData.yMax //Specific.Variables.calculationByIndex(0).limits.main.y_max
                 }
 
                 // Measured curve
@@ -181,13 +219,11 @@ ColumnLayout {
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Generic.Style.blueColor
-                        infoToolTip.background.border.color = Qt.lighter(Generic.Style.blueColor, 1.9)
+                        infoToolTip.text = text
+                        infoToolTip.backgroundColor = obsArea.color
+                        infoToolTip.borderColor = Qt.darker(obsArea.color, 1.1)
                     }
-
                 }
-
             }
 
             //////////////////////////
@@ -242,7 +278,7 @@ ColumnLayout {
                     const height = recZoom.height
                     topChart.zoomIn(Qt.rect(x, y, width, height))
                     //setAxesNiceNumbers()
-                    adjustLeftAxesAnchor()
+                    //adjustLeftAxesAnchor()
                 }
             }
 
@@ -255,36 +291,10 @@ ColumnLayout {
                     infoToolTip.visible = false
                     topChart.zoomReset()
                     //setAxesNiceNumbers()
-                    adjustLeftAxesAnchor()
+                    //adjustLeftAxesAnchor()
                 }
             }
 
-        }
-
-        /////////////////////////////
-        // Middle chart (Bragg peaks)
-        /////////////////////////////
-
-        Rectangle {
-            id: middleChartContainer
-            visible: showBragg
-            Layout.fillWidth: true
-            height: 2*extraPadding
-            color: "transparent"
-            clip: true
-        }
-
-        //////////////////////////////
-        // Bottom chart (Iobs - Icalc)
-        //////////////////////////////
-
-        Rectangle {
-            id: bottomChartContainer
-            visible: showDiff
-            Layout.fillWidth: true
-            height: 150
-            color: "transparent"
-            clip: true
         }
     }
 
@@ -326,9 +336,10 @@ ColumnLayout {
         font: commonFont
     }
 
-    ToolTip {
+    GenericControls.ToolTip {
         id: infoToolTip
-        background: Rectangle { color: "white"; opacity: 0.95 }
+        textColor: "white"
+        backgroundOpacity: 0.95
     }
 
     // Set animation timers to skip animation once, when you see chart for the 1st time.

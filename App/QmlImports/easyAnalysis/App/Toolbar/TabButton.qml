@@ -2,7 +2,9 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
 import QtQuick.Layouts 1.4
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 
 TabButton {
     id: button
@@ -11,6 +13,13 @@ TabButton {
     property int blinkingAnimationDuration: 500
     property int colorAnimationDuration: 250
     property string buttonBorderDisabledColor: Generic.Style.buttonBorderDisabledColor
+
+    property alias toolTipText: toolTip.text
+
+    GenericControls.ToolTip {
+        id: toolTip
+        visible: text !== "" ? hovered : false
+    }
 
     autoExclusive: true
 
@@ -72,7 +81,7 @@ TabButton {
     }
 
     function backgroundColor() {
-        const alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
+        const alpha = button.hovered ? (button.down ? 0.25 : 0.15) : 0.0
         if (button.checked) {
             const color1 = Generic.Style.buttonBkgHighlightedColor
             const color2 = Generic.Style.buttonBkgBlendColor
@@ -80,17 +89,21 @@ TabButton {
         }
         if (!button.enabled)
             return Generic.Style.toolbarButtonBkgDisabledColor
-        var color1 = Generic.Style.buttonBkgFinishedColor
-        var color2 = Generic.Style.buttonBkgBlendColor
+        const color1 = Generic.Style.buttonBkgFinishedColor
+        const color2 = Generic.Style.buttonBkgBlendColor
         return Color.blend(color1, color2, alpha)
     }
 
     function borderColor() {
-        if (button.checked)
-            return Generic.Style.buttonBorderHighlightedColor
+        const alpha = button.hovered ? (button.down ? 0.25 : 0.15) : 0.0
+        if (button.checked) {
+            const color = Generic.Style.buttonBorderHighlightedColor
+            return Color.blend(color, color, alpha)
+        }
         if (!button.enabled)
-            return buttonBorderDisabledColor
-        return Generic.Style.buttonBorderFinishedColor
+            return Generic.Style.buttonBorderDisabledColor
+        const color = Generic.Style.buttonBorderFinishedColor
+        return Color.blend(color, color, alpha)
     }
 
     function iconColor() {

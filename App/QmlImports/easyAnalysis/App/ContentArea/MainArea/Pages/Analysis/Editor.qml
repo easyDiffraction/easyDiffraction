@@ -3,6 +3,8 @@ import QtQuick.Controls 2.12
 import easyAnalysis 1.0 as Generic
 import easyDiffraction 1.0 as Specific
 
+// Old implementation
+/*
 Rectangle {
     property bool showContent: false
 
@@ -29,11 +31,34 @@ Rectangle {
             // this has to be wrapped with the showContent conditional
             // to allow for the iffy view update.
             // Otherwise, one needs to click in the TextView to redraw the content.
-            text: showContent ? Specific.Variables.calculationCif : ""
-
+            //text: showContent ? Specific.Variables.calculationCif : ""
+            text: Specific.Variables.projectCifDict["calculations"].toString()
         }
     }
 }
+*/
 
+// Same implementation as for Experiment and Sample text viewers
+Rectangle {
+    property bool showContent: false
 
+    color: "white"
 
+    ScrollView {
+        anchors.fill: parent
+        clip: true
+
+        TextArea {
+            //anchors.fill: parent
+            padding: 10
+            readOnly: true
+            color: "#333"
+            font.family: Generic.Style.monoFontFamily
+            font.pointSize: Generic.Style.fontPointSize
+            //antialiasing: true
+            wrapMode: Text.NoWrap
+            //text: showContent ? Specific.Variables.experimentCif : ""
+            text: showContent ? Specific.Variables.projectCifDict["calculations"].toString() : ""
+        }
+    }
+}

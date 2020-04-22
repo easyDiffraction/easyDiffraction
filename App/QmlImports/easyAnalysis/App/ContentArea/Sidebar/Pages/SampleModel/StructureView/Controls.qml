@@ -39,6 +39,21 @@ ColumnLayout {
             // Buttons
             GenericAppElements.GridLayout {
                 columns: 2
+                GenericAppContentAreaButtons.Import {
+                    text: "Import new phase from CIF"
+                    enabled: !Specific.Variables.refinementRunning
+                    onClicked: fileDialogLoadPhase.open()
+                    GenericControls.EditingToolTip {
+                        visible: Specific.Variables.phaseIds().length
+                        type: GenericControls.EditingToolTip.Custom
+                        text: qsTr("Multiple phases are not supported yet.")
+                    }
+                }
+                GenericAppContentAreaButtons.Export {
+                    //enabled: false;
+                    text: "Export selected phase to CIF"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
                 GenericAppContentAreaButtons.Add {
                     //enabled: false;
                     text: "Add new phase manually"
@@ -48,16 +63,6 @@ ColumnLayout {
                     id: removeButton;
                     //enabled: false;
                     text: "Remove all phases"
-                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
-                }
-                GenericAppContentAreaButtons.Import {
-                    text: "Import new phase from CIF"
-                    enabled: !Specific.Variables.refinementRunning
-                    onClicked: fileDialogLoadPhase.open()
-                }
-                GenericAppContentAreaButtons.Export {
-                    //enabled: false;
-                    text: "Export selected phase to CIF"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
             }
@@ -95,7 +100,7 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         id: group1
         title: "Symmetry and cell parameters"
-        enabled: Specific.Variables.phaseIds.length
+        enabled: Specific.Variables.phaseIds().length
 
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
@@ -146,7 +151,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Atoms, atomic coordinates and occupations"
-        enabled: Specific.Variables.phaseIds.length
+        enabled: Specific.Variables.phaseIds().length
 
         content: GenericAppElements.ColumnLayout {
 
@@ -177,7 +182,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Atomic displacement parameters" //(\u200A\u00D7\u200A10\u2075\u200A)"
-        enabled: Specific.Variables.phaseIds.length
+        enabled: Specific.Variables.phaseIds().length
         content: GenericAppElements.ColumnLayout {
 
             // Table
@@ -192,7 +197,8 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Magnetic susceptibility parameters"
-        enabled: Specific.Variables.phaseIds.length
+        visible: Specific.Variables.isPolarized
+        enabled: Specific.Variables.phaseIds().length
 
         content: GenericAppElements.ColumnLayout {
 
@@ -214,7 +220,7 @@ ColumnLayout {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.4.-sample-model"
         goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
             text: "Project"
-            ToolTip.text: qsTr("Go to the previous step: Project")
+            toolTipText: qsTr("Go to the previous step: Project")
             onClicked: {
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
             }
@@ -228,7 +234,7 @@ ColumnLayout {
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Experiment"
-            ToolTip.text: qsTr("Go to the next step: Experiment")
+            toolTipText: qsTr("Go to the next step: Experiment")
             enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
             highlighted: Specific.Variables.projectOpened
             onClicked: {

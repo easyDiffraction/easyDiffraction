@@ -7,7 +7,7 @@ import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 GenericAppContentArea.Button {
     Layout.fillWidth: true
     icon.source: Generic.Variables.thirdPartyIconsPath + "trash-alt.svg"
-    ToolTip.text: qsTr("Remove all rows from the table above")
+    toolTipText: qsTr("Remove all rows from the table above")
 }
 
 

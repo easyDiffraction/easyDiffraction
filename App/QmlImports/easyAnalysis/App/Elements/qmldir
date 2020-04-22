@@ -1,6 +1,7 @@
 module Elements
 CheckBox 1.0 CheckBox.qml
 ColumnLayout 1.0 ColumnLayout.qml
+BackgroundTableView 1.0 BackgroundTableView.qml
 RowLayout 1.0 RowLayout.qml
 GridLayout 1.0 GridLayout.qml
 GroupBox 1.0 GroupBox.qml

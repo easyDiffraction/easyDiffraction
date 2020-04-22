@@ -35,7 +35,7 @@ ColumnLayout{
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: Generic.Style.toolbarSpacing
-            spacing: Generic.Style.toolbarSpacing
+            spacing: 0//Generic.Style.toolbarSpacing
 
             GenericAppToolbarButtons.Preferences {}
             GenericAppToolbarButtons.SaveState {}
@@ -101,7 +101,7 @@ ColumnLayout{
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: Generic.Style.toolbarSpacing
-            spacing: Generic.Style.toolbarSpacing
+            spacing: 0//Generic.Style.toolbarSpacing
 
             GenericAppToolbarButtons.Undo {}
             GenericAppToolbarButtons.Redo {}

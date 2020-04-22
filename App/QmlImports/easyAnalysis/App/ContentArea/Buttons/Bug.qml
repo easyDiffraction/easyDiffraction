@@ -8,7 +8,7 @@ GenericAppContentArea.Button {
     Layout.fillWidth: false
     implicitWidth: implicitHeight
     icon.source: Generic.Variables.thirdPartyIconsPath + "bug.svg"
-    ToolTip.text: qsTr("Report a bug or issue")
+    toolTipText: qsTr("Report a bug or issue")
 }
 
 

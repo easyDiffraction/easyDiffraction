@@ -63,4 +63,8 @@ QtObject {
     property bool samplePageFinished: false
     property bool analysisPageFinished: false
     property bool summaryPageFinished: false
+
+    // Chart view
+    property bool showLegend: true
+    property bool showRefinemetResults: true
 }

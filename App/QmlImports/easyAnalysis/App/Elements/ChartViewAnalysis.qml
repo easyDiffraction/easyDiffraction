@@ -2,8 +2,11 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtCharts 2.3
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
+
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -35,18 +38,13 @@ ColumnLayout {
     Timer {
         id: projectChangedTimer
         interval: 100
-        //running: bottomChart.visible
         repeat: false
-        onTriggered: {
-            if (Specific.Variables.projectOpened) {
-                adjustLeftAxesAnchor()
-            }
-        }
+        onTriggered: adjustLeftAxesAnchor()
     }
 
     Text {
         visible: false
-        text: Specific.Variables.projectChangedTime
+        text: JSON.stringify(Specific.Variables.projectDict)
         onTextChanged: projectChangedTimer.restart()
     }
 
@@ -68,6 +66,39 @@ ColumnLayout {
             color: "transparent"
             clip: true
 
+            // Data selector
+            Row {
+                visible: Specific.Variables.isPolarized
+                height: Specific.Variables.isPolarized ? implicitHeight : 0
+                z: 1000
+                anchors.top: topChart.top
+                anchors.topMargin: -7
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                spacing: 10
+
+                RadioButton {
+                    text: qsTr("Up \uff0b Down")
+                    checked: Specific.Variables.dataType === "Sum"
+                    onClicked: Specific.Variables.dataType = "Sum"
+                }
+                RadioButton {
+                    text: qsTr("Up \uff0d Down")
+                    checked: Specific.Variables.dataType === "Difference"
+                    onClicked: Specific.Variables.dataType = "Difference"
+                }
+                RadioButton {
+                    text: qsTr("Up")
+                    checked: Specific.Variables.dataType === "Up"
+                    onClicked: Specific.Variables.dataType = "Up"
+                }
+                RadioButton {
+                    text: qsTr("Down")
+                    checked: Specific.Variables.dataType === "Down"
+                    onClicked: Specific.Variables.dataType = "Down"
+                }
+            }
+
             //////////////////////////
             // Top chart (Iobs, Icalc)
             //////////////////////////
@@ -77,6 +108,7 @@ ColumnLayout {
                 //enabled: false
                 anchors.fill: parent
                 anchors.margins: -extraPadding
+                anchors.topMargin: Specific.Variables.isPolarized ? 18 : -extraPadding
                 anchors.bottomMargin: showDiff ? -4*extraPadding : -extraPadding
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 backgroundRoundness: 0
@@ -86,6 +118,13 @@ ColumnLayout {
 
                 // Custom Legend
                 Item {
+                    opacity: Generic.Variables.showLegend ? 1 : 0
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 500
+                        }
+                    }
+
                     y: topChart.plotArea.top + 10
                     x: topChart.plotArea.right - width - 10
                     width: childrenRect.width
@@ -107,16 +146,25 @@ ColumnLayout {
                         columnSpacing: 10
                         rowSpacing: 5
                         columns: 2
-                        Text { text: "\u25fc"; color: obsArea.color; font: commonFont}
+                        Text { text: "■"; color: obsArea.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
                         Text { text: obsArea.name; font: commonFont}
-                        Text { text: "\u25fc"; color: calcSeries.color; font: commonFont}
+                        Text { text: "–"; color: calcSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
                         Text { text: calcSeries.name; font: commonFont}
+                        Text { text: "--"; color: calcBkgSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
+                        Text { text: calcBkgSeries.name; font: commonFont}
                     }
                 }
 
                 // Plot Info (after refinement)
                 Item {
                     visible: Generic.Variables.numRefinedPars !== " " && Generic.Variables.chiSquared !==  " "
+
+                    opacity: Generic.Variables.showRefinemetResults ? 1 : 0
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 500
+                        }
+                    }
 
                     y: topChart.plotArea.top + 10
                     x: topChart.plotArea.left + 10
@@ -141,7 +189,7 @@ ColumnLayout {
                         columns: 2
                         Text { text: 'Goodness-of-fit (\u03c7\u00b2):'; font: commonFont }
                         Text { text: Generic.Variables.chiSquared; font: commonFont } // Generic.Variables.chiSquared
-                        Text { text: 'Num. refined parameters:'; font: commonFont }
+                        Text { text: 'Fit parameters:'; font: commonFont }
                         Text { text: Generic.Variables.numRefinedPars; font: commonFont } // Generic.Variables.numRefinedPars
                     }
                 }
@@ -175,17 +223,11 @@ ColumnLayout {
                     tickCount: 5
                     minorTickCount: 1
                     labelFormat: "%.0f" //"%.0e"
-                    titleText: showCalc ? "Iobs, Icalc" : "Iobs"
+                    titleText: showCalc ? "Iobs, Icalc, Ibkg" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: {
-                        let calc = Specific.Variables.calculationByIndex(0)
-                        return calc.limits.main.y_min
-                    }
-                    max: {
-                        let calc = Specific.Variables.calculationByIndex(0)
-                        return calc.limits.main.y_max
-                    }
+                    min: Math.min(Specific.Variables.measuredData.yMin, Specific.Variables.calculatedData.yMin)
+                    max: Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
                 }
 
                 // Measured curve
@@ -221,11 +263,39 @@ ColumnLayout {
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Generic.Style.blueColor
-                        infoToolTip.background.border.color = Qt.lighter(Generic.Style.blueColor, 1.9)
+                        infoToolTip.text = text
+                        infoToolTip.backgroundColor = obsArea.color
+                        infoToolTip.borderColor = Qt.darker(obsArea.color, 1.1)
                     }
+                }
 
+                // Calculated background curve
+
+                LineSeries {
+                    id: calcBkgSeries
+                    visible: showCalc
+                    axisX: axisX
+                    axisY: axisY
+                    color: Generic.Style.greyColor
+                    width: 2
+                    style: Qt.DotLine
+                    name: "Background (Ibkg)"
+                    //useOpenGL: true
+
+                    // New approach (fast): pass a reference to LineSeries to python for updating
+                    Component.onCompleted: Specific.Variables.calculatedData.setCalcBkgSeries(calcBkgSeries)
+
+                    onHovered: {
+                        const p = topChart.mapToPosition(point)
+                        const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
+                        infoToolTip.parent = topChart
+                        infoToolTip.x = p.x
+                        infoToolTip.y = p.y - infoToolTip.height
+                        infoToolTip.visible = state
+                        infoToolTip.text = text
+                        infoToolTip.backgroundColor = calcBkgSeries.color
+                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.1)
+                    }
                 }
 
                 // Calculated curve
@@ -250,9 +320,9 @@ ColumnLayout {
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Generic.Style.redColor
-                        infoToolTip.background.border.color = Qt.lighter(Generic.Style.redColor, 1.5)
+                        infoToolTip.text = text
+                        infoToolTip.backgroundColor = calcSeries.color
+                        infoToolTip.borderColor = Qt.darker(calcSeries.color, 1.1)
                     }
                 }
             }
@@ -370,10 +440,14 @@ ColumnLayout {
                     lineVisible: false
                     labelsVisible: false
                     gridVisible:false
-                    min: 0
-                    max: 10
-                    labelFormat: "%.0f"
-                    labelsFont: commonFont
+                    //tickCount: 0
+                    tickType: ValueAxis.TicksDynamic
+                    tickAnchor: -2
+                    tickInterval: 4
+                    min: -1
+                    max: 1
+                    ///labelFormat: "%.0f"
+                    ///labelsFont: commonFont
                 }
 
                 /*
@@ -396,17 +470,29 @@ ColumnLayout {
                     visible: showBragg
                     axisX: axisXbragg
                     axisY: axisYbragg
+
+                    useOpenGL: false
+
                     markerShape: ScatterSeries.MarkerShapeRectangle
+                    markerSize: 10
+
+                    borderWidth: 0.0001
+                    borderColor: "transparent"
+
+                    brushFilename: Generic.Variables.originalIconsPath.replace("file:", "") + "bragg.svg"
+
                     /*
                     markerSize: 1
                     borderWidth: 0.0001
                     borderColor: "transparent"
                     color: "#333"
                     */
+                    /*
                     markerSize: 1
                     borderWidth: 0.00000001
                     borderColor: color
                     color: "#333"
+                    */
 
                     // New approach (fast): pass a reference to LineSeries to python for updating
                     Component.onCompleted: Specific.Variables.braggPeaks.setSeries(braggSeries)
@@ -492,26 +578,17 @@ ColumnLayout {
                     labelsFont: commonFont
                     titleFont: commonFont
                     min: {
-                        if (Specific.Variables.projectOpened) {
-                            let calc = Specific.Variables.calculationByIndex(0)
-                            let min = calc.limits.difference.y_min
-                            let max = calc.limits.difference.y_max
-                            let MAX = Math.max(Math.abs(min), Math.abs(max))
-                            return Math.sign(min) * MAX
-                        }
-                        return 0
+                        const min = Specific.Variables.calculatedData.yDiffMin
+                        const max = Specific.Variables.calculatedData.yDiffMax
+                        const MAX = Math.max(Math.abs(min), Math.abs(max))
+                        return Math.sign(min) * MAX
                     }
                     max: {
-                        if (Specific.Variables.projectOpened) {
-                            let calc = Specific.Variables.calculationByIndex(0)
-                            let min = calc.limits.difference.y_min
-                            let max = calc.limits.difference.y_max
-                            let MAX = Math.max(Math.abs(min), Math.abs(max))
-                            return Math.sign(max) * MAX
-                        }
-                        return 1
+                        const min = Specific.Variables.calculatedData.yDiffMin
+                        const max = Specific.Variables.calculatedData.yDiffMax
+                        const MAX = Math.max(Math.abs(min), Math.abs(max))
+                        return Math.sign(max) * MAX
                     }
-
                 }
 
                 AreaSeries {
@@ -542,9 +619,9 @@ ColumnLayout {
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = Generic.Style.darkGreenColor
-                        infoToolTip.background.border.color = Generic.Style.ultraLightGreenColor
+                        infoToolTip.text = text
+                        infoToolTip.backgroundColor = diffArea.color
+                        infoToolTip.borderColor = Qt.darker(diffArea.color, 1.1)
                     }
                 }
             }
@@ -589,9 +666,10 @@ ColumnLayout {
         font: commonFont
     }
 
-    ToolTip {
+    GenericControls.ToolTip {
         id: infoToolTip
-        background: Rectangle { color: "white"; opacity: 0.95 }
+        textColor: "white"
+        backgroundOpacity: 0.95
     }
 
     // Save chart onRefinementDone
@@ -660,6 +738,7 @@ ColumnLayout {
         let bottomChartTickMaxWidth = 0.0
         let textHeight = 0.0
         const lineHeight = 1.5
+        const extraXShift = 2
 
         dummyText.text = axisY.max.toFixed(0) // follow axisY.labelFormat
         topChartTickMaxWidth = dummyText.width
@@ -682,7 +761,7 @@ ColumnLayout {
             topChart.anchors.leftMargin = -leftMargin - extraPadding
             bottomChart.anchors.leftMargin = -extraPadding
         }
-        middleChart.anchors.leftMargin = leftBraggMargin - extraPadding + textHeight
+        middleChart.anchors.leftMargin = leftBraggMargin - extraPadding + textHeight + extraXShift
 
         //print(topChart.x, topChart.y, topChart.width, topChart.height)
 

@@ -5,10 +5,10 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 import easyDiffraction 1.0 as Specific
 
-GenericAppToolbar.Button {
+GenericAppToolbar.ToolButton {
     enabled: Specific.Variables.canRedo
     icon.source: Generic.Variables.thirdPartyIconsPath + "redo-alt.svg"
-    ToolTip.text: qsTr("Redo") + " " + Specific.Variables.redoText
+    toolTipText: qsTr("Redo") + " " + Specific.Variables.redoText
 
     onClicked: Specific.Variables.calculatorInterface.redo()
 }

@@ -23,7 +23,7 @@ def test_FitablesModelModel():
     assert isinstance(m._model, QStandardItemModel)
 
     # assure _setModelFromProject got called
-    assert m._model.rowCount() == 22
+    assert m._model.rowCount() == 24
     assert m._model.columnCount() == 1
 
     assert len(m._model.roleNames()) == len(m._roles_dict)
@@ -60,7 +60,7 @@ def test_onModelChanged():
     m = Model()
     m.setCalculatorInterface(interface)
     phase_index = m._model.index(2, 0)                           # 3rd element (from phase block)
-    experiment_index = m._model.index(m._model.rowCount()-1, 0)  # 2nd from below (from experiment block)
+    experiment_index = m._model.index(m._model.rowCount()-3, 0)  # 4th from below (from experiment block)
 
     # ######################
     # Check unsupported role

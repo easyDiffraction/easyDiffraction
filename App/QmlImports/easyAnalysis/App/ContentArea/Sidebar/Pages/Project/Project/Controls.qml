@@ -99,7 +99,7 @@ ColumnLayout {
             // Open project dialog
             Dialogs1.FileDialog{
                 id: fileDialogLoadProject
-                nameFilters: [ "CIF files (*.cif)", "Project files (*.zip)"]
+                nameFilters: ["Project files (main.cif *.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
@@ -224,7 +224,7 @@ ColumnLayout {
                             selectionColor: Generic.Style.tableHighlightRowColor
                         }
                         Text {
-                            text: "Project Keywords:"
+                            text: "Keywords:"
                         }
                         TextInput {
                             id: keywordsInput
@@ -232,7 +232,7 @@ ColumnLayout {
                             color: Generic.Style.buttonBkgHighlightedColor
                             selectedTextColor: "white"
                             selectionColor: Generic.Style.tableHighlightRowColor
-                            text: "neutron diffraction, powder, 1d"
+                            text: "neutron powder diffraction, 1d"
                         }
                     }
 
@@ -299,8 +299,8 @@ ColumnLayout {
             GenericAppElements.ParametersTable {
                 Layout.fillWidth: true
                 model: ListModel {
-                    ListElement { number:"1"; name:"Fe3O4";    keywords:"neutron diffraction, powder, 1d, polarised, LLB" }
-                    ListElement { number:"2"; name:"PbSO4";    keywords:"neutron diffraction, powder, 1d, unpolarised, ILL" }
+                    ListElement { number:"1"; name:"Fe3O4";    keywords:"polarised neutron powder diffraction, 1d, LLB" }
+                    ListElement { number:"2"; name:"PbSO4";    keywords:"unpolarised neutron powder diffraction, 1d, ILL" }
                 }
                 Controls1.TableViewColumn { title:"No.";                role:"number";  resizable: false }
                 Controls1.TableViewColumn { title:"Name";               role:"name" }

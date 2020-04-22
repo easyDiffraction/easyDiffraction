@@ -7,7 +7,7 @@ import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 GenericAppContentArea.Button {
     Layout.fillWidth: true
     icon.source: Generic.Variables.thirdPartyIconsPath + "plus-circle.svg"
-    ToolTip.text: qsTr("Add new row to the table above")
+    toolTipText: qsTr("Add new row to the table above")
 }
 
 

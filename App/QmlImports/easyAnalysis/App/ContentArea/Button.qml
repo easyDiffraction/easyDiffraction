@@ -2,13 +2,17 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls.impl 2.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 
 Button {
+    id: button
+
     property bool fillWidthEqually: false
     property bool blinking: false
-
-    id: button
+    property int colorAnimationDuration: 250
+    property alias toolTipText: toolTip.text
 
     Layout.fillWidth: true
     implicitWidth: 1
@@ -17,9 +21,15 @@ Button {
 
     icon.width: Generic.Style.buttonHeight / 1.75
     icon.height: Generic.Style.buttonHeight / 1.75
-    icon.color: iconColor() //button.enabled ? Generic.Style.buttonIconEnabledColor : Generic.Style.buttonIconDisabledColor
+    icon.color: iconColor()
+    Behavior on icon.color { ColorAnimation { duration: colorAnimationDuration } }
 
-    ToolTip.visible: ToolTip.text !== "" ? hovered : false
+    //ToolTip.visible: ToolTip.text !== "" ? hovered : false
+
+    GenericControls.ToolTip {
+        id: toolTip
+        visible: text !== "" ? hovered : false
+    }
 
     contentItem: IconLabel {
         id: buttonIcon
@@ -29,7 +39,8 @@ Button {
         icon: button.icon
         text: button.text
         font: button.font
-        color: textColor() //button.enabled ? Generic.Style.buttonTextEnabledColor : Generic.Style.buttonTextDisabledColor
+        color: textColor()
+        Behavior on color { ColorAnimation { duration: colorAnimationDuration } }
     }
 
     background: Rectangle {
@@ -38,6 +49,8 @@ Button {
         color: backgroundColor()
         border.color: borderColor()
         radius: Generic.Style.toolbarButtonRadius
+        Behavior on color { ColorAnimation { duration: colorAnimationDuration } }
+        Behavior on border.color { ColorAnimation { duration: colorAnimationDuration } }
     }
 
     Component.onCompleted: {
@@ -50,16 +63,18 @@ Button {
     function backgroundColor() {
         if (!button.enabled)
             return Generic.Style.buttonBkgDisabledColor
-        var color1 = button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgEnabledColor
-        var color2 = Generic.Style.buttonBkgBlendColor
-        var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
+        const color1 = button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgEnabledColor
+        const color2 = Generic.Style.buttonBkgBlendColor
+        const alpha = button.hovered ? (button.down ? 0.3 : 0.15) : 0.0
         return Color.blend(color1, color2, alpha)
     }
 
     function borderColor() {
         if (!button.enabled)
             return Generic.Style.appBorderColor
-        return button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.appBorderColor
+        const color = button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBorderEnabledColor
+        const alpha = button.hovered ? (button.down ? 0.0 : 0.45) : 0.9
+        return Color.blend(color, color, alpha)
     }
 
     function iconColor() {

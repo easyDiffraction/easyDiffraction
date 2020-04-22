@@ -6,7 +6,7 @@ import easyAnalysis.App.Toolbar 1.0 as GenericAppToolbar
 GenericAppToolbar.TabButton {
     icon.source: Generic.Variables.thirdPartyIconsPath + "archive.svg"
     text: qsTr("Project")
-    ToolTip.text: qsTr("Project description page")
+    toolTipText: qsTr("Project description page")
     //finished: Generic.Variables.projectPageFinished
 }
 

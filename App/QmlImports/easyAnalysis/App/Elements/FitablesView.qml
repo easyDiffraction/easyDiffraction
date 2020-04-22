@@ -11,7 +11,9 @@ Column {
 
     property int borderWidth: 1
     property int cellHeight: 34
-    property int rowCountToDisplayWithoutHeader: 10
+    property int rowCountToDisplayWithoutHeader: 12
+
+    property real scrollBarPosition: 0
 
     property bool isRefined: false
 
@@ -149,8 +151,16 @@ Column {
                 clip: true
                 boundsBehavior: Flickable.StopAtBounds
 
-                ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
-                ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 1 / rowCountToDisplayWithoutHeader }
+                ScrollBar.horizontal: ScrollBar {
+                    policy: ScrollBar.AlwaysOff
+                }
+                ScrollBar.vertical: ScrollBar {
+                    id: verticalScrollBar
+                    policy: ScrollBar.AsNeeded
+                    minimumSize: 1 / rowCountToDisplayWithoutHeader
+                }
+
+
 
                 // Content row
                 delegate: Rectangle {
@@ -160,9 +170,15 @@ Column {
                     color: backgroundColor()
 
                     function foregroundColor() {
+                        if ((typeof(index) == 'undefined') && (inxex == null)) {
+                            return rowForegroundColor
+                        }
                         return index === contentListView.currentIndex ? highlightedRowForegroundColor : rowForegroundColor
                     }
                     function foregroundColor2() {
+                        if ((typeof(index) == 'undefined') && (inxex == null)) {
+                            return "#999"
+                        }
                         return index === contentListView.currentIndex ? highlightedRowForegroundColor : "#999"
                     }
                     function backgroundColor() {
@@ -171,7 +187,9 @@ Column {
                         else
                             return index % 2 ? alternateRowBackgroundColor : rowBackgroundColor
                     }
-
+                    function thisLabel(){ return ((typeof(label) !== 'undefined') && (label !== null)) ? label : ''}
+                    function thisRefine(){ return ((typeof(refine) !== 'undefined') && (refine !== null)) ? refine : ''}
+                    function thisUnit(){ return ((typeof(unit) !== 'undefined') && (unit !== null)) ? unit : ''}
                     Row {
                         anchors.fill: parent
                         spacing: 0
@@ -193,7 +211,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
-                            text: label
+                            text: thisLabel()
                             color: foregroundColor()
                         }
                         TextInput {
@@ -208,14 +226,15 @@ Column {
                             maximumLength: 8
                             color: foregroundColor()
                             text: toFixed(value)
-                            onTextChanged: {
-                                updateSlider()
-                            }
+                            onTextChanged: updateSlider()
                             onEditingFinished: {
                                 if (valueEdit !== text) {
+                                    scrollBarPosition = verticalScrollBar.position
+                                    print("1 scrollBarPosition", scrollBarPosition, verticalScrollBar.position)
                                     valueEdit = parseFloat(text)
                                 }
                             }
+
                         }
                         Text {
                             width: cellWidthProvider(6)
@@ -224,7 +243,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize * 0.5
                             rightPadding: font.pixelSize
-                            text: unit
+                            text: thisUnit()
                             color: foregroundColor2()
                         }
                         Text {
@@ -241,7 +260,7 @@ Column {
                             width: cellWidthProvider(5)
                             height: parent.height
                             enabled: !Specific.Variables.refinementRunning
-                            checked: refine
+                            checked: thisRefine()
                             onToggled: {
                                 // proper, but slow update of the checkbox
                                 // It waits until python updates project, etc.
@@ -269,11 +288,11 @@ Column {
                     }
 
                 }
+
                 // Content row changed
                 onCurrentIndexChanged: {
                     updateSlider()
                 }
-
             }
         }
     }
@@ -403,7 +422,9 @@ Column {
         onTriggered: {
             const editValue = isRefined
             const editRole = 363 // -> refineEdit role in FitablesModel.py
+            scrollBarPosition = verticalScrollBar.position
             setModelData(editValue, editRole)
+            verticalScrollBar.position = scrollBarPosition
         }
     }
 
@@ -415,7 +436,8 @@ Column {
     }
 
     function getModelData(displayRole, modelIndex = currentModelIndex()) {
-        return contentListView.model.data(modelIndex, displayRole)
+        if (contentListView.model !== null)
+            return contentListView.model.data(modelIndex, displayRole)
     }
 
     function setModelData(editValue, editRole, modelIndex = currentModelIndex()) {
@@ -436,7 +458,10 @@ Column {
         }
         if (typeof value !== "undefined" && slider.value !== value) {
             slider.value = value
+
         }
+
+            //print("slide")
     }
 
 }

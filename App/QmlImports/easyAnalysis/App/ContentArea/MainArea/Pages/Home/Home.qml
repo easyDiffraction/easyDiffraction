@@ -114,7 +114,7 @@ Rectangle {
                 buttonBorderDisabledColor: "#eee"
                 //font.bold: true
                 text: "Modelling"
-                ToolTip.text: "Simulation of diffraction data"
+                toolTipText: "Simulation of diffraction data"
                 onClicked: print("Not implemented yet")
             }
             GenericAppToolbar.TabButton { width: 1; opacity: 0 }
@@ -128,7 +128,7 @@ Rectangle {
                 width: 230
                 font.bold: true
                 text: "Start Simulation/Refinement"
-                ToolTip.text: "Simulation of the diffraction pattern or structure model refinement"
+                toolTipText: "Simulation of the diffraction pattern or structure model refinement"
                 onClicked: {
                     //dialog.close() // Only needed in dialog version
                     analysisButton.checked = true
@@ -332,7 +332,7 @@ Rectangle {
             NumberAnimation { easing.type: Easing.Linear; target: diffraction;  property: "opacity"; from: 0 ; to: 1; duration: Generic.Variables.showIntro ? 0 : Generic.Variables.introAnimationDuration }
         }
         ParallelAnimation {
-            onStarted: print("ccc")
+            //onStarted: print("ccc")
             // show app icon, version, links: opacity
             PropertyAnimation { easing.type: Easing.OutExpo; target: appIcon;           property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }
             PropertyAnimation { easing.type: Easing.OutExpo; target: appVersion;        property: "opacity"; to: 1; duration: Generic.Variables.introAnimationDuration }

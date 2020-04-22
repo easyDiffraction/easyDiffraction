@@ -8,7 +8,7 @@ GenericAppContentArea.Button {
     Layout.fillWidth: false
     implicitWidth: implicitHeight
     icon.source: Generic.Variables.thirdPartyIconsPath + "question-circle.svg"
-    ToolTip.text: qsTr("Get online help for this page")
+    toolTipText: qsTr("Get online help for this page")
 }
 
 

@@ -28,7 +28,7 @@ class ProxyPyQml(QObject):
         self._main_rcif_path = None
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
-        self._calculator_interface = None
+        self._calculator_interface = QtCalculatorInterface(CryspyCalculator())
         self._project_dict_copy = {}
 
         self._project_control = ProjectControl()
@@ -49,7 +49,8 @@ class ProxyPyQml(QObject):
         self._refinement_done = False
         self._refinement_result = {}
 
-        self._needToSave = False
+        self._calculator_interface.clearUndoStack()
+        self._need_to_save = False
 
     @Slot()
     def loadPhasesFromFile(self):
@@ -60,8 +61,11 @@ class ProxyPyQml(QObject):
         self._calculator_interface.addPhaseDefinition(self._phases_rcif_path)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
+        self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
-        self.onProjectUnsaved()
+        self._need_to_save = False
+        self.projectSaveStateChanged.emit()
+        #self.onProjectUnsaved()
     
     @Slot()
     def loadExperiment(self):
@@ -88,8 +92,11 @@ class ProxyPyQml(QObject):
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
+        self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
-        self.onProjectUnsaved()
+        self._need_to_save = False
+        self.projectSaveStateChanged.emit()
+        #self.onProjectUnsaved()
 
     def loadExperimentFromCif(self):
         """
@@ -101,8 +108,11 @@ class ProxyPyQml(QObject):
         self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.updateCalculations()
+        self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
-        self.onProjectUnsaved()
+        self._need_to_save = False
+        self.projectSaveStateChanged.emit()
+        #self.onProjectUnsaved()
 
     # Load CIF method, accessible from QML
     @Slot()
@@ -120,7 +130,7 @@ class ProxyPyQml(QObject):
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
         self._calculator_interface.clearUndoStack()
-        self.onProjectSaved()
+        self.onProjectSaved() # generates dictdiffer ValueError: The truth value of an array with more than one element is ambiguous - TEMP. FIXED
         self.projectChanged.connect(self.onProjectChanged)
 
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
@@ -141,7 +151,7 @@ class ProxyPyQml(QObject):
         self._refine_thread.finished.connect(self._status_model.onRefinementDone)
 
         # We can't link signals as the manager signals emitted before the dict is updated :-(
-        # self.projectChanged.emit()
+        self.projectChanged.emit()
 
 
     @Slot()
@@ -153,7 +163,11 @@ class ProxyPyQml(QObject):
     @Slot(str)
     def createProject(self, file_path):
         self._project_control.createProject(file_path)
+        # Note that the main rcif of self._project_control.main_rcif_path has not ben cleared
+        self._project_control.main_rcif_path = ''
         self.onProjectSaved()
+        self.initialize()
+        self.projectChanged.emit()
 
     @Slot(str)
     def saveProjectAs(self, file_path):
@@ -167,23 +181,34 @@ class ProxyPyQml(QObject):
         self.onProjectSaved()
 
     def onProjectSaved(self):
-        if self._calculator_interface is not None:
-            self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
-        self._needToSave = False
+        self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
+        self._need_to_save = False
         self.projectSaveStateChanged.emit()
 
     def onProjectUnsaved(self):
-        self._needToSave = True
+        self._need_to_save = True
         self.projectSaveStateChanged.emit()
 
     def onProjectChanged(self):
         keys, _ = self._calculator_interface.project_dict.dictComparison(self._project_dict_copy)
         self.__log.debug(f"keys: {keys}")
-        self._needToSave = True
+        self._need_to_save = True
         if not keys:
-            self._needToSave = False
-        self.__log.debug(f"needToSave: {self._needToSave}")
+            self._need_to_save = False
+        self.__log.debug(f"needToSave: {self._need_to_save}")
         self.projectSaveStateChanged.emit()
+
+    def calculatorInterface(self):
+        self.__log.debug("---")
+        return self._calculator_interface
+
+    def needToSave(self):
+        self.__log.debug("+++")
+        return self._need_to_save
+
+    def projectFilePathSelected(self):
+        self.__log.debug("***")
+        return bool(self._project_control._project_file)
 
     # ##############
     # QML Properties
@@ -196,47 +221,70 @@ class ProxyPyQml(QObject):
     projectSaveStateChanged = Signal()
     canUndoOrRedoChanged = Signal()
 
-    # self._projectChanged.connect(self.set_SaveState)
+    _calculatorInterface = Property('QVariant', calculatorInterface, notify=projectChanged)
+    _needToSave = Property(bool, needToSave, notify=projectSaveStateChanged)
+    _projectFilePathSelected = Property(bool, projectFilePathSelected, notify=projectSaveStateChanged)
 
-    projectChangedTime = Property(str, lambda self: str(time.time()), notify=projectChanged)
-
-    projectDict = Property('QVariant', lambda self: self._calculator_interface.asDict(), notify=projectChanged)
-    phaseCif = Property('QVariant', lambda self: self._file_structure_model.asPhaseString(), notify=projectChanged)
-    experimentCif = Property('QVariant', lambda self: self._file_structure_model.asExperimentString(), notify=projectChanged)
-    calculationCif = Property('QVariant', lambda self: self._file_structure_model.asCalculationString(), notify=projectChanged)
-
-    needToSave = Property(bool, lambda self: self._needToSave, notify=projectSaveStateChanged)
-    projectFilePathSelected = Property(bool, lambda self: bool(self._project_control._project_file), notify=projectSaveStateChanged)
-
-    calculatorInterface = Property('QVariant', lambda self: self._calculator_interface, notify=projectChanged)
-    undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
-    redoText = Property('QVariant', lambda self: self._calculator_interface.redoText(), notify=canUndoOrRedoChanged)
-    canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)
-    canRedo = Property('QVariant', lambda self: self._calculator_interface.canRedo(), notify=canUndoOrRedoChanged)
+    _undoText = Property('QVariant', lambda self: self._calculator_interface.undoText(), notify=canUndoOrRedoChanged)
+    _redoText = Property('QVariant', lambda self: self._calculator_interface.redoText(), notify=canUndoOrRedoChanged)
+    _canUndo = Property('QVariant', lambda self: self._calculator_interface.canUndo(), notify=canUndoOrRedoChanged)
+    _canRedo = Property('QVariant', lambda self: self._calculator_interface.canRedo(), notify=canUndoOrRedoChanged)
 
     # Notifications of changes for QML GUI are done, when needed, in the
     # respective classes via dataChanged.emit() or layotChanged.emit() signals
 
-    proxy = Property('QVariant', lambda self: self, constant=True)
+    _proxy = Property('QVariant', lambda self: self, constant=True)
+    _releaseInfo = Property('QVariant', lambda self: self.releaseInfo, constant=True)
 
-    projectControl = Property('QVariant', lambda self: self._project_control, constant=True)
-    projectManager = Property('QVariant', lambda self: self._project_control.manager, constant=True)
+    _projectControl = Property('QVariant', lambda self: self._project_control, constant=True)
+    _projectManager = Property('QVariant', lambda self: self._project_control.manager, constant=True)
 
-    measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
-    calculatedData = Property('QVariant', lambda self: self._calculated_data_model, constant=True)
-    braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model, constant=True)
-    cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
-    cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), constant=True)
-    atomSites = Property('QVariant', lambda self: self._atom_sites_model.asModel(), constant=True)
-    atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), constant=True)
-    atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), constant=True)
-    fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
+    _measuredData = Property('QVariant', lambda self: self._measured_data_model, constant=True)
+    _calculatedData = Property('QVariant', lambda self: self._calculated_data_model, constant=True)
+    _braggPeaks = Property('QVariant', lambda self: self._bragg_peaks_model, constant=True)
+    _cellParameters = Property('QVariant', lambda self: self._cell_parameters_model.asModel(), constant=True)
+    _cellBox = Property('QVariant', lambda self: self._cell_box_model.asModel(), constant=True)
+    _atomSites = Property('QVariant', lambda self: self._atom_sites_model.asModel(), constant=True)
+    _atomAdps = Property('QVariant', lambda self: self._atom_adps_model.asModel(), constant=True)
+    _atomMsps = Property('QVariant', lambda self: self._atom_msps_model.asModel(), constant=True)
+    _fitables = Property('QVariant', lambda self: self._fitables_model.asModel(), constant=True)
 
-    statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
-    chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
-    fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
+    _statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
+    _chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
+    _fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
 
-    releaseInfo = Property('QVariant', lambda self: self.info, constant=True)
+    _releaseInfo = Property('QVariant', lambda self: self.info, constant=True)
+
+    # ###############
+    # REFINEMENT TYPE
+    # ###############
+
+    def refineSum(self):
+        if not self._calculator_interface.experimentsIds():
+            return False
+        experiment_name = self._calculator_interface.experimentsIds()[0]
+        return self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum
+
+    def refineDiff(self):
+        if not self._calculator_interface.experimentsIds():
+            return False
+        experiment_name = self._calculator_interface.experimentsIds()[0]
+        return self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff
+
+    def setRefineSum(self, state):
+        experiment_name = self._calculator_interface.experimentsIds()[0]
+        if self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum == state:
+            return
+        self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum = state
+
+    def setRefineDiff(self, state):
+        experiment_name = self._calculator_interface.experimentsIds()[0]
+        if self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff == state:
+            return
+        self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff = state
+
+    _refineSum = Property(bool, refineSum, setRefineSum, notify=projectChanged)
+    _refineDiff = Property(bool, refineDiff, setRefineDiff, notify=projectChanged)
 
     # ##########
     # REFINEMENT
@@ -265,6 +313,7 @@ class ProxyPyQml(QObject):
         """
         Start refinement as a separate thread
         """
+        self._calculator_interface.setCalculatorFromProject()
         self.__log.info("")
         if self._refinement_running:
             self.__log.info("Fitting stopped")
@@ -279,7 +328,7 @@ class ProxyPyQml(QObject):
         self._refine_thread.start()
 
     refinementStatusChanged = Signal()
-    refinementStatus = Property('QVariant', lambda self: [self._refinement_running, self._refinement_done, self._refinement_result], notify=refinementStatusChanged)
+    _refinementStatus = Property('QVariant', lambda self: [self._refinement_running, self._refinement_done, self._refinement_result], notify=refinementStatusChanged)
 
     # ######
     # REPORT
@@ -314,7 +363,7 @@ class ProxyPyQml(QObject):
             document = QTextDocument(parent=None)
             document.setHtml(self.report_html)
             printer = QPdfWriter(full_filename)
-            printer.setPageSize(printer.A4)
+            printer.setPageSize(printer.A3) # A3 to fit A4 page
             document.print_(printer)
         else:
             raise NotImplementedError

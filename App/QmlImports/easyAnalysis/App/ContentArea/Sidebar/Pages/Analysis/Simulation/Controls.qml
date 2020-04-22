@@ -98,7 +98,7 @@ ColumnLayout {
         content: GenericAppElements.RowLayout {
             GenericAppContentAreaButtons.GoNext {
                 text: "Next step: Summary"
-                ToolTip.text: qsTr("Go to the next step: Summary")
+                toolTipText: qsTr("Go to the next step: Summary")
                 onClicked: {
                     Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
                 }
