@@ -133,7 +133,7 @@ def test_loadExperimentFromXye(no_project_proxy):
     # load test dataset and check
     #no_project_proxy._project_control.experiment_rcif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
     xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
-    no_project_proxy._projectControl.loadExperiment(xye_path, "boom (*.xye) boom")
+    no_project_proxy._projectControl.loadExperiment(xye_path)
     no_project_proxy.loadExperiment()
     
     experiment_added = no_project_proxy._calculator_interface.getExperiment('pd')
