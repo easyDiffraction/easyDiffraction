@@ -24,7 +24,10 @@ GenericAppContentArea.Button {
         icon: button.icon
         text: button.text
         font: button.font
-        color: iconColor()
+        //color: iconColor()
+        color: !button.enabled ?
+                   Generic.Style.buttonIconDisabledColor :
+                   button.attention ? Generic.Style.buttonBkgAttentionColor : Generic.Style.buttonIconEnabledColor
     }
 
     background: Rectangle {
