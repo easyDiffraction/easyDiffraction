@@ -70,7 +70,7 @@ QtObject {
     // Examples
     readonly property var examplesList: [
         examplesDir.replace("file:", "") + "/Fe3O4_pol-neutron-powder-1d_5T_5C1(LLB)/main.cif",
-        examplesDir.replace("file:", "") + "/PbSO4_unpol-neutron-powder-1d_D1A(ILL)/main.cif",
+        examplesDirAbs.replace("file:", "") + "/PbSO4_unpol-neutron-powder-1d_D1A(ILL)/main.cif",
     ]
 
     // Undo-Redo
@@ -321,5 +321,9 @@ QtObject {
         return calculations[name]
     }
 
+    Component.onCompleted: {
+        print("examplesDir", examplesDir)
+        print("examplesDirAbs", examplesDirAbs)
+    }
 }
 

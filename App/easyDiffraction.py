@@ -54,7 +54,10 @@ if __name__ == '__main__':
     release_config_file_path = os.path.join(current_dir_path, "Release.yml")
     qml_imports_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir_path, "QmlImports")).toString())
     examples_dir_path = str(QUrl.fromLocalFile(os.path.join(installation_path, 'Examples')).toString())
+    examples_dir_path_abs = os.path.abspath(os.path.join(installation_path, 'Examples'))
     ###examples_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir_path, '..', 'Examples')).toString())
+    print("examples_dir_path", examples_dir_path)
+    print("examples_dir_path_abs", examples_dir_path_abs)
 
     # Create an application
     app = QApplication(sys.argv)
@@ -73,6 +76,7 @@ if __name__ == '__main__':
     engine.rootContext().setContextProperty("_loggerPyQml", logger_py_qml)
     engine.rootContext().setContextProperty("proxyPyQmlObj", proxy_py_qml_obj)
     engine.rootContext().setContextProperty("examplesDir", examples_dir_path)
+    engine.rootContext().setContextProperty("examplesDirAbs", examples_dir_path_abs)
     engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)
 
     engine.addImportPath(qml_imports_dir_path)
