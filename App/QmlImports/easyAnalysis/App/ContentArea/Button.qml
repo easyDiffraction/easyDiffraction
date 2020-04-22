@@ -7,12 +7,12 @@ import easyAnalysis 1.0 as Generic
 import easyAnalysis.Controls 1.0 as GenericControls
 
 Button {
+    id: button
+
     property bool fillWidthEqually: false
     property bool blinking: false
     property int colorAnimationDuration: 250
     property alias toolTipText: toolTip.text
-
-    id: button
 
     Layout.fillWidth: true
     implicitWidth: 1
@@ -21,7 +21,7 @@ Button {
 
     icon.width: Generic.Style.buttonHeight / 1.75
     icon.height: Generic.Style.buttonHeight / 1.75
-    icon.color: iconColor() //button.enabled ? Generic.Style.buttonIconEnabledColor : Generic.Style.buttonIconDisabledColor
+    icon.color: iconColor()
     Behavior on icon.color { ColorAnimation { duration: colorAnimationDuration } }
 
     //ToolTip.visible: ToolTip.text !== "" ? hovered : false
@@ -39,7 +39,7 @@ Button {
         icon: button.icon
         text: button.text
         font: button.font
-        color: textColor() //button.enabled ? Generic.Style.buttonTextEnabledColor : Generic.Style.buttonTextDisabledColor
+        color: textColor()
         Behavior on color { ColorAnimation { duration: colorAnimationDuration } }
     }
 

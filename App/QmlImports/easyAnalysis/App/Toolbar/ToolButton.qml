@@ -4,30 +4,29 @@ import QtQuick.Controls.impl 2.12
 import QtQuick.Layouts 1.12
 
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 
-GenericAppContentArea.Button {
+Button {
     id: button
 
     property bool attention: false
-    //property alias toolTipText: button.toolTipText
+    property int colorAnimationDuration: 250
+    property alias toolTipText: toolTip.text
 
     Layout.fillWidth: false
     implicitWidth: implicitHeight
 
     checkable: false
 
-    contentItem: IconLabel {
-        spacing: button.spacing
-        mirrored: button.mirrored
-        display: button.display
-        icon: button.icon
-        text: button.text
-        font: button.font
-        //color: iconColor()
-        color: !button.enabled ?
-                   Generic.Style.buttonIconDisabledColor :
-                   button.attention ? Generic.Style.buttonBkgAttentionColor : Generic.Style.buttonIconEnabledColor
+    icon.width: Generic.Style.buttonHeight / 1.75
+    icon.height: Generic.Style.buttonHeight / 1.75
+    icon.color: iconColor()
+    //Behavior on icon.color { ColorAnimation { duration: colorAnimationDuration } } // get wrong color if frequintly changes (e.g. as in canUndo)
+
+    GenericControls.ToolTip {
+        id: toolTip
+        visible: text !== "" ? hovered : false
     }
 
     background: Rectangle {
