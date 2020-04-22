@@ -35,20 +35,19 @@ class ProjectControl(QObject):
 
         pass
 
-    @Slot(str, str)
-    def loadExperiment(self, experiment_rcif_path, selected_name_filter):
+    @Slot(str)
+    def loadExperiment(self, experiment_rcif_path):
         """
         Load an experiment information from a file.
         :param experiment_rcif_path: URI to experiment (r)cif file
-        :param selected_name_filter: QML name filter from file loading dialog
         :return:
         """
-        
         self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
-        
-        if "(*.cif)" in selected_name_filter:
+        _, file_ext = os.path.splitext(self.experiment_rcif_path)
+
+        if file_ext == ".cif":
             self.experiment_file_format = "cif"
-        elif "(*.xye)" in selected_name_filter:
+        elif file_ext == ".xye" or file_ext == ".dat":
             self.experiment_file_format = "xye"
         
             data = np.loadtxt(self.experiment_rcif_path)
@@ -64,10 +63,10 @@ class ProjectControl(QObject):
             elif data.shape[1] == n_columns_polarized:
                 self._cif_string = POLARIZED_CIF_HEADER() + data_string
             else:
-                raise IOError("Given xye file did not contain 3 or 5 columns of data.")
+                raise IOError("Given file did not contain 3 or 5 columns of data.")
         
         else:
-            raise IOError("Given selected_name_filter not handled in loadExperiment.")
+            raise IOError(f"Given file format .{file_ext} is not supported")
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
