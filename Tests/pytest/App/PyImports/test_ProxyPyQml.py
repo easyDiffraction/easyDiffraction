@@ -15,7 +15,7 @@ release_config_file_path = os.path.join('App', "Release.yml")
 @pytest.fixture
 def proxy():
     proxy = ProxyPyQml(release_config_file_path)
-    proxy.projectControl.loadProject(TEST_FILE)
+    proxy._projectControl.loadProject(TEST_FILE)
     proxy.initialize()
     return proxy
 
@@ -41,7 +41,7 @@ def test_Proxy_properties():
 
 def test_Proxy_loadCif(proxy):
     assert proxy._main_rcif_path == "Tests/Data/main.cif"
-    assert isinstance(proxy.calculatorInterface, QtCalculatorInterface)
+    assert isinstance(proxy._calculator_interface, QtCalculatorInterface)
     assert isinstance(proxy._measured_data_model, MeasuredDataModel)
     assert isinstance(proxy._calculated_data_model, CalculatedDataModel)
     assert isinstance(proxy._bragg_peaks_model, BraggPeaksModel)
@@ -53,7 +53,6 @@ def test_Proxy_loadCif(proxy):
     assert isinstance(proxy._fitables_model, FitablesModel)
     assert isinstance(proxy._refine_thread, Refiner)
     assert 'Tests/Data' in proxy._project_control.project_url_absolute_path
-
 
 
 def no_test_refine(proxy, qtbot, capsys):  # to be modified with AS's changes
@@ -119,14 +118,14 @@ def test_saveProject(proxy):
 def test_LoadExperiment_cif(proxy, mocker):
     # exchange loadExperimentFromFile with mock and check it was called
     proxy.loadExperimentFromCif = mocker.MagicMock()
-    proxy.projectControl.experiment_file_format = "cif"
+    proxy._projectControl.experiment_file_format = "cif"
     proxy.loadExperiment()
     proxy.loadExperimentFromCif.assert_called()
 
 def test_LoadExperiment_xye(proxy, mocker):
     # exchange loadExperimentXYE with mock and check it was called
     proxy.loadExperimentFromXye = mocker.MagicMock()
-    proxy.projectControl.experiment_file_format = "xye"
+    proxy._projectControl.experiment_file_format = "xye"
     proxy.loadExperiment()
     proxy.loadExperimentFromXye.assert_called()
 
@@ -134,7 +133,7 @@ def test_loadExperimentFromXye(no_project_proxy):
     # load test dataset and check
     #no_project_proxy._project_control.experiment_rcif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
     xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
-    no_project_proxy.projectControl.loadExperiment(xye_path, "boom (*.xye) boom")
+    no_project_proxy._projectControl.loadExperiment(xye_path, "boom (*.xye) boom")
     no_project_proxy.loadExperiment()
     
     experiment_added = no_project_proxy._calculator_interface.getExperiment('pd')

@@ -35,9 +35,9 @@ def test_BraggPeaksModel():
 
     # Test stuff from _setModelFromProject here
     assert m._model.item(0, 0).data(role=Qt.DisplayRole) == 1
-    assert m._model.item(0, 3).data(role=Qt.DisplayRole) == 9.596088259850408
+    assert m._model.item(0, 3).data(role=Qt.DisplayRole) == 9.210684259850408
     assert m._model.item(88, 0).data(role=Qt.DisplayRole) == 10
-    assert m._model.item(88, 3).data(role=Qt.DisplayRole) == 82.01838528584905
+    assert m._model.item(88, 3).data(role=Qt.DisplayRole) == 81.63298128584906
 
     # assert m._tick_model.item(0, 0).data(role=Qt.DisplayRole) == 9.638782163644526
     # assert m._tick_model.item(0, 1).data(role=Qt.DisplayRole) == 0
