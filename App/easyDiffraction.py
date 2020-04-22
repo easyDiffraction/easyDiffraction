@@ -54,6 +54,7 @@ if __name__ == '__main__':
     release_config_file_path = os.path.join(current_dir_path, "Release.yml")
     qml_imports_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir_path, "QmlImports")).toString())
     examples_dir_path = str(QUrl.fromLocalFile(os.path.join(installation_path, 'Examples')).toString())
+    ###examples_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir_path, '..', 'Examples')).toString())
 
     # Create an application
     app = QApplication(sys.argv)

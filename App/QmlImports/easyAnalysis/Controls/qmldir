@@ -2,4 +2,5 @@ module Controls
 EditingToolTip 1.0 EditingToolTip.qml
 Dialog 1.0 Dialog.qml
 CloseDialog 1.0 CloseDialog.qml
+WantOpenDialog 1.0 WantOpenDialog.qml
 ToolTip 1.0 ToolTip.qml
