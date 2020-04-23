@@ -32,6 +32,8 @@ ColumnLayout{
 
         // Preferences and save state buttons on the left side
         Row {
+            enabled: !Specific.Variables.refinementRunning
+
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: Generic.Style.toolbarSpacing
@@ -98,6 +100,8 @@ ColumnLayout{
 
         // Undo-redu buttons on the right side
         Row {
+            enabled: !Specific.Variables.refinementRunning
+
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: Generic.Style.toolbarSpacing
