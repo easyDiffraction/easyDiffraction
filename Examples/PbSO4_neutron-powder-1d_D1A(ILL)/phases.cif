@@ -1,0 +1,26 @@
+data_PbSO4 
+
+_space_group_name_h-m_alt               'P n m a' 
+_space_group_it_coordinate_system_code  abc 
+
+_cell_length_a      8.477425(36) 
+_cell_length_b      5.395977(24) 
+_cell_length_c      6.957025(33) 
+_cell_angle_alpha  90.0 
+_cell_angle_beta   90.0 
+_cell_angle_gamma  90.0 
+
+loop_ 
+_atom_site_label  
+_atom_site_type_symbol  
+_atom_site_fract_x  
+_atom_site_fract_y  
+_atom_site_fract_z  
+_atom_site_occupancy  
+_atom_site_adp_type  
+_atom_site_u_iso_or_equiv  
+Pb  Pb  0.188(14)    0.25         0.166807(56)  1.0  Uiso 0.01692
+S   S   0.065(13)    0.25         0.685(18)     1.0  Uiso 0.00258
+O1  O   0.908(20)    0.25         0.595(18)     1.0  Uiso 0.02469
+O2  O   0.193573(62) 0.25         0.543237(75)  1.0  Uiso 0.01803
+O3  O   0.081488(44) 0.027453(46) 0.808367      1.0  Uiso 0.01655 
