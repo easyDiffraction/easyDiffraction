@@ -1,0 +1,4 @@
+_name PbSO4
+_keywords 'unpolarised neutron diffraction, powder, 1d'
+_phases phases.cif
+_experiments experiments.cif
