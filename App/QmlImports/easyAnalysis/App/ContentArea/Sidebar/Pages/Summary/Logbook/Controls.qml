@@ -2,11 +2,12 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Layouts 1.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
-import easyAnalysis.Logic 1.0 as GenericLogic
 
 ColumnLayout {
     spacing: 0
@@ -37,14 +38,14 @@ ColumnLayout {
                 GenericAppElements.ComboBox {
                     id: exportFileExt
                     implicitWidth: 100
-                    model: [".HTML"]
+                    model: [".HTML", ".PDF"]
                 }
 
                 GenericAppContentAreaButtons.Export {
                     id: exportButton
                     implicitWidth: 190
                     text: "Export"
-                    onClicked: proxy.save_report(exportFileName.text, exportFileExt.currentText)
+                    onClicked: Generic.Constants.proxy.save_report(exportFileName.text, exportFileExt.currentText)
                 }
 
             }
@@ -57,14 +58,38 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         title: "Export elements"
         content: GenericAppElements.GridLayout {
-            enabled: false
+            //enabled: false
             columns: 3
-            GenericAppElements.CheckBox { checked:true;  text:qsTr("Project info") }
-            GenericAppElements.CheckBox { checked:true;  text:qsTr("Parameters table") }
-            GenericAppElements.CheckBox { checked:true;  text:qsTr("Fitting figure") }
-            GenericAppElements.CheckBox { checked:true;  text:qsTr("Structure plot") }
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Reliability factors") }
-            GenericAppElements.CheckBox { checked:false; text:qsTr("Constraints table") }
+            GenericAppElements.CheckBox {
+                checked:true
+                text:qsTr("Project info")
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+            }
+            GenericAppElements.CheckBox {
+                checked:true
+                text:qsTr("Parameters table")
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+            }
+            GenericAppElements.CheckBox {
+                checked:true
+                text:qsTr("Fitting figure")
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+            }
+            GenericAppElements.CheckBox {
+                checked:true
+                text:qsTr("Structure plot")
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+            }
+            GenericAppElements.CheckBox {
+                checked:false
+                text:qsTr("Reliability factors")
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+            }
+            GenericAppElements.CheckBox {
+                checked:false
+                text:qsTr("Constraints table")
+                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+            }
         }
     }
 

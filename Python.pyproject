@@ -1,30 +1,50 @@
 {
 "files": [
-    "App/easyDiffraction.py",
-
-    "App/PyImports/Helpers.py",
-    "App/PyImports/ProjectSentinel.py",
-    "App/PyImports/Proxy.py",
-    "App/PyImports/Refinement.py",
-    "App/PyImports/StatusObjects.py",
-
-    "App/PyImports/Calculators/CryspyCalculator.py",
-
-    "App/PyImports/Models/BaseModel.py",
-    "App/PyImports/Models/FileStructureModel.py",
-    "App/PyImports/Models/MeasuredDataModel.py",
-    "App/PyImports/Models/AtomSitesModel.py",
-    "App/PyImports/Models/AtomAdpsModel.py",
-    "App/PyImports/Models/AtomMspsModel.py",
-    "App/PyImports/Models/CellParametersModel.py",
-    "App/PyImports/Models/CellBoxModel.py",
-    "App/PyImports/Models/CalculatedDataModel.py",
-    "App/PyImports/Models/BraggPeaksModel.py",
-    "App/PyImports/Models/FitablesModel.py",
-    "App/PyImports/Models/StatusModel.py",
-
     "App/Gui.qml",
 
-    "App/QmlResource.qrc"
+    "App/easyDiffraction.py",
+
+    "App/PyImports/ProjectSentinel.py",
+    "App/PyImports/ProxyPyQml.py",
+    "App/PyImports/QtInterface.py",
+    "App/PyImports/Refinement.py",
+    "App/PyImports/ReleaseReader.py",
+
+    "App/PyImports/Utils/QtLogging.py",
+    "App/PyImports/Utils/Helpers.py",
+
+    "App/PyImports/DisplayModels/AtomAdpsModel.py",
+    "App/PyImports/DisplayModels/AtomMspsModel.py",
+    "App/PyImports/DisplayModels/AtomSitesModel.py",
+    "App/PyImports/DisplayModels/BaseModel.py",
+    "App/PyImports/DisplayModels/BraggPeaksModel.py",
+    "App/PyImports/DisplayModels/CalculatedDataModel.py",
+    "App/PyImports/DisplayModels/CellBoxModel.py",
+    "App/PyImports/DisplayModels/CellParametersModel.py",
+    "App/PyImports/DisplayModels/FileStructureModel.py",
+    "App/PyImports/DisplayModels/FitablesModel.py",
+    "App/PyImports/DisplayModels/MeasuredDataModel.py",
+    "App/PyImports/DisplayModels/ProjectModel.py",
+    "App/PyImports/DisplayModels/StatusModel.py",
+
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/Interface.py",
+
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/Calculators/CryspyCalculator.py",
+
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/DataObj/Calculation.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/DataObj/Experiment.py",
+
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/PhaseObj/Atom.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/PhaseObj/Cell.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/PhaseObj/Phase.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/PhaseObj/SpaceGroup.py",
+
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/Utils/BaseClasses.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Diffraction/DataClasses/Utils/InfoObj.py",
+
+    ".venv/lib/python3.7/site-packages/easyInterface/Utils/DictTools.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Utils/Helpers.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Utils/StatusObjects.py",
+    ".venv/lib/python3.7/site-packages/easyInterface/Utils/units.py"
     ]
 }

@@ -54,7 +54,7 @@ compile_commands.json
 
 # Python
 __pycache__
-.python-venv
+.venv
 .coverage
 
 # macOS
@@ -75,3 +75,5 @@ Distribution
 *.log
 Auth.yml
 .idea/
+
+src/

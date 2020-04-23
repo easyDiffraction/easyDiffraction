@@ -77,6 +77,7 @@ github:
 pyinstaller:
   lib_path:
     cryspy: null
+    easyInterface: null
     shiboken2: null
     pyside2: null
   missing_files:
@@ -131,14 +132,3 @@ installer:
   packages_data_path: null
   packages_meta_path: null
   package_xml_path: null
-# release
-release:
-  version: 0.3.9
-  date: 17 Dec 2019
-  changes: # Get from pull requests description?
-  - Add loading crystal structure from CIF
-  - Add loading experimental datasets from CIF
-  - Add installer for Linux (Ubuntu)
-  - Add application window icon
-  - Change data processing workflow order
-  - Improve charts performance

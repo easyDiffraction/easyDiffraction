@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
+import sys, os
 import BasicFunctions
 
 # FUNCTIONS
@@ -9,6 +9,7 @@ def printSysPath():
     for path in sys.path:
         if path:
             print(path)
+
 
 def upgradePip():
     message = "upgrade PIP"
@@ -19,6 +20,31 @@ def upgradePip():
         sys.exit()
     else:
         BasicFunctions.printSuccessMessage(message)
+
+
+def installFromGitE(owner, repo, branch, egg):
+    url = "git://github.com/{0}/{1}.git@{2}#egg={3}".format(owner, repo, branch, egg)
+    message = "install from '{}'".format(url)
+    try:
+        BasicFunctions.run('pip', 'install', '-e', url, exit_on_error=False)
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        # sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+
+
+def installFromGit(owner, repo, branch):
+    url = "https://github.com/{0}/{1}/archive/{2}.zip".format(owner, repo, branch)
+    message = "install from '{}'".format(url)
+    try:
+        BasicFunctions.run('pip', 'install', url)
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
+
 
 def install(*packages):
     for package in packages:
@@ -31,6 +57,22 @@ def install(*packages):
         else:
             BasicFunctions.printSuccessMessage(message)
 
+def fixDictdifferNumpy():
+    from_str = "    LIST_TYPES += (numpy.ndarray, )"
+    to_str = (from_str + os.linesep + os.linesep +
+        "#Temporary fix for PyInstaller assuming numpy is installed" + os.linesep +
+        "HAS_NUMPY = True" + os.linesep +
+        "import numpy" + os.linesep +
+        "LIST_TYPES += (numpy.ndarray, )")
+    import Project
+    config = Project.Config()
+    dictdiffer_init_py_path = os.path.join(config['pyinstaller']['lib_path']['dictdiffer'], '__init__.py')
+    with open(dictdiffer_init_py_path, 'r') as file:
+        filedata = file.read()
+    filedata = filedata.replace(from_str, to_str)
+    with open(dictdiffer_init_py_path, 'w') as file:
+        file.write(filedata)
+
 # MAIN
 
 if __name__ == '__main__':
@@ -38,21 +80,29 @@ if __name__ == '__main__':
 
     upgradePip()
 
+    installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2')
+    installFromGit(owner='easyDiffraction', repo='easyInterface', branch='polarisation_start') # Until master branch is uploaded to PIP
+
     install(
-        'cryspy==0.1.13',
-        'PySide2==5.13.1',
-        'pyinstaller==3.5',                                                     # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
-        'requests==2.22.0',
-        'uritemplate==3.0.0',
-        'pyyaml==5.1.2',
-        'dicttoxml==1.7.4',
-        'pytest==5.3.0',
-        'pytest_mock==1.12.1',
-        'pytest-cov==2.8.1',
-        'pytest-qt==3.2.2',
-        'wily==1.13.0',
-        'codecov==2.0.15',
-        )
+        #'cryspy==0.1.13',
+        'scipy>=1.4.1',
+        'numpy>=1.18.1',
+        #'easyInterface>=0.0.8',
+        'PySide2>=5.14.1',
+        'pyinstaller>=3.6',  # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+        'requests>=2.23.0',
+        'uritemplate>=3.0.1',
+        'pyyaml>=5.3',
+        'asteval>=0.9.18',
+        'pytest>=5.3.5',
+        'pytest_mock>=2.0.0',
+        'pytest-cov>=2.8.1',
+        'pytest-qt>=3.3.0',
+        'wily>=1.16.0',
+        'codecov>=2.0.16'
+    )
 
     if BasicFunctions.osName() == 'windows':
         install('pypiwin32')
+
+    fixDictdifferNumpy()

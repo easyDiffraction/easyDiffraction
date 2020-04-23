@@ -26,44 +26,51 @@ Rectangle {
 
     Text {
         visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
+        text: JSON.stringify(Specific.Variables.projectDict)
         onTextChanged: {
-            if (Specific.Variables.projectOpened) {
-                // Create dictionary b_scattering:color
-                const bscatList = Array.from(new Set(Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.scat_length_neutron))
-                let bscatColorDict = {}
-                for (let i = 0; i < bscatList.length; i++ ) {
-                    bscatColorDict[bscatList[i]] = Generic.Style.atomColorList[i]
-                }
+            // At the moment only get 1st phase.
+            const phase = Specific.Variables.phaseByIndex(0)
+            if (!Object.keys(phase).length) {
+                return
+            }
 
-                // Unit cell parameters
-                const a = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_a.value
-                const b = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_b.value
-                const c = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].cell.length_c.value
+            // Create dictionary b_scattering:color
+            const bscatList = Array.from(new Set(phase.sites.scat_length_neutron))
+            let bscatColorDict = {}
+            for (let i = 0; i < bscatList.length; i++ ) {
+                bscatColorDict[bscatList[i]] = Generic.Style.atomColorList[i]
+            }
 
-                // Remove old atom scatters, but unit cell box (number 1)
-                for (let i = 1, len = chart.seriesList.length; i < len; i++) {
-                    chart.removeSeries(chart.seriesList[1])
-                }
+            // Unit cell parameters
+            const a = phase.cell.length_a
+            const b = phase.cell.length_b
+            const c = phase.cell.length_c
 
-                // Populate chart with atoms. Every atom is an individual scatter serie
-                for (let i = 0, len = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.fract_x.length; i < len; i++ ) {
-                    var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml")
-                    if (component.status === Component.Ready) {
-                        var series = component.createObject()
-                        if (series === null) {
-                            console.log("Error creating object")
-                        } else {
-                            series.atomSize = Math.abs(Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.scat_length_neutron[i]) * 0.4
-                            series.atomColor = bscatColorDict[Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.scat_length_neutron[i]]
-                            series.atomModel.append({
-                                x: Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.fract_x[i] * a,
-                                y: Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.fract_y[i] * b,
-                                z: Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site_list.fract_z[i] * c
-                            })
-                        }
-                        chart.addSeries(series)
+            // Remove old atom scatters, but unit cell box (number 1)
+            for (let i = 1, len = chart.seriesList.length; i < len; i++) {
+                chart.removeSeries(chart.seriesList[1])
+            }
+
+            // Populate chart with atoms. Every atom is an individual scatter serie
+            for (let i = 0, len = phase.sites.fract_x.length; i < len; i++ ) {
+                var component = Qt.createComponent(Generic.Variables.qmlElementsPath + "AtomScatter3DSeries.qml")
+                if (component.status === Component.Ready) {
+                    var series = component.createObject()
+                    if (series === null) {
+                        console.log("Error creating object")
+                    } else {
+                        //print(i, phase.sites.fract_x[i], phase.sites.scat_length_neutron[i])
+
+                        series.atomSize = Math.abs(phase.sites.scat_length_neutron[i]) * 0.4
+                        series.atomColor = bscatColorDict[phase.sites.scat_length_neutron[i]]
+                        //print(a, atom_site_list.fract_x[i] * a)
+                        series.atomModel.append({
+                            x: phase.sites.fract_x[i] * a,
+                            y: phase.sites.fract_y[i] * b,
+                            z: phase.sites.fract_z[i] * c
+                        })
                     }
+                    chart.addSeries(series)
                 }
             }
         }
@@ -85,6 +92,7 @@ Rectangle {
             height: Math.min(parent.width, parent.height)
             anchors.centerIn: parent
             clip: true
+            visible: Specific.Variables.phaseIds().length ? true: false
 
             // Camera view settings
             orthoProjection: false
@@ -125,7 +133,7 @@ Rectangle {
             axisZ: ValueAxis3D { labelFormat: "" }
 
             //GenericAppElements.AtomScatter3DSeries {
-            //    atomModel: proxy.cellBox
+            //    atomModel: Generic.Constants.proxy.cellBox
             //}
 
             // Unit cell chart settings
@@ -136,13 +144,14 @@ Rectangle {
                 colorStyle: Theme3D.ColorStyleUniform
 
                 ItemModelScatterDataProxy {
-                    itemModel: Specific.Variables.projectOpened ? proxy.cellBox : null
+                    itemModel: Specific.Variables.cellBox
                     xPosRole: "xPos"
                     yPosRole: "yPos"
                     zPosRole: "zPos"
                 }
             }
         }
+
     }
 
     /////////////
@@ -194,12 +203,12 @@ Rectangle {
     // Save chart onRefinementDone
     Timer {
         interval: 250
-        running: proxy.refinementDone
+        running: Specific.Variables.refinementDone
         repeat: false
         onTriggered: {
             //print("save structure")
             chartContainer.grabToImage(function(result) {
-                result.saveToFile(projectControl.project_dir_absolute_path + "/saved_structure.png")
+                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/saved_structure.png")
             })
         }
     }

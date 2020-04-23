@@ -1,12 +1,21 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
+import easyAnalysis 1.0 as Generic
+import easyDiffraction 1.0 as Specific
+import easyAnalysis.App.Elements 1.0 as GenericAppElements
+
+
 Column {
     property alias model: contentListView.model
 
     property int borderWidth: 1
     property int cellHeight: 34
-    property int rowCountToDisplayWithoutHeader: 10
+    property int rowCountToDisplayWithoutHeader: 12
+
+    property real scrollBarPosition: 0
+
+    property bool isRefined: false
 
     property string rowBackgroundColor: 'white'
     property string alternateRowBackgroundColor: '#f7f7f7'
@@ -19,22 +28,33 @@ Column {
     height: childrenRect.height
     spacing: 12
 
+    function toFixed(value, precision = 4) {
+        if (typeof value === 'number')
+            return value.toFixed(precision)
+        else if (typeof value === 'string')
+            return value
+        else
+            return ""
+    }
+
     function cellWidthProvider(column) {
         const allColumnWidth = width - borderWidth * 2
         const numberColumnWidth = 40
         const refineColumnWidth = cellHeight * 1.5
         const flexibleColumnsWidth = allColumnWidth - numberColumnWidth - refineColumnWidth
-        const flexibleColumnsCount = 3
+        const flexibleColumnsCount = 4
         if (column === 1)
             return numberColumnWidth
         else if (column === 2)
-            return 2 * flexibleColumnsWidth / flexibleColumnsCount
+            return 2.6 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 3)
             return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 4)
             return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
         else if (column === 5)
             return refineColumnWidth
+        else if (column === 6)
+            return 0.4 * flexibleColumnsWidth / flexibleColumnsCount
         else return 0
     }
 
@@ -65,6 +85,7 @@ Column {
 
                     Row {
                         anchors.fill: parent
+                        spacing: 0
 
                         Text {
                             width: cellWidthProvider(1)
@@ -73,6 +94,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "No."
                         }
                         Text {
@@ -82,6 +105,8 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "Label"
                         }
                         Text {
@@ -90,8 +115,21 @@ Column {
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            rightPadding: 0
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "Value"
+                        }
+                        Text {
+                            width: cellWidthProvider(6)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignLeft
+                            leftPadding: font.pixelSize * 0.5
+                            rightPadding: font.pixelSize
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
+                            text: ""
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -100,6 +138,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "Error"
                         }
                         Text {
@@ -107,6 +147,8 @@ Column {
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "Fit"
                         }
                     }
@@ -121,8 +163,16 @@ Column {
                 clip: true
                 boundsBehavior: Flickable.StopAtBounds
 
-                ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
-                ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded; minimumSize: 1 / rowCountToDisplayWithoutHeader }
+                ScrollBar.horizontal: ScrollBar {
+                    policy: ScrollBar.AlwaysOff
+                }
+                ScrollBar.vertical: ScrollBar {
+                    id: verticalScrollBar
+                    policy: ScrollBar.AsNeeded
+                    minimumSize: 1 / rowCountToDisplayWithoutHeader
+                }
+
+
 
                 // Content row
                 delegate: Rectangle {
@@ -132,7 +182,16 @@ Column {
                     color: backgroundColor()
 
                     function foregroundColor() {
+                        if ((typeof(index) == 'undefined') && (inxex == null)) {
+                            return rowForegroundColor
+                        }
                         return index === contentListView.currentIndex ? highlightedRowForegroundColor : rowForegroundColor
+                    }
+                    function foregroundColor2() {
+                        if ((typeof(index) == 'undefined') && (inxex == null)) {
+                            return "#999"
+                        }
+                        return index === contentListView.currentIndex ? highlightedRowForegroundColor : "#999"
                     }
                     function backgroundColor() {
                         if (index === contentListView.currentIndex)
@@ -140,9 +199,12 @@ Column {
                         else
                             return index % 2 ? alternateRowBackgroundColor : rowBackgroundColor
                     }
-
+                    function thisLabel(){ return ((typeof(label) !== 'undefined') && (label !== null)) ? label : ''}
+                    function thisRefine(){ return ((typeof(refine) !== 'undefined') && (refine !== null)) ? refine : ''}
+                    function thisUnit(){ return ((typeof(unit) !== 'undefined') && (unit !== null)) ? unit : ''}
                     Row {
                         anchors.fill: parent
+                        spacing: 0
 
                         Text {
                             width: cellWidthProvider(1)
@@ -151,6 +213,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: index + 1
                             color: foregroundColor()
                         }
@@ -161,24 +225,46 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
-                            text: label
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
+                            text: thisLabel()
                             color: foregroundColor()
                         }
                         TextInput {
-                            id: qwe
                             width: cellWidthProvider(3)
                             height: parent.height
-                            enabled: !proxy.refinementRunning
+                            enabled: !Specific.Variables.refinementRunning
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
-                            rightPadding: leftPadding
-                            text: typeof value === 'number' ? value.toFixed(4) : value
+                            rightPadding: 0
+                            validator: DoubleValidator {}
+                            maximumLength: 8
                             color: foregroundColor()
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
+                            text: toFixed(value)
+                            onTextChanged: updateSlider()
                             onEditingFinished: {
-                                valueEdit = text
-                                slider.value = text
+                                if (valueEdit !== text) {
+                                    scrollBarPosition = verticalScrollBar.position
+                                    print("1 scrollBarPosition", scrollBarPosition, verticalScrollBar.position)
+                                    valueEdit = parseFloat(text)
+                                }
                             }
+
+                        }
+                        Text {
+                            width: cellWidthProvider(6)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignLeft
+                            leftPadding: font.pixelSize * 0.5
+                            rightPadding: font.pixelSize
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
+                            text: thisUnit()
+                            color: foregroundColor2()
                         }
                         Text {
                             width: cellWidthProvider(4)
@@ -187,15 +273,28 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: error ? error.toFixed(4) : ""
                             color: foregroundColor()
                         }
                         CheckBox {
                             width: cellWidthProvider(5)
                             height: parent.height
-                            enabled: !proxy.refinementRunning
-                            checked: refine
-                            onToggled: refineEdit = checked
+                            enabled: !Specific.Variables.refinementRunning
+                            checked: thisRefine()
+                            onToggled: {
+                                // proper, but slow update of the checkbox
+                                // It waits until python updates project, etc.
+                                // because of the sequential execution
+                                //refineEdit = checked
+
+                                // temporary fix, but imediate update of the checkbox
+                                // because of the parallel call of python updates via
+                                // Timer (with small delay) using global boolean: isRefined
+                                isRefined = checked
+                                updateCheckBoxTimer.start()
+                            }
                         }
                     }
 
@@ -211,17 +310,11 @@ Column {
                     }
 
                 }
-                // Content row
 
+                // Content row changed
                 onCurrentIndexChanged: {
-                    slider.from = model.data(model.index(currentIndex, 0), Qt.UserRole + 5)
-                    slider.to = model.data(model.index(currentIndex, 0), Qt.UserRole + 6)
-                    slider.value = model.data(model.index(currentIndex, 0), Qt.UserRole + 3)
-                    //slider.stepSize = 0.1
-                    sliderFromLabel.text = slider.from.toFixed(4)
-                    sliderToLabel.text = slider.to.toFixed(4)
+                    updateSlider()
                 }
-
             }
         }
     }
@@ -229,22 +322,46 @@ Column {
     // Slider
     Row {
         id: slideRow
-        enabled: !proxy.refinementRunning
+        enabled: !Specific.Variables.refinementRunning
         width: parent.width
         height: cellHeight
         spacing: 10
 
-        Label {
+        // Min edit area
+        TextInput {
             id: sliderFromLabel
             width: 80
             height: parent.height
             verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignRight
+            horizontalAlignment: Text.AlignLeft
             leftPadding: font.pixelSize
             rightPadding: leftPadding
-            background: Rectangle { border.width: borderWidth; border.color: headerBorderColor }
+            selectByMouse: true
+            selectedTextColor: "white"
+            selectionColor: Generic.Style.tableHighlightRowColor
+            validator: DoubleValidator {}
+            maximumLength: 8
+            font.pointSize: Generic.Style.fontPointSize
+            font.family: Generic.Style.fontFamily
+            text: toFixed(slider.from)
+            onEditingFinished: {
+                if (text === toFixed(slider.from))
+                    return
+                if (parseFloat(text) > parseFloat(sliderToLabel.text))
+                    return
+                const editValue = parseFloat(text)
+                const editRole = 361 // -> minEdit role in FitablesModel.py
+                setModelData(editValue, editRole)
+            }
+            Rectangle {
+                z: parent.z - 1
+                anchors.fill: parent
+                border.width: borderWidth
+                border.color: headerBorderColor
+            }
         }
 
+        // Slider
         Slider {
             id: slider
             width: parent.width - parent.spacing * 2 - sliderFromLabel.width - sliderToLabel.width
@@ -252,7 +369,6 @@ Column {
             //wheelEnabled: false
             //touchDragThreshold: 10000
             //focus: false
-
             handle: Rectangle {
                 id: sliderHandle
                 x: slider.leftPadding + slider.visualPosition * (slider.availableWidth - width)
@@ -266,15 +382,15 @@ Column {
                 ToolTip.text: slider.value.toFixed(4)
 
             }
-
             onPressedChanged: {
                 if (!pressed) {
-                    contentListView.model.setData(contentListView.model.index(contentListView.currentIndex, 0), value, Qt.UserRole + 103)
+                    // Change valueEdit in the table model with new value from slider
+                    const editValue = value
+                    const editRole = 359 // -> valueEdit role in FitablesModel.py
+                    setModelData(editValue, editRole)
                 }
             }
-
             //onWheelEnabledChanged:
-
             /*
             MouseArea {
                     anchors.fill: parent
@@ -289,10 +405,10 @@ Column {
                     }
             }
             */
-
         }
 
-        Label {
+        // Max edit area
+        TextInput {
             id: sliderToLabel
             width: sliderFromLabel.width
             height: parent.height
@@ -300,8 +416,78 @@ Column {
             horizontalAlignment: Text.AlignLeft
             leftPadding: font.pixelSize
             rightPadding: leftPadding
-            background: Rectangle { border.width: borderWidth; border.color: headerBorderColor }
+            selectByMouse: true
+            selectedTextColor: "white"
+            selectionColor: Generic.Style.tableHighlightRowColor
+            validator: DoubleValidator {}
+            maximumLength: 8
+            font.pointSize: Generic.Style.fontPointSize
+            font.family: Generic.Style.fontFamily
+            text: toFixed(slider.to)
+            onEditingFinished: {
+                if (text === toFixed(slider.to))
+                    return
+                if (parseFloat(text) < parseFloat(sliderFromLabel.text))
+                    return
+                const editValue = parseFloat(text)
+                const editRole = 362 // -> maxEdit role in FitablesModel.py
+                setModelData(editValue, editRole)
+            }
+            Rectangle {
+                z: parent.z - 1
+                anchors.fill: parent
+                border.width: borderWidth
+                border.color: headerBorderColor
+            }
         }
+    }
+
+    Timer {
+        id: updateCheckBoxTimer
+        interval: 10
+        onTriggered: {
+            const editValue = isRefined
+            const editRole = 363 // -> refineEdit role in FitablesModel.py
+            scrollBarPosition = verticalScrollBar.position
+            setModelData(editValue, editRole)
+            verticalScrollBar.position = scrollBarPosition
+        }
+    }
+
+    // LOGIC
+
+    function currentModelIndex() {
+        if (contentListView.model !== null)
+            return contentListView.model.index(contentListView.currentIndex, 0)
+    }
+
+    function getModelData(displayRole, modelIndex = currentModelIndex()) {
+        if (contentListView.model !== null)
+            return contentListView.model.data(modelIndex, displayRole)
+    }
+
+    function setModelData(editValue, editRole, modelIndex = currentModelIndex()) {
+        contentListView.model.setData(modelIndex, editValue, editRole)
+    }
+
+    function updateSlider() {
+        if (!Specific.Variables.projectOpened)
+            return
+        const from = getModelData(261)  // -> min role in FitablesModel.py
+        const to = getModelData(262)    // -> max role in FitablesModel.py
+        const value = getModelData(259) // -> value role in FitablesModel.py
+        if (typeof from !== "undefined" && slider.from !== from) {
+            slider.from = from
+        }
+        if (typeof to !== "undefined" && slider.to !== to) {
+            slider.to = to
+        }
+        if (typeof value !== "undefined" && slider.value !== value) {
+            slider.value = value
+
+        }
+
+            //print("slide")
     }
 
 }

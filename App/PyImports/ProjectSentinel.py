@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 import zipfile
+import numpy as np
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import *
@@ -17,7 +18,7 @@ class ProjectControl(QObject):
         self.tempDir = make_temp_dir()
         self.manager = ProjectManager()
         self._saveSuccess = False
-        self._projectFile = None
+        self._project_file = None
         self._isValidCif = None
         self.main_rcif_path = None
         self.phases_rcif_path = None
@@ -42,8 +43,30 @@ class ProjectControl(QObject):
         :return:
         """
         self.experiment_rcif_path = self.generalizePath(experiment_rcif_path)
+        _, file_ext = os.path.splitext(self.experiment_rcif_path)
 
-        pass
+        if file_ext == ".cif":
+            self.experiment_file_format = "cif"
+        elif file_ext == ".xye" or file_ext == ".dat":
+            self.experiment_file_format = "xye"
+        
+            data = np.loadtxt(self.experiment_rcif_path)
+            joined = [" ".join(item) for item in data.astype(str)]
+            data_string = "\n".join(joined)
+            
+            n_columns_unpolarized = 3
+            n_columns_polarized = 5
+            
+            # Determine if the loaded data set is polarized or unpolarized
+            if data.shape[1] == n_columns_unpolarized:
+                self._cif_string = UNPOLARIZED_CIF_HEADER() + data_string
+            elif data.shape[1] == n_columns_polarized:
+                self._cif_string = POLARIZED_CIF_HEADER() + data_string
+            else:
+                raise IOError("Given file did not contain 3 or 5 columns of data.")
+        
+        else:
+            raise IOError(f"Given file format .{file_ext} is not supported")
 
     @Slot(str)
     def loadProject(self, main_rcif_path):
@@ -59,7 +82,7 @@ class ProjectControl(QObject):
             # This is if we've loaded a `zip`
             if check_project_file(self.main_rcif_path):
                 _ = temp_project_dir(self.main_rcif_path, self.tempDir)
-                self._projectFile = self.main_rcif_path
+                self._project_file = self.main_rcif_path
                 self.manager.validSaveState = True
                 self.main_rcif_path = os.path.join(self.tempDir.name, 'main.cif')
         else:
@@ -83,7 +106,7 @@ class ProjectControl(QObject):
             self.manager.validSaveState = False
 
     @Slot(str, str)
-    def writeMain(self, name='Undefined', keywords='neutron diffraction, powder, 1d'):
+    def writeMain(self, name='Undefined', keywords='neutron powder diffraction, 1d'):
         """
         Writes a main.cif file in the temp file location.
         :param string name: What is the project name
@@ -116,7 +139,7 @@ class ProjectControl(QObject):
         saveName = dataDir
         if extension != '.zip':
             saveName = dataDir + '.zip'
-        self._projectFile = saveName
+        self._project_file = saveName
         self.manager.validSaveState = True
 
     @Slot(str, result=str)
@@ -131,6 +154,18 @@ class ProjectControl(QObject):
         if os.path.isfile(fpath):
             return fURI
         return ""
+
+    @Slot(result=str)
+    def projectFileNameWithoutExt(self):
+        """
+        Return the base project file name without extension
+        :return: string with base project file name without extension
+        """
+        if self._project_file is None:
+            return "Undefined"
+        base_with_ext = os.path.basename(self._project_file)
+        base_without_ext = os.path.splitext(base_with_ext)[0]
+        return base_without_ext
 
     def get_project_dir_absolute_path(self):
         """
@@ -187,7 +222,7 @@ class ProjectControl(QObject):
         self.tempDir = make_temp_dir()
         self.manager.resetManager()
         self._saveSuccess = False
-        self._projectFile = None
+        self._project_file = None
         self._isValidCif = None
         self.main_rcif_path = None
         self.structure_rcif_path = None
@@ -205,8 +240,6 @@ class ProjectControl(QObject):
 class ProjectManager(QObject):
     projectSaveChange = Signal(bool)
     projectDetailChange = Signal()
-
-    # projectLoadSignal = Signal()
 
     def __init__(self, parent=None):
         super(ProjectManager, self).__init__(parent)
@@ -258,9 +291,10 @@ class ProjectManager(QObject):
     def get_projectModifiedChanged(self):
         return self._modified.strftime("%d/%m/%Y, %H:%M")
 
-    def set_projectModifiedChanged(self, value):
+    def set_projectModifiedChanged(self, value: datetime):
         self._modified = value
         self.projectDetailChange.emit()
+
 
     def resetManager(self):
         self._projectSaveBool = False
@@ -277,7 +311,6 @@ class ProjectManager(QObject):
     projectInstruments = Property(str, get_projectInstrumentsChanged, set_projectInstrumentsChanged,
                                   notify=projectDetailChange)
     projectModified = Property(str, get_projectModifiedChanged, set_projectModifiedChanged, notify=projectDetailChange)
-
 
 ## Project output checking
 
@@ -379,11 +412,93 @@ def write_zip(data_dir, saveName, mustContain, canContain):
 def writeProject(projectModel, saveName):
     allOK, saveName = create_project_zip(projectModel.tempDir.name, saveName)
     projectModel._saveSuccess = True
-    projectModel._projectFile = saveName
+    projectModel._project_file = saveName
     if not allOK:
         raise FileNotFoundError
 
 def writeEmptyProject(projectModel, saveName):
     saveName = create_empty_project(projectModel.tempDir.name, saveName)
     projectModel._saveSuccess = True
-    projectModel._projectFile = saveName
+    projectModel._project_file = saveName
+
+def UNPOLARIZED_CIF_HEADER():
+
+    return """
+data_pd
+
+_setup_wavelength      2.00
+_setup_offset_2theta   0.00
+
+_pd_instr_resolution_u  0.15000
+_pd_instr_resolution_v -0.30000
+_pd_instr_resolution_w  0.30000
+_pd_instr_resolution_x  0.00000
+_pd_instr_resolution_y  0.15000
+
+loop_
+_pd_background_2theta
+_pd_background_intensity
+ 0.0000         10.0
+ 180.0000       10.0
+ 
+loop_
+_phase_label
+_phase_scale
+_phase_igsize
+PHASE_NAME 1.1328 0.0
+
+loop_
+_pd_meas_2theta
+_pd_meas_intensity
+_pd_meas_intensity_sigma
+"""
+
+def POLARIZED_CIF_HEADER():
+
+    return """
+data_pd
+
+_setup_wavelength      2.40
+_setup_field           1.00
+_setup_offset_2theta   0.00
+
+_diffrn_radiation_polarization  0.80
+_diffrn_radiation_efficiency    1.00
+
+_pd_instr_resolution_u 11.00
+_pd_instr_resolution_v -3.00
+_pd_instr_resolution_w  1.00
+_pd_instr_resolution_x  0.00
+_pd_instr_resolution_y  0.00
+
+_chi2_sum True
+_chi2_diff True
+_chi2_up False
+_chi2_down False
+
+loop_
+_pd_background_2theta
+_pd_background_intensity
+10.0 183.0
+15.0 189.0
+20.0 210.0
+35.0 253.0
+40.0 258.0
+50.0 285.0
+60.0 369.0
+65.0 385.0
+70.0 361.0
+
+loop_
+_phase_label
+_phase_scale
+_phase_igsize
+PHASE_NAME 0.15 0.0
+
+loop_
+_pd_meas_2theta
+_pd_meas_intensity_up
+_pd_meas_intensity_up_sigma
+_pd_meas_intensity_down
+_pd_meas_intensity_down_sigma
+"""

@@ -16,7 +16,7 @@ def test_ProjectModel_creation():
     assert os.path.exists(model.tempDir.name)
     assert model.manager.projectName == None
     assert model.manager.projectKeywords == ''
-    assert model._projectFile is None
+    assert model._project_file is None
     assert model._isValidCif is None
     assert model.main_rcif_path is None
 
@@ -28,7 +28,7 @@ def test_ProjectModel_loadProject_cif():
 
     assert model.manager.projectName == 'Fe3O4\n'
     assert model.manager.projectKeywords == 'neutron diffraction, powder, 1d'
-    assert model._projectFile is None
+    assert model._project_file is None
     assert model._isValidCif
     assert model.main_rcif_path == TEST_CIF
 
@@ -40,7 +40,7 @@ def test_ProjectModel_loadProject_cif_error():
 
     assert model.manager.projectName is None
     assert model.manager.projectKeywords == ''
-    assert model._projectFile is None
+    assert model._project_file is None
     assert model._isValidCif is False
     assert model.main_rcif_path == TEST_CIF_ERROR
 
@@ -52,7 +52,7 @@ def test_ProjectModel_loadProject_zip():
 
     assert model.manager.projectName == 'Fe3O4 \n'
     assert model.manager.projectKeywords == 'neutron diffraction, powder, 1d'
-    assert model._projectFile == TEST_ZIP
+    assert model._project_file == TEST_ZIP
     assert model._isValidCif
     TEMP_PATH = os.path.join(model.tempDir.name, 'main.cif')
     assert model.main_rcif_path == TEMP_PATH
@@ -74,9 +74,9 @@ def test_ProjectModel_writeMain():
         os.remove(model.main_rcif_path)
 
     model.writeMain()
-    checker('Undefined', 'neutron diffraction, powder, 1d')
+    checker('Undefined', 'neutron powder diffraction, 1d')
     model.writeMain('Test')
-    checker('Test', 'neutron diffraction, powder, 1d')
+    checker('Test', 'neutron powder diffraction, 1d')
     model.writeMain('Test', 'Testing')
     checker('Test', 'Testing')
 
@@ -87,7 +87,7 @@ def test_ProjectModel_createProject():
     assert os.path.exists(model.tempDir.name)
     assert model.manager.projectName is None
     assert model.manager.projectKeywords == ''
-    assert model._projectFile == os.path.join(TEST_DIR, 'boo.zip')
+    assert model._project_file == os.path.join(TEST_DIR, 'boo.zip')
     assert model._isValidCif is None
     assert model.main_rcif_path is None
 
@@ -95,7 +95,7 @@ def test_ProjectModel_createProject():
     assert os.path.exists(model.tempDir.name)
     assert model.manager.projectName is None
     assert model.manager.projectKeywords == ''
-    assert model._projectFile == os.path.join(TEST_DIR, 'boo.zip')
+    assert model._project_file == os.path.join(TEST_DIR, 'boo.zip')
     assert model._isValidCif is None
     assert model.main_rcif_path is None
 
@@ -174,3 +174,106 @@ def test_create_project_zip():
     with pytest.raises(FileNotFoundError):
         isSaved, saveName2 = create_project_zip('Dummy/Dir', FILE)
     temp1.cleanup()
+
+def test_LoadExperiment_cif():
+    cif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'experiments.cif')
+    model = ProjectControl()
+    model.loadExperiment(cif_path)
+    assert model.experiment_file_format == "cif"
+
+def test_LoadExperiment_xye_unpolarized():
+    xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data3.xye')
+    model = ProjectControl()
+    model.loadExperiment(xye_path)
+    assert "PHASE_NAME" in model._cif_string
+    assert "_setup_wavelength      2.00" in model._cif_string
+
+def test_LoadExperiment_xye_polarized():
+    xye_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'data5.xye')
+    model = ProjectControl()
+    model.loadExperiment(xye_path)
+    assert "PHASE_NAME" in model._cif_string
+    assert "_setup_wavelength      2.40" in model._cif_string
+
+def test_LoadExperiment_exception():
+    dummy_path = "dummy_path.txt"
+    model = ProjectControl()
+    with pytest.raises(IOError):
+        model.loadExperiment(dummy_path)
+
+@pytest.fixture
+def pm():
+    return ProjectManager()
+
+
+@pytest.mark.skipif(sys.platform.startswith("linux"), reason="Skipped on Ubuntu")
+@pytest.mark.parametrize('state', [True, False])
+def test_ProjectManager_set_get_isValidSaveState(pm, qtbot, state):
+    assert pm.validSaveState is False
+    with qtbot.waitSignal(pm.projectSaveChange) as blocker:
+        pm.validSaveState = state
+    assert blocker.args == [state]
+    assert pm.validSaveState == state
+
+@pytest.mark.skipif(sys.platform.startswith("linux"), reason="Skipped on Ubuntu")
+def test_ProjectManager_projectNameChanged(pm, qtbot):
+    value = 'Foo'
+    assert pm.projectName is None
+    with qtbot.waitSignal(pm.projectDetailChange):
+        pm.projectName = value
+    assert pm.projectName == value
+
+
+@pytest.mark.skipif(sys.platform.startswith("linux"), reason="Skipped on Ubuntu")
+def test_ProjectManager_projectKeywordsChanged(pm, qtbot):
+    value = ['Foo']
+    assert pm.projectKeywords == ''
+    with qtbot.waitSignal(pm.projectDetailChange):
+        pm.projectKeywords = value
+    assert pm.projectKeywords == value[0]
+
+
+@pytest.mark.skipif(sys.platform.startswith("linux"), reason="Skipped on Ubuntu")
+def test_ProjectManager_projectExperimentsChanged(pm, qtbot):
+    value = 'Foo'
+    assert pm.projectExperiments is None
+    with qtbot.waitSignal(pm.projectDetailChange):
+        pm.projectExperiments = value
+    assert pm.projectExperiments == value
+
+
+@pytest.mark.skipif(sys.platform.startswith("linux"), reason="Skipped on Ubuntu")
+def test_ProjectManager_projectInstrumentsChanged(pm, qtbot):
+    value = 'Foo'
+    assert pm.projectInstruments is None
+    with qtbot.waitSignal(pm.projectDetailChange):
+        pm.projectInstruments = value
+    assert pm.projectInstruments == value
+
+
+@pytest.mark.skipif(sys.platform.startswith("linux"), reason="Skipped on Ubuntu")
+def test_ProjectManager_projectModifiedChanged(pm, qtbot):
+    value = datetime.now()
+    assert isinstance(pm.projectModified, str)
+    with qtbot.waitSignal(pm.projectDetailChange):
+        pm.projectModified = value
+    assert pm.projectModified == value.strftime("%d/%m/%Y, %H:%M")
+
+
+def test_ProjectManager_reset(pm):
+    value = 'Foo'
+    pm.validSaveState = True
+    pm.projectName = value
+    pm.projectKeywords = [value]
+    pm.projectExperiments = value
+    pm.projectInstruments = value
+    now = datetime.now()
+    pm.projectModified = now
+
+    pm.resetManager()
+    assert pm.validSaveState is False
+    assert pm.projectName is None
+    assert pm.projectKeywords == ''
+    assert pm.projectExperiments is None
+    assert pm.projectInstruments is None
+    assert pm.projectModified == now.strftime("%d/%m/%Y, %H:%M")

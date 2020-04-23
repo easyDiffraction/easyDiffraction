@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import Qt.labs.platform 1.0 as QtLabs
+
 import easyAnalysis 1.0 as Generic
+import easyDiffraction 1.0 as Specific
 
 QtLabs.MenuBar {
 
@@ -11,14 +13,39 @@ QtLabs.MenuBar {
     QtLabs.Menu {
         title: qsTr("&File")
 
+        /*
         QtLabs.MenuItem {
             text: qsTr("&Open")
             onTriggered: messageDialog.show(qsTr("Open action triggered"))
         }
+        */
 
         QtLabs.MenuItem {
-            text: qsTr("E&xit")
+            enabled: false // TODO: enable when binded with close dialog if project not changed
+            text: qsTr("Exit")
+            shortcut: StandardKey.Quit
             onTriggered: Qt.quit()
+        }
+    }
+
+    ////////////
+    // Edit menu
+    ////////////
+
+    QtLabs.Menu {
+        title: qsTr("&Edit")
+
+        QtLabs.MenuItem {
+            enabled: Specific.Variables.canUndo
+            text: qsTr("Undo") + " " + Specific.Variables.undoText
+            shortcut: StandardKey.Undo
+            onTriggered: Specific.Variables.calculatorInterface.undo()
+        }
+        QtLabs.MenuItem {
+            enabled: Specific.Variables.canRedo
+            text: qsTr("Redo") + " " + Specific.Variables.redoText
+            shortcut: StandardKey.Redo
+            onTriggered: Specific.Variables.calculatorInterface.redo()
         }
     }
 
@@ -30,39 +57,27 @@ QtLabs.MenuBar {
         title: qsTr("&Help")
 
         QtLabs.MenuItem {
-            text: qsTr("&Help")
-            onTriggered: messageDialog.show(qsTr("Open action triggered"))
-        }
-
-        QtLabs.MenuItem {
-            text: qsTr("Show Application Intro")
-            checkable: true
-            checked: Generic.Variables.showIntro
-            onTriggered: {
-                Generic.Variables.showIntro = checked
-                //if (checked) {
-                    //dialog.close()
-                    // reset!
-                    //dialog.open()
-                    //animo.restart()
-                    //if (Generic.Variables.toolbarCurrentIndex !== Generic.Variables.HomeIndex) {
-                    //    Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
-                    //}
-                //}
-            }
-        }
-
-        QtLabs.MenuItem {
-            text: qsTr("&Show User Guides")
-            checkable: true
-            checked: Generic.Variables.showGuide
-            onTriggered: Generic.Variables.showGuide = checked
-        }
-
-        QtLabs.MenuItem {
             text: qsTr("&About")
-            //onTriggered: Qt.quit()
+            onTriggered: Generic.Variables.showAbout = 1
         }
+        QtLabs.MenuItem {
+            text: qsTr("Preferences")
+            shortcut: StandardKey.Preferences
+            onTriggered: Generic.Variables.showPreferences = 1
+        }
+        QtLabs.MenuItem {
+            text: qsTr("Get Started Video Tutorial")
+            onTriggered: Qt.openUrlExternally("https://easydiffraction.org/tutorials_start.html")
+        }
+        QtLabs.MenuItem {
+            text: qsTr("Online Documentation")
+            onTriggered: Qt.openUrlExternally("https://easydiffraction.org/documentation.html")
+        }
+        QtLabs.MenuItem {
+            text: qsTr("Get in Touch Online")
+            onTriggered: Qt.openUrlExternally("https://easydiffraction.org/contact.html")
+        }
+
     }
 }
 

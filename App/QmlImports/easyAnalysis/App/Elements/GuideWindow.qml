@@ -16,7 +16,6 @@ Dialog {
     property int guideCurrentIndex: 0
     property int guidesCount: 1
 
-
     property int toY: 0
 
     property int arrowThikness: 10
@@ -26,7 +25,15 @@ Dialog {
 
     property int animationDuration: 300
 
+    property int visibilityDelay: 0
+
     id: dialog
+
+    visible: Generic.Variables.showGuide &&
+             Generic.Variables.introFinished &&
+             Generic.Variables.toolbarCurrentIndex === toolbarCurrentIndex &&
+             Generic.Variables.guideCurrentIndex === guideCurrentIndex ? true : false
+
     padding: 0
 
     x: {
@@ -54,10 +61,6 @@ Dialog {
             return 0 }
     }
 
-    visible: Generic.Variables.showGuide &&
-             Generic.Variables.toolbarCurrentIndex === toolbarCurrentIndex &&
-             Generic.Variables.guideCurrentIndex === guideCurrentIndex ? true : false
-
     //closePolicy: Popup.NoAutoClose
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
@@ -77,6 +80,27 @@ Dialog {
     Canvas {
         id: canvas
 
+        // Cross (close button)
+        Button {
+            id: buttonClose
+            x: position === "right" ? arrowLength : 0
+            y: position === "bottom" ? arrowLength : 0
+
+            text: "\u2715"
+            background: Rectangle {
+                color: "transparent"
+            }
+            contentItem: Text {
+                text: parent.text
+                font: parent.font
+                opacity: parent.down ? 0.4 : 0.8
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignTop
+            }
+            onPressed: dialog.close()
+        }
+
         width: {
             if (position === "left" || position === "right") {
                 return layout.width + arrowThikness }
@@ -92,7 +116,7 @@ Dialog {
 
         onPaint:{
             let ctx = canvas.getContext('2d');
-            ctx.fillStyle = Generic.Style.redColor//Qt.rgba(0.9, 0.9, 0.9, 1)
+            ctx.fillStyle = Qt.darker("lightsalmon", 1.1)//Qt.darker("sandybrown", 1.1)//"#d29072"//Generic.Style.redColor//Qt.rgba(0.9, 0.9, 0.9, 1)
             //ctx.strokeStyle = "#999"
             ctx.lineWidth = 1.5
 
@@ -146,26 +170,6 @@ Dialog {
             ctx.fill()
         }
 
-        // Cross (close button)
-        Button {
-            id: buttonClose
-            x: position === "right" ? arrowLength : 0
-            y: position === "bottom" ? arrowLength : 0
-
-            text: "\u2715"
-            background: Rectangle {
-                color: "transparent"
-            }
-            contentItem: Text {
-                text: parent.text
-                font: parent.font
-                opacity: parent.down ? 0.4 : 0.8
-                color: "white"
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignTop
-            }
-            onPressed: dialog.close()
-        }
 
         // Content
         ColumnLayout {
@@ -210,7 +214,7 @@ Dialog {
             // Bottom buttons
             RowLayout {
                 Layout.margins: canvasMargins / 2
-                spacing: 20
+                spacing: 10
                 Item { Layout.fillWidth: true }
                 Button {
                     id: buttonPrev
@@ -229,6 +233,23 @@ Dialog {
                         verticalAlignment: Text.AlignVCenter
                     }
                     onClicked: Generic.Variables.guideCurrentIndex -= 1
+                }
+                Button {
+                    id: buttonDisable
+                    text: qsTr("Disable")
+                    background: Rectangle {
+                        color: "transparent"
+                    }
+                    contentItem: Text {
+                        text: parent.text
+                        font.family: Generic.Style.introCondencedRegularFontFamily
+                        font.pointSize: Generic.Style.systemFontPointSize
+                        opacity: !enabled || parent.down ? 0.4 : 0.8
+                        color: "white"
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                    onClicked: Generic.Variables.showGuide = 0
                 }
                 Button {
                     id: buttonNext
@@ -252,4 +273,6 @@ Dialog {
             }
         }
     }
+
+
 }

@@ -1,8 +1,12 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
+import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
+
 import easyDiffraction 1.0 as Specific
 
 Column {
@@ -23,6 +27,15 @@ Column {
     height: childrenRect.height
     spacing: 12
 
+    function toFixed(value, precision = 4) {
+        if (typeof value === 'number')
+            return value.toFixed(precision)
+        else if (typeof value === 'string')
+            return value
+        else
+            return ""
+    }
+
     function cellWidthProvider(column) {
         const allColumnWidth = width - borderWidth * 2
         const numberColumnWidth = 40
@@ -41,18 +54,22 @@ Column {
     }
 
     function colorProvider(atom) {
-        if (!Specific.Variables.projectOpened)
+        const atom_site_dict = Specific.Variables.phaseByIndex(0).atoms
+        if (!Object.keys(atom_site_dict).length) {
             return "black"
-        const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site
+        }
+
         let type_symbol_list = []
         for (let atom_id in atom_site_dict) {
-            type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
+            type_symbol_list.push(atom_site_dict[atom_id].type_symbol.store.value)
         }
         type_symbol_list = Array.from(new Set(type_symbol_list))
+
         let type_symbol_dict = {}
         for (let i = 0; i < type_symbol_list.length; i++) {
             type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
         }
+
         return type_symbol_dict[atom]
     }
 
@@ -250,6 +267,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: label
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         Text {
                             width: cellWidthProvider(3)
@@ -262,6 +280,7 @@ Column {
                             font.pointSize: Generic.Style.fontPointSize
                             text: atom
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         Rectangle {
                             width: cellWidthProvider(4)
@@ -269,6 +288,7 @@ Column {
                             y: 3
                             //color: type_symbol_dict[atom]
                             color: colorProvider(atom)
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
                         }
                         Text {
                             width: cellWidthProvider(5)
@@ -279,8 +299,9 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof xPos === 'number' ? xPos.toFixed(4) : xPos
+                            text: toFixed(xPos)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider(6)
@@ -291,8 +312,9 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof yPos === 'number' ? yPos.toFixed(4) : yPos
+                            text: toFixed(yPos)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider(7)
@@ -303,8 +325,9 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof zPos === 'number' ? zPos.toFixed(4) : zPos
+                            text: toFixed(zPos)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
                         Text {
                             width: cellWidthProvider(8)
@@ -315,44 +338,16 @@ Column {
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
                             font.pointSize: Generic.Style.fontPointSize
-                            text: typeof occupancy === 'number' ? occupancy.toFixed(4) : occupancy
+                            text: toFixed(occupancy)
                             color: foregroundColor()
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                         }
-                        GenericAppContentArea.Button {
-                            id: button
-                            enabled: false
-                            ToolTip.visible: hovered
-                            ToolTip.text: qsTr("Remove this row from the table")
-                            width: cellWidthProvider(9)
-                            height: width
-                            padding: 3
-                            leftPadding: padding
-                            rightPadding: padding
-                            background: Rectangle {
-                                anchors.fill: parent
-                                anchors.margins: button.padding
-                                anchors.leftMargin: button.leftPadding
-                                anchors.rightMargin: button.rightPadding
-                                radius: Generic.Style.toolbarButtonRadius
-                                border.color: button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.appBorderColor
-                                color: {
-                                    if (!button.enabled)
-                                        return Generic.Style.buttonBkgDisabledColor
-                                    var color1 = button.highlighted ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgEnabledColor
-                                    var color2 = Generic.Style.buttonBkgBlendColor
-                                    var alpha = button.down ? Generic.Style.buttonBkgBlendAlpha : 0.0
-                                    return Color.blend(color1, color2, alpha)
-                                }
-                            }
-                            icon.source: Generic.Variables.thirdPartyIconsPath + "minus-circle.svg"
+                        GenericAppContentAreaButtons.Remove {
+                            GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                         }
                     }
-
-
                 }
-
             }
         }
     }
-
 }

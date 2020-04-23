@@ -126,14 +126,25 @@ Column {
     //////////////////////
     Settings { id: settings }
     Component.onCompleted: {
-        if (collapsible && title) {
+        if (collapsible && title && enabled) {
             collapsed = settings.value(title, true)
         }
     }
     Component.onDestruction: {
-        if (collapsible && title) {
+        if (collapsible && title && enabled) {
             settings.setValue(title, collapsed)
         }
+    }
+
+    onEnabledChanged: {
+        if (enabled) {
+            collapsed = settings.value(title, true)
+        } else {
+            collapsed = true
+        }
+    }
+    onCollapsedChanged: {
+        contentArea.height = collapsed ? 0 : groupBox.height
     }
 
 }

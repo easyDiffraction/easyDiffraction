@@ -4,10 +4,9 @@ import QtQuick 2.12
 QtObject {
 
     // Application
-    readonly property int appBorderThickness: 1
     readonly property color appBkgColor: "#f5f5f5"
     readonly property color appBorderColor: "gainsboro"
-
+    readonly property int appBorderThickness: 1
     readonly property int buttonHeight: 34
     readonly property int buttonRadius: 4
 
@@ -25,6 +24,7 @@ QtObject {
     readonly property string greenColor: "#7ab03c"
     readonly property string ultraLightGreenColor: "#daebc7"
     readonly property string darkGreenColor: "#669431"
+    readonly property string greyColor: "#aaa"
     readonly property var atomColorList: [redColor, greenColor, blueColor, "orange", "grey"]
 
     // StatusBar
@@ -56,18 +56,26 @@ QtObject {
     readonly property color tableHighlightBorderColor: Qt.lighter(tableHighlightRowColor, 1.2)
 
     // Toolbar
+    readonly property int toolbarButtonWidth: 150
     readonly property int toolbarButtonHeight: 40
     readonly property int toolbarButtonRadius: 4
     readonly property int toolbarSpacerSize: 10
     readonly property int toolbarSpacing: 10
     readonly property int toolbarHeight: toolbarButtonHeight + 2*toolbarSpacing
     readonly property color toolbarSpacerColor: appBorderColor//"#addButton"
-    readonly property color toolbarBkgColor: "transparent"
+    //readonly property color toolbarBkgColor: "transparent"
+    readonly property color toolbarBkgColor: "#dfdfdf"//"#cdcdcd"
+    readonly property color toolbarBottomBorderColor: "#d7d7d7"//"#c5c5c5"
+
+    readonly property color toolbarButtonBkgDisabledColor: appBkgColor
+    readonly property color toolbarButtonBkgEnabledColor: "#fff"
+    readonly property color toolbarButtonBkgBlendColor: "#e1e1e1"
 
     readonly property color buttonBkgDisabledColor: "#e1e1e1"
-    readonly property color buttonBkgEnabledColor: "#e1e1e1"//"#666"
+    readonly property color buttonBkgEnabledColor: "#e9e9e9"//"#e1e1e1"//"#666"
+    readonly property color buttonBkgAttentionColor: redColor //"coral"
     readonly property color buttonBkgHighlightedColor: blueColor
-    readonly property color buttonBkgFinishedColor: Qt.lighter(blueColor, 1.9) //Qt.lighter(blueColor, 1.4) //Qt.lighter(blueColor, 1.9) //!!!!
+    readonly property color buttonBkgFinishedColor: Qt.lighter(blueColor, 2) //Qt.lighter(blueColor, 1.4) //Qt.lighter(blueColor, 1.9) //!!!!
     readonly property color buttonBkgBlendColor: "white"
     readonly property real buttonBkgBlendAlpha: 0.25
 
@@ -84,7 +92,7 @@ QtObject {
     readonly property color buttonBorderDisabledColor: appBorderColor
     readonly property color buttonBorderEnabledColor: appBorderColor
     readonly property color buttonBorderHighlightedColor: buttonBkgHighlightedColor
-    readonly property color buttonBorderFinishedColor: Qt.lighter(blueColor, 1.7) //Qt.lighter(blueColor, 1.3) //Qt.lighter(blueColor, 1.7) //!!!!
+    readonly property color buttonBorderFinishedColor: Qt.lighter(blueColor, 1.85) //Qt.lighter(blueColor, 1.3) //Qt.lighter(blueColor, 1.7) //!!!!
 
     // Icons
     readonly property string dummyIconPath: "dummy.svg"

@@ -1,12 +1,20 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 
 TabButton {
     id: button
 
-    ToolTip.visible: ToolTip.text !== "" ? hovered : false
+    //ToolTip.visible: ToolTip.text !== "" ? hovered : false
+    property alias toolTipText: toolTip.text
+
+    GenericControls.ToolTip {
+        id: toolTip
+        visible: text !== "" ? hovered : false
+    }
 
     contentItem: IconLabel {
         spacing: button.spacing

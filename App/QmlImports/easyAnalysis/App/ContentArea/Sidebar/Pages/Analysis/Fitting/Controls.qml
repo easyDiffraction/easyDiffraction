@@ -2,11 +2,12 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Layouts 1.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
-import easyAnalysis.Logic 1.0 as GenericLogic
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
@@ -24,7 +25,7 @@ ColumnLayout {
             // Fitables table
             GenericAppElements.FitablesView {
                 Layout.fillWidth: true
-                model: Specific.Variables.projectOpened ? proxy.fitables : null
+                model: Specific.Variables.fitables
                 GenericAppElements.GuideWindow {
                     message: "Here you can see all the refinable parameters.\n\nYou can change their starting values manually\nor using the slider below."
                     position: "left"
@@ -35,31 +36,32 @@ ColumnLayout {
             }
 
             // Buttons
-            GenericAppElements.GridLayout {
-                columns: 2
+            GenericAppElements.RowLayout {
+                //columns: 2
 
                 GenericAppContentAreaButtons.PausePlay {
                     id: pausePlayButton
                     onClicked: {
-                        proxy.refine()
+                        Generic.Constants.proxy.refine()
                         Generic.Variables.analysisPageFinished = true
                     }
                     GenericAppElements.GuideWindow {
-                        message: "Click here to start or stop fitting."
+                        message: "Click here to start fitting." //"Click here to start or stop fitting."
                         position: "left"
                         guideCurrentIndex: 3
                         toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                         guidesCount: Generic.Variables.AnalysisGuidesCount
                     }
                 }
-                CheckBox { enabled: false; checked: false; text: "Auto-update" }
 
+                /*
+                CheckBox { enabled: false; checked: false; text: "Auto-update" }
                 GenericAppContentAreaButtons.Accept {
                     enabled: false
                     text: "Accept refined parameters"
                 }
                 CheckBox { enabled: false; checked: true; text: "Auto-accept" }
-
+                */
             }
         }
     }
@@ -73,23 +75,23 @@ ColumnLayout {
     GenericAppElements.FlowButtons {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.5.-analysis"
         goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
-            text: "Experimental Data"
-            ToolTip.text: qsTr("Go to the previous step: Experimental data")
+            text: "Experiment"
+            ToolTip.text: qsTr("Go to the previous step: Experiment")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the previous step: Experimental data.\n\nAlternatively, you can click on the 'Experimental data' button in toolbar."
+                message: "Click here to go to the previous step: Experiment.\n\nAlternatively, you can click on the 'Experiment' button in toolbar."
                 position: "top"
-                guideCurrentIndex: 4
+                guideCurrentIndex: 5
                 toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                 guidesCount: Generic.Variables.AnalysisGuidesCount
             }
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
             text: "Summary"
-            enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && proxy.refinementDone
-            highlighted: proxy.refinementDone
+            enabled: Specific.Variables.projectOpened && Generic.Variables.analysisPageFinished && Specific.Variables.refinementDone
+            highlighted: Specific.Variables.refinementDone
             ToolTip.text: qsTr("Go to the next step: Summary")
             onClicked: {
                 Generic.Variables.toolbarCurrentIndex = Generic.Variables.SummaryIndex
@@ -97,7 +99,7 @@ ColumnLayout {
             GenericAppElements.GuideWindow {
                 message: "Click here to go to the next step: Summary.\n\nThis button will be enabled after fitting is done."
                 position: "top"
-                guideCurrentIndex: 5
+                guideCurrentIndex: 6
                 toolbarCurrentIndex: Generic.Variables.AnalysisIndex
                 guidesCount: Generic.Variables.AnalysisGuidesCount
             }
@@ -106,31 +108,17 @@ ColumnLayout {
 
     // Info dialog (after refinement)
 
-    Dialog {
-        id: info
-        parent: Overlay.overlay
-        anchors.centerIn: parent
-        modal: true
-        visible: proxy.refinementDone
+    GenericControls.Dialog {
+        visible: Specific.Variables.refinementDone && Boolean(Specific.Variables.refinementResult)
+        title: "Refinement Results"
 
-        Label {
-            id: infoLabel
-            anchors.centerIn: parent
-            text: {
-                if (!proxy.refinementDone)
-                    return ""
-                const res = proxy.refinementResult
-                Generic.Variables.chiSquared = res.final_chi_sq ? res.final_chi_sq.toFixed(2) : Generic.Variables.chiSquared
-                Generic.Variables.numRefinedPars = res.num_refined_parameters ? res.num_refined_parameters : Generic.Variables.numRefinedPars
-                let s = `${res.refinement_message}`
-                s += res.final_chi_sq ? `\n\nGoodness-of-fit (\u03c7\u00b2): ${(res.final_chi_sq).toFixed(2)}` : ""
-                s += res.num_refined_parameters ? `\nNum. refined parameters: ${res.num_refined_parameters}` : ""
-                //s += res.nfev ? `\nNumber of evaluations of the objective functions: ${res.nfev}` : ""
-                //s += res.nit ? `\nNumber of iterations performed by the optimizer: ${res.nit}` : ""
-                //s += res.started_chi_sq ? `\nStarted goodness-of-fit (\u03c7\u00b2): ${(res.started_chi_sq).toFixed(2)}` : ""
-                //s += res.refinement_time ? `\nRefinement time in seconds: ${(res.refinement_time).toFixed(2)}` : ""
-                return s
-            }
+        Column {
+            padding: 20
+            spacing: 10
+
+            Text { text: `${Generic.Variables.refinementMessage}`; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize }
+            Text { text: `Goodness-of-fit (\u03c7\u00b2): ${Generic.Variables.chiSquared}`; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize }
+            Text { text: `Num. refined parameters: ${Generic.Variables.numRefinedPars}`; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize }
         }
     }
 }

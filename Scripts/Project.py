@@ -2,9 +2,11 @@
 
 import os, sys
 import subprocess
-import yaml # pip install pyyaml
-import cryspy # pip install cryspy
-import PySide2, shiboken2 # pip install pyside2
+import yaml
+import cryspy
+import dictdiffer
+import easyInterface
+import PySide2, shiboken2
 import BasicFunctions
 
 # CLASSES
@@ -13,8 +15,10 @@ class Config():
     def __init__(self):
         self._config_dir = os.getcwd()
         self._config_name = 'Project.yml'
+        self._release_dir = os.path.join(self._config_dir, 'App')
+        self._release_name = 'Release.yml'
         # load external config
-        self.__dict__ = self._loadYaml(self._config_dir, self._config_name)
+        self.__dict__ = self._loadYaml([self._config_dir, self._release_dir], [self._config_name, self._release_name])
         # project
         self.__dict__['project']['dir_path'] = os.getcwd() # ??? self._config_dir
         self.__dict__['project']['subdirs']['app']['path'] = self._absolutePath(self.__dict__['project']['subdirs']['app']['name'])
@@ -32,8 +36,10 @@ class Config():
         self.__dict__['user']['home_dir'] = os.path.expanduser('~')
         # freeze
         self.__dict__['pyinstaller']['lib_path']['cryspy'] = cryspy.__path__[0]
+        self.__dict__['pyinstaller']['lib_path']['easyInterface'] = easyInterface.__path__[0]
         self.__dict__['pyinstaller']['lib_path']['shiboken2'] = shiboken2.__path__[0]
         self.__dict__['pyinstaller']['lib_path']['pyside2'] = PySide2.__path__[0]
+        self.__dict__['pyinstaller']['lib_path']['dictdiffer'] = dictdiffer.__path__[0]
         # freezed app
         self.__dict__['app']['freezed']['path'] = os.path.join(self.__dict__['project']['subdirs']['distribution']['path'], self.__dict__['app']['name'] + self.__dict__['app']['freezed']['ext'][BasicFunctions.osName()])
         # installer framework
@@ -71,13 +77,15 @@ class Config():
     def __repr__(self):
         return yaml.dump(self.__dict__, sort_keys=False, indent=2, allow_unicode=True)
 
-    def _loadYaml(self, file_dir, file_name):
-        file_path = os.path.join(file_dir, file_name)
-        if not os.path.isfile(file_path):
-            sys.exit("- Failed to find config '{0}'".format(file_path))
-        with open(file_path, 'r') as file:
-            file_content = yaml.load(file, Loader=yaml.FullLoader)
-            return file_content
+    def _loadYaml(self, file_dirs, file_names):
+        file_content = dict()
+        for file_dir, file_name in zip(file_dirs, file_names):
+            file_path = os.path.join(file_dir, file_name)
+            if not os.path.isfile(file_path):
+                sys.exit("- Failed to find config '{0}'".format(file_path))
+            with open(file_path, 'r') as file:
+                file_content = dict(**file_content, **yaml.load(file, Loader=yaml.FullLoader))
+        return file_content
 
     def _absolutePath(self, relative_path):
         project_dir_path = self.__dict__['project']['dir_path']

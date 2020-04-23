@@ -37,7 +37,10 @@ Project {
     ]
 
     Environment {
-        QT_QUICK_CONTROLS_CONF: "App/qtquickcontrols2.conf" /* Qt Quick Controls Configuration */
-        QT_AUTO_SCREEN_SCALE_FACTOR: "1"                    /* High DPI Support in Qt */
+        QT_QUICK_CONTROLS_CONF: "App/qtquickcontrols2.conf" // Qt Quick Controls Configuration
+        QT_AUTO_SCREEN_SCALE_FACTOR: "1"                    // High DPI Support in Qt
+        //QML_IMPORT_TRACE: "1"                               // Enable debug output for QML
+        //QT_DECLARATIVE_DEBUG: "1"                           //
+        //QT_QML_DEBUG: "1"                                   //
     }
 }

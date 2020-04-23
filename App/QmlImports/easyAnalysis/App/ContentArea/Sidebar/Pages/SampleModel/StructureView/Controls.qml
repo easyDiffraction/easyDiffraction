@@ -3,40 +3,16 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Dialogs 1.3 as Dialogs1
 import QtQuick.Layouts 1.12
+
 import easyAnalysis 1.0 as Generic
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 import easyAnalysis.App.ContentArea.Buttons 1.0 as GenericAppContentAreaButtons
-import easyAnalysis.Logic 1.0 as GenericLogic
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
     spacing: 0
-
-    property var type_symbol_dict: ({})
-
-    ////////////////////////
-    // Check if data changed
-    ////////////////////////
-
-    Text {
-        visible: false
-        text: Specific.Variables.projectOpened ? Specific.Variables.project.info.refinement_datetime : ""
-        onTextChanged: {
-            //print("--------------------------------------------------------- Time stamp: ", text)
-            if (Specific.Variables.projectOpened) {
-                const atom_site_dict = Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].atom_site
-                let type_symbol_list = []
-                for (let atom_id in atom_site_dict) {
-                    type_symbol_list.push(atom_site_dict[atom_id].type_symbol.value)
-                }
-                type_symbol_list = Array.from(new Set(type_symbol_list))
-                for (let i = 0; i < type_symbol_list.length; i++) {
-                    type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
-                }
-            }
-        }
-    }
 
     ///////////
     // Groupbox
@@ -44,6 +20,8 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         title: "Structural phases"
         collapsible: false
+
+
         content: GenericAppElements.ColumnLayout {
 
             // Table
@@ -53,31 +31,40 @@ ColumnLayout {
                     message: "Here you can see labels of the structural phases."
                     position: "left"
                     guideCurrentIndex: 0
-                    toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                    guidesCount: Generic.Variables.SampleModelGuidesCount
+                    toolbarCurrentIndex: Generic.Variables.SampleIndex
+                    guidesCount: Generic.Variables.SampleGuidesCount
                 }
             }
 
             // Buttons
             GenericAppElements.GridLayout {
                 columns: 2
-                GenericAppContentAreaButtons.Add {
-                    enabled: false;
-                    text: "Add new phase manually"
-                    }
-                GenericAppContentAreaButtons.RemoveAll {
-                    id: removeButton;
-                    enabled: false;
-                    text: "Remove all phases" }
                 GenericAppContentAreaButtons.Import {
                     text: "Import new phase from CIF"
-                    enabled: !proxy.refinementRunning
+                    enabled: !Specific.Variables.refinementRunning
                     onClicked: fileDialogLoadPhase.open()
+                    GenericControls.EditingToolTip {
+                        visible: Specific.Variables.phaseIds().length
+                        type: GenericControls.EditingToolTip.Custom
+                        text: qsTr("Multiple phases are not supported yet.")
                     }
+                }
                 GenericAppContentAreaButtons.Export {
-                    enabled: false;
+                    //enabled: false;
                     text: "Export selected phase to CIF"
-                    }
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppContentAreaButtons.Add {
+                    //enabled: false;
+                    text: "Add new phase manually"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppContentAreaButtons.RemoveAll {
+                    id: removeButton;
+                    //enabled: false;
+                    text: "Remove all phases"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
             }
             // Open project dialog
             Dialogs1.FileDialog{
@@ -86,14 +73,14 @@ ColumnLayout {
                 folder: settings.value("lastOpenedProjectFolder", examplesDir)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
-                    projectControl.loadPhases(fileUrl)
+                    Specific.Variables.projectControl.loadPhases(fileUrl)
                     fileDialogLoadPhase.close()
                     var old_analysis_state = Generic.Variables.analysisPageFinished
                     var old_summary_state = Generic.Variables.summaryPageFinished
                     //if (projectControl.validCif) {
-                    proxy.loadPhasesFromFile()
+                    Generic.Constants.proxy.loadPhasesFromFile()
                     Specific.Variables.projectOpened = true
-                    //Generic.Variables.homePageFinished = true
+                    //Generic.Variables.projectPageFinished = true
                     Generic.Variables.samplePageFinished = true
                     //Generic.Variables.dataPageFinished = false
                     Generic.Variables.analysisPageFinished = Generic.Variables.isDebug ? true : false
@@ -113,30 +100,41 @@ ColumnLayout {
     GenericAppElements.GroupBox {
         id: group1
         title: "Symmetry and cell parameters"
+        enabled: Specific.Variables.phaseIds().length
+
         content: GenericAppElements.ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 3
                 rowSpacing: 2
-                enabled: false
+                //enabled: false
 
-                Text { text: "Crystal system"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Crystal system"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
 
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.crystal_system.value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.space_group_IT_number.value + '.  ' + Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group['space_group_name_H-M_alt'].value : ""] }
-                GenericAppElements.ComboBox { model: [Specific.Variables.projectOpened ? Specific.Variables.project.phases[Specific.Variables.project.info.phase_ids[0]].space_group.origin_choice.value : ""] }
+                GenericAppElements.ComboBox {
+                    model: [Specific.Variables.phaseByIndex(0).spacegroup.crystal_system]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                }
+                GenericAppElements.ComboBox {
+                    model: [Specific.Variables.phaseByIndex(0).spacegroup.space_group_with_number]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                }
+                GenericAppElements.ComboBox {
+                    model: [Specific.Variables.phaseByIndex(0).spacegroup.origin_choice]
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
+                }
             }
 
             GenericAppElements.GridLayout {
                 columns: 1
                 rowSpacing: 2
-                Text { text: "Cell parameters"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Cell parameters"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
 
                 // Table
                 GenericAppElements.CellParametersTableView {
                     Layout.fillWidth: true
-                    model: Specific.Variables.projectOpened ? proxy.cellParameters : null
+                    model: Specific.Variables.cellParameters
                 }
             }
         }
@@ -144,8 +142,8 @@ ColumnLayout {
             message: "The sidebar groups contain details related to the sample model.\n\nClick on the group name to unfold the group."
             position: "left"
             guideCurrentIndex: 3
-            toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-            guidesCount: Generic.Variables.SampleModelGuidesCount
+            toolbarCurrentIndex: Generic.Variables.SampleIndex
+            guidesCount: Generic.Variables.SampleGuidesCount
         }
     }
 
@@ -153,19 +151,29 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Atoms, atomic coordinates and occupations"
+        enabled: Specific.Variables.phaseIds().length
+
         content: GenericAppElements.ColumnLayout {
 
             // Table
             GenericAppElements.AtomsTableView {
                 Layout.fillWidth: true
-                model: Specific.Variables.projectOpened ? proxy.atomSites : null
+                model: Specific.Variables.atomSites
             }
 
             // Buttons
             GenericAppElements.GridLayout {
                 columns: 2
-                GenericAppContentAreaButtons.Add { enabled: false; text: "Add new atom"; }
-                GenericAppContentAreaButtons.RemoveAll { enabled: false; text: "Remove all atoms" }
+                GenericAppContentAreaButtons.Add {
+                    //enabled: false
+                    text: "Add new atom"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
+                GenericAppContentAreaButtons.RemoveAll {
+                    //enabled: false
+                    text: "Remove all atoms"
+                    GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                }
             }
         }
     }
@@ -174,12 +182,13 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Atomic displacement parameters" //(\u200A\u00D7\u200A10\u2075\u200A)"
+        enabled: Specific.Variables.phaseIds().length
         content: GenericAppElements.ColumnLayout {
 
             // Table
             GenericAppElements.AtomAdpsTableView {
                 Layout.fillWidth: true
-                model: Specific.Variables.projectOpened ? proxy.atomAdps : null
+                model: Specific.Variables.atomAdps
             }
         }
     }
@@ -188,12 +197,15 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Magnetic susceptibility parameters"
+        visible: Specific.Variables.isPolarized
+        enabled: Specific.Variables.phaseIds().length
+
         content: GenericAppElements.ColumnLayout {
 
             // Table
             GenericAppElements.AtomMspsTableView {
                 Layout.fillWidth: true
-                model: Specific.Variables.projectOpened ? proxy.atomMsps : null
+                model: Specific.Variables.atomMsps
             }
         }
     }
@@ -207,34 +219,34 @@ ColumnLayout {
     GenericAppElements.FlowButtons {
         documentationUrl: "https://easydiffraction.org/umanual_use.html#3.2.4.-sample-model"
         goPreviousButton: GenericAppContentAreaButtons.GoPrevious {
-            text: "Home"
-            ToolTip.text: qsTr("Go to the previous step: Home")
+            text: "Project"
+            toolTipText: qsTr("Go to the previous step: Project")
             onClicked: {
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.HomeIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ProjectIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the previous step: Home.\n\nAlternatively, you can click on the 'Home' button in toolbar."
+                message: "Click here to go to the previous step: Project.\n\nAlternatively, you can click on the 'Project' button in toolbar."
                 position: "top"
                 guideCurrentIndex: 4
-                toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                guidesCount: Generic.Variables.SampleModelGuidesCount
+                toolbarCurrentIndex: Generic.Variables.SampleIndex
+                guidesCount: Generic.Variables.SampleGuidesCount
             }
         }
         goNextButton: GenericAppContentAreaButtons.GoNext {
-            text: "Experimental Data"
-            ToolTip.text: qsTr("Go to the next step: Experimental data")
+            text: "Experiment"
+            toolTipText: qsTr("Go to the next step: Experiment")
             enabled: Specific.Variables.projectOpened && Generic.Variables.samplePageFinished
             highlighted: Specific.Variables.projectOpened
             onClicked: {
                 Generic.Variables.samplePageFinished = true
-                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentalDataIndex
+                Generic.Variables.toolbarCurrentIndex = Generic.Variables.ExperimentIndex
             }
             GenericAppElements.GuideWindow {
-                message: "Click here to go to the next step: Experimental data."
+                message: "Click here to go to the next step: Experiment."
                 position: "top"
                 guideCurrentIndex: 5
-                toolbarCurrentIndex: Generic.Variables.SampleModelIndex
-                guidesCount: Generic.Variables.SampleModelGuidesCount
+                toolbarCurrentIndex: Generic.Variables.SampleIndex
+                guidesCount: Generic.Variables.SampleGuidesCount
             }
         }
     }

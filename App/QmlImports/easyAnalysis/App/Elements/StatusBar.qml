@@ -6,6 +6,7 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
+    visible: !Generic.Variables.HomeIndex
     spacing: 0
 
     GenericAppElements.HorizontalBorder {}
@@ -20,7 +21,7 @@ ColumnLayout {
         orientation: ListView.Horizontal
         spacing: 20
 
-        model: Specific.Variables.projectOpened ? proxy.statusInfo : null
+        model: Specific.Variables.statusInfo
 
         visible: model !== null
 

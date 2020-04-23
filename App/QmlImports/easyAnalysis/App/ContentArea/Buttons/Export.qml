@@ -7,7 +7,7 @@ import easyAnalysis.App.ContentArea 1.0 as GenericAppContentArea
 GenericAppContentArea.Button {
     Layout.fillWidth: true
     icon.source: Generic.Variables.thirdPartyIconsPath + "download.svg"
-    ToolTip.text: qsTr("Export selected model")
+    toolTipText: qsTr("Export selected model")
 }
 
 

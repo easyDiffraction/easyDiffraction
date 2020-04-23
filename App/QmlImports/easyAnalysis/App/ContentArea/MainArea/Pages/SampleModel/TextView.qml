@@ -21,8 +21,9 @@ Rectangle {
             font.family: Generic.Style.monoFontFamily
             font.pointSize: Generic.Style.fontPointSize
             //antialiasing: true
-            wrapMode: Text.NoWrap
-            text: showContent ? Specific.Variables.phase_cif : ""
+            wrapMode: Text.Wrap //Text.NoWrap
+            //text: showContent ? Specific.Variables.phaseCif : ""
+            text: Specific.Variables.projectCifDict["phases"].toString()
         }
     }
 
