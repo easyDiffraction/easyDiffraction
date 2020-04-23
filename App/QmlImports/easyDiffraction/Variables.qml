@@ -324,6 +324,6 @@ QtObject {
     Component.onCompleted: {
         print("examplesRcDirUrl", examplesRcDirUrl)
         print("examplesRcDirPath", examplesRcDirPath)
-    }
+
 }
 
