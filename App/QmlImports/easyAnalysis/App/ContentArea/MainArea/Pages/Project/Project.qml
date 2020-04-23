@@ -36,7 +36,7 @@ Rectangle {
         GenericAppElements.GuideWindow {
             message: "Brief project details will be shown in the main area."
             position: "right"
-            guideCurrentIndex: 2
+            guideCurrentIndex: 3
             toolbarCurrentIndex: Generic.Variables.ProjectIndex
             guidesCount: Generic.Variables.ProjectGuidesCount
         }

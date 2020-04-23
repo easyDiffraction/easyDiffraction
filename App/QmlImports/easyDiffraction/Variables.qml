@@ -67,6 +67,12 @@ QtObject {
     property var atomMsps: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._atomMsps : null
     property var statusInfo: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._statusInfo : null
 
+    // Examples
+    readonly property var examplesList: [
+        examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder-1d_5T_5C1(LLB)/main.cif",
+        examplesRcDirPath + "/PbSO4_unpol-neutron-powder-1d_D1A(ILL)/main.cif"
+    ]
+
     // Undo-Redo
     property var undoText: calculatorInterface ? proxyPyQmlObj._undoText : ""
     property var redoText: calculatorInterface ? proxyPyQmlObj._redoText : ""
@@ -314,6 +320,13 @@ QtObject {
         const name = Object.keys(calculations)[index]
         return calculations[name]
     }
+
+    /*
+    Component.onCompleted: {
+        print("examplesRcDirUrl", examplesRcDirUrl)
+        print("examplesRcDirPath", examplesRcDirPath)
+    }
+    */
 
 }
 

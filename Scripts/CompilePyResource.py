@@ -1,30 +1,26 @@
 #!/usr/bin/env python3
 
-import os
-import subprocess
+import os, sys
+import Project
+import BasicFunctions
 
-# Start
-print()
-print('***** Variables')
-print()
+def createExamplesResource():
+    message = "create examples resource file"
+    try:
+        config = Project.Config()
+        project_dir_path = config['project']['dir_path']
+        BasicFunctions.run(
+            'pyside2-rcc',
+            '{0}/App/Examples.qrc'.format(project_dir_path),
+            '-o', '{0}/App/Examples.py'.format(project_dir_path),       # Write output to file rather than stdout
+            '-no-compress'                                              # Disable all compression
+            )
+    except Exception as exception:
+        BasicFunctions.printFailMessage(message, exception)
+        sys.exit()
+    else:
+        BasicFunctions.printSuccessMessage(message)
 
-# Main paths
-scripts_dir_path = os.path.dirname(os.path.realpath(__file__))
-project_dir_path = os.path.realpath(os.path.join(scripts_dir_path, '..'))
-print('project_dir_path:', project_dir_path)
-print('scripts_dir_path:', scripts_dir_path)
-
-# Compile qrc (qt resource file) into python file
-print()
-print('***** Compile qt resource file (.qrc) into python resource file (.py)')
-print()
-args = ['pyside2-rcc',
-        '{0}/App/QmlResource.qrc'.format(project_dir_path),
-        '-o', '{0}/App/QmlResource.py'.format(project_dir_path), # Write output to file rather than stdout
-        '-no-compress' # Disable all compression
-        ]
-result = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
-print(result)
-
-# End
-print()
+if __name__ == "__main__":
+    BasicFunctions.printTitle('Compile qt resource file (.qrc) into python resource file (.py)')
+    createExamplesResource()

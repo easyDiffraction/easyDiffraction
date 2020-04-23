@@ -44,7 +44,7 @@ ColumnLayout {
                 */
 
                 GenericAppElements.GuideWindow {
-                    message: "Or here to create a new one."
+                    message: "Or here to create a new one..."
                     position: "bottom"
                     guideCurrentIndex: 1
                     toolbarCurrentIndex: Generic.Variables.ProjectIndex
@@ -140,6 +140,7 @@ ColumnLayout {
                 nameFilters: ["Project files (*.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
+                    settings.setValue("lastOpenedProjectFolder", folder)
                     Generic.Constants.proxy.saveProjectAs(fileUrl)
                     Generic.Variables.showSaveDialog = 0
                     if (Specific.Variables.projectControl.savedProject === false) {
@@ -158,6 +159,7 @@ ColumnLayout {
                 nameFilters: ["Project files (*.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
+                    settings.setValue("lastOpenedProjectFolder", folder)
                     fileDialogCreateProject.close()
                     Generic.Constants.proxy.createProject(fileUrl)
                     titleInput.text = Specific.Variables.projectControl.projectFileNameWithoutExt() + '\n'
@@ -257,7 +259,7 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Recent Projects"
-        //enabled: false
+        visible: false
         content: GenericAppElements.ColumnLayout {
             spacing: 0
 
@@ -278,6 +280,7 @@ ColumnLayout {
             }
         }
 
+        /*
         GenericAppElements.GuideWindow {
             message: "The sidebar groups can be folded and unfolded.\n\nClick on the group name to unfold the group."
             position: "left"
@@ -285,6 +288,7 @@ ColumnLayout {
             toolbarCurrentIndex: Generic.Variables.ProjectIndex
             guidesCount: Generic.Variables.ProjectGuidesCount
         }
+        */
     }
 
 
@@ -292,20 +296,30 @@ ColumnLayout {
 
     GenericAppElements.GroupBox {
         title: "Examples"
-        //enabled: false
+        collapsible: false
         content: GenericAppElements.ColumnLayout {
             spacing: 0
 
             GenericAppElements.ParametersTable {
+                selectable: true
+                selectedRow: -1
                 Layout.fillWidth: true
                 model: ListModel {
-                    ListElement { number:"1"; name:"Fe3O4";    keywords:"polarised neutron powder diffraction, 1d, LLB" }
-                    ListElement { number:"2"; name:"PbSO4";    keywords:"unpolarised neutron powder diffraction, 1d, ILL" }
+                    ListElement { number:"1"; name:"Fe3O4"; keywords:"polarised neutron powder diffraction, 1d, LLB" }
+                    ListElement { number:"2"; name:"PbSO4"; keywords:"unpolarised neutron powder diffraction, 1d, ILL" }
                 }
-                Controls1.TableViewColumn { title:"No.";                role:"number";  resizable: false }
-                Controls1.TableViewColumn { title:"Name";               role:"name" }
-                Controls1.TableViewColumn { title:"Keywords";           role:"keywords" }
-                GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
+                Controls1.TableViewColumn { title:"No.";       role:"number";  resizable: false }
+                Controls1.TableViewColumn { title:"Name";      role:"name" }
+                Controls1.TableViewColumn { title:"Keywords";  role:"keywords" }
+                Controls1.TableViewColumn { role:"open";       title:"Open"; resizable: false }
+
+                GenericAppElements.GuideWindow {
+                    message: "Or click open button here to load one of the examples."
+                    position: "left"
+                    guideCurrentIndex: 2
+                    toolbarCurrentIndex: Generic.Variables.ProjectIndex
+                    guidesCount: Generic.Variables.ProjectGuidesCount
+                }
             }
         }
     }

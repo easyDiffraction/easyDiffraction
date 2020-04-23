@@ -55,6 +55,11 @@ if __name__ == '__main__':
     qml_imports_dir_path = str(QUrl.fromLocalFile(os.path.join(current_dir_path, "QmlImports")).toString())
     examples_dir_path = str(QUrl.fromLocalFile(os.path.join(installation_path, 'Examples')).toString())
 
+    examples_rc_dir_url = str(QUrl.fromLocalFile(os.path.join(current_dir_path, "Resources", "Examples")).toString())
+    examples_rc_dir_path = os.path.abspath(os.path.join(current_dir_path, "Resources", "Examples"))
+    #print("examples_rc_dir_url", examples_rc_dir_url)
+    #print("examples_rc_dir_path", examples_rc_dir_path)
+
     # Create an application
     app = QApplication(sys.argv)
 
@@ -72,6 +77,8 @@ if __name__ == '__main__':
     engine.rootContext().setContextProperty("_loggerPyQml", logger_py_qml)
     engine.rootContext().setContextProperty("proxyPyQmlObj", proxy_py_qml_obj)
     engine.rootContext().setContextProperty("examplesDir", examples_dir_path)
+    engine.rootContext().setContextProperty("examplesRcDirUrl", examples_rc_dir_url)
+    engine.rootContext().setContextProperty("examplesRcDirPath", examples_rc_dir_path)
     engine.rootContext().setContextProperty("qmlImportsDir", qml_imports_dir_path)
 
     engine.addImportPath(qml_imports_dir_path)
