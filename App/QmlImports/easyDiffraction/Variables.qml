@@ -69,8 +69,10 @@ QtObject {
 
     // Examples
     readonly property var examplesList: [
-        examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder-1d_5T_5C1(LLB)/main.cif",
-        examplesRcDirPath + "/PbSO4_unpol-neutron-powder-1d_D1A(ILL)/main.cif"
+        examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder_5T_6T2(LLB)/main.cif",
+        examplesRcDirPath + "/Ho2Ti2O7_pol-neutron-powder_5K-1T_VIP(LLB)/main.cif",
+        examplesRcDirPath + "/DyAlO3_neutron-powder_4K_G4(LLB)/main.cif",
+        examplesRcDirPath + "/PbSO4_neutron-powder-1d_D1A(ILL)/main.cif"
     ]
 
     // Undo-Redo

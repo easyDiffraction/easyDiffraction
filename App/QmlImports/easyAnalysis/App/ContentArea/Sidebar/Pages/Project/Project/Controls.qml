@@ -305,8 +305,10 @@ ColumnLayout {
                 selectedRow: -1
                 Layout.fillWidth: true
                 model: ListModel {
-                    ListElement { number:"1"; name:"Fe3O4"; keywords:"polarised neutron powder diffraction, 1d, LLB" }
-                    ListElement { number:"2"; name:"PbSO4"; keywords:"unpolarised neutron powder diffraction, 1d, ILL" }
+                    ListElement { number:"1"; name:"Fe3O4"; keywords:"polarised neutrons, powder, 6T2 at LLB" }
+                    ListElement { number:"2"; name:"Ho2Ti2O7"; keywords:"polarised neutrons, powder, VIP at LLB" }
+                    ListElement { number:"3"; name:"DyAlO3"; keywords:"unpolarised neutrons, powder, G4 at LLB" }
+                    ListElement { number:"4"; name:"PbSO4"; keywords:"unpolarised neutrons, powder, D1A at ILL" }
                 }
                 Controls1.TableViewColumn { title:"No.";       role:"number";  resizable: false }
                 Controls1.TableViewColumn { title:"Name";      role:"name" }
