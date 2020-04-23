@@ -1,13 +1,14 @@
 # release
 release:
   name: easyDiffraction
-  version: 0.5.0
-  date: 25 Mar 2020
+  version: 0.6.0
+  date: 23 Apr 2020
   url: http://easydiffraction.org
   changes: # Get from pull requests description?
-  - Add experimental dataset fro XYE
-  - Added Undo/Redo functionality
-  - Code separation to easyInterfacee
-  - Save dialogues
-  - Save reporting as PDF
-  - Add chart legend
+    - MVP release of easyDiffraction!
+    - New grpahical interface
+    - Faster analysis and loading
+    - Polarization analysis works
+    - Saving and loading projects is improved
+    - Exporting reslts to PDF
+    - Lots of bug and stability fixes
