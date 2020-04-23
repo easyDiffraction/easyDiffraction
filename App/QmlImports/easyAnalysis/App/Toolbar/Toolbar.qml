@@ -72,7 +72,7 @@ ColumnLayout{
                 GenericAppElements.GuideWindow {
                     message: "This is a toolbar button of the tab with\ninformation about experimental data."
                     position: "bottom"
-                    guideCurrentIndex: 6
+                    guideCurrentIndex: 5
                     toolbarCurrentIndex: Generic.Variables.ProjectIndex
                     guidesCount: Generic.Variables.ProjectGuidesCount
                 }

@@ -44,7 +44,7 @@ ColumnLayout {
                 */
 
                 GenericAppElements.GuideWindow {
-                    message: "Or here to create a new one."
+                    message: "Or here to create a new one..."
                     position: "bottom"
                     guideCurrentIndex: 1
                     toolbarCurrentIndex: Generic.Variables.ProjectIndex
@@ -280,6 +280,7 @@ ColumnLayout {
             }
         }
 
+        /*
         GenericAppElements.GuideWindow {
             message: "The sidebar groups can be folded and unfolded.\n\nClick on the group name to unfold the group."
             position: "left"
@@ -287,6 +288,7 @@ ColumnLayout {
             toolbarCurrentIndex: Generic.Variables.ProjectIndex
             guidesCount: Generic.Variables.ProjectGuidesCount
         }
+        */
     }
 
 
@@ -310,6 +312,14 @@ ColumnLayout {
                 Controls1.TableViewColumn { title:"Name";      role:"name" }
                 Controls1.TableViewColumn { title:"Keywords";  role:"keywords" }
                 Controls1.TableViewColumn { role:"open";       title:"Open"; resizable: false }
+
+                GenericAppElements.GuideWindow {
+                    message: "Or click open button here to load one of the examples."
+                    position: "left"
+                    guideCurrentIndex: 2
+                    toolbarCurrentIndex: Generic.Variables.ProjectIndex
+                    guidesCount: Generic.Variables.ProjectGuidesCount
+                }
             }
         }
     }
