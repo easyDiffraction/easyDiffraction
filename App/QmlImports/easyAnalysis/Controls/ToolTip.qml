@@ -25,6 +25,7 @@ T.ToolTip {
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent | T.Popup.CloseOnReleaseOutsideParent
 
     contentItem: TextEdit {
+        readOnly: true
         text: control.text
         font: control.font
         wrapMode: Text.Wrap
