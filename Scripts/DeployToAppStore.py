@@ -105,7 +105,7 @@ def osDependentDeploy():
     project_dir_path = config['project']['dir_path']
     branch = BasicFunctions.environmentVariable('TRAVIS_BRANCH')
     if os_name == 'linux':
-        if branch == 'develop':
+        if branch == 'develop' or branch == 'examples':
             snapcraft_dir_name = '.snapcraft'
             docker_image = 'cibuilds/snapcraft:core18'
             downloaded_image_path = '.soft/snap.tar.gz'
@@ -134,5 +134,5 @@ if __name__ == "__main__":
         print("* Deployment not needed. It's a pull request No. '{}'".format(pull_request))
         exit()
 
-    # Deploy 
+    # Deploy
     osDependentDeploy()
