@@ -226,8 +226,15 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc, Ibkg" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Math.min(Specific.Variables.measuredData.yMin, Specific.Variables.calculatedData.yMin)
-                    max: Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
+                    min: {
+                        const max = Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
+                        const min = Math.min(Specific.Variables.measuredData.yMin, Specific.Variables.calculatedData.yMin)
+                        return min - 0.075*max
+                    }
+                    max: {
+                        const max = Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
+                        return max + 0.075*max
+                    }
                 }
 
                 // Measured curve
@@ -241,7 +248,7 @@ ColumnLayout {
                     opacity: 0.4
                     borderColor: Qt.darker(Generic.Style.blueColor, 1.1)
                     borderWidth: 1.5
-                    name: "Measured data (Iobs)"
+                    name: "Measured (Iobs)"
                     //useOpenGL: true
 
                     lowerSeries: LineSeries {
@@ -307,7 +314,7 @@ ColumnLayout {
                     axisY: axisY
                     color: Generic.Style.redColor
                     width: 2
-                    name: "Calculated data (Icalc)"
+                    name: "Calculated (Icalc)"
                     //useOpenGL: true
 
                     // New approach (fast): pass a reference to LineSeries to python for updating
@@ -581,13 +588,13 @@ ColumnLayout {
                         const min = Specific.Variables.calculatedData.yDiffMin
                         const max = Specific.Variables.calculatedData.yDiffMax
                         const MAX = Math.max(Math.abs(min), Math.abs(max))
-                        return Math.sign(min) * MAX
+                        return Math.sign(min) * MAX - 0.35*MAX
                     }
                     max: {
                         const min = Specific.Variables.calculatedData.yDiffMin
                         const max = Specific.Variables.calculatedData.yDiffMax
                         const MAX = Math.max(Math.abs(min), Math.abs(max))
-                        return Math.sign(max) * MAX
+                        return Math.sign(max) * MAX + 0.35*MAX
                     }
                 }
 

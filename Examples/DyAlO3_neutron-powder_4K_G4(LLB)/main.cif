@@ -1,0 +1,4 @@
+_name DyAlO3 
+_keywords 'unpolarised neutron powder diffraction, T=4K, G4 at LLB' 
+_phases phases.cif 
+_experiments experiments.cif 
