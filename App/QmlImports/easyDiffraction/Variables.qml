@@ -321,10 +321,12 @@ QtObject {
         return calculations[name]
     }
 
+    /*
     Component.onCompleted: {
         print("examplesRcDirUrl", examplesRcDirUrl)
         print("examplesRcDirPath", examplesRcDirPath)
     }
+    */
 
 }
 

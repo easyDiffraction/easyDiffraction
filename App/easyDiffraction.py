@@ -57,8 +57,8 @@ if __name__ == '__main__':
 
     examples_rc_dir_url = str(QUrl.fromLocalFile(os.path.join(current_dir_path, "Resources", "Examples")).toString())
     examples_rc_dir_path = os.path.abspath(os.path.join(current_dir_path, "Resources", "Examples"))
-    print("examples_rc_dir_url", examples_rc_dir_url)
-    print("examples_rc_dir_path", examples_rc_dir_path)
+    #print("examples_rc_dir_url", examples_rc_dir_url)
+    #print("examples_rc_dir_path", examples_rc_dir_path)
 
     # Create an application
     app = QApplication(sys.argv)
