@@ -105,9 +105,9 @@ ColumnLayout {
                 columns: 3
                 rowSpacing: 2
 
-                Text { text: "Facility            "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Instrument      "; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Configuration"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Facility            "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Instrument      "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Configuration"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
 
                 GenericAppElements.ComboBox {
                     implicitWidth: 1
@@ -132,9 +132,9 @@ ColumnLayout {
                 Item { height: 5 }
                 Item { height: 5 }
 
-                Text { text: "Radiation"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Mode"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 } //Technique/Data
-                Text { text: "Method"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 } //Method/Sample
+                Text { text: "Radiation"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Mode"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 } //Technique/Data
+                Text { text: "Method"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 } //Method/Sample
 
                 GenericAppElements.ComboBox {
                     currentIndex: 0
@@ -174,14 +174,22 @@ ColumnLayout {
                 columnSpacing: 5
                 //rowSpacing: 10
 
-                Text { text: qsTr("Polarization:") }
+                Text {
+                    font.pointSize: Generic.Style.fontPointSize
+                    font.family: Generic.Style.fontFamily
+                    text: qsTr("Polarization:")
+                }
                 GenericAppElements.TextField {
                     text: 100 * Specific.Variables.experimentByIndex(0).polarization.polarization.toFixed(3)
                     units: "%"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
-                Text { text: qsTr("Polarising efficiency:") }
+                Text {
+                    font.pointSize: Generic.Style.fontPointSize
+                    font.family: Generic.Style.fontFamily
+                    text: qsTr("Polarising efficiency:")
+                }
                 GenericAppElements.TextField {
                     text: 100 * Specific.Variables.experimentByIndex(0).polarization.efficiency.toFixed(3)
                     units: "%"
@@ -202,21 +210,33 @@ ColumnLayout {
                 columnSpacing: 5
                 //rowSpacing: 10
 
-                Text { text: qsTr("Zero shift:") }
+                Text {
+                    font.pointSize: Generic.Style.fontPointSize
+                    font.family: Generic.Style.fontFamily
+                    text: qsTr("Zero shift:")
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).offset.toFixed(4)
                     units: "\u00B0"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
-                Text { text: qsTr("Wavelength:") }
+                Text {
+                    font.pointSize: Generic.Style.fontPointSize
+                    font.family: Generic.Style.fontFamily
+                    text: qsTr("Wavelength:")
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).wavelength.toFixed(4)
                     units: "\u212B"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
-                Text { text: qsTr("Magnetic field:") }
+                Text {
+                    font.pointSize: Generic.Style.fontPointSize
+                    font.family: Generic.Style.fontFamily
+                    text: qsTr("Magnetic field:")
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).field.toFixed(4)
                     units: "T"
@@ -237,7 +257,7 @@ ColumnLayout {
             //enabled: false
             ColumnLayout {
                 spacing: 2
-                Text { text: "Instrument resolution function"; color: Generic.Style.sidebarLabelColor; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Instrument resolution function"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
                 ///GenericAppElements.ComboBox { currentIndex: 3; model: ["Gaussian", "Lorentz", "Pseudo-Voigt", "Thompson-Cox-Hastings pseudo-Voigt"] }
                 GenericAppElements.ComboBox {
                     currentIndex: 2

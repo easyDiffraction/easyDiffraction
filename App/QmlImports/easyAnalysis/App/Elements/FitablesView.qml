@@ -94,6 +94,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "No."
                         }
                         Text {
@@ -103,6 +105,8 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "Label"
                         }
                         Text {
@@ -112,6 +116,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: 0
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "Value"
                         }
                         Text {
@@ -121,6 +127,8 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize * 0.5
                             rightPadding: font.pixelSize
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: ""
                         }
                         Text {
@@ -130,6 +138,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "Error"
                         }
                         Text {
@@ -137,6 +147,8 @@ Column {
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: "Fit"
                         }
                     }
@@ -201,6 +213,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: index + 1
                             color: foregroundColor()
                         }
@@ -211,6 +225,8 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: thisLabel()
                             color: foregroundColor()
                         }
@@ -225,6 +241,8 @@ Column {
                             validator: DoubleValidator {}
                             maximumLength: 8
                             color: foregroundColor()
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: toFixed(value)
                             onTextChanged: updateSlider()
                             onEditingFinished: {
@@ -243,6 +261,8 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: font.pixelSize * 0.5
                             rightPadding: font.pixelSize
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: thisUnit()
                             color: foregroundColor2()
                         }
@@ -253,6 +273,8 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: error ? error.toFixed(4) : ""
                             color: foregroundColor()
                         }
@@ -319,6 +341,8 @@ Column {
             selectionColor: Generic.Style.tableHighlightRowColor
             validator: DoubleValidator {}
             maximumLength: 8
+            font.pointSize: Generic.Style.fontPointSize
+            font.family: Generic.Style.fontFamily
             text: toFixed(slider.from)
             onEditingFinished: {
                 if (text === toFixed(slider.from))
@@ -397,6 +421,8 @@ Column {
             selectionColor: Generic.Style.tableHighlightRowColor
             validator: DoubleValidator {}
             maximumLength: 8
+            font.pointSize: Generic.Style.fontPointSize
+            font.family: Generic.Style.fontFamily
             text: toFixed(slider.to)
             onEditingFinished: {
                 if (text === toFixed(slider.to))

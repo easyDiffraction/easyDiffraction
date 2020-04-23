@@ -58,7 +58,11 @@ ColumnLayout {
             columns: 2
             columnSpacing: 20
             // Row
-            Text { text: qsTr("Library") }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize
+                font.family: Generic.Style.fontFamily
+                text: qsTr("Library")
+            }
             GenericAppElements.ComboBox {
                 model: ["Cryspy"]
                 Layout.fillWidth: true
@@ -77,28 +81,44 @@ ColumnLayout {
             columns: 2
             columnSpacing: 20
             // Row
-            Text { text: qsTr("Library") }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize
+                font.family: Generic.Style.fontFamily
+                text: qsTr("Library")
+            }
             GenericAppElements.ComboBox {
                 model: ["Scipy"]
                 Layout.fillWidth: true
                 GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
             }
             // Row
-            Text { text: qsTr("Type") }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize
+                font.family: Generic.Style.fontFamily
+                text: qsTr("Type")
+            }
             GenericAppElements.ComboBox {
                 model: ["Local optimization"]
                 Layout.fillWidth: true
                 GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
             }
             // Row
-            Text { text: qsTr("Method") }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize
+                font.family: Generic.Style.fontFamily
+                text: qsTr("Method")
+            }
             GenericAppElements.ComboBox {
                 model: ["Broyden–Fletcher–Goldfarb–Shanno (BFGS)"]
                 Layout.fillWidth: true
                 GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
             }
             // Row
-            Text { text: qsTr("Max. iterations") }
+            Text {
+                font.pointSize: Generic.Style.fontPointSize
+                font.family: Generic.Style.fontFamily
+                text: qsTr("Max. iterations")
+            }
             TextField { Layout.fillWidth: true; implicitHeight: 32; text: "100"; GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }}
         }
     }

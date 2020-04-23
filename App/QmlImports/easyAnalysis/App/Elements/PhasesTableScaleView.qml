@@ -187,6 +187,8 @@ Column {
                             rightPadding: leftPadding * 2
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
                             text: Specific.Variables.experimentByIndex(0).phase[0].scale.toFixed(4)
                         }
                         GenericAppElements.CheckBox {
