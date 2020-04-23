@@ -69,8 +69,8 @@ QtObject {
 
     // Examples
     readonly property var examplesList: [
-        examplesDir.replace("file:", "") + "/Fe3O4_pol-neutron-powder-1d_5T_5C1(LLB)/main.cif",
-        examplesDirAbs.replace("file:", "") + "/PbSO4_unpol-neutron-powder-1d_D1A(ILL)/main.cif",
+        examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder-1d_5T_5C1(LLB)/main.cif",
+        examplesRcDirPath + "/PbSO4_unpol-neutron-powder-1d_D1A(ILL)/main.cif"
     ]
 
     // Undo-Redo
@@ -322,8 +322,8 @@ QtObject {
     }
 
     Component.onCompleted: {
-        print("examplesDir", examplesDir)
-        print("examplesDirAbs", examplesDirAbs)
+        print("examplesRcDirUrl", examplesRcDirUrl)
+        print("examplesRcDirPath", examplesRcDirPath)
     }
 }
 
