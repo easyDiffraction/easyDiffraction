@@ -1,4 +1,4 @@
-easyInterface
+git+git://github.com/easyDiffraction/easyInterface.git@polarisation_start#egg=easyInterface
 pyside2
 numpy
 pyyaml
