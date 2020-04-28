@@ -1,6 +1,6 @@
 language: shell                                                                 # 'language: python' is an error on Travis CI macOS
 sudo: required
-#cache: pip
+#cache: pip 
 
 env:
   global:
