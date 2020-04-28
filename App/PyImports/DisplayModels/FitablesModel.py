@@ -24,7 +24,7 @@ class FitablesModel(BaseModel):
         # major properties
         self._model = QStandardItemModel()
         # set role names
-        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'unit']
+        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'unit', 'labelList'] # 257 - 265
         self._roles_list = []
         self._roles_dict = {}
         self._setRolesListAndDict()
@@ -76,6 +76,20 @@ class FitablesModel(BaseModel):
                     continue
                 if role_name == 'path':
                     value = keys_list
+                elif role_name == 'labelList':
+                    value = keys_list[0:-1]
+                    # Insert elements according to CIF
+                    if len(value) > 0 and value[-1] == "offset": value.insert(-1, "setup")
+                    if len(value) > 0 and value[-1] == "wavelength": value.insert(-1, "setup")
+                    # Renaming according to CIF
+                    if len(value) > 0 and value[-1] == "offset": value[-1] = "offset_2theta"
+                    if len(value) > 2 and value[2] == "atoms": value[2] = "atom_site"
+                    if len(value) > 2 and value[2] == "resolution": value[2] = "pd_instr_resolution"
+                    if len(value) > 2 and value[2] == "polarization": value[2] = "diffrn_radiation"
+                    if len(value) > 2 and value[2] == "background": value.insert(3, "2theta")
+                    if len(value) > 5 and value[4] == "MSP":
+                        value[5] = "susceptibility_" + value[5]
+                        del value[4]
                 elif role_name == 'label':
                     value = ' '.join(keys_list[:-1])
                 elif role_name == 'value':
