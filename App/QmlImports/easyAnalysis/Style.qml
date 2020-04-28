@@ -46,13 +46,13 @@ QtObject {
 
     readonly property color tableRowColor: "white"
     readonly property color tableAlternateRowColor: "#f7f7f7"
-    readonly property color tableHighlightRowColor: blueColor //Qt.lighter("dodgerblue", 1.7)
+    readonly property color tableHighlightRowColor: "#302a99d9"//buttonBkgFinishedColor//blueColor //Qt.lighter("dodgerblue", 1.7)
     readonly property color tableHeaderRowColor: "#eee"
     readonly property color tableColumnBorderColor: "#e8e8e8"
 
     readonly property color tableTextColor: "black"
     readonly property color tableDisabledTextColor: "#888"
-    readonly property color tableHighlightTextColor: "white"
+    readonly property color tableHighlightTextColor: "black"//"white"
     readonly property color tableHighlightBorderColor: Qt.lighter(tableHighlightRowColor, 1.2)
 
     // Toolbar
@@ -104,6 +104,7 @@ QtObject {
     readonly property string introExpandedThinFontFamily: encodeSansExpandedExtraLight.name
     readonly property string fontFamily: ptSansWebRegular.name
     readonly property string monoFontFamily: ptMono.name
+    readonly property string fitablesFontFamily: fitables.name
     property FontLoader encodeSansCondensedExtraLight: FontLoader { source: "Resources/Fonts/EncodeSansCondensed/EncodeSansCondensed-ExtraLight.ttf" }
     property FontLoader encodeSansCondensedRegular: FontLoader { source: "Resources/Fonts/EncodeSansCondensed/EncodeSansCondensed-Regular.ttf" }
     property FontLoader encodeSansExtraLight: FontLoader { source: "Resources/Fonts/EncodeSans/EncodeSans-ExtraLight.ttf" }
@@ -111,12 +112,13 @@ QtObject {
     property FontLoader ptSansWebRegular: FontLoader { source: "Resources/Fonts/PtSans/PT_Sans-Web-Regular.ttf" }
     property FontLoader ptSansWebBold: FontLoader { source: "Resources/Fonts/PtSans/PT_Sans-Web-Bold.ttf" } // font.bold: true
     property FontLoader ptMono: FontLoader { source: "Resources/Fonts/PtMono/PTM55FT.ttf" }
+    property FontLoader fitables: FontLoader { source: "Resources/Fonts/Fitables/Fitables.ttf" }
 
     // Text
+    property Text text: Text { font.pointSize: Qt.application.font.pointSize + 1 }
     readonly property string systemFontFamily: text.font.family
-    readonly property int systemFontPointSize: text.font.pointSize
-    readonly property int fontPointSize: systemFontPointSize + 1
-    property Text text: Text {}
+    readonly property int fontPointSize: text.font.pointSize
+    readonly property int fontPixelSize: text.font.pixelSize
 
 }
 

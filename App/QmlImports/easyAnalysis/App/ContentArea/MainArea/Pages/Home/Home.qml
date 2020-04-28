@@ -14,9 +14,9 @@ Rectangle {
 
     property int margin: 20
     property int animationDuration: Generic.Variables.showIntro ? Generic.Variables.introAnimationDuration : 0
-    property int appNameFontSize: Generic.Style.systemFontPointSize * 4
-    property int appVersionFontSize: Generic.Style.systemFontPointSize + 1
-    property int repeatFontSize: Generic.Style.systemFontPointSize + 1
+    property int appNameFontSize: Generic.Style.fontPointSize * 4
+    property int appVersionFontSize: Generic.Style.fontPointSize
+    property int repeatFontSize: Generic.Style.fontPointSize
 
     enabled: false
 
