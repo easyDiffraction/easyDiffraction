@@ -19,9 +19,9 @@ Column {
 
     property string rowBackgroundColor: 'white'
     property string alternateRowBackgroundColor: '#f7f7f7'
-    property string highlightedRowBackgroundColor: "#2a99d9"
+    property string highlightedRowBackgroundColor: Generic.Style.tableHighlightRowColor//"#2a99d9"
     property string rowForegroundColor: "black"
-    property string highlightedRowForegroundColor: "white"
+    property string highlightedRowForegroundColor: Generic.Style.tableHighlightTextColor//"white"
     property string headerBackgroundColor: '#eee'
     property string headerBorderColor: '#dedede'
 
@@ -40,21 +40,24 @@ Column {
     function cellWidthProvider(column) {
         const allColumnWidth = width - borderWidth * 2
         const numberColumnWidth = 40
+        const typeColumnWidth = 30
         const refineColumnWidth = cellHeight * 1.5
-        const flexibleColumnsWidth = allColumnWidth - numberColumnWidth - refineColumnWidth
+        const flexibleColumnsWidth = allColumnWidth - numberColumnWidth - typeColumnWidth - refineColumnWidth
         const flexibleColumnsCount = 4
-        if (column === 1)
+        if (column === 1)       // No.
             return numberColumnWidth
-        else if (column === 2)
+        else if (column === 2)  // Type
+            return typeColumnWidth
+        else if (column === 3)  // Label
             return 2.6 * flexibleColumnsWidth / flexibleColumnsCount
-        else if (column === 3)
+        else if (column === 4)  // Value
             return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
-        else if (column === 4)
-            return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
-        else if (column === 5)
-            return refineColumnWidth
-        else if (column === 6)
+        else if (column === 5)  // Units
             return 0.4 * flexibleColumnsWidth / flexibleColumnsCount
+        else if (column === 6)  // Error
+            return 0.5 * flexibleColumnsWidth / flexibleColumnsCount
+        else if (column === 7)  // Fit
+            return refineColumnWidth
         else return 0
     }
 
@@ -92,58 +95,58 @@ Column {
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
-                            leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            leftPadding: Generic.Style.fontPixelSize
+                            rightPadding: Generic.Style.fontPixelSize
                             font.pointSize: Generic.Style.fontPointSize
                             font.family: Generic.Style.fontFamily
                             text: "No."
                         }
                         Text {
-                            width: cellWidthProvider(2)
+                            width: cellWidthProvider(2) + cellWidthProvider(3)
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignLeft
-                            leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            leftPadding: 0
+                            rightPadding: Generic.Style.fontPixelSize
                             font.pointSize: Generic.Style.fontPointSize
                             font.family: Generic.Style.fontFamily
                             text: "Label"
-                        }
-                        Text {
-                            width: cellWidthProvider(3)
-                            height: parent.height
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignRight
-                            leftPadding: font.pixelSize
-                            rightPadding: 0
-                            font.pointSize: Generic.Style.fontPointSize
-                            font.family: Generic.Style.fontFamily
-                            text: "Value"
-                        }
-                        Text {
-                            width: cellWidthProvider(6)
-                            height: parent.height
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignLeft
-                            leftPadding: font.pixelSize * 0.5
-                            rightPadding: font.pixelSize
-                            font.pointSize: Generic.Style.fontPointSize
-                            font.family: Generic.Style.fontFamily
-                            text: ""
                         }
                         Text {
                             width: cellWidthProvider(4)
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
-                            leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            leftPadding: Generic.Style.fontPixelSize
+                            rightPadding: 0
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
+                            text: "Value"
+                        }
+                        Text {
+                            width: cellWidthProvider(5)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignLeft
+                            leftPadding: Generic.Style.fontPixelSize * 0.5
+                            rightPadding: Generic.Style.fontPixelSize
+                            font.pointSize: Generic.Style.fontPointSize
+                            font.family: Generic.Style.fontFamily
+                            text: ""
+                        }
+                        Text {
+                            width: cellWidthProvider(6)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignRight
+                            leftPadding: Generic.Style.fontPixelSize
+                            rightPadding: Generic.Style.fontPixelSize
                             font.pointSize: Generic.Style.fontPointSize
                             font.family: Generic.Style.fontFamily
                             text: "Error"
                         }
                         Text {
-                            width: cellWidthProvider(5)
+                            width: cellWidthProvider(7)
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
@@ -179,29 +182,12 @@ Column {
                     id: contentRow
                     width: parent.width
                     height: cellHeight
-                    color: backgroundColor()
-
-                    function foregroundColor() {
-                        if ((typeof(index) == 'undefined') && (inxex == null)) {
-                            return rowForegroundColor
-                        }
-                        return index === contentListView.currentIndex ? highlightedRowForegroundColor : rowForegroundColor
-                    }
-                    function foregroundColor2() {
-                        if ((typeof(index) == 'undefined') && (inxex == null)) {
-                            return "#999"
-                        }
-                        return index === contentListView.currentIndex ? highlightedRowForegroundColor : "#999"
-                    }
-                    function backgroundColor() {
+                    color: {
                         if (index === contentListView.currentIndex)
                             return highlightedRowBackgroundColor
                         else
                             return index % 2 ? alternateRowBackgroundColor : rowBackgroundColor
                     }
-                    function thisLabel(){ return ((typeof(label) !== 'undefined') && (label !== null)) ? label : ''}
-                    function thisRefine(){ return ((typeof(refine) !== 'undefined') && (refine !== null)) ? refine : ''}
-                    function thisUnit(){ return ((typeof(unit) !== 'undefined') && (unit !== null)) ? unit : ''}
                     Row {
                         anchors.fill: parent
                         spacing: 0
@@ -211,36 +197,106 @@ Column {
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
-                            leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            leftPadding: Generic.Style.fontPixelSize
+                            rightPadding: Generic.Style.fontPixelSize
                             font.pointSize: Generic.Style.fontPointSize
                             font.family: Generic.Style.fontFamily
                             text: index + 1
-                            color: foregroundColor()
+                            //color: foregroundColor()
+                            color: rowForegroundColor
                         }
+
                         Text {
                             width: cellWidthProvider(2)
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignLeft
-                            leftPadding: font.pixelSize
-                            rightPadding: leftPadding
-                            font.pointSize: Generic.Style.fontPointSize
+                            leftPadding: 0
+                            rightPadding: 0
+                            font.pixelSize: Generic.Style.fontPixelSize + 2
+                            font.family: Generic.Style.fitablesFontFamily
+                            //text: labelList[0] === "phases" ? "\u0041" : "\u0042"
+                            //color: blockColor(index)
+                            textFormat: Text.RichText
+                            text: {
+                                var arr = labelList
+                                if (typeof arr === 'undefined' || arr === null) {
+                                    return ""
+                                }
+
+                                // Chose icon according to the text
+                                let txt = ""
+                                if (arr[0] === "phases") {
+                                    txt = "\u0041"
+                                } else if (arr[0] === "experiments") {
+                                    txt = "\u0042"
+                                }
+
+                                // Half-hide if previous element is the same
+                                const labelListRole = 265
+                                const modelIndex = contentListView.model.index(index, 0)
+                                const previousModelIndex = contentListView.model.index(index-1, 0)
+                                const previousLabelList = getModelData(labelListRole, previousModelIndex)
+                                if (typeof previousLabelList !== "undefined" && labelList[0] === previousLabelList[0]) {
+                                    txt = `<font color=#b3b3b3>${txt}</font>`
+                                }
+
+                                return txt
+                            }
+                        }
+
+                        Text {
+                            width: cellWidthProvider(3)
+                            height: parent.height
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignLeft
+                            leftPadding: 0
+                            rightPadding: Generic.Style.fontPixelSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
-                            text: thisLabel()
-                            color: foregroundColor()
+                            //text: label
+                            //color: foregroundColor()
+                            textFormat: Text.RichText
+                            text: {
+                                var arr = labelList
+                                if (typeof arr === 'undefined' || arr === null) {
+                                    return ""
+                                }
+
+                                // Hightlight the last element
+                                arr[arr.length-1] = `<font color=${Generic.Style.buttonIconFinishedColor}><b>${arr[arr.length-1]}</b></font>`
+
+                                // Half-hide if previous element is the same
+                                const labelListRole = 265
+                                const modelIndex = contentListView.model.index(index, 0)
+                                const previousModelIndex = contentListView.model.index(index-1, 0)
+                                const previousLabelList = getModelData(labelListRole, previousModelIndex)
+                                for (let i = 1; i < labelList.length; ++i) {
+                                    if (typeof previousLabelList !== "undefined" && labelList[i] === previousLabelList[i]) {
+                                        arr[i] = `<font color=#777>${arr[i]}</font>`
+                                    } else {
+                                        if (i === labelList.length - 2 || i === labelList.length - 3 || i === labelList.length - 4) {
+                                            arr[i] = `<font color=#000><b>${arr[i]}</b></font>`
+                                        }
+                                    }
+                                }
+
+                                // Skip 1st element and convert to string
+                                return arr.slice(1).join(" ")
+                            }
                         }
                         TextInput {
-                            width: cellWidthProvider(3)
+                            width: cellWidthProvider(4)
                             height: parent.height
                             enabled: !Specific.Variables.refinementRunning
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
-                            leftPadding: font.pixelSize
+                            leftPadding: Generic.Style.fontPixelSize
                             rightPadding: 0
                             validator: DoubleValidator {}
                             maximumLength: 8
-                            color: foregroundColor()
+                            //color: foregroundColor()
+                            color: rowForegroundColor
                             font.pointSize: Generic.Style.fontPointSize
                             font.family: Generic.Style.fontFamily
                             text: toFixed(value)
@@ -248,41 +304,53 @@ Column {
                             onEditingFinished: {
                                 if (valueEdit !== text) {
                                     scrollBarPosition = verticalScrollBar.position
-                                    print("1 scrollBarPosition", scrollBarPosition, verticalScrollBar.position)
                                     valueEdit = parseFloat(text)
                                 }
                             }
 
                         }
                         Text {
-                            width: cellWidthProvider(6)
+                            width: cellWidthProvider(5)
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignLeft
-                            leftPadding: font.pixelSize * 0.5
-                            rightPadding: font.pixelSize
+                            leftPadding: Generic.Style.fontPixelSize * 0.5
+                            rightPadding: Generic.Style.fontPixelSize
                             font.pointSize: Generic.Style.fontPointSize
                             font.family: Generic.Style.fontFamily
-                            text: thisUnit()
-                            color: foregroundColor2()
+                            //text: thisUnit()
+                            //color: foregroundColor2()
+                            textFormat: Text.RichText
+                            text: {
+                                if (typeof(unit) === 'undefined' || unit === null) {
+                                    return ""
+                                }
+                                return unit.replace("^2", "<sup>2</sup>").replace("^-1", "<sup>\uff0d1</sup>")
+                            }
+                            color: "#999"
                         }
                         Text {
-                            width: cellWidthProvider(4)
+                            width: cellWidthProvider(6)
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignRight
-                            leftPadding: font.pixelSize
-                            rightPadding: leftPadding
+                            leftPadding: Generic.Style.fontPixelSize
+                            rightPadding: Generic.Style.fontPixelSize
                             font.pointSize: Generic.Style.fontPointSize
                             font.family: Generic.Style.fontFamily
                             text: error ? error.toFixed(4) : ""
-                            color: foregroundColor()
+                            //color: foregroundColor()
+                            color: rowForegroundColor
                         }
                         CheckBox {
-                            width: cellWidthProvider(5)
+                            width: cellWidthProvider(7)
                             height: parent.height
                             enabled: !Specific.Variables.refinementRunning
-                            checked: thisRefine()
+                            checked: {
+                                if (typeof(refine) !== 'undefined' && refine !== null) {
+                                    return refine
+                                }
+                            }
                             onToggled: {
                                 // proper, but slow update of the checkbox
                                 // It waits until python updates project, etc.
