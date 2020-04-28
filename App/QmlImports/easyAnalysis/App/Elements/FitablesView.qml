@@ -40,7 +40,7 @@ Column {
     function cellWidthProvider(column) {
         const allColumnWidth = width - borderWidth * 2
         const numberColumnWidth = 40
-        const typeColumnWidth = 30
+        const typeColumnWidth = (Generic.Style.fontPixelSize + 2) * 1.5
         const refineColumnWidth = cellHeight * 1.5
         const flexibleColumnsWidth = allColumnWidth - numberColumnWidth - typeColumnWidth - refineColumnWidth
         const flexibleColumnsCount = 4
