@@ -19,7 +19,7 @@ QtObject {
     ////property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     ////property var projectCifDict: projectOpened ? proxyPyQmlObj.projectCifDict : {"phases": {}, "experiments": {}, "calculations": {}}
 
-    property var cif: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._fileStructure : null
+    //property var cif: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._fileStructure : null
 
     //property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
     //property var phaseIds: projectOpened ? projectDict.info.phases_ids: []

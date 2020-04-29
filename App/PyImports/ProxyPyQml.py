@@ -42,7 +42,7 @@ class ProxyPyQml(QObject):
         self._atom_msps_model = AtomMspsModel()
         self._fitables_model = FitablesModel()
         self._status_model = StatusModel()
-        self._file_structure_model = FileStructureModel()
+        ##self._file_structure_model = FileStructureModel()
 
         self._refine_thread = None
         self._refinement_running = False
@@ -59,7 +59,7 @@ class ProxyPyQml(QObject):
         """
         self._phases_rcif_path = self._project_control.phases_rcif_path
         self._calculator_interface.addPhaseDefinition(self._phases_rcif_path)
-        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
+        ##self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
@@ -90,7 +90,7 @@ class ProxyPyQml(QObject):
         
         self._calculator_interface.setExperimentDefinitionFromString(cif_string)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
-        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
+        ##self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
@@ -105,7 +105,7 @@ class ProxyPyQml(QObject):
         self._experiment_rcif_path = self._project_control.experiment_rcif_path
         self._calculator_interface.addExperimentDefinition(self._experiment_rcif_path)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
-        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
+        ##self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.updateCalculations()
         self._calculator_interface.clearUndoStack()
@@ -143,7 +143,7 @@ class ProxyPyQml(QObject):
         self._atom_msps_model.setCalculatorInterface(self._calculator_interface)
         self._fitables_model.setCalculatorInterface(self._calculator_interface)
         self._status_model.setCalculatorInterface(self._calculator_interface)
-        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
+        ##self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         #
         self._refine_thread = Refiner(self._calculator_interface, 'refine')
         self._refine_thread.failed.connect(self._thread_failed)
@@ -251,7 +251,7 @@ class ProxyPyQml(QObject):
 
     _statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     _chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
-    _fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
+    ##_fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
 
     _releaseInfo = Property('QVariant', lambda self: self.info, constant=True)
 
