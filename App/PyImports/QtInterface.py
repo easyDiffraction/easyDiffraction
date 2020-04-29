@@ -106,6 +106,24 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         CalculatorInterface.removeExperiment(self, experiment_name)
         self.projectDictChanged.emit()
 
+    def updatePhase(self, phase_name, exp_cif_string):
+        #self.project_dict.startBulkUpdate('Manual update of the phase')
+        CalculatorInterface.removePhase(self, phase_name)
+        CalculatorInterface.setPhaseDefinitionFromString(self, exp_cif_string)
+        self.updateExperiments()
+        self.updateCalculations()
+        #self.project_dict.endBulkUpdate()
+        self.projectDictChanged.emit()
+
+    def updateExperiment(self, experiment_name, exp_cif_string):
+        #self.project_dict.startBulkUpdate('Manual update of the experiment')
+        CalculatorInterface.removeExperiment(self, experiment_name)
+        CalculatorInterface.setExperimentDefinitionFromString(self, exp_cif_string)
+        self.updatePhases()
+        self.updateCalculations()
+        #self.project_dict.endBulkUpdate()
+        self.projectDictChanged.emit()
+
     def setDictByPath(self, keys: list, value):
         CalculatorInterface.setDictByPath(self, keys, value)
         self.projectDictChanged.emit()

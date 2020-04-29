@@ -114,6 +114,22 @@ class ProxyPyQml(QObject):
         self.projectSaveStateChanged.emit()
         #self.onProjectUnsaved()
 
+    @Slot(str)
+    def updatePhaseFromGui(self, cif_string):
+        phase_name = self._calculator_interface.phasesIds()[0]
+        self._calculator_interface.updatePhase(phase_name, cif_string)
+        #self.projectChanged.emit()
+        #self._need_to_save = False
+        self.projectSaveStateChanged.emit()
+
+    @Slot(str)
+    def updateExperimentFromGui(self, cif_string):
+        exp_name = self._calculator_interface.experimentsIds()[0]
+        self._calculator_interface.updateExperiment(exp_name, cif_string)
+        self.projectChanged.emit()
+        self._need_to_save = False
+        self.projectSaveStateChanged.emit()
+
     # Load CIF method, accessible from QML
     @Slot()
     def initialize(self):
