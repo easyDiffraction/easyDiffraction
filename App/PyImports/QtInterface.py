@@ -86,11 +86,11 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         # self.updateCalculations()
         self.projectDictChanged.emit()
 
-    def setExperimentDefinitionFromString(self, exp_cif_string: str) -> NoReturn:
+    def addExperimentDefinitionFromString(self, exp_cif_string: str) -> NoReturn:
         """
         Parse the relevant phases file and update the corresponding model
         """
-        CalculatorInterface.setExperimentDefinitionFromString(self, exp_cif_string)
+        CalculatorInterface.addExperimentDefinitionFromString(self, exp_cif_string)
         self.updateCalculations()
         self.projectDictChanged.emit()
 
@@ -109,7 +109,7 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
     def updatePhase(self, phase_name, exp_cif_string):
         #self.project_dict.startBulkUpdate('Manual update of the phase')
         CalculatorInterface.removePhase(self, phase_name)
-        CalculatorInterface.setPhaseDefinitionFromString(self, exp_cif_string)
+        CalculatorInterface.addPhaseDefinitionFromString(self, exp_cif_string)
         self.updateExperiments()
         self.updateCalculations()
         #self.project_dict.endBulkUpdate()
@@ -118,7 +118,7 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
     def updateExperiment(self, experiment_name, exp_cif_string):
         #self.project_dict.startBulkUpdate('Manual update of the experiment')
         CalculatorInterface.removeExperiment(self, experiment_name)
-        CalculatorInterface.setExperimentDefinitionFromString(self, exp_cif_string)
+        CalculatorInterface.addExperimentDefinitionFromString(self, exp_cif_string)
         self.updatePhases()
         self.updateCalculations()
         #self.project_dict.endBulkUpdate()
