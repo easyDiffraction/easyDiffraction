@@ -74,6 +74,9 @@ class CalculatedDataModel(BaseModel):
         """
         self._log.info("=====> start")
 
+        if not self._project_dict:
+            return
+
         calcSeries = []
         calcBkgSeries = []
         lowerDiffSeries = []
