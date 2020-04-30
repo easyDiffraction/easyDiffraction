@@ -21,7 +21,7 @@ matrix:
       dist: bionic
       python: 3.7
       install:
-        - python3.7 -m venv $VENV_DIR                                           # create virtual environment
+        - python3 -m venv $VENV_DIR                                             # create virtual environment
         - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
       cache:
