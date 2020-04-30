@@ -17,7 +17,7 @@ env:
 matrix:
   include:
     # Linux
-    - name: "Python 3.7.6 on Linux Ubuntu 18.04 (Bionic Beaver)"
+    - name: "Python 3.7.7 on Linux Ubuntu 18.04 (Bionic Beaver)"
       dist: bionic
       install:
         - sudo add-apt-repository -y ppa:deadsnakes/ppa                         # add python repository
