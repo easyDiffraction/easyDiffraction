@@ -47,11 +47,11 @@ matrix:
           - $HOME/Qt
       env: BADGE=osx
     # Windows
-    - name: "Python 3.7.5 on Windows 10.0"
+    - name: "Python 3.7.7 on Windows 10.0"
       os: windows                                                               # Windows 10.0.17134 N/A Build 17134
       filter_secrets: false
       install:
-        - choco install python --version=3.7.5                                  # install python
+        - choco install python --version=3.7.7                                  # install python
         - C:/Python37/python -m venv $VENV_DIR                                  # create virtual environment
         - $VENV_DIR/Scripts/activate.bat                                        # activate virtual environment
         - echo $PATH                                                            # show path variable
@@ -70,6 +70,8 @@ matrix:
 
 before_script:
   - python --version
+  - pip --version
+  - python -m pip install --upgrade pip
   - pip --version
   - echo $TRAVIS_OS_NAME
   - echo $TRAVIS_BRANCH
