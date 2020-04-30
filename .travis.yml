@@ -1,6 +1,6 @@
 language: shell                                                                 # 'language: python' is an error on Travis CI macOS
 sudo: required
-#cache: pip 
+#cache: pip
 
 env:
   global:
@@ -17,17 +17,12 @@ env:
 matrix:
   include:
     # Linux
-    - name: "Python 3.6.9 on Linux Ubuntu 16.04 (Xenial)"
-      dist: xenial
+    - name: "Python 3.7.6 on Linux Ubuntu 18.04 (Bionic Beaver)"
+      dist: bionic
       install:
-        - sudo add-apt-repository -y ppa:deadsnakes/ppa                         # add python 3.6 repository
-        - sudo apt-get -y update                                                # update
-        - sudo apt-get -y install python3.6 python3.6-dev python3.6-venv        # install python 3.6
-        - python3.6 -m venv $VENV_DIR                                           # create virtual environment
+        - python3.7 -m venv $VENV_DIR                                           # create virtual environment
         - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
-      services:
-        - docker                                                                # for snap store
       cache:
         directories:
           - $VENV_DIR
