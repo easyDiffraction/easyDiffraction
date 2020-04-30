@@ -39,6 +39,8 @@ Rectangle {
             antialiasing: true
             smooth: true
             textFormat: Text.RichText
+            font.family: Generic.Style.fontFamily
+            font.pointSize: Generic.Style.fontPointSize
             onVisibleChanged: if (visible) update()
         }
     }

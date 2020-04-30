@@ -225,7 +225,7 @@ Dialog {
                     }
                     contentItem: Text {
                         text: parent.text
-                        font.family: Generic.Style.introCondencedRegularFontFamily
+                        font.family: Generic.Style.secondFontFamily
                         font.pointSize: Generic.Style.fontPointSize - 1
                         opacity: !enabled || parent.down ? 0.4 : 0.8
                         color: "white"
@@ -242,7 +242,7 @@ Dialog {
                     }
                     contentItem: Text {
                         text: parent.text
-                        font.family: Generic.Style.introCondencedRegularFontFamily
+                        font.family: Generic.Style.secondFontFamily
                         font.pointSize: Generic.Style.fontPointSize - 1
                         opacity: !enabled || parent.down ? 0.4 : 0.8
                         color: "white"
@@ -260,7 +260,7 @@ Dialog {
                     }
                     contentItem: Text {
                         text: parent.text
-                        font.family: Generic.Style.introCondencedRegularFontFamily
+                        font.family: Generic.Style.secondFontFamily
                         font.pointSize: Generic.Style.fontPointSize - 1
                         opacity: !enabled || parent.down ? 0.4 : 0.8
                         color: "white"

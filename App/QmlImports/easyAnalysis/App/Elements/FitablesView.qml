@@ -213,7 +213,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: 0
                             rightPadding: 0
-                            font.pixelSize: Generic.Style.fontPixelSize + 2
+                            font.pointSize: Generic.Style.fontPointSize + 2
                             font.family: Generic.Style.iconsFontFamily
                             //text: labelList[0] === "phases" ? "\u0041" : "\u0042"
                             //color: blockColor(index)
@@ -252,7 +252,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: 0
                             rightPadding: Generic.Style.fontPixelSize
-                            font.pixelSize: Generic.Style.fontPixelSize
+                            font.pointSize: Generic.Style.fontPointSize
                             font.family: Generic.Style.fontFamily
                             //text: label
                             //color: foregroundColor()

@@ -69,10 +69,10 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             height: diffraction.height
             width: making.width + diffraction.width + dam.width + easy.width
-            Text { id: making;      text: "Making ";                        opacity: 0; x: 0; font.family: Generic.Style.introCondencedThinFontFamily; font.pointSize: appNameFontSize; color: "#444" }
-            Text { id: diffraction; text: "diffraction";                    opacity: 0; x: making.width; font.family: Generic.Style.introCondencedRegularFontFamily; font.pointSize: appNameFontSize; color: "#666" }
-            Text { id: dam;         text: " data analysis and modelling ";  opacity: 0; x: making.width + diffraction.width; font.family: Generic.Style.introCondencedThinFontFamily; font.pointSize: appNameFontSize; color: "#444" }
-            Text { id: easy;        text: "easy";                           opacity: 0; x: making.width + diffraction.width + dam.width; font.family: Generic.Style.introCondencedRegularFontFamily; font.pointSize: appNameFontSize; color: "#666" }
+            Text { id: making;      text: "Making ";                        opacity: 0; x: 0; font.family: Generic.Style.secondCondensedFontFamily; font.pointSize: appNameFontSize; color: "#444" }
+            Text { id: diffraction; text: "diffraction";                    opacity: 0; x: making.width; font.family: Generic.Style.secondCondensedFontFamily; font.pointSize: appNameFontSize; color: "#666" }
+            Text { id: dam;         text: " data analysis and modelling ";  opacity: 0; x: making.width + diffraction.width; font.family: Generic.Style.secondCondensedFontFamily; font.pointSize: appNameFontSize; color: "#444" }
+            Text { id: easy;        text: "easy";                           opacity: 0; x: making.width + diffraction.width + dam.width; font.family: Generic.Style.secondCondensedFontFamily; font.pointSize: appNameFontSize; color: "#666" }
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
@@ -85,7 +85,8 @@ Rectangle {
             id: appVersion
             opacity: 0
             anchors.horizontalCenter: parent.horizontalCenter
-            font.family: Generic.Style.introExpandedThinFontFamily
+            font.family: Generic.Style.secondExpandedFontFamily
+            font.weight: Font.Light
             font.pointSize: appVersionFontSize
             text: "Version %1 (%2)".arg(Specific.Constants.appVersion).arg(Specific.Constants.appDate)
             MouseArea {
@@ -257,7 +258,8 @@ Rectangle {
             text: "Skip"
             contentItem: IconLabel {
                 text: skipButton.text
-                font.family: Generic.Style.introThinFontFamily
+                font.family: Generic.Style.secondFontFamily
+                font.weight: Font.Light
                 font.pointSize: repeatFontSize
                 color: "#666"
             }
@@ -275,7 +277,8 @@ Rectangle {
             text: "Disable"
             contentItem: IconLabel {
                 text: disableButton.text
-                font.family: Generic.Style.introThinFontFamily
+                font.family: Generic.Style.secondFontFamily
+                font.weight: Font.Light
                 font.pointSize: repeatFontSize
                 color: "#666"
             }
@@ -319,7 +322,7 @@ Rectangle {
         }
         ParallelAnimation {
             // font change
-            PropertyAnimation { target: easy; property: "font.family"; to: Generic.Style.introCondencedThinFontFamily; duration: animationDuration*0.1 }
+            PropertyAnimation { target: easy; property: "font.weight"; to: Font.ExtraLight; duration: animationDuration*0.1 }
             // text change
             PropertyAnimation { target: diffraction; property: "text"; to: "Diffraction"; duration: animationDuration*0.1 }
             // mooving

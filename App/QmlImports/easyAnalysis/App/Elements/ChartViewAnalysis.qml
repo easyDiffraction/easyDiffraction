@@ -681,8 +681,9 @@ ColumnLayout {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             text: qsTr("Show coordinates: Hover mouse pointer") + "  •  " + qsTr("Zoom in: Left mouse button") + "  •  " + qsTr("Reset: Right mouse button")
-            font.family: Generic.Style.introThinFontFamily
-            font.pointSize: Generic.Style.systemFontPointSize + 1
+            font.family: Generic.Style.secondFontFamily
+            font.weight: Font.Light
+            font.pointSize: Generic.Style.fontPointSize
             color: "grey"
             background: Rectangle { color: "white"; opacity: 0.9; border.width: 0; radius: Generic.Style.toolbarButtonRadius }
         }

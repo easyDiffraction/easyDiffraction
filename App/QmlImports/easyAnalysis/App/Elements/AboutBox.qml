@@ -50,13 +50,14 @@ GenericControls.Dialog {
 
                         Text {
                             text: "easy"
-                            font.family: Generic.Style.introCondencedThinFontFamily
+                            font.family: Generic.Style.secondCondensedFontFamily
+                            font.weight: Font.ExtraLight
                             font.pointSize: appNameFontSize
                             color: "#444"
                         }
                         Text {
                             text: "Diffraction"
-                            font.family: Generic.Style.introCondencedRegularFontFamily
+                            font.family: Generic.Style.secondCondensedFontFamily
                             font.pointSize: appNameFontSize
                             color: "#444"
                         }
@@ -65,7 +66,8 @@ GenericControls.Dialog {
                     Text {
                         id: appVersion
                         anchors.right: parent.right
-                        font.family: Generic.Style.introExpandedThinFontFamily
+                        font.family: Generic.Style.secondExpandedFontFamily
+                        font.weight: Font.Light
                         font.pointSize: appVersionFontSize
                         text: "Version %1 (%2)".arg(Specific.Constants.appVersion).arg(Specific.Constants.appDate)
                     }

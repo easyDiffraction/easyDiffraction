@@ -3,6 +3,8 @@ import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
 import QtQuick.Templates 2.12 as T
 
+import easyAnalysis 1.0 as Generic
+
 T.ToolTip {
     id: control
 
@@ -21,6 +23,9 @@ T.ToolTip {
 
     margins: 6
     padding: 6
+
+    font.family: Generic.Style.fontFamily
+    font.pointSize: Generic.Style.fontPointSize
 
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent | T.Popup.CloseOnReleaseOutsideParent
 

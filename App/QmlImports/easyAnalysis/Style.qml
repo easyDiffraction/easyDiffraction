@@ -98,24 +98,26 @@ QtObject {
     readonly property string dummyIconPath: "dummy.svg"
 
     // Fonts
-    readonly property string introCondencedThinFontFamily: encodeSansCondensedExtraLight.name
-    readonly property string introCondencedRegularFontFamily: encodeSansCondensedRegular.name
-    readonly property string introThinFontFamily: encodeSansExtraLight.name
-    readonly property string introExpandedThinFontFamily: encodeSansExpandedExtraLight.name
-    readonly property string fontFamily: ptSansWebRegular.name
-    readonly property string monoFontFamily: ptMono.name
-    readonly property string iconsFontFamily: icons.name
-    property FontLoader encodeSansCondensedExtraLight: FontLoader { source: "Resources/Fonts/EncodeSansCondensed/EncodeSansCondensed-ExtraLight.ttf" }
-    property FontLoader encodeSansCondensedRegular: FontLoader { source: "Resources/Fonts/EncodeSansCondensed/EncodeSansCondensed-Regular.ttf" }
-    property FontLoader encodeSansExtraLight: FontLoader { source: "Resources/Fonts/EncodeSans/EncodeSans-ExtraLight.ttf" }
-    property FontLoader encodeSansExpandedExtraLight: FontLoader { source: "Resources/Fonts/EncodeSansExpanded/EncodeSansExpanded-ExtraLight.ttf" }
-    property FontLoader ptSansWebRegular: FontLoader { source: "Resources/Fonts/PtSans/PT_Sans-Web-Regular.ttf" }
-    property FontLoader ptSansWebBold: FontLoader { source: "Resources/Fonts/PtSans/PT_Sans-Web-Bold.ttf" } // font.bold: true
-    property FontLoader ptMono: FontLoader { source: "Resources/Fonts/PtMono/PTM55FT.ttf" }
+    property FontLoader ptSansRegular: FontLoader { source: "Resources/Fonts/PT_Sans/PTSans-Regular.ttf" } // default
+    property FontLoader ptSansBold: FontLoader { source: "Resources/Fonts/PT_Sans/PTSans-Bold.ttf" } // font.bold: true
+    property FontLoader ptMono: FontLoader { source: "Resources/Fonts/PT_Mono/PTMono-Regular.ttf" }
+    property FontLoader encodeSansRegular: FontLoader { source: "Resources/Fonts/Encode_Sans/EncodeSans-Regular.ttf" } // default
+    property FontLoader encodeSansLight: FontLoader { source: "Resources/Fonts/Encode_Sans/EncodeSans-Light.ttf" } // font.weight: Font.Light
+    property FontLoader encodeSansCondensedRegular: FontLoader { source: "Resources/Fonts/Encode_Sans_Condensed/EncodeSansCondensed-Regular.ttf" } // default
+    property FontLoader encodeSansCondensedExtraLight: FontLoader { source: "Resources/Fonts/Encode_Sans_Condensed/EncodeSansCondensed-ExtraLight.ttf" } // font.weight: Font.ExtraLight
+    property FontLoader encodeSansExpandedRegular: FontLoader { source: "Resources/Fonts/Encode_Sans_Expanded/EncodeSansExpanded-Regular.ttf" } // default
+    property FontLoader encodeSansExpandedLight: FontLoader { source: "Resources/Fonts/Encode_Sans_Expanded/EncodeSansExpanded-Light.ttf" } // font.weight: Font.Light
     property FontLoader icons: FontLoader { source: "Resources/Fonts/Icons/icons.ttf" }
+    readonly property string fontFamily: ptSansRegular.name
+    readonly property string monoFontFamily: ptMono.name
+    readonly property string secondFontFamily: encodeSansRegular.name
+    readonly property string secondCondensedFontFamily: encodeSansCondensedRegular.name
+    readonly property string secondExpandedFontFamily: encodeSansExpandedRegular.name
+    readonly property string iconsFontFamily: icons.name
 
     // Text
-    property Text text: Text { font.pointSize: Qt.platform.os === "osx" ? Qt.application.font.pointSize + 1 : Qt.application.font.pointSize }
+    //property Text text: Text { font.pointSize: Qt.platform.os === "osx" ? Qt.application.font.pointSize + 1 : Qt.application.font.pointSize }
+    property Text text: Text { font.pointSize: Qt.application.font.pointSize + 1}
     readonly property string systemFontFamily: text.font.family
     readonly property int fontPointSize: text.font.pointSize
     readonly property int fontPixelSize: text.font.pixelSize
