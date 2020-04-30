@@ -104,7 +104,7 @@ QtObject {
     readonly property string introExpandedThinFontFamily: encodeSansExpandedExtraLight.name
     readonly property string fontFamily: ptSansWebRegular.name
     readonly property string monoFontFamily: ptMono.name
-    readonly property string fitablesFontFamily: fitables.name
+    readonly property string iconsFontFamily: icons.name
     property FontLoader encodeSansCondensedExtraLight: FontLoader { source: "Resources/Fonts/EncodeSansCondensed/EncodeSansCondensed-ExtraLight.ttf" }
     property FontLoader encodeSansCondensedRegular: FontLoader { source: "Resources/Fonts/EncodeSansCondensed/EncodeSansCondensed-Regular.ttf" }
     property FontLoader encodeSansExtraLight: FontLoader { source: "Resources/Fonts/EncodeSans/EncodeSans-ExtraLight.ttf" }
@@ -112,7 +112,7 @@ QtObject {
     property FontLoader ptSansWebRegular: FontLoader { source: "Resources/Fonts/PtSans/PT_Sans-Web-Regular.ttf" }
     property FontLoader ptSansWebBold: FontLoader { source: "Resources/Fonts/PtSans/PT_Sans-Web-Bold.ttf" } // font.bold: true
     property FontLoader ptMono: FontLoader { source: "Resources/Fonts/PtMono/PTM55FT.ttf" }
-    property FontLoader fitables: FontLoader { source: "Resources/Fonts/Fitables/Fitables.ttf" }
+    property FontLoader icons: FontLoader { source: "Resources/Fonts/Icons/icons.ttf" }
 
     // Text
     property Text text: Text { font.pointSize: Qt.application.font.pointSize }

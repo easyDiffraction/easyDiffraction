@@ -214,7 +214,7 @@ Column {
                             leftPadding: 0
                             rightPadding: 0
                             font.pixelSize: Generic.Style.fontPixelSize + 2
-                            font.family: Generic.Style.fitablesFontFamily
+                            font.family: Generic.Style.iconsFontFamily
                             //text: labelList[0] === "phases" ? "\u0041" : "\u0042"
                             //color: blockColor(index)
                             textFormat: Text.RichText
@@ -227,9 +227,9 @@ Column {
                                 // Chose icon according to the text
                                 let txt = ""
                                 if (arr[0] === "phases") {
-                                    txt = "\u0041"
+                                    txt = "\ue806"
                                 } else if (arr[0] === "experiments") {
-                                    txt = "\u0042"
+                                    txt = "\ue805"
                                 }
 
                                 // Half-hide if previous element is the same

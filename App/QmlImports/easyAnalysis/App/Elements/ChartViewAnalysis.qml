@@ -23,6 +23,7 @@ ColumnLayout {
     property int yScaleZoom: 0
 
     property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pointSize: Generic.Style.fontPointSize })
+    property font commonIconsFont: Qt.font({ family: Generic.Style.iconsFontFamily, pointSize: Generic.Style.fontPointSize })
 
     property int globalAnimationDuration: 1000
     property var globalAnimationOptions: ChartView.SeriesAnimations //ChartView.AllAnimations //ChartView.NoAnimation
@@ -146,11 +147,15 @@ ColumnLayout {
                         columnSpacing: 10
                         rowSpacing: 5
                         columns: 2
-                        Text { text: "■"; color: obsArea.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
-                        Text { text: obsArea.name; font: commonFont}
-                        Text { text: "–"; color: calcSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
+                        verticalItemAlignment: Grid.AlignVCenter
+
+                        Text { text: "\ue807"; color: obsArea.color; font: commonIconsFont }
+                        Text { text: obsArea.name; font: commonFont }
+
+                        Text { text: "\ue808"; color: calcSeries.color; font: commonIconsFont }
                         Text { text: calcSeries.name; font: commonFont}
-                        Text { text: "--"; color: calcBkgSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
+
+                        Text { text: "\ue809"; color: calcBkgSeries.color; font: commonIconsFont }
                         Text { text: calcBkgSeries.name; font: commonFont}
                     }
                 }
