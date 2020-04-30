@@ -430,7 +430,7 @@ ColumnLayout {
             id: middleChartContainer
             visible: showBragg
             Layout.fillWidth: true
-            height: 2*extraPadding
+            height: 1.5*extraPadding
             color: "transparent"
             clip: true
 
@@ -439,7 +439,7 @@ ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: -extraPadding
                 anchors.topMargin: -3*extraPadding
-                anchors.bottomMargin: -3*extraPadding
+                anchors.bottomMargin: -3.5*extraPadding
                 //antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false
                 backgroundRoundness: 0
@@ -568,7 +568,7 @@ ColumnLayout {
                 id: bottomChart
                 anchors.fill: parent
                 anchors.margins: -extraPadding
-                anchors.topMargin: -3*extraPadding
+                anchors.topMargin: -2.5*extraPadding
                 //anchors.topMargin: -extraPadding// - 20
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false
