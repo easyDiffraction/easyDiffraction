@@ -115,7 +115,7 @@ QtObject {
     property FontLoader fitables: FontLoader { source: "Resources/Fonts/Fitables/Fitables.ttf" }
 
     // Text
-    property Text text: Text { font.pointSize: Qt.application.font.pointSize + 1 }
+    property Text text: Text { font.pointSize: Qt.application.font.pointSize }
     readonly property string systemFontFamily: text.font.family
     readonly property int fontPointSize: text.font.pointSize
     readonly property int fontPixelSize: text.font.pixelSize
