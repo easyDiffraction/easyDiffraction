@@ -90,7 +90,7 @@ class ProxyPyQml(QObject):
         cif_string = self._project_control._cif_string
         cif_string = cif_string.replace("PHASE_NAME", self._calculator_interface.phasesIds()[0])
         
-        self._calculator_interface.setExperimentDefinitionFromString(cif_string)
+        self._calculator_interface.addExperimentDefinitionFromString(cif_string)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         ##self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
