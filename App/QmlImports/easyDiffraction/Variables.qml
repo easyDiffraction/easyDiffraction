@@ -11,10 +11,10 @@ QtObject {
     // Main
     property var projectControl: proxyPyQmlObj && proxyPyQmlObj._projectControl ? proxyPyQmlObj._projectControl : null
 
-    property var calculatorInterface: proxyPyQmlObj._calculatorInterface
+    property var calculatorInterface: proxyPyQmlObj ? proxyPyQmlObj._calculatorInterface : null
     //property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
-    property var projectDict: projectOpened ? calculatorInterface.asDict() : null
-    property var projectCifDict: projectOpened ? calculatorInterface.asCifDict() : {"phases": {}, "experiments": {}, "calculations": {}}
+    property var projectDict: projectOpened && calculatorInterface ? calculatorInterface.asDict() : null
+    property var projectCifDict: projectOpened && calculatorInterface ? calculatorInterface.asCifDict() : {"phases": {}, "experiments": {}, "calculations": {}}
     ///property var projectDict: projectOpened ? projectDict : null
     ////property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     ////property var projectCifDict: projectOpened ? proxyPyQmlObj.projectCifDict : {"phases": {}, "experiments": {}, "calculations": {}}
@@ -23,30 +23,30 @@ QtObject {
 
     //property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
     //property var phaseIds: projectOpened ? projectDict.info.phases_ids: []
-    function phaseIds(){ return projectOpened ? projectDict.info.phase_ids: []}
+    function phaseIds(){ return projectOpened && projectDict ? projectDict.info.phase_ids: []}
 
     //property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
     //property var experimentIds: projectOpened ? projectDict.info.experiment_ids: []
-    function experimentIds(){return projectOpened ? projectDict.info.experiment_ids: []}
+    function experimentIds(){return projectOpened && projectDict ? projectDict.info.experiment_ids: []}
 
     //property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
     function calculationIds(){ return projectOpened ? Object.keys(projectDict.calculations): []}
 
     property var needToSave: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._needToSave : false
-    property var projectFilePathSelected: projectOpened ? proxyPyQmlObj._projectFilePathSelected : ""
+    property var projectFilePathSelected: projectOpened && proxyPyQmlObj ? proxyPyQmlObj._projectFilePathSelected : ""
 
     property var projectName: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectName : null
     property var projectKeywords: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectKeywords : null
     property var projectModifiedDate: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectModified : null
 
     // Measured and calculated data
-    property var measuredData: proxyPyQmlObj._measuredData
+    property var measuredData: proxyPyQmlObj ? proxyPyQmlObj._measuredData : null
     property var measuredDataHeaderModel: proxyPyQmlObj && projectOpened ?
                                               proxyPyQmlObj._measuredData.asHeadersModel() : null
     property var measuredDataModel: proxyPyQmlObj && projectOpened ?
                                         proxyPyQmlObj._measuredData.asModel() : null
-    property var calculatedData: proxyPyQmlObj._calculatedData
-    property var braggPeaks: proxyPyQmlObj._braggPeaks
+    property var calculatedData: proxyPyQmlObj ? proxyPyQmlObj._calculatedData : null
+    property var braggPeaks: proxyPyQmlObj ? proxyPyQmlObj._braggPeaks : null
     property string dataType: "Sum"
     onDataTypeChanged: {
         measuredData.setDataType(dataType)
@@ -55,8 +55,8 @@ QtObject {
     property bool isPolarized: projectCifDict["experiments"].toString().includes("_pd_meas_intensity_up")
     property bool refineSum: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._refineSum : false
     property bool refineDiff: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._refineDiff : false
-    onRefineSumChanged: proxyPyQmlObj._refineSum = refineSum
-    onRefineDiffChanged: proxyPyQmlObj._refineDiff = refineDiff
+    onRefineSumChanged: if (refineSum) proxyPyQmlObj._refineSum
+    onRefineDiffChanged: if (refineDiff) proxyPyQmlObj._refineDiff
 
     // Models
     property var fitables: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._fitables : null
@@ -82,9 +82,9 @@ QtObject {
     property var canRedo: calculatorInterface ? proxyPyQmlObj._canRedo : false
 
     // Refinement
-    property var refinementRunning: proxyPyQmlObj._refinementStatus[0]
-    property var refinementDone: proxyPyQmlObj._refinementStatus[1]
-    property var refinementResult: proxyPyQmlObj._refinementStatus[2]
+    property var refinementRunning: proxyPyQmlObj ? proxyPyQmlObj._refinementStatus[0] : ""
+    property var refinementDone: proxyPyQmlObj ? proxyPyQmlObj._refinementStatus[1] : ""
+    property var refinementResult: proxyPyQmlObj ? proxyPyQmlObj._refinementStatus[2] : ""
 
     onRefinementResultChanged: {
         if (Object.entries(refinementResult)) {

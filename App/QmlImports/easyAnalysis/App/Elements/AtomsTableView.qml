@@ -55,7 +55,7 @@ Column {
 
     function colorProvider(atom) {
         const atom_site_dict = Specific.Variables.phaseByIndex(0).atoms
-        if (!Object.keys(atom_site_dict).length) {
+        if (!Object.keys(atom_site_dict).length || !atom_site_dict) {
             return "black"
         }
 
@@ -70,7 +70,9 @@ Column {
             type_symbol_dict[type_symbol_list[i]] = Generic.Style.atomColorList[i]
         }
 
-        return type_symbol_dict[atom]
+        const color = type_symbol_dict[atom]
+
+        return (typeof color !== "undefined") ? color : "black"
     }
 
     ////////////////////////

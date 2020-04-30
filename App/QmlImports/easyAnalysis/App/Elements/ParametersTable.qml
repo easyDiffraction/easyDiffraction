@@ -348,8 +348,9 @@ Controls1.TableView {
         getColumn(columnCount-1).width += rest
 
         // select 1st row, if table is selectable
-        if (selectable)
+        if (selectable && selectedRow > -1) {
             tableView.selection.select(selectedRow)
+        }
     }
 
     function openExample() {

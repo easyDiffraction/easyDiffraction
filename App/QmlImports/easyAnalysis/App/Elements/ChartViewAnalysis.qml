@@ -227,11 +227,17 @@ ColumnLayout {
                     labelsFont: commonFont
                     titleFont: commonFont
                     min: {
+                        if (!Specific.Variables.calculatedData || !Specific.Variables.measuredData) {
+                            return 1
+                        }
                         const max = Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
                         const min = Math.min(Specific.Variables.measuredData.yMin, Specific.Variables.calculatedData.yMin)
                         return min - 0.075*max
                     }
                     max: {
+                        if (!Specific.Variables.calculatedData || !Specific.Variables.measuredData) {
+                            return 1
+                        }
                         const max = Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
                         return max + 0.075*max
                     }
@@ -585,12 +591,18 @@ ColumnLayout {
                     labelsFont: commonFont
                     titleFont: commonFont
                     min: {
+                        if (!Specific.Variables.calculatedData) {
+                            return 1
+                        }
                         const min = Specific.Variables.calculatedData.yDiffMin
                         const max = Specific.Variables.calculatedData.yDiffMax
                         const MAX = Math.max(Math.abs(min), Math.abs(max))
                         return Math.sign(min) * MAX - 0.35*MAX
                     }
                     max: {
+                        if (!Specific.Variables.calculatedData) {
+                            return 1
+                        }
                         const min = Specific.Variables.calculatedData.yDiffMin
                         const max = Specific.Variables.calculatedData.yDiffMax
                         const MAX = Math.max(Math.abs(min), Math.abs(max))
