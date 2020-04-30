@@ -343,6 +343,12 @@ ColumnLayout {
                         infoToolTip.borderColor = Qt.darker(calcSeries.color, 1.1)
                     }
                 }
+
+                // Update Y-range for the DifferenceChartView
+                onHeightChanged: {
+                    axisYdiff.max = 0.5 * (axisY.max - axisY.min) / topChart.plotArea.height * bottomChart.plotArea.height
+                    axisYdiff.min = -axisYdiff.max
+                }
             }
 
             //////////////////////////
@@ -595,6 +601,7 @@ ColumnLayout {
                     titleText: "Iobs - Icalc"
                     labelsFont: commonFont
                     titleFont: commonFont
+                    /*
                     min: {
                         if (!Specific.Variables.calculatedData) {
                             return 1
@@ -613,6 +620,7 @@ ColumnLayout {
                         const MAX = Math.max(Math.abs(min), Math.abs(max))
                         return Math.sign(max) * MAX + 0.35*MAX
                     }
+                    */
                 }
 
                 AreaSeries {
