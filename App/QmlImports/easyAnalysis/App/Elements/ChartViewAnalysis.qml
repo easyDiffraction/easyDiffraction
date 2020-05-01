@@ -22,8 +22,8 @@ ColumnLayout {
     property int xScaleZoom: 0
     property int yScaleZoom: 0
 
-    property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pointSize: Generic.Style.fontPointSize })
-    property font commonIconsFont: Qt.font({ family: Generic.Style.iconsFontFamily, pointSize: Generic.Style.fontPointSize })
+    property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pixelSize: Generic.Style.fontPixelSize })
+    property font commonIconsFont: Qt.font({ family: Generic.Style.iconsFontFamily, pixelSize: Generic.Style.fontPixelSize })
 
     property int globalAnimationDuration: 1000
     property var globalAnimationOptions: ChartView.SeriesAnimations //ChartView.AllAnimations //ChartView.NoAnimation
@@ -681,14 +681,14 @@ ColumnLayout {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             height: Generic.Style.buttonHeight
-            leftPadding: font.pointSize
-            rightPadding: font.pointSize
+            leftPadding: font.pixelSize
+            rightPadding: font.pixelSize
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             text: qsTr("Show coordinates: Hover mouse pointer") + "  •  " + qsTr("Zoom in: Left mouse button") + "  •  " + qsTr("Reset: Right mouse button")
             font.family: Generic.Style.secondFontFamily
             font.weight: Font.Light
-            font.pointSize: Generic.Style.fontPointSize
+            font.pixelSize: Generic.Style.fontPixelSize
             color: "grey"
             background: Rectangle { color: "white"; opacity: 0.9; border.width: 0; radius: Generic.Style.toolbarButtonRadius }
         }

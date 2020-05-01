@@ -37,7 +37,7 @@ ColumnLayout {
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
                     font.family: Generic.Style.fontFamily
-                    font.pointSize: Generic.Style.fontPointSize - 1
+                    font.pixelSize: Generic.Style.fontPixelSize - 1
                     color: Generic.Style.buttonTextDisabledColor
                     text: label + ":"
                 }
@@ -45,7 +45,7 @@ ColumnLayout {
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
                     font.family: Generic.Style.fontFamily
-                    font.pointSize: Generic.Style.fontPointSize - 1
+                    font.pixelSize: Generic.Style.fontPixelSize - 1
                     color: Generic.Style.buttonTextDisabledColor
                     text: value
                 }

@@ -29,7 +29,7 @@ ApplicationWindow {
     title: Specific.Constants.appName
     color: "white"
     font.family: Generic.Style.fontFamily
-    font.pointSize: Generic.Style.fontPointSize
+    font.pixelSize: Generic.Style.fontPixelSize
     //flags: Qt.FramelessWindowHint | Qt.Dialog
 
     opacity: 0

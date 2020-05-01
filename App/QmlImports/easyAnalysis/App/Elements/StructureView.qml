@@ -121,8 +121,8 @@ Rectangle {
                 labelBorderEnabled: false
                 labelTextColor: "grey"
                 gridEnabled: false
-                font.pointSize: 60
-                font.family: Generic.Style.fontFamily
+                //font.pointSize: 60
+                //font.family: Generic.Style.fontFamily
             }
             shadowQuality: AbstractGraph3D.ShadowQualityNone // AbstractGraph3D.ShadowQualitySoftHigh
 
@@ -162,16 +162,16 @@ Rectangle {
         visible: showInfo
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: font.pointSize * 0.5
-        leftPadding: font.pointSize * lineHeight * 0.5
-        rightPadding: font.pointSize * lineHeight * 0.5
+        anchors.bottomMargin: font.pixelSize * 0.5
+        leftPadding: font.pixelSize * lineHeight * 0.5
+        rightPadding: font.pixelSize * lineHeight * 0.5
         lineHeight: 1.5
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         text: qsTr("Rotate: Drag with right mouse button pressed") + "  •  " + qsTr("Zoom in/out: Mouse wheel") + "  •  " + qsTr("Reset: Left mouse button")
         font.family: Generic.Style.secondFontFamily
         font.weight: Font.Light
-        font.pointSize: Generic.Style.fontPointSize
+        font.pixelSize: Generic.Style.fontPixelSize
         color: "grey"
         background: Rectangle { color: "white"; opacity: 0.9; border.width: 0; radius: Generic.Style.toolbarButtonRadius }
     }

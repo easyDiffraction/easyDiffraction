@@ -112,7 +112,7 @@ Controls1.TableView {
                 Layout.fillWidth: true
                 horizontalAlignment: styleData.textAlignment
                 font.family: Generic.Style.fontFamily
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 text: styleData.value
             }
 
@@ -189,7 +189,7 @@ Controls1.TableView {
             TextEdit {
                 Layout.fillWidth: true
                 font.family: Generic.Style.fontFamily
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 visible: !(styleData.role === "remove") && !(styleData.role === "open") && !(styleData.role === "color")
                 ///enabled: styleData.role === "num" || styleData.value[0] === "&" ? false : true
                 enabled: false

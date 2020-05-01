@@ -15,8 +15,6 @@ Rectangle {
     property int margin: 20
     property int animationDuration: Generic.Variables.showIntro ? Generic.Variables.introAnimationDuration * 2 : 0
     property int appNameFontPixelSize: 58
-    property int appVersionFontSize: Generic.Style.fontPointSize
-    property int repeatFontSize: Generic.Style.fontPointSize
 
     enabled: false
 
@@ -87,7 +85,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             font.family: Generic.Style.secondExpandedFontFamily
             font.weight: Font.Light
-            font.pointSize: appVersionFontSize
+            font.pixelSize: Generic.Style.fontPixelSize
             text: "Version %1 (%2)".arg(Specific.Constants.appVersion).arg(Specific.Constants.appDate)
             MouseArea {
                 anchors.fill: parent
@@ -161,7 +159,7 @@ Rectangle {
                 id: aboutLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
@@ -186,7 +184,7 @@ Rectangle {
                 id: tutorialLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
@@ -211,7 +209,7 @@ Rectangle {
                 id: documentationLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
@@ -228,7 +226,7 @@ Rectangle {
                 id: contactLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
@@ -260,7 +258,7 @@ Rectangle {
                 text: skipButton.text
                 font.family: Generic.Style.secondFontFamily
                 font.weight: Font.Light
-                font.pointSize: repeatFontSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 color: "#666"
             }
             background: Rectangle {
@@ -279,7 +277,7 @@ Rectangle {
                 text: disableButton.text
                 font.family: Generic.Style.secondFontFamily
                 font.weight: Font.Light
-                font.pointSize: repeatFontSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 color: "#666"
             }
             background: Rectangle {

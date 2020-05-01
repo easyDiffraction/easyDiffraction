@@ -15,8 +15,6 @@ Dialog {
     property string dialogBackgroundColor: "#efefef"
     property string headerBackgroundColor: "#ddd"
     property string headerBorderColor: "#ccc"
-    property var headerFontFamily: Generic.Style.fontFamily
-    property var headerFontPointSize: Generic.Style.fontPointSize + 1
 
     parent: Overlay.overlay
     anchors.centerIn: parent
@@ -41,8 +39,8 @@ Dialog {
             verticalAlignment: Text.AlignVCenter
             readOnly: true
             background: Rectangle { color: headerBackgroundColor }
-            font.family: headerFontFamily
-            font.pointSize: headerFontPointSize
+            font.family: Generic.Style.fontFamily
+            font.pixelSize: Generic.Style.fontPixelSize + 1
             text: dialog.title
 
             // Exit button

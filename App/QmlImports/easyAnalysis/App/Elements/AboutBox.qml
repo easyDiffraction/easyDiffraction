@@ -68,7 +68,7 @@ GenericControls.Dialog {
                         anchors.right: parent.right
                         font.family: Generic.Style.secondExpandedFontFamily
                         font.weight: Font.Light
-                        font.pointSize: appVersionFontSize
+                        font.pixelSize: Generic.Style.fontPixelSize
                         text: "Version %1 (%2)".arg(Specific.Constants.appVersion).arg(Specific.Constants.appDate)
                     }
                 }
@@ -91,7 +91,7 @@ GenericControls.Dialog {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.family: Generic.Style.fontFamily
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 text: "End User Licence Agreement"
                 color: Generic.Style.blueColor
 
@@ -106,7 +106,7 @@ GenericControls.Dialog {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.family: Generic.Style.fontFamily
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 text: "Dependent Open Source Licenses"
                 color: Generic.Style.blueColor
 
@@ -131,7 +131,7 @@ GenericControls.Dialog {
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: TextEdit.WordWrap
                 font.family: Generic.Style.fontFamily
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 color: "#222"
                 text: "easyDiffraction is a scientific software for\n modelling and analysis of neutron diffraction data."
             }
@@ -142,7 +142,7 @@ GenericControls.Dialog {
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: TextEdit.WordWrap
                 font.family: Generic.Style.fontFamily
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 color: "#222"
                 text: "easyDiffraction is build by ESS DMSC in\n Copenhagen, Denmark."
             }
@@ -166,7 +166,7 @@ GenericControls.Dialog {
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             font.family: Generic.Style.fontFamily
-            font.pointSize: Generic.Style.fontPointSize
+            font.pixelSize: Generic.Style.fontPixelSize
             color: "#222"
             text: "© 2019-2020 • All rights reserved"
         }

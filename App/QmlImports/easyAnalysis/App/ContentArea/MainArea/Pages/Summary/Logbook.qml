@@ -40,7 +40,7 @@ Rectangle {
             smooth: true
             textFormat: Text.RichText
             font.family: Generic.Style.fontFamily
-            font.pointSize: Generic.Style.fontPointSize
+            font.pixelSize: Generic.Style.fontPixelSize
             onVisibleChanged: if (visible) update()
         }
     }

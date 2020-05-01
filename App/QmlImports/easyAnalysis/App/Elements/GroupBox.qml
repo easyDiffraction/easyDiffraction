@@ -29,7 +29,7 @@ Column {
         leftPadding: Generic.Style.sidebarGroupIndicatorIconSize
         text: title
         font.family: Generic.Style.fontFamily
-        font.pointSize: Generic.Style.fontPointSize
+        font.pixelSize: Generic.Style.fontPixelSize
         font.bold: true
         //font.weight: Font.DemiBold
         icon.width: Generic.Style.sidebarGroupIndicatorIconSize

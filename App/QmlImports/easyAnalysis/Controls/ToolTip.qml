@@ -25,7 +25,7 @@ T.ToolTip {
     padding: 6
 
     font.family: Generic.Style.fontFamily
-    font.pointSize: Generic.Style.fontPointSize
+    font.pixelSize: Generic.Style.fontPixelSize
 
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent | T.Popup.CloseOnReleaseOutsideParent
 

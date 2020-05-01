@@ -98,7 +98,7 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: Generic.Style.fontPixelSize
                             rightPadding: Generic.Style.fontPixelSize
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: "No."
                         }
@@ -109,7 +109,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: 0
                             rightPadding: Generic.Style.fontPixelSize
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: "Label"
                         }
@@ -120,7 +120,7 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: Generic.Style.fontPixelSize
                             rightPadding: 0
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: "Value"
                         }
@@ -131,7 +131,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: Generic.Style.fontPixelSize * 0.5
                             rightPadding: Generic.Style.fontPixelSize
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: ""
                         }
@@ -142,7 +142,7 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: Generic.Style.fontPixelSize
                             rightPadding: Generic.Style.fontPixelSize
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: "Error"
                         }
@@ -151,7 +151,7 @@ Column {
                             height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: "Fit"
                         }
@@ -200,7 +200,7 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: Generic.Style.fontPixelSize
                             rightPadding: Generic.Style.fontPixelSize
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: index + 1
                             //color: foregroundColor()
@@ -214,7 +214,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: 0
                             rightPadding: 0
-                            font.pointSize: Generic.Style.fontPointSize + 2
+                            font.pixelSize: Generic.Style.fontPixelSize + 2
                             font.family: Generic.Style.iconsFontFamily
                             //text: labelList[0] === "phases" ? "\u0041" : "\u0042"
                             //color: blockColor(index)
@@ -253,7 +253,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: 0
                             rightPadding: Generic.Style.fontPixelSize
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             //text: label
                             //color: foregroundColor()
@@ -298,7 +298,7 @@ Column {
                             maximumLength: 8
                             //color: foregroundColor()
                             color: rowForegroundColor
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: toFixed(value)
                             onTextChanged: updateSlider()
@@ -317,7 +317,7 @@ Column {
                             horizontalAlignment: Text.AlignLeft
                             leftPadding: Generic.Style.fontPixelSize * 0.5
                             rightPadding: Generic.Style.fontPixelSize
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             //text: thisUnit()
                             //color: foregroundColor2()
@@ -337,7 +337,7 @@ Column {
                             horizontalAlignment: Text.AlignRight
                             leftPadding: Generic.Style.fontPixelSize
                             rightPadding: Generic.Style.fontPixelSize
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: error ? error.toFixed(4) : ""
                             //color: foregroundColor()
@@ -410,7 +410,7 @@ Column {
             selectionColor: Generic.Style.tableHighlightRowColor
             validator: DoubleValidator {}
             maximumLength: 8
-            font.pointSize: Generic.Style.fontPointSize
+            font.pixelSize: Generic.Style.fontPixelSize
             font.family: Generic.Style.fontFamily
             text: toFixed(slider.from)
             onEditingFinished: {
@@ -494,7 +494,7 @@ Column {
             selectionColor: Generic.Style.tableHighlightRowColor
             validator: DoubleValidator {}
             maximumLength: 8
-            font.pointSize: Generic.Style.fontPointSize
+            font.pixelSize: Generic.Style.fontPixelSize
             font.family: Generic.Style.fontFamily
             text: toFixed(slider.to)
             onEditingFinished: {
