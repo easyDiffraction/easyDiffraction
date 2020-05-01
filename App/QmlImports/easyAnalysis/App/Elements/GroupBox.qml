@@ -28,7 +28,10 @@ Column {
         visible: title ? true : false
         leftPadding: Generic.Style.sidebarGroupIndicatorIconSize
         text: title
-        font.weight: Font.DemiBold
+        font.family: Generic.Style.fontFamily
+        font.pointSize: Generic.Style.fontPointSize
+        font.bold: true
+        //font.weight: Font.DemiBold
         icon.width: Generic.Style.sidebarGroupIndicatorIconSize
         icon.height: Generic.Style.sidebarGroupIndicatorIconSize
         icon.source: iconSource()

@@ -149,7 +149,7 @@ ColumnLayout {
                         columns: 2
                         verticalItemAlignment: Grid.AlignVCenter
 
-                        Text { text: "\ue807"; color: obsArea.color; font: commonIconsFont }
+                        Text { text: "\ue807"; color: Qt.lighter(obsArea.color, 1.05); font: commonIconsFont }
                         Text { text: obsArea.name; font: commonFont }
 
                         Text { text: "\ue808"; color: calcSeries.color; font: commonIconsFont }

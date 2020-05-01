@@ -18,8 +18,9 @@ GenericControls.Dialog {
         // General preferences
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize + 3
+            font.pointSize: Generic.Style.fontPointSize + 1
             font.family: Generic.Style.fontFamily
+            font.bold: true
             color: "#444"
             text: "General"
         }
@@ -45,8 +46,9 @@ GenericControls.Dialog {
         // Update preferences
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize + 3
+            font.pointSize: Generic.Style.fontPointSize + 1
             font.family: Generic.Style.fontFamily
+            font.bold: true
             color: "#444"
             text: "Update"
         }
@@ -104,8 +106,9 @@ GenericControls.Dialog {
         // Debugging
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize + 3
+            font.pointSize: Generic.Style.fontPointSize + 1
             font.family: Generic.Style.fontFamily
+            font.bold: true
             color: "#444"
             text: "Logging"
         }

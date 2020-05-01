@@ -86,7 +86,7 @@ Controls1.TableView {
                 visible: styleData.value === "Open"
                 Layout.alignment: Qt.AlignCenter
                 height: Generic.Style.tableRowHeight * 0.6
-                width: height * 3.5
+                width: height + 2
                 /*
                 width: height
                 Image {
@@ -246,11 +246,13 @@ Controls1.TableView {
                 id: openButton
                 //enabled: false
                 visible: styleData.role === "open" ? true : false
-                text: qsTr("Open")
+                ///text: qsTr("Open")
                 //ToolTip.visible: hovered
                 //toolTipText: qsTr("Open")
+                toolTipText: qsTr("Click to open example")
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                ///width: height
                 padding: 2
                 leftPadding: 3
                 rightPadding: 4

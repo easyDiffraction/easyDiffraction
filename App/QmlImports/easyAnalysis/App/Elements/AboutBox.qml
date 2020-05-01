@@ -52,13 +52,13 @@ GenericControls.Dialog {
                             text: "easy"
                             font.family: Generic.Style.secondCondensedFontFamily
                             font.weight: Font.ExtraLight
-                            font.pointSize: appNameFontSize
+                            font.pixelSize: 50
                             color: "#444"
                         }
                         Text {
                             text: "Diffraction"
                             font.family: Generic.Style.secondCondensedFontFamily
-                            font.pointSize: appNameFontSize
+                            font.pixelSize: 50
                             color: "#444"
                         }
                     }

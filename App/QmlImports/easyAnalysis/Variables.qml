@@ -66,5 +66,5 @@ QtObject {
 
     // Chart view
     property bool showLegend: true
-    property bool showRefinemetResults: true
+    property bool showRefinemetResults: false
 }

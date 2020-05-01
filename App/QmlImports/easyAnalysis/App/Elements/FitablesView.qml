@@ -2,9 +2,10 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 
 import easyAnalysis 1.0 as Generic
-import easyDiffraction 1.0 as Specific
+import easyAnalysis.Controls 1.0 as GenericControls
 import easyAnalysis.App.Elements 1.0 as GenericAppElements
 
+import easyDiffraction 1.0 as Specific
 
 Column {
     property alias model: contentListView.model
@@ -446,9 +447,13 @@ Column {
                 radius: 13
                 color: slider.pressed ? "#f0f0f0" : "#f6f6f6"
                 border.color: "#bdbebf"
-                ToolTip.visible: slider.pressed
-                ToolTip.text: slider.value.toFixed(4)
+                //ToolTip.visible: slider.pressed
+                //ToolTip.text: slider.value.toFixed(4)
 
+                GenericControls.ToolTip {
+                    visible: slider.pressed
+                    text: slider.value.toFixed(4)
+                }
             }
             onPressedChanged: {
                 if (!pressed) {

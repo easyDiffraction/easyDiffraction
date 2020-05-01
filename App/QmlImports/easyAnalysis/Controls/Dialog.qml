@@ -16,7 +16,7 @@ Dialog {
     property string headerBackgroundColor: "#ddd"
     property string headerBorderColor: "#ccc"
     property var headerFontFamily: Generic.Style.fontFamily
-    property var headerFontPointSize: Generic.Style.fontPointSize + 3
+    property var headerFontPointSize: Generic.Style.fontPointSize + 1
 
     parent: Overlay.overlay
     anchors.centerIn: parent
