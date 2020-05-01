@@ -584,12 +584,14 @@ ColumnLayout {
                     tickType: ValueAxis.TicksFixed
                     tickCount: 5
                     minorTickCount: 1
-                    min: axisX.min
-                    max: axisX.max
                     labelFormat: "%.0f"
+                    titleVisible: true
                     titleText: "2\u03B8 (deg)"
+                    labelsVisible: true
                     labelsFont: commonFont
                     titleFont: commonFont
+                    min: Specific.Variables.calculationByIndex(0).limits.main.x_min
+                    max: Specific.Variables.calculationByIndex(0).limits.main.x_max
                 }
 
                 ValueAxis {
@@ -670,6 +672,8 @@ ColumnLayout {
         Layout.fillWidth: true
         height: Generic.Style.buttonHeight + 3
         color: "transparent"
+
+        clip: true
 
         Label {
             id: infoArea

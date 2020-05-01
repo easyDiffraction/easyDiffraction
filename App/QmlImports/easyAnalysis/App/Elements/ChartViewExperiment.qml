@@ -309,6 +309,8 @@ ColumnLayout {
         height: Generic.Style.buttonHeight + 3
         color: "transparent"
 
+        clip: true
+
         Label {
             id: infoArea
             anchors.horizontalCenter: parent.horizontalCenter

@@ -20,6 +20,8 @@ Rectangle {
     height: parent.height
     color: "transparent"
 
+    clip: true
+
     ////////////////////////
     // Check if data changed
     ////////////////////////
