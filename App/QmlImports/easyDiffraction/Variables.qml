@@ -227,7 +227,7 @@ QtObject {
             this_phase.cell.length_c = that_phase.cell.length_c.store.value
 
             this_phase.spacegroup.crystal_system = that_phase.spacegroup.crystal_system.store.value
-            this_phase.spacegroup.space_group_with_number = that_phase.spacegroup.space_group_IT_number.store.value + '.  ' + that_phase.spacegroup.space_group_name_HM_alt.store.value
+            this_phase.spacegroup.space_group_with_number = that_phase.spacegroup.space_group_IT_number.store.value + '.  ' + that_phase.spacegroup.space_group_name_HM_ref.store.value
             this_phase.spacegroup.origin_choice = that_phase.spacegroup.crystal_system.store.value
 
             these_phases[name] = this_phase
