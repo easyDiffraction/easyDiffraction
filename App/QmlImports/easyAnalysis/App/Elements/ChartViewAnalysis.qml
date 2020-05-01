@@ -591,8 +591,8 @@ ColumnLayout {
                     labelsVisible: true
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.calculationByIndex(0).limits.main.x_min
-                    max: Specific.Variables.calculationByIndex(0).limits.main.x_max
+                    min: axisX.min
+                    max: axisX.max
                 }
 
                 ValueAxis {
