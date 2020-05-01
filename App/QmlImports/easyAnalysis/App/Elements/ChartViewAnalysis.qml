@@ -246,6 +246,10 @@ ColumnLayout {
                         const max = Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
                         return max + 0.075*max
                     }
+
+                    // Update Y-range for the DifferenceChartView
+                    onMinChanged: updateAxisYDiffRange()
+                    onMaxChanged: updateAxisYDiffRange()
                 }
 
                 // Measured curve
@@ -345,10 +349,7 @@ ColumnLayout {
                 }
 
                 // Update Y-range for the DifferenceChartView
-                onHeightChanged: {
-                    axisYdiff.max = 0.5 * (axisY.max - axisY.min) / topChart.plotArea.height * bottomChart.plotArea.height
-                    axisYdiff.min = -axisYdiff.max
-                }
+                onHeightChanged: updateAxisYDiffRange()
             }
 
             //////////////////////////
@@ -763,6 +764,11 @@ ColumnLayout {
     ////////
     // Logic
     ////////
+
+    function updateAxisYDiffRange() {
+        axisYdiff.max = 0.5 * (axisY.max - axisY.min) / topChart.plotArea.height * bottomChart.plotArea.height
+        axisYdiff.min = -axisYdiff.max
+    }
 
     function setAxesNiceNumbers() {
         axisX.applyNiceNumbers()
