@@ -766,6 +766,9 @@ ColumnLayout {
     ////////
 
     function updateAxisYDiffRange() {
+        if (topChart.plotArea.height === 0 || bottomChart.plotArea.height === 0) {
+            return
+        }
         axisYdiff.max = 0.5 * (axisY.max - axisY.min) / topChart.plotArea.height * bottomChart.plotArea.height
         axisYdiff.min = -axisYdiff.max
     }
