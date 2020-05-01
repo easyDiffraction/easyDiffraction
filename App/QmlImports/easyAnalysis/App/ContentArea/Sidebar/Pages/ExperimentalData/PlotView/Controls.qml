@@ -272,35 +272,55 @@ ColumnLayout {
                 //enabled: false
 
                 // Row
-                Text { text: "U:" }
+                Text {
+                    text: "U:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.u.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
 
-                Text { text: "V:" }
+                Text {
+                    text: "V:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.v.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
 
-                Text { text: "W:" }
+                Text {
+                    text: "W:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.w.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
 
                 // Row
-                Text { text: "X:" }
+                Text {
+                    text: "X:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.x.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
 
-                Text { text: "Y:" }
+                Text {
+                    text: "Y:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.y.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
