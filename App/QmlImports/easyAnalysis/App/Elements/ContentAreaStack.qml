@@ -59,7 +59,7 @@ RowLayout {
             verticalAlignment: Text.AlignVCenter
             text: notLoadedInfoText
             font.family: Generic.Style.secondFontFamily
-            font.pointSize: 42
+            font.pixelSize: 42
             font.weight: Font.Light
             color: "lightgrey"
         }

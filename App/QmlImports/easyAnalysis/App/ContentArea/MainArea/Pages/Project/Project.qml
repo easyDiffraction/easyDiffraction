@@ -29,7 +29,7 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
             text: "No Project Created/Opened"
             font.family: Generic.Style.secondFontFamily
-            font.pointSize: 42
+            font.pixelSize: 42
             font.weight: Font.Light
             color: "lightgrey"
         }
