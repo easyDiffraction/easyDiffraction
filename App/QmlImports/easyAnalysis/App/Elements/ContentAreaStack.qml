@@ -47,7 +47,7 @@ RowLayout {
         }
 
         // Status bar
-        GenericAppElements.StatusBar { visible: !notLoadedInfo.visible }
+        GenericAppElements.StatusBar { visible: !notLoadedInfo.visible && Generic.Variables.toolbarCurrentIndex !== Generic.Variables.HomeIndex }
 
         // Not loaded info container
         Text {
