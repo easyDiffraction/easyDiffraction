@@ -47,9 +47,10 @@ Rectangle {
 
     Column {
         visible: Specific.Variables.projectOpened
-        anchors.verticalCenter: parent.verticalCenter
+
         anchors.left: parent.left
         anchors.leftMargin: margin
+        anchors.verticalCenter: parent.verticalCenter
         spacing: 20
 
         Text {
@@ -65,60 +66,68 @@ Rectangle {
             columnSpacing: 15
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
+                font.bold: true
                 text: "Keywords:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                width: mainRectangle.width * 0.5
+
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 color: Generic.Style.buttonBkgHighlightedColor
                 text: Specific.Variables.projectKeywords
+                wrapMode: Text.WordWrap
             }
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
+                font.bold: true
                 text: "Phases:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 color: Specific.Variables.phaseIds().length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
                 text: Specific.Variables.phaseIds().length ? Specific.Variables.phaseIds().join(", ") : "None loaded"
             }
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
+                font.bold: true
                 text: "Experiments:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 color: Specific.Variables.experimentIds().length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
                 text: Specific.Variables.experimentIds().length ? Specific.Variables.experimentIds().join(", ") : "None loaded"
             }
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
+                font.bold: true
                 text: "Instrument:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 color: Generic.Style.buttonBkgHighlightedColor
                 text: "Unknown"
             }
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
+                font.bold: true
                 text: "Modified:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pointSize: Generic.Style.fontPointSize
                 font.family: Generic.Style.fontFamily
                 color: Generic.Style.buttonBkgHighlightedColor
                 text: Specific.Variables.projectModifiedDate
