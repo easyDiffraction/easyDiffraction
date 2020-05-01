@@ -1,16 +1,18 @@
 # External Open Source Dependencies
 
-The following Open Source projects are used in easyDiffraction
+The following Open Source projects are used in easyDiffraction (_if there are any issues with licensing, please contact us via https://easydiffraction.org/contact.html_):
 
 ## Fonts
 
-encodeSans - https://github.com/impallari/Encode-Sans - Open Font Licence
+Encode Sans - https://fonts.google.com/specimen/Encode+Sans - Open Font Licence
+Encode Sans Condensed - https://fonts.google.com/specimen/Encode+Sans+Condensed - Open Font Licence
+Encode Sans Expanded - https://fonts.google.com/specimen/Encode+Sans+Expanded - Open Font Licence
+PT Sans - https://fonts.google.com/specimen/PT+Sans - Open Font Licence
+PT Mono - https://fonts.google.com/specimen/PT+Mono - Open Font Licence
 
 ## Icons
 
 fontAwsome - https://github.com/FortAwesome/Font-Awesome - Creatice Commons 4.0 Licence
-
-_If there are any issues with licencing please contact https://www.easydiffraction.org/contact.html_
 
 ## Python Modules
 
