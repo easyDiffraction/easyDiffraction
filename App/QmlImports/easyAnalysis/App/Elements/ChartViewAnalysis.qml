@@ -504,13 +504,7 @@ ColumnLayout {
                     borderWidth: 0.0001
                     borderColor: "transparent"
 
-                    brushFilename: {
-                        print("examplesRcDirUrl", examplesRcDirUrl);
-                        print("examplesRcDirPath", examplesRcDirPath);
-                        print("qmlImportsDirUrl", qmlImportsDirUrl);
-                        print("Generic.Variables.originalIconsPath", Generic.Variables.originalIconsPath);
-                        Generic.Variables.originalIconsPath + "bragg.svg"
-                    }
+                    brushFilename: Generic.Variables.originalIconsPath + "bragg.svg"
 
                     /*
                     markerSize: 1
