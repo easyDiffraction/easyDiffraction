@@ -72,7 +72,7 @@ ColumnLayout {
     Dialogs1.FileDialog{
         id: fileDialogLoadExps
         nameFilters: [ "CIF or ASCII data files (*.cif *.xye *.dat)"]
-        folder: settings.value("lastOpenedProjectFolder", examplesDir)
+        folder: settings.value("lastOpenedProjectFolder", examplesDirUrl)
         onAccepted: {
             settings.setValue("lastOpenedProjectFolder", folder)
             Specific.Variables.projectControl.loadExperiment(fileUrl)

@@ -484,7 +484,7 @@ ColumnLayout {
                     markerSize: 20
                     borderColor: "transparent"
                     color: "transparent"
-                    brushFilename: Generic.Variables.originalIconsPath.replace("file:", "") + "bragg.svg"
+                    brushFilename: Generic.Variables.originalIconsUrl.replace("file:", "") + "bragg.svg"
                     onClicked: console.log("!!!!!!!!!!!!!!! ")
                     //onClicked: console.log("onClicked: " + point.x + ", " + point.y);
                 }
@@ -504,7 +504,13 @@ ColumnLayout {
                     borderWidth: 0.0001
                     borderColor: "transparent"
 
-                    brushFilename: Generic.Variables.originalIconsPath.replace("file:", "") + "bragg.svg"
+                    brushFilename: {
+                        print("examplesRcDirUrl", examplesRcDirUrl);
+                        print("examplesRcDirPath", examplesRcDirPath);
+                        print("qmlImportsDirUrl", qmlImportsDirUrl);
+                        print("Generic.Variables.originalIconsPath", Generic.Variables.originalIconsPath);
+                        Generic.Variables.originalIconsPath + "bragg.svg"
+                    }
 
                     /*
                     markerSize: 1

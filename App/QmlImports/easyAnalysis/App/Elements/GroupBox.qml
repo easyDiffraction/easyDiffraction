@@ -121,7 +121,7 @@ Column {
     function iconSource() {
         if (!collapsible)
             return Generic.Variables.thirdPartyIconsPath + "circle.svg"
-        return collapsed ? Generic.Variables.originalIconsPath + "triangle-right.svg" : Generic.Variables.originalIconsPath + "triangle-down.svg"
+        return collapsed ? Generic.Variables.originalIconsUrl + "triangle-right.svg" : Generic.Variables.originalIconsUrl + "triangle-down.svg"
     }
 
     //////////////////////

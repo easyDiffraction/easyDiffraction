@@ -70,7 +70,7 @@ ColumnLayout {
             Dialogs1.FileDialog{
                 id: fileDialogLoadPhase
                 nameFilters: [ "CIF files (*.cif)"]
-                folder: settings.value("lastOpenedProjectFolder", examplesDir)
+                folder: settings.value("lastOpenedProjectFolder", examplesDirUrl)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     Specific.Variables.projectControl.loadPhases(fileUrl)

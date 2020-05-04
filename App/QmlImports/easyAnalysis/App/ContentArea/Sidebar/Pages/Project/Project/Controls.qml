@@ -100,7 +100,7 @@ ColumnLayout {
             Dialogs1.FileDialog{
                 id: fileDialogLoadProject
                 nameFilters: ["Project files (main.cif *.zip)"]
-                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                folder: settings.value("lastOpenedProjectFolder", examplesDirUrl) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     Specific.Variables.projectControl.loadProject(fileUrl)
@@ -138,7 +138,7 @@ ColumnLayout {
                 visible: Generic.Variables.showSaveDialog
                 selectExisting: false
                 nameFilters: ["Project files (*.zip)"]
-                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                folder: settings.value("lastOpenedProjectFolder", examplesDirUrl) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     Generic.Constants.proxy.saveProjectAs(fileUrl)
@@ -157,7 +157,7 @@ ColumnLayout {
                 id: fileDialogCreateProject
                 selectExisting: false
                 nameFilters: ["Project files (*.zip)"]
-                folder: settings.value("lastOpenedProjectFolder", examplesDir) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
+                folder: settings.value("lastOpenedProjectFolder", examplesDirUrl) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     fileDialogCreateProject.close()
