@@ -10,14 +10,13 @@ class BraggPeaksModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._seriesRef = None
-        self._log = self._log = logger.getLogger(__class__.__module__)
-
+        self._log = self._log = logger.getLogger(self.__class__.__module__)
 
     def _setModelsFromProjectDict(self):
         """
         Create the model needed for GUI measured data table and chart.
         """
-        self._log.info("-> start")
+        self._log.info("Starting to set Model from Project Dict")
 
         for calc_dict in self._project_dict['calculations'].values():
             for phase_id in self._project_dict['phases'].keys():
@@ -31,33 +30,33 @@ class BraggPeaksModel(BaseModel):
                 self._model.setRowCount(row_count)
 
                 # Add all the columns from calc_dict['bragg_peaks'][phase_id] to self._model
-                colum_index = 0
+                column_index = 0
                 for data_id, data_list in calc_dict['bragg_peaks'][phase_id].items():
                     if data_id == 'name':
                         continue
                     for row_index, value in enumerate(data_list):
-                        index = self._model.index(row_index, colum_index)
+                        index = self._model.index(row_index, column_index)
                         self._model.setData(index, value, Qt.DisplayRole)
-                    colum_index += 1
+                    column_index += 1
                 self._model.blockSignals(False)
                 self._headers_model.blockSignals(False)
 
-                # Emit signal which is catched by the QStandartItemModel-based
+                # Emit signal which is caught by the QStandardItemModel-based
                 # QML GUI elements in order to update their views
                 self._model.layoutChanged.emit()
 
                 # Update chart series here, as this method is significantly
                 # faster, compared to the updating at the QML GUI side via the
-                # QStandartItemModel
+                # QStandardItemModel
                 self._updateQmlChartViewSeries()
 
-        self._log.info("<- end")
+        self._log.info("Finished setting Model from Project Dict")
 
     def _updateQmlChartViewSeries(self):
         """
         Updates QML LineSeries of ChartView.
         """
-        self._log.info("=====> start")
+        self._log.info("Starting to update ChartView")
 
         experiment_id = self._calculator_interface.experimentsIds()[0]
         ttheta_offset = self._project_dict['experiments'][experiment_id]['offset'].value
@@ -73,7 +72,7 @@ class BraggPeaksModel(BaseModel):
         if self._seriesRef is not None:
             self._seriesRef.replace(series)
 
-        self._log.info("<===== end")
+        self._log.info("Finished updating ChartView")
 
     @Slot(QtCharts.QXYSeries)
     def setSeries(self, series):

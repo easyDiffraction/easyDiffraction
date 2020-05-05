@@ -22,13 +22,13 @@ class CalculatedDataModel(BaseModel):
         self._calcBkgSeriesRef = None
         self._lowerDiffSeriesRef = None
         self._upperDiffSeriesRef = None
-        self._log = logger.getLogger(__class__.__module__)
+        self._log = logger.getLogger(self.__class__.__module__)
 
     def _setModelsFromProjectDict(self):
         """
         Create the model needed for GUI measured data table and chart.
         """
-        self._log.info("-> start")
+        self._log.info("Starting to set Model from Project Dict")
 
         for calc_dict in self._project_dict['calculations'].values():
             column_count = len(calc_dict['calculated_pattern'].items())
@@ -56,23 +56,23 @@ class CalculatedDataModel(BaseModel):
             self._model.blockSignals(False)
             self._headers_model.blockSignals(False)
 
-            # Emit signal which is catched by the QStandartItemModel-based
+            # Emit signal which is catched by the QStandardItemModel-based
             # QML GUI elements in order to update their views
             self._model.layoutChanged.emit()
             self._headers_model.layoutChanged.emit()
 
             # Update chart series here, as this method is significantly
             # faster, compared to the updating at the QML GUI side via the
-            # QStandartItemModel
+            # QStandardItemModel
             self._updateQmlChartViewSeries()
 
-        self._log.info("<- end")
+        self._log.info("Finished setting Model from Project Dict")
 
     def _updateQmlChartViewSeries(self):
         """
         Updates QML LineSeries of ChartView.
         """
-        self._log.info("=====> start")
+        self._log.info("Starting update of ChartView")
 
         if not self._project_dict:
             return
@@ -88,6 +88,7 @@ class CalculatedDataModel(BaseModel):
             y_obs_list = experiment_dict['measured_pattern'][self._y_obs_name]
             sy_obs_list = experiment_dict['measured_pattern'][self._sy_obs_name]
 
+            y_calc_bkg_list = []
             if self._y_calc_name == 'y_calc_sum':
                 y_calc_bkg_list = calc_dict['calculated_pattern']['y_calc_bkg']
             elif self._y_calc_name == 'y_calc_up' or self._y_calc_name == 'y_calc_down':
@@ -115,7 +116,7 @@ class CalculatedDataModel(BaseModel):
             self._lowerDiffSeriesRef.replace(lowerDiffSeries)
             self._upperDiffSeriesRef.replace(upperDiffSeries)
 
-        self._log.info("<===== end")
+        self._log.info("Finished update of ChartView")
 
     @Slot(QtCharts.QXYSeries)
     def setCalcSeries(self, series):
