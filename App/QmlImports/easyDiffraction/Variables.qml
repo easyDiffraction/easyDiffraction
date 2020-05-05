@@ -71,7 +71,7 @@ QtObject {
     readonly property var examplesList: [
         examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder_5T_6T2(LLB)/main.cif",
         examplesRcDirPath + "/Ho2Ti2O7_pol-neutron-powder_5K-1T_VIP(LLB)/main.cif",
-        examplesRcDirPath + "/Dy3Al5O12_neutron-powder_4K_G4(LLB)/main.cif",
+        examplesRcDirPath + "/Dy3Al5O12_neutron-powder_4K_G41(LLB)/main.cif",
         examplesRcDirPath + "/PbSO4_neutron-powder_D1A(ILL)/main.cif"
     ]
 
