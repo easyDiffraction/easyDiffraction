@@ -17,7 +17,7 @@ GenericAppElements.ContentAreaStack {
         GenericMainArea.TabButton { text: qsTr("Fitting"); tabbarWidth: mainArea.width } // fix width
         //GenericMainArea.TabButton { text: qsTr("Constraints"); tabbarWidth: mainArea.width } // fix width
         GenericMainArea.TabButton {
-            text: qsTr("Text View")
+            text: qsTr("Calculations.cif View")
             tabbarWidth: mainArea.width
             GenericAppElements.GuideWindow {
                 message: "This tab button allows to see the\ncalcualted data as plain text."
