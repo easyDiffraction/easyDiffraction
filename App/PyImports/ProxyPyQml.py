@@ -120,9 +120,16 @@ class ProxyPyQml(QObject):
         keys, values = old_phase.dictComparison(new_phase)
         modded_keys = [['phases', phase_name, *key] for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
         modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
-        self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values, 'Update Phase from GUI')
-        self.projectChanged.emit()
-        self._need_to_save = False
+
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of the phase')
+        self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
+        self._calculator_interface.setCalculatorFromProject()
+        self._calculator_interface.updateCalculations()
+        self._calculator_interface.project_dict.endBulkUpdate()
+
+        #self.projectChanged.emit()
+        self._calculator_interface.projectDictChanged.emit()
+        self._need_to_save = True
         self.projectSaveStateChanged.emit()
 
     @Slot(str)
@@ -134,9 +141,16 @@ class ProxyPyQml(QObject):
         keys, values = old_exp.dictComparison(new_experiment)
         modded_keys = [['experiments', exp_name, *key] for key in keys if key[-1] != 'mapping' and key[-1] != 'hide']
         modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
-        self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values, 'Update Experiment from GUI')
-        self.projectChanged.emit()
-        self._need_to_save = False
+
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of the experiment')
+        self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
+        self._calculator_interface.setCalculatorFromProject()
+        self._calculator_interface.updateCalculations()
+        self._calculator_interface.project_dict.endBulkUpdate()
+
+        #self.projectChanged.emit()
+        self._calculator_interface.projectDictChanged.emit()
+        self._need_to_save = True
         self.projectSaveStateChanged.emit()
 
     # Load CIF method, accessible from QML

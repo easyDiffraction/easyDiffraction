@@ -39,13 +39,13 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
     @Slot()
     def undo(self):
         CalculatorInterface.undo(self)
-        # self.setCalculatorFromProject()
+        self.setCalculatorFromProject()
         self.projectDictChanged.emit()
 
     @Slot()
     def redo(self):
         CalculatorInterface.redo(self)
-        # self.setCalculatorFromProject()
+        self.setCalculatorFromProject()
         self.projectDictChanged.emit()
 
     def __repr__(self) -> str:
