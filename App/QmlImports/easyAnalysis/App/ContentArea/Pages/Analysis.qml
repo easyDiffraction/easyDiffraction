@@ -32,22 +32,13 @@ GenericAppElements.ContentAreaStack {
     mainAreaContent: StackLayout {
         id: mainArea
         currentIndex: tabBar.currentIndex
-        ///width: 500
-        ///height: 400
-        //GenericMainAreaAnalysis.Simulation { }
         GenericMainAreaAnalysis.Fitting { }
-        //GenericMainAreaAnalysis.Constraints { }
         GenericMainAreaAnalysis.Editor { id: editor }
-        onCurrentIndexChanged: {
-            editor.showContent = (currentIndex === 1)
-        }
     }
 
     sideBarContent: StackLayout {
         currentIndex: tabBar.currentIndex
-        //GenericSidebarAnalysis.Simulation { }
         GenericSidebarAnalysis.Fitting { }
-        //GenericSidebarAnalysis.Constraints { }
         GenericSidebarAnalysis.Editor { }
     }
 

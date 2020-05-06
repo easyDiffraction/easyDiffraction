@@ -35,9 +35,6 @@ GenericAppElements.ContentAreaStack {
         currentIndex: tabBar.currentIndex
         GenericMainAreaSampleModel.StructureView { }
         GenericMainAreaSampleModel.TextView { id: textView }
-        onCurrentIndexChanged: {
-            textView.showContent = (currentIndex === 1)
-        }
     }
 
     sideBarContent: StackLayout {

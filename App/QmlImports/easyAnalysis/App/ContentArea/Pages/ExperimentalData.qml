@@ -46,9 +46,6 @@ GenericAppElements.ContentAreaStack {
         GenericMainAreaSampleModel.PlotView { }
         GenericMainAreaSampleModel.TableView { }
         GenericMainAreaSampleModel.TextView { id: textView }
-        onCurrentIndexChanged: {
-            textView.showContent = (currentIndex === 2)
-        }
     }
 
     sideBarContent: StackLayout {
