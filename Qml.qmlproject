@@ -7,10 +7,10 @@ Project {
     QmlFiles {
         directory: "./App"
     }
-    /*
     JavaScriptFiles {
-        directory: "."
+        directory: "./App"
     }
+    /*
     ImageFiles {
         directory: "."
     }
