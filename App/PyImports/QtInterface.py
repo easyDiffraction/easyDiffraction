@@ -1,8 +1,6 @@
 __author__ = 'simonward'
 __version__ = "2020_02_01"
 
-from typing import NoReturn
-
 from PySide2.QtCore import QObject, Signal, Slot
 
 from easyInterface import logger

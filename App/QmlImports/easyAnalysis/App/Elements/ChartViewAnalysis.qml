@@ -22,7 +22,8 @@ ColumnLayout {
     property int xScaleZoom: 0
     property int yScaleZoom: 0
 
-    property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pointSize: Generic.Style.fontPointSize })
+    property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pixelSize: Generic.Style.fontPixelSize })
+    property font commonIconsFont: Qt.font({ family: Generic.Style.iconsFontFamily, pixelSize: Generic.Style.fontPixelSize })
 
     property int globalAnimationDuration: 1000
     property var globalAnimationOptions: ChartView.SeriesAnimations //ChartView.AllAnimations //ChartView.NoAnimation
@@ -146,11 +147,15 @@ ColumnLayout {
                         columnSpacing: 10
                         rowSpacing: 5
                         columns: 2
-                        Text { text: "■"; color: obsArea.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
-                        Text { text: obsArea.name; font: commonFont}
-                        Text { text: "–"; color: calcSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
+                        verticalItemAlignment: Grid.AlignVCenter
+
+                        Text { text: "\ue807"; color: Qt.lighter(obsArea.color, 1.05); font: commonIconsFont }
+                        Text { text: obsArea.name; font: commonFont }
+
+                        Text { text: "\ue808"; color: calcSeries.color; font: commonIconsFont }
                         Text { text: calcSeries.name; font: commonFont}
-                        Text { text: "--"; color: calcBkgSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
+
+                        Text { text: "\ue809"; color: calcBkgSeries.color; font: commonIconsFont }
                         Text { text: calcBkgSeries.name; font: commonFont}
                     }
                 }
@@ -227,14 +232,24 @@ ColumnLayout {
                     labelsFont: commonFont
                     titleFont: commonFont
                     min: {
+                        if (!Specific.Variables.calculatedData || !Specific.Variables.measuredData) {
+                            return 1
+                        }
                         const max = Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
                         const min = Math.min(Specific.Variables.measuredData.yMin, Specific.Variables.calculatedData.yMin)
                         return min - 0.075*max
                     }
                     max: {
+                        if (!Specific.Variables.calculatedData || !Specific.Variables.measuredData) {
+                            return 1
+                        }
                         const max = Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
                         return max + 0.075*max
                     }
+
+                    // Update Y-range for the DifferenceChartView
+                    onMinChanged: updateAxisYDiffRange()
+                    onMaxChanged: updateAxisYDiffRange()
                 }
 
                 // Measured curve
@@ -332,6 +347,9 @@ ColumnLayout {
                         infoToolTip.borderColor = Qt.darker(calcSeries.color, 1.1)
                     }
                 }
+
+                // Update Y-range for the DifferenceChartView
+                onHeightChanged: updateAxisYDiffRange()
             }
 
             //////////////////////////
@@ -413,7 +431,7 @@ ColumnLayout {
             id: middleChartContainer
             visible: showBragg
             Layout.fillWidth: true
-            height: 2*extraPadding
+            height: 1.5*extraPadding
             color: "transparent"
             clip: true
 
@@ -422,7 +440,7 @@ ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: -extraPadding
                 anchors.topMargin: -3*extraPadding
-                anchors.bottomMargin: -3*extraPadding
+                anchors.bottomMargin: -3.5*extraPadding
                 //antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false
                 backgroundRoundness: 0
@@ -466,7 +484,7 @@ ColumnLayout {
                     markerSize: 20
                     borderColor: "transparent"
                     color: "transparent"
-                    brushFilename: Generic.Variables.originalIconsPath.replace("file:", "") + "bragg.svg"
+                    brushFilename: Generic.Variables.originalIconsUrl.replace("file:", "") + "bragg.svg"
                     onClicked: console.log("!!!!!!!!!!!!!!! ")
                     //onClicked: console.log("onClicked: " + point.x + ", " + point.y);
                 }
@@ -486,7 +504,7 @@ ColumnLayout {
                     borderWidth: 0.0001
                     borderColor: "transparent"
 
-                    brushFilename: Generic.Variables.originalIconsPath.replace("file:", "") + "bragg.svg"
+                    brushFilename: Generic.Variables.originalIconsPath + "bragg.svg"
 
                     /*
                     markerSize: 1
@@ -551,7 +569,7 @@ ColumnLayout {
                 id: bottomChart
                 anchors.fill: parent
                 anchors.margins: -extraPadding
-                anchors.topMargin: -3*extraPadding
+                anchors.topMargin: -2.5*extraPadding
                 //anchors.topMargin: -extraPadding// - 20
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false
@@ -567,12 +585,14 @@ ColumnLayout {
                     tickType: ValueAxis.TicksFixed
                     tickCount: 5
                     minorTickCount: 1
-                    min: axisX.min
-                    max: axisX.max
                     labelFormat: "%.0f"
+                    titleVisible: true
                     titleText: "2\u03B8 (deg)"
+                    labelsVisible: true
                     labelsFont: commonFont
                     titleFont: commonFont
+                    min: axisX.min
+                    max: axisX.max
                 }
 
                 ValueAxis {
@@ -584,18 +604,26 @@ ColumnLayout {
                     titleText: "Iobs - Icalc"
                     labelsFont: commonFont
                     titleFont: commonFont
+                    /*
                     min: {
+                        if (!Specific.Variables.calculatedData) {
+                            return 1
+                        }
                         const min = Specific.Variables.calculatedData.yDiffMin
                         const max = Specific.Variables.calculatedData.yDiffMax
                         const MAX = Math.max(Math.abs(min), Math.abs(max))
                         return Math.sign(min) * MAX - 0.35*MAX
                     }
                     max: {
+                        if (!Specific.Variables.calculatedData) {
+                            return 1
+                        }
                         const min = Specific.Variables.calculatedData.yDiffMin
                         const max = Specific.Variables.calculatedData.yDiffMax
                         const MAX = Math.max(Math.abs(min), Math.abs(max))
                         return Math.sign(max) * MAX + 0.35*MAX
                     }
+                    */
                 }
 
                 AreaSeries {
@@ -646,18 +674,21 @@ ColumnLayout {
         height: Generic.Style.buttonHeight + 3
         color: "transparent"
 
+        clip: true
+
         Label {
             id: infoArea
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             height: Generic.Style.buttonHeight
-            leftPadding: font.pointSize
-            rightPadding: font.pointSize
+            leftPadding: font.pixelSize
+            rightPadding: font.pixelSize
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             text: qsTr("Show coordinates: Hover mouse pointer") + "  •  " + qsTr("Zoom in: Left mouse button") + "  •  " + qsTr("Reset: Right mouse button")
-            font.family: Generic.Style.introThinFontFamily
-            font.pointSize: Generic.Style.systemFontPointSize + 1
+            font.family: Generic.Style.secondFontFamily
+            font.weight: Font.Light
+            font.pixelSize: Generic.Style.fontPixelSize
             color: "grey"
             background: Rectangle { color: "white"; opacity: 0.9; border.width: 0; radius: Generic.Style.toolbarButtonRadius }
         }
@@ -733,6 +764,14 @@ ColumnLayout {
     ////////
     // Logic
     ////////
+
+    function updateAxisYDiffRange() {
+        if (topChart.plotArea.height === 0 || bottomChart.plotArea.height === 0) {
+            return
+        }
+        axisYdiff.max = 0.5 * (axisY.max - axisY.min) / topChart.plotArea.height * bottomChart.plotArea.height
+        axisYdiff.min = -axisYdiff.max
+    }
 
     function setAxesNiceNumbers() {
         axisX.applyNiceNumbers()

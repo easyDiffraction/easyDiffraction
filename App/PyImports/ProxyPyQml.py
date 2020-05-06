@@ -1,12 +1,11 @@
 import os
-import time
 from copy import deepcopy
 
 from PySide2.QtCore import QObject, Signal, Slot, Property
 from PySide2.QtGui import QPdfWriter, QTextDocument
 
 from PyImports.DisplayModels import *
-from PyImports.ProjectSentinel import ProjectControl, writeProject, check_project_dict, writeEmptyProject
+from PyImports.ProjectSentinel import ProjectControl, writeProject, writeEmptyProject
 from PyImports.QtInterface import QtCalculatorInterface
 from PyImports.Refinement import Refiner
 from PyImports.ReleaseReader import Config
@@ -25,6 +24,8 @@ class ProxyPyQml(QObject):
 
         self.info = Config(release_config_file_path)['release']
 
+        self.projectChanged.connect(self.onProjectChanged)
+
         self._main_rcif_path = None
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
@@ -42,7 +43,6 @@ class ProxyPyQml(QObject):
         self._atom_msps_model = AtomMspsModel()
         self._fitables_model = FitablesModel()
         self._status_model = StatusModel()
-        self._file_structure_model = FileStructureModel()
 
         self._refine_thread = None
         self._refinement_running = False
@@ -59,7 +59,6 @@ class ProxyPyQml(QObject):
         """
         self._phases_rcif_path = self._project_control.phases_rcif_path
         self._calculator_interface.addPhaseDefinition(self._phases_rcif_path)
-        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
@@ -90,7 +89,6 @@ class ProxyPyQml(QObject):
         
         self._calculator_interface.addExperimentDefinitionFromString(cif_string)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
-        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
@@ -105,7 +103,6 @@ class ProxyPyQml(QObject):
         self._experiment_rcif_path = self._project_control.experiment_rcif_path
         self._calculator_interface.addExperimentDefinition(self._experiment_rcif_path)
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
-        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.updateCalculations()
         self._calculator_interface.clearUndoStack()
@@ -146,8 +143,10 @@ class ProxyPyQml(QObject):
         self._calculator_interface.projectDictChanged.connect(self.projectChanged)
         self._calculator_interface.canUndoOrRedoChanged.connect(self.canUndoOrRedoChanged)
         self._calculator_interface.clearUndoStack()
-        self.onProjectSaved() # generates dictdiffer ValueError: The truth value of an array with more than one element is ambiguous - TEMP. FIXED
-        self.projectChanged.connect(self.onProjectChanged)
+        # TODO generates dictdiffer
+        #  `ValueError: The truth value of an array with more than one element is ambiguous`
+        #  Temp fix - Andrew
+        self.onProjectSaved()
 
         self._measured_data_model.setCalculatorInterface(self._calculator_interface)
         self._calculated_data_model.setCalculatorInterface(self._calculator_interface)
@@ -159,8 +158,7 @@ class ProxyPyQml(QObject):
         self._atom_msps_model.setCalculatorInterface(self._calculator_interface)
         self._fitables_model.setCalculatorInterface(self._calculator_interface)
         self._status_model.setCalculatorInterface(self._calculator_interface)
-        self._file_structure_model.setCalculatorInterface(self._calculator_interface)
-        #
+
         self._refine_thread = Refiner(self._calculator_interface, 'refine')
         self._refine_thread.failed.connect(self._thread_failed)
         self._refine_thread.finished.connect(self._thread_finished)
@@ -173,7 +171,7 @@ class ProxyPyQml(QObject):
     @Slot()
     def createProjectZip(self):
         self._calculator_interface.writeMainCif(self._project_control.tempDir.name)
-        writeEmptyProject(self._project_control, self._project_control._project_file)
+        writeEmptyProject(self._project_control, self._project_control.project_file)
         self.onProjectSaved()
 
     @Slot(str)
@@ -187,13 +185,13 @@ class ProxyPyQml(QObject):
 
     @Slot(str)
     def saveProjectAs(self, file_path):
-        self._project_control._project_file = file_path
+        self._project_control.project_file = file_path
         self.saveProject()
 
     @Slot()
     def saveProject(self):
         self._calculator_interface.saveCifs(self._project_control.tempDir.name)
-        writeProject(self._project_control, self._project_control._project_file)
+        writeProject(self._project_control, self._project_control.project_file)
         self.onProjectSaved()
 
     def onProjectSaved(self):
@@ -224,7 +222,7 @@ class ProxyPyQml(QObject):
 
     def projectFilePathSelected(self):
         self.__log.debug("***")
-        return bool(self._project_control._project_file)
+        return bool(self._project_control.project_file)
 
     # ##############
     # QML Properties
@@ -267,7 +265,6 @@ class ProxyPyQml(QObject):
 
     _statusInfo = Property('QVariant', lambda self: self._status_model.returnStatusBarModel(), constant=True)
     _chartInfo = Property('QVariant', lambda self: self._status_model.returnChartModel(), constant=True)
-    _fileStructure = Property('QVariant', lambda self: self._file_structure_model.asModel(), constant=True)
 
     _releaseInfo = Property('QVariant', lambda self: self.info, constant=True)
 

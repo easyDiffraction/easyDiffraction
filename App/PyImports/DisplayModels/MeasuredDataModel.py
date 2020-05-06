@@ -14,13 +14,13 @@ class MeasuredDataModel(BaseModel):
         self._y_min = 0
         self._upperSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
         self._lowerSeriesRefs = []  # list of references to QML LineSeries (for 2 charts)
-        self._log = logger.getLogger(__class__.__module__)
+        self._log = logger.getLogger(self.__class__.__module__)
 
     def _setModelsFromProjectDict(self):
         """
         Create the model needed for GUI measured data table and chart.
         """
-        self._log.info("-> start")
+        self._log.info("Starting to set Model from Project Dict")
 
         for experiment_id, experiment_dict in self._project_dict['experiments'].items():
 
@@ -55,28 +55,26 @@ class MeasuredDataModel(BaseModel):
             self._model.blockSignals(False)
             self._headers_model.blockSignals(False)
 
-            # Emit signal which is catched by the QStandartItemModel-based
+            # Emit signal which is caught by the QStandardItemModel-based
             # QML GUI elements in order to update their views
             self._model.layoutChanged.emit()
             self._headers_model.layoutChanged.emit()
 
             # Update chart series here, as this method is significantly
             # faster, compared to the updating at the QML GUI side via the
-            # QStandartItemModel
+            # QStandardItemModel
             self._updateQmlChartViewSeries()
 
-        self._log.info("<- end")
+        self._log.info("Finished setting Model from Project Dict")
 
     def _updateQmlChartViewSeries(self):
         """
         Updates QML LineSeries of ChartView.
         """
-        self._log.info("=====> start")
+        self._log.info("Starting update of ChartView")
 
         # Indices of the self._model columns to be plotted on chart
         x_column = 0
-        #y_obs_column = 1
-        #sy_obs_column = 2
 
         # Get values from model
         x_list = []
@@ -95,21 +93,21 @@ class MeasuredDataModel(BaseModel):
         self._setYMin(min(y_obs_lower_list))
 
         # Clear series
-        upperSeries = []
-        lowerSeries = []
+        upper_series = []
+        lower_series = []
 
         # Insert data into the Series format with QPointF's
         for x, y_obs_lower, y_obs_upper in zip(x_list, y_obs_lower_list, y_obs_upper_list):
-            upperSeries.append(QPointF(x, y_obs_upper))
-            lowerSeries.append(QPointF(x, y_obs_lower))
+            upper_series.append(QPointF(x, y_obs_upper))
+            lower_series.append(QPointF(x, y_obs_lower))
 
         # Replace series
         for s in self._upperSeriesRefs:
-            s.replace(upperSeries)
+            s.replace(upper_series)
         for s in self._lowerSeriesRefs:
-            s.replace(lowerSeries)
+            s.replace(lower_series)
 
-        self._log.info("<===== end")
+        self._log.info("Finished update of ChartView")
 
     def onProjectChanged(self):
         """

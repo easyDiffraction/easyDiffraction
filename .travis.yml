@@ -17,17 +17,15 @@ env:
 matrix:
   include:
     # Linux
-    - name: "Python 3.6.9 on Linux Ubuntu 16.04 (Xenial)"
-      dist: xenial
+    - name: "Python 3.7.7 on Linux Ubuntu 18.04 (Bionic Beaver)"
+      dist: bionic
       install:
-        - sudo add-apt-repository -y ppa:deadsnakes/ppa                         # add python 3.6 repository
+        - sudo add-apt-repository -y ppa:deadsnakes/ppa                         # add python repository
         - sudo apt-get -y update                                                # update
-        - sudo apt-get -y install python3.6 python3.6-dev python3.6-venv        # install python 3.6
-        - python3.6 -m venv $VENV_DIR                                           # create virtual environment
+        - sudo apt-get -y install python3.7 python3.7-dev python3.7-venv        # install python 3.7
+        - python3.7 -m venv $VENV_DIR                                           # create virtual environment
         - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
-      services:
-        - docker                                                                # for snap store
       cache:
         directories:
           - $VENV_DIR
@@ -49,16 +47,12 @@ matrix:
           - $HOME/Qt
       env: BADGE=osx
     # Windows
-    - name: "Python 3.6.5 on Windows 10.0"
+    - name: "Python 3.7.7 on Windows 10.0"
       os: windows                                                               # Windows 10.0.17134 N/A Build 17134
       filter_secrets: false
       install:
-        - choco install python --version=3.6.5                                  # install python
-        - C:/Python36/python -m venv $VENV_DIR                                  # create virtual environment
-        #- curl -O https://www.python.org/ftp/python/3.7.5/python-3.7.5.exe
-        #- dir
-        #- python-3.7.5.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
-        #- python -m venv $VENV_DIR                                              # create virtual environment
+        - choco install python --version=3.7.7                                  # install python
+        - C:/Python37/python -m venv $VENV_DIR                                  # create virtual environment
         - $VENV_DIR/Scripts/activate.bat                                        # activate virtual environment
         - echo $PATH                                                            # show path variable
       cache:
@@ -66,7 +60,7 @@ matrix:
           - $VENV_DIR
           - $SOFT_DIR
           - /C/Qt
-          - /C/Python36
+          - /C/Python37
       env:
         - BADGE=win
         - PATH=$VENV_DIR/Scripts:$PATH                                          # Travis equivalent of 'update Windows PATH variable'
@@ -76,6 +70,8 @@ matrix:
 
 before_script:
   - python --version
+  - pip --version
+  - python -m pip install --upgrade pip
   - pip --version
   - echo $TRAVIS_OS_NAME
   - echo $TRAVIS_BRANCH

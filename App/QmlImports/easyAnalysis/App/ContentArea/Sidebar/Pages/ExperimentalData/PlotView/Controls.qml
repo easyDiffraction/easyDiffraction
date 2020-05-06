@@ -72,7 +72,7 @@ ColumnLayout {
     Dialogs1.FileDialog{
         id: fileDialogLoadExps
         nameFilters: [ "CIF or ASCII data files (*.cif *.xye *.dat)"]
-        folder: settings.value("lastOpenedProjectFolder", examplesDir)
+        folder: settings.value("lastOpenedProjectFolder", examplesDirUrl)
         onAccepted: {
             settings.setValue("lastOpenedProjectFolder", folder)
             Specific.Variables.projectControl.loadExperiment(fileUrl)
@@ -105,9 +105,9 @@ ColumnLayout {
                 columns: 3
                 rowSpacing: 2
 
-                Text { text: "Facility            "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Instrument      "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Configuration"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Facility            "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 }
+                Text { text: "Instrument      "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 }
+                Text { text: "Configuration"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 }
 
                 GenericAppElements.ComboBox {
                     implicitWidth: 1
@@ -132,9 +132,9 @@ ColumnLayout {
                 Item { height: 5 }
                 Item { height: 5 }
 
-                Text { text: "Radiation"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Mode"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 } //Technique/Data
-                Text { text: "Method"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 } //Method/Sample
+                Text { text: "Radiation"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 }
+                Text { text: "Mode"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 } //Technique/Data
+                Text { text: "Method"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 } //Method/Sample
 
                 GenericAppElements.ComboBox {
                     currentIndex: 0
@@ -175,7 +175,7 @@ ColumnLayout {
                 //rowSpacing: 10
 
                 Text {
-                    font.pointSize: Generic.Style.fontPointSize
+                    font.pixelSize: Generic.Style.fontPixelSize
                     font.family: Generic.Style.fontFamily
                     text: qsTr("Polarization:")
                 }
@@ -186,7 +186,7 @@ ColumnLayout {
                 }
                 Text { width: 5 }
                 Text {
-                    font.pointSize: Generic.Style.fontPointSize
+                    font.pixelSize: Generic.Style.fontPixelSize
                     font.family: Generic.Style.fontFamily
                     text: qsTr("Polarising efficiency:")
                 }
@@ -211,7 +211,7 @@ ColumnLayout {
                 //rowSpacing: 10
 
                 Text {
-                    font.pointSize: Generic.Style.fontPointSize
+                    font.pixelSize: Generic.Style.fontPixelSize
                     font.family: Generic.Style.fontFamily
                     text: qsTr("Zero shift:")
                 }
@@ -222,7 +222,7 @@ ColumnLayout {
                 }
                 Text { width: 5 }
                 Text {
-                    font.pointSize: Generic.Style.fontPointSize
+                    font.pixelSize: Generic.Style.fontPixelSize
                     font.family: Generic.Style.fontFamily
                     text: qsTr("Wavelength:")
                 }
@@ -233,7 +233,7 @@ ColumnLayout {
                 }
                 Text { width: 5 }
                 Text {
-                    font.pointSize: Generic.Style.fontPointSize
+                    font.pixelSize: Generic.Style.fontPixelSize
                     font.family: Generic.Style.fontFamily
                     text: qsTr("Magnetic field:")
                 }
@@ -257,7 +257,7 @@ ColumnLayout {
             //enabled: false
             ColumnLayout {
                 spacing: 2
-                Text { text: "Instrument resolution function"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Instrument resolution function"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 }
                 ///GenericAppElements.ComboBox { currentIndex: 3; model: ["Gaussian", "Lorentz", "Pseudo-Voigt", "Thompson-Cox-Hastings pseudo-Voigt"] }
                 GenericAppElements.ComboBox {
                     currentIndex: 2
@@ -272,35 +272,55 @@ ColumnLayout {
                 //enabled: false
 
                 // Row
-                Text { text: "U:" }
+                Text {
+                    text: "U:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.u.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
 
-                Text { text: "V:" }
+                Text {
+                    text: "V:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.v.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
 
-                Text { text: "W:" }
+                Text {
+                    text: "W:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.w.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
 
                 // Row
-                Text { text: "X:" }
+                Text {
+                    text: "X:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.x.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
                 Text { width: 5 }
 
-                Text { text: "Y:" }
+                Text {
+                    text: "Y:"
+                    font.pixelSize: Generic.Style.fontPixelSize
+                    font.family: Generic.Style.fontFamily
+                }
                 GenericAppElements.TextField {
                     text: Specific.Variables.experimentByIndex(0).resolution.y.toFixed(4)
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }

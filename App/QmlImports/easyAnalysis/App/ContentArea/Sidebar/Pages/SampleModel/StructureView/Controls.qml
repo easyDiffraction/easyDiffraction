@@ -70,7 +70,7 @@ ColumnLayout {
             Dialogs1.FileDialog{
                 id: fileDialogLoadPhase
                 nameFilters: [ "CIF files (*.cif)"]
-                folder: settings.value("lastOpenedProjectFolder", examplesDir)
+                folder: settings.value("lastOpenedProjectFolder", examplesDirUrl)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)
                     Specific.Variables.projectControl.loadPhases(fileUrl)
@@ -108,9 +108,9 @@ ColumnLayout {
                 rowSpacing: 2
                 //enabled: false
 
-                Text { text: "Crystal system"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
-                Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Crystal system"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 }
+                Text { text: "Space Group    "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 }
+                Text { text: "Setting             "; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 }
 
                 GenericAppElements.ComboBox {
                     model: [Specific.Variables.phaseByIndex(0).spacegroup.crystal_system]
@@ -129,7 +129,7 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 1
                 rowSpacing: 2
-                Text { text: "Cell parameters"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize - 1 }
+                Text { text: "Cell parameters"; color: Generic.Style.sidebarLabelColor; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize - 1 }
 
                 // Table
                 GenericAppElements.CellParametersTableView {

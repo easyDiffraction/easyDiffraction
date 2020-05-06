@@ -21,7 +21,6 @@ def test_AtomAdpsModel():
     m = Model()
     m.setCalculatorInterface(interface)
 
-
     assert isinstance(m._model, QStandardItemModel)
     assert isinstance(m._project_dict, ProjectDict)
 

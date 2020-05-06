@@ -1,6 +1,6 @@
 data_Fe3O4
 
-_space_group_name_h-m_ref 'F d -3 m'
+_space_group_name_H-M_ref 'F d -3 m'
 _space_group_IT_coordinate_system_code 2
 
 _cell_length_a 8.57()

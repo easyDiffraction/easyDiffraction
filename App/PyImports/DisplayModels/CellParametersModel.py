@@ -22,24 +22,23 @@ class CellParametersModel(BaseModel):
             self._beta_role: b'angle_beta',
             self._gamma_role: b'angle_gamma'
         })
-        self._log = logger.getLogger(__class__.__module__)
+        self._log = logger.getLogger(self.__class__.__module__)
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI ..."""
-        self._log.info("-> start")
+        self._log.info("Starting to set Model from Project Dict")
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
             self._model.blockSignals(True)
             # set helper data list
-            data = []
-            data.append({
+            data = [{
                 self._a_role: phase_dict.getItemByPath(['cell', 'length_a']).value,
                 self._b_role: phase_dict.getItemByPath(['cell', 'length_b']).value,
                 self._c_role: phase_dict.getItemByPath(['cell', 'length_c']).value,
                 self._alpha_role: phase_dict.getItemByPath(['cell', 'angle_alpha']).value,
                 self._beta_role: phase_dict.getItemByPath(['cell', 'angle_beta']).value,
                 self._gamma_role: phase_dict.getItemByPath(['cell', 'angle_gamma']).value,
-            })
+            }]
             # set model size
             self._model.setColumnCount(1)
             self._model.setRowCount(len(data))
@@ -51,4 +50,4 @@ class CellParametersModel(BaseModel):
             # unblock signals and emit model layout changed
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
-        self._log.info("<- end")
+        self._log.info("Finished setting Model from Project Dict")
