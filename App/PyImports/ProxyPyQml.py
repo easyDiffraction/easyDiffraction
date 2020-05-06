@@ -122,7 +122,12 @@ class ProxyPyQml(QObject):
     @Slot(str)
     def updateExperimentFromGui(self, cif_string):
         exp_name = self._calculator_interface.experimentsIds()[0]
-        self._calculator_interface.updateExperiment(exp_name, cif_string)
+        cif_string = cif_string[cif_string.find('data_'):]
+        new_experiment = self._calculator_interface.getExperimentFromCif(cif_string)
+        old_exp = self._calculator_interface.getExperiment(exp_name)
+        keys, values = old_exp.dictComparison(new_experiment)
+        modded_keys = [['experiments', exp_name, *key] for key in keys]
+        self._calculator_interface.project_dict.bulkUpdate(modded_keys, values, 'Update Experiment from GUI')
         self.projectChanged.emit()
         self._need_to_save = False
         self.projectSaveStateChanged.emit()
