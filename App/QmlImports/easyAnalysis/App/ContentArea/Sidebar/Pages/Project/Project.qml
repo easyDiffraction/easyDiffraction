@@ -6,4 +6,5 @@ import easyAnalysis.App.ContentArea.Sidebar.Pages.Project.Project 1.0 as Generic
 
 GenericAppElements.SidebarStack {
     controlsContent: GenericSidebarContent.Controls { anchors.fill: parent }
+    settingsContent: GenericSidebarContent.Settings { anchors.fill: parent }
 }

@@ -112,6 +112,10 @@ class ProxyPyQml(QObject):
         #self.onProjectUnsaved()
 
     @Slot(str)
+    def updateMainCifFromGui(self, cif_string):
+        pass
+
+    @Slot(str)
     def updatePhaseFromGui(self, cif_string):
         phase_name = self._calculator_interface.phasesIds()[0]
         cif_string = cif_string[cif_string.find('data_'):]
@@ -121,7 +125,7 @@ class ProxyPyQml(QObject):
         modded_keys = [['phases', phase_name, *key] for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
         modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
 
-        self._calculator_interface.project_dict.startBulkUpdate('Manual update of the phase')
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of phases.cif')
         self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
         self._calculator_interface.setCalculatorFromProject()
         self._calculator_interface.updateCalculations()
@@ -142,7 +146,7 @@ class ProxyPyQml(QObject):
         modded_keys = [['experiments', exp_name, *key] for key in keys if key[-1] != 'mapping' and key[-1] != 'hide']
         modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
 
-        self._calculator_interface.project_dict.startBulkUpdate('Manual update of the experiment')
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of experiments.cif')
         self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
         self._calculator_interface.setCalculatorFromProject()
         self._calculator_interface.updateCalculations()
