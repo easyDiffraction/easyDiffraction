@@ -28,8 +28,9 @@ Rectangle {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             text: "No Project Created/Opened"
-            font.pointSize: Generic.Style.fontPointSize * 3
-            font.family: Generic.Style.fontFamily
+            font.family: Generic.Style.secondFontFamily
+            font.pixelSize: 42
+            font.weight: Font.Light
             color: "lightgrey"
         }
 
@@ -46,15 +47,17 @@ Rectangle {
 
     Column {
         visible: Specific.Variables.projectOpened
-        anchors.verticalCenter: parent.verticalCenter
+
         anchors.left: parent.left
         anchors.leftMargin: margin
+        anchors.verticalCenter: parent.verticalCenter
         spacing: 20
 
         Text {
             lineHeight: 0.5
-            font.pointSize: Generic.Style.fontPointSize * 3
-            font.family: Generic.Style.fontFamily
+            font.pixelSize: 42
+            font.family: Generic.Style.secondFontFamily
+            font.weight: Font.Light
             text: Specific.Variables.projectName
         }
 
@@ -64,60 +67,63 @@ Rectangle {
             columnSpacing: 15
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: "Keywords:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                width: mainRectangle.width * 0.5
+
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 color: Generic.Style.buttonBkgHighlightedColor
                 text: Specific.Variables.projectKeywords
+                wrapMode: Text.WordWrap
             }
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: "Phases:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 color: Specific.Variables.phaseIds().length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
                 text: Specific.Variables.phaseIds().length ? Specific.Variables.phaseIds().join(", ") : "None loaded"
             }
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: "Experiments:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 color: Specific.Variables.experimentIds().length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
                 text: Specific.Variables.experimentIds().length ? Specific.Variables.experimentIds().join(", ") : "None loaded"
             }
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: "Instrument:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 color: Generic.Style.buttonBkgHighlightedColor
                 text: "Unknown"
             }
 
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: "Modified:"
             }
             Text {
-                font.pointSize: Generic.Style.fontPointSize + 1
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 color: Generic.Style.buttonBkgHighlightedColor
                 text: Specific.Variables.projectModifiedDate
@@ -152,7 +158,7 @@ Rectangle {
             }
         }
 
-        Item { height: Generic.Style.fontPointSize * 3; width: 1 }
+        Item { height: 42; width: 1 }
     }
 
 }

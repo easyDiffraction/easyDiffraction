@@ -22,7 +22,7 @@ ColumnLayout {
     property int xScaleZoom: 0
     property int yScaleZoom: 0
 
-    property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pointSize: Generic.Style.fontPointSize })
+    property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pixelSize: Generic.Style.fontPixelSize })
 
     property int globalAnimationDuration: 1000
     property var globalAnimationOptions: ChartView.SeriesAnimations //ChartView.AllAnimations //ChartView.NoAnimation
@@ -109,7 +109,7 @@ ColumnLayout {
                     rightPadding: leftPadding
 
                     font.family: Generic.Style.fontFamily
-                    font.pointSize: Generic.Style.fontPointSize
+                    font.pixelSize: Generic.Style.fontPixelSize
                     color: Generic.Style.tableTextColor //Generic.Style.buttonTextFinishedColor
 
                     text: {
@@ -183,8 +183,8 @@ ColumnLayout {
                     titleText: showCalc ? "Iobs, Icalc" : "Iobs"
                     labelsFont: commonFont
                     titleFont: commonFont
-                    min: Specific.Variables.measuredData.yMin //Specific.Variables.calculationByIndex(0).limits.main.y_min
-                    max: Specific.Variables.measuredData.yMax //Specific.Variables.calculationByIndex(0).limits.main.y_max
+                    min: Specific.Variables.measuredData ? Specific.Variables.measuredData.yMin : 0 //Specific.Variables.calculationByIndex(0).limits.main.y_min
+                    max: Specific.Variables.measuredData ? Specific.Variables.measuredData.yMax : 1 //Specific.Variables.calculationByIndex(0).limits.main.y_max
                 }
 
                 // Measured curve
@@ -309,18 +309,21 @@ ColumnLayout {
         height: Generic.Style.buttonHeight + 3
         color: "transparent"
 
+        clip: true
+
         Label {
             id: infoArea
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             height: Generic.Style.buttonHeight
-            leftPadding: font.pointSize
-            rightPadding: font.pointSize
+            leftPadding: font.pixelSize
+            rightPadding: font.pixelSize
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             text: qsTr("Show coordinates: Hover mouse pointer") + "  •  " + qsTr("Zoom in: Left mouse button") + "  •  " + qsTr("Reset: Right mouse button")
-            font.family: Generic.Style.introThinFontFamily
-            font.pointSize: Generic.Style.systemFontPointSize + 1
+            font.family: Generic.Style.secondFontFamily
+            font.weight: Font.Light
+            font.pixelSize: Generic.Style.fontPixelSize
             color: "grey"
             background: Rectangle { color: "white"; opacity: 0.9; border.width: 0; radius: Generic.Style.toolbarButtonRadius }
         }

@@ -1,5 +1,6 @@
 from PySide2.QtCore import Signal, QThread
 
+
 class Refiner(QThread):
     """
     Simple wrapper for calling a function in separate thread
@@ -23,4 +24,3 @@ class Refiner(QThread):
                 return str(ex)
         self.finished.emit(res)
         return res
-

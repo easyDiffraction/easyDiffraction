@@ -31,13 +31,12 @@ class AtomMspsModel(BaseModel):
             self._chi12_role: b'chi12',
             self._chi13_role: b'chi13',
             self._chi23_role: b'chi23'
-            })
-        self._log = logger.getLogger(__class__.__module__)
-
+        })
+        self._log = logger.getLogger(self.__class__.__module__)
 
     def _setModelsFromProjectDict(self):
         """Create the model needed for GUI ..."""
-        self._log.info("-> start")
+        self._log.info("Starting to set Model from Project Dict")
         for phase_id, phase_dict in self._project_dict['phases'].items():
             # block model signals
             self._model.blockSignals(True)
@@ -54,16 +53,16 @@ class AtomMspsModel(BaseModel):
                     self._chi12_role: atom_dict.getItemByPath(['MSP', 'chi_12']).value,
                     self._chi13_role: atom_dict.getItemByPath(['MSP', 'chi_13']).value,
                     self._chi23_role: atom_dict.getItemByPath(['MSP', 'chi_23']).value,
-                    })
+                })
             # set model size
             self._model.setColumnCount(1)
             self._model.setRowCount(len(data))
             # set model from data list created above
-            for row_index, dict in enumerate(data):
+            for row_index, dict_value in enumerate(data):
                 index = self._model.index(row_index, 0)
-                for role, value in dict.items():
+                for role, value in dict_value.items():
                     self._model.setData(index, value, role)
             # unblock signals and emit model layout changed
             self._model.blockSignals(False)
             self._model.layoutChanged.emit()
-        self._log.info("<- end")
+        self._log.info("Finished setting Model from Project Dict")

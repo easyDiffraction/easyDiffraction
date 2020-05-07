@@ -15,7 +15,7 @@ GenericControls.Dialog {
         spacing: 30
 
         Text {
-            font.pointSize: Generic.Style.fontPointSize
+            font.pixelSize: Generic.Style.fontPixelSize
             font.family: Generic.Style.fontFamily
             color: "#444"
             anchors.horizontalCenter: parent.horizontalCenter

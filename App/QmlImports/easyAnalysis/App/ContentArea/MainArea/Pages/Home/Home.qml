@@ -13,10 +13,8 @@ Rectangle {
     id: mainRectangle
 
     property int margin: 20
-    property int animationDuration: Generic.Variables.showIntro ? Generic.Variables.introAnimationDuration : 0
-    property int appNameFontSize: Generic.Style.systemFontPointSize * 4
-    property int appVersionFontSize: Generic.Style.systemFontPointSize + 1
-    property int repeatFontSize: Generic.Style.systemFontPointSize + 1
+    property int animationDuration: Generic.Variables.showIntro ? Generic.Variables.introAnimationDuration * 2 : 0
+    property int appNameFontPixelSize: 58
 
     enabled: false
 
@@ -44,7 +42,7 @@ Rectangle {
             id: appIcon
             opacity: 0
             anchors.horizontalCenter: parent.horizontalCenter
-            width: 110
+            width: 100
             height: width
             //antialiasing: true
             //fillMode: Image.PreserveAspectFit
@@ -69,10 +67,10 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             height: diffraction.height
             width: making.width + diffraction.width + dam.width + easy.width
-            Text { id: making;      text: "Making ";                        opacity: 0; x: 0; font.family: Generic.Style.introCondencedThinFontFamily; font.pointSize: appNameFontSize; color: "#444" }
-            Text { id: diffraction; text: "diffraction";                    opacity: 0; x: making.width; font.family: Generic.Style.introCondencedRegularFontFamily; font.pointSize: appNameFontSize; color: "#666" }
-            Text { id: dam;         text: " data analysis and modelling ";  opacity: 0; x: making.width + diffraction.width; font.family: Generic.Style.introCondencedThinFontFamily; font.pointSize: appNameFontSize; color: "#444" }
-            Text { id: easy;        text: "easy";                           opacity: 0; x: making.width + diffraction.width + dam.width; font.family: Generic.Style.introCondencedRegularFontFamily; font.pointSize: appNameFontSize; color: "#666" }
+            Text { id: making;      text: "Making ";                        opacity: 0; x: 0; font.family: Generic.Style.secondCondensedFontFamily; font.weight: Font.ExtraLight; font.pixelSize: appNameFontPixelSize; color: "#444" }
+            Text { id: diffraction; text: "diffraction";                    opacity: 0; x: making.width; font.family: Generic.Style.secondCondensedFontFamily; font.pixelSize: appNameFontPixelSize; color: "#666" }
+            Text { id: dam;         text: " data analysis and modelling ";  opacity: 0; x: making.width + diffraction.width; font.family: Generic.Style.secondCondensedFontFamily; font.weight: Font.ExtraLight; font.pixelSize: appNameFontPixelSize; color: "#444" }
+            Text { id: easy;        text: "easy";                           opacity: 0; x: making.width + diffraction.width + dam.width; font.family: Generic.Style.secondCondensedFontFamily; font.pixelSize: appNameFontPixelSize; color: "#666" }
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
@@ -85,8 +83,9 @@ Rectangle {
             id: appVersion
             opacity: 0
             anchors.horizontalCenter: parent.horizontalCenter
-            font.family: Generic.Style.introExpandedThinFontFamily
-            font.pointSize: appVersionFontSize
+            font.family: Generic.Style.secondExpandedFontFamily
+            font.weight: Font.Light
+            font.pixelSize: Generic.Style.fontPixelSize
             text: "Version %1 (%2)".arg(Specific.Constants.appVersion).arg(Specific.Constants.appDate)
             MouseArea {
                 anchors.fill: parent
@@ -160,7 +159,7 @@ Rectangle {
                 id: aboutLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
@@ -185,7 +184,7 @@ Rectangle {
                 id: tutorialLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
@@ -210,7 +209,7 @@ Rectangle {
                 id: documentationLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
@@ -227,7 +226,7 @@ Rectangle {
                 id: contactLink
                 opacity: 0
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 horizontalAlignment: Text.AlignHCenter
                 color: Generic.Style.blueColor
@@ -257,8 +256,9 @@ Rectangle {
             text: "Skip"
             contentItem: IconLabel {
                 text: skipButton.text
-                font.family: Generic.Style.introThinFontFamily
-                font.pointSize: repeatFontSize
+                font.family: Generic.Style.secondFontFamily
+                font.weight: Font.Light
+                font.pixelSize: Generic.Style.fontPixelSize
                 color: "#666"
             }
             background: Rectangle {
@@ -275,8 +275,9 @@ Rectangle {
             text: "Disable"
             contentItem: IconLabel {
                 text: disableButton.text
-                font.family: Generic.Style.introThinFontFamily
-                font.pointSize: repeatFontSize
+                font.family: Generic.Style.secondFontFamily
+                font.weight: Font.Light
+                font.pixelSize: Generic.Style.fontPixelSize
                 color: "#666"
             }
             background: Rectangle {
@@ -319,12 +320,12 @@ Rectangle {
         }
         ParallelAnimation {
             // font change
-            PropertyAnimation { target: easy; property: "font.family"; to: Generic.Style.introCondencedThinFontFamily; duration: animationDuration*0.1 }
+            PropertyAnimation { target: easy; property: "font.weight"; to: Font.ExtraLight; duration: animationDuration*0.1 }
             // text change
             PropertyAnimation { target: diffraction; property: "text"; to: "Diffraction"; duration: animationDuration*0.1 }
             // mooving
-            NumberAnimation { easing.type: Easing.OutExpo; target: easy;         property: "x"; to: container.width/2 - easy.width - (diffraction.width - easy.width)/2; duration: animationDuration }
-            NumberAnimation { easing.type: Easing.OutExpo; target: diffraction;  property: "x"; to: container.width/2 - (diffraction.width - easy.width)/2;              duration: animationDuration }
+            NumberAnimation { easing.type: Easing.OutExpo; target: easy;         property: "x"; to: container.width/2 - easy.width - (diffraction.width - easy.width)/2; duration: animationDuration * 0.5}
+            NumberAnimation { easing.type: Easing.OutExpo; target: diffraction;  property: "x"; to: container.width/2 - (diffraction.width - easy.width)/2;              duration: animationDuration * 0.5 }
         }
         // easyDiffraction opacity
         ParallelAnimation {

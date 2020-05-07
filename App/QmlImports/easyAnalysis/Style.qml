@@ -46,13 +46,13 @@ QtObject {
 
     readonly property color tableRowColor: "white"
     readonly property color tableAlternateRowColor: "#f7f7f7"
-    readonly property color tableHighlightRowColor: blueColor //Qt.lighter("dodgerblue", 1.7)
+    readonly property color tableHighlightRowColor: "#302a99d9"//buttonBkgFinishedColor//blueColor //Qt.lighter("dodgerblue", 1.7)
     readonly property color tableHeaderRowColor: "#eee"
     readonly property color tableColumnBorderColor: "#e8e8e8"
 
     readonly property color tableTextColor: "black"
     readonly property color tableDisabledTextColor: "#888"
-    readonly property color tableHighlightTextColor: "white"
+    readonly property color tableHighlightTextColor: "black"//"white"
     readonly property color tableHighlightBorderColor: Qt.lighter(tableHighlightRowColor, 1.2)
 
     // Toolbar
@@ -98,25 +98,33 @@ QtObject {
     readonly property string dummyIconPath: "dummy.svg"
 
     // Fonts
-    readonly property string introCondencedThinFontFamily: encodeSansCondensedExtraLight.name
-    readonly property string introCondencedRegularFontFamily: encodeSansCondensedRegular.name
-    readonly property string introThinFontFamily: encodeSansExtraLight.name
-    readonly property string introExpandedThinFontFamily: encodeSansExpandedExtraLight.name
-    readonly property string fontFamily: ptSansWebRegular.name
+    property FontLoader ptSansRegular: FontLoader { source: "Resources/Fonts/PT_Sans/PTSans-Regular.ttf" } // default
+    property FontLoader ptSansBold: FontLoader { source: "Resources/Fonts/PT_Sans/PTSans-Bold.ttf" } // font.bold: true
+    property FontLoader ptMono: FontLoader { source: "Resources/Fonts/PT_Mono/PTMono-Regular.ttf" }
+    property FontLoader encodeSansRegular: FontLoader { source: "Resources/Fonts/Encode_Sans/EncodeSans-Regular.ttf" } // default
+    property FontLoader encodeSansLight: FontLoader { source: "Resources/Fonts/Encode_Sans/EncodeSans-Light.ttf" } // font.weight: Font.Light
+    property FontLoader encodeSansCondensedRegular: FontLoader { source: "Resources/Fonts/Encode_Sans_Condensed/EncodeSansCondensed-Regular.ttf" } // default
+    property FontLoader encodeSansCondensedExtraLight: FontLoader { source: "Resources/Fonts/Encode_Sans_Condensed/EncodeSansCondensed-ExtraLight.ttf" } // font.weight: Font.ExtraLight
+    property FontLoader encodeSansExpandedRegular: FontLoader { source: "Resources/Fonts/Encode_Sans_Expanded/EncodeSansExpanded-Regular.ttf" } // default
+    property FontLoader encodeSansExpandedLight: FontLoader { source: "Resources/Fonts/Encode_Sans_Expanded/EncodeSansExpanded-Light.ttf" } // font.weight: Font.Light
+    property FontLoader icons: FontLoader { source: "Resources/Fonts/Icons/icons.ttf" }
+    readonly property string fontFamily: ptSansRegular.name
     readonly property string monoFontFamily: ptMono.name
-    property FontLoader encodeSansCondensedExtraLight: FontLoader { source: "Resources/Fonts/EncodeSansCondensed/EncodeSansCondensed-ExtraLight.ttf" }
-    property FontLoader encodeSansCondensedRegular: FontLoader { source: "Resources/Fonts/EncodeSansCondensed/EncodeSansCondensed-Regular.ttf" }
-    property FontLoader encodeSansExtraLight: FontLoader { source: "Resources/Fonts/EncodeSans/EncodeSans-ExtraLight.ttf" }
-    property FontLoader encodeSansExpandedExtraLight: FontLoader { source: "Resources/Fonts/EncodeSansExpanded/EncodeSansExpanded-ExtraLight.ttf" }
-    property FontLoader ptSansWebRegular: FontLoader { source: "Resources/Fonts/PtSans/PT_Sans-Web-Regular.ttf" }
-    property FontLoader ptSansWebBold: FontLoader { source: "Resources/Fonts/PtSans/PT_Sans-Web-Bold.ttf" } // font.bold: true
-    property FontLoader ptMono: FontLoader { source: "Resources/Fonts/PtMono/PTM55FT.ttf" }
+    readonly property string secondFontFamily: encodeSansRegular.name
+    readonly property string secondCondensedFontFamily: encodeSansCondensedRegular.name
+    readonly property string secondExpandedFontFamily: encodeSansExpandedRegular.name
+    readonly property string iconsFontFamily: icons.name
 
     // Text
-    readonly property string systemFontFamily: text.font.family
-    readonly property int systemFontPointSize: text.font.pointSize
-    readonly property int fontPointSize: systemFontPointSize + 1
-    property Text text: Text {}
+    //property Text text: Text { font.pointSize: Qt.platform.os === "osx" ? Qt.application.font.pointSize + 1 : Qt.application.font.pointSize }
+    property Text text: Text { font.pixelSize: 14 }
+    //readonly property string systemFontFamily: text.font.family
+    readonly property int fontPointSize: text.font.pointSize
+    readonly property int fontPixelSize: text.font.pixelSize
+
+    //onSystemFontFamilyChanged: print("systemFontFamily", systemFontFamily)
+    //onFontPointSizeChanged: print("fontPointSize", fontPointSize)
+    //onFontPixelSizeChanged: print("fontPixelSize", fontPixelSize)
 
 }
 

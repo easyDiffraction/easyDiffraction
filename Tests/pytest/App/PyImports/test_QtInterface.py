@@ -69,8 +69,8 @@ def test_setPhaseDefinition(cal):
     phase_ref = cal.getPhase('Fe3O4')
     assert phase_added['phasename'] == phase_ref['phasename']
     assert phase_added['spacegroup']['crystal_system'].value == phase_ref['spacegroup']['crystal_system'].value
-    assert phase_added['spacegroup']['space_group_name_HM_alt'].value == phase_ref['spacegroup'][
-        'space_group_name_HM_alt'].value
+    assert phase_added['spacegroup']['space_group_name_HM_ref'].value == phase_ref['spacegroup'][
+        'space_group_name_HM_ref'].value
     assert phase_added['spacegroup']['space_group_IT_number'].value == phase_ref['spacegroup'][
         'space_group_IT_number'].value
     assert phase_added['spacegroup']['origin_choice'].value == phase_ref['spacegroup']['origin_choice'].value
@@ -93,8 +93,8 @@ def test_addPhaseDefinition(cal):
     phase_ref = cal.getPhase('Fe3O4')
     assert phase_added['phasename'] == phase_ref['phasename']
     assert phase_added['spacegroup']['crystal_system'].value == phase_ref['spacegroup']['crystal_system'].value
-    assert phase_added['spacegroup']['space_group_name_HM_alt'].value == phase_ref['spacegroup'][
-        'space_group_name_HM_alt'].value
+    assert phase_added['spacegroup']['space_group_name_HM_ref'].value == phase_ref['spacegroup'][
+        'space_group_name_HM_ref'].value
     assert phase_added['spacegroup']['space_group_IT_number'].value == phase_ref['spacegroup'][
         'space_group_IT_number'].value
     assert phase_added['spacegroup']['origin_choice'].value == phase_ref['spacegroup']['origin_choice'].value

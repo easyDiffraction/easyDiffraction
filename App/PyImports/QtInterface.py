@@ -1,8 +1,6 @@
 __author__ = 'simonward'
 __version__ = "2020_02_01"
 
-from typing import NoReturn
-
 from PySide2.QtCore import QObject, Signal, Slot
 
 from easyInterface import logger
@@ -86,11 +84,11 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
         # self.updateCalculations()
         self.projectDictChanged.emit()
 
-    def setExperimentDefinitionFromString(self, exp_cif_string: str) -> NoReturn:
+    def addExperimentDefinitionFromString(self, exp_cif_string: str) -> NoReturn:
         """
         Parse the relevant phases file and update the corresponding model
         """
-        CalculatorInterface.setExperimentDefinitionFromString(self, exp_cif_string)
+        CalculatorInterface.addExperimentDefinitionFromString(self, exp_cif_string)
         self.updateCalculations()
         self.projectDictChanged.emit()
 

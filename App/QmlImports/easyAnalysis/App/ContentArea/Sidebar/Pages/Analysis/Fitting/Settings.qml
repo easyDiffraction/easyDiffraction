@@ -59,7 +59,7 @@ ColumnLayout {
             columnSpacing: 20
             // Row
             Text {
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: qsTr("Library")
             }
@@ -82,7 +82,7 @@ ColumnLayout {
             columnSpacing: 20
             // Row
             Text {
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: qsTr("Library")
             }
@@ -93,7 +93,7 @@ ColumnLayout {
             }
             // Row
             Text {
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: qsTr("Type")
             }
@@ -104,7 +104,7 @@ ColumnLayout {
             }
             // Row
             Text {
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: qsTr("Method")
             }
@@ -115,7 +115,7 @@ ColumnLayout {
             }
             // Row
             Text {
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 text: qsTr("Max. iterations")
             }

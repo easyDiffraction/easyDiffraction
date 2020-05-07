@@ -6,7 +6,7 @@ import yaml  # pip install pyyaml
 
 # CLASSES
 
-class Config():
+class Config:
     def __init__(self, release_config_file_path):
         # load external config
         self.__dict__ = self._loadYaml(release_config_file_path)

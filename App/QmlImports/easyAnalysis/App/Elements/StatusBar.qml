@@ -6,7 +6,6 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyDiffraction 1.0 as Specific
 
 ColumnLayout {
-    visible: !Generic.Variables.HomeIndex
     spacing: 0
 
     GenericAppElements.HorizontalBorder {}
@@ -38,7 +37,7 @@ ColumnLayout {
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
                     font.family: Generic.Style.fontFamily
-                    font.pointSize: Generic.Style.fontPointSize - 1
+                    font.pixelSize: Generic.Style.fontPixelSize - 1
                     color: Generic.Style.buttonTextDisabledColor
                     text: label + ":"
                 }
@@ -46,7 +45,7 @@ ColumnLayout {
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
                     font.family: Generic.Style.fontFamily
-                    font.pointSize: Generic.Style.fontPointSize - 1
+                    font.pixelSize: Generic.Style.fontPixelSize - 1
                     color: Generic.Style.buttonTextDisabledColor
                     text: value
                 }

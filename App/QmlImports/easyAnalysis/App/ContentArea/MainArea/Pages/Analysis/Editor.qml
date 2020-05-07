@@ -25,7 +25,7 @@ Rectangle {
             readOnly: true
             color: "#333"
             font.family: Generic.Style.monoFontFamily
-            font.pointSize: Generic.Style.fontPointSize
+            font.pixelSize: Generic.Style.fontPixelSize
             //antialiasing: true
             wrapMode: Text.NoWrap
             // this has to be wrapped with the showContent conditional
@@ -54,7 +54,7 @@ Rectangle {
             readOnly: true
             color: "#333"
             font.family: Generic.Style.monoFontFamily
-            font.pointSize: Generic.Style.fontPointSize
+            font.pixelSize: Generic.Style.fontPixelSize
             //antialiasing: true
             wrapMode: Text.NoWrap
             //text: showContent ? Specific.Variables.experimentCif : ""

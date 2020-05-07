@@ -30,9 +30,10 @@ QtObject {
     property string numRefinedPars: " "
 
     // Paths
-    readonly property string originalIconsPath: qmlImportsDir + "/easyAnalysis/Resources/Icons/"
-    readonly property string thirdPartyIconsPath: qmlImportsDir + "/easyAnalysis/Resources/Fonts/Awesome/svgs/"
-    readonly property string qmlElementsPath: qmlImportsDir + "/easyAnalysis/App/Elements/"
+    readonly property string originalIconsPath: qmlImportsDirPath + "/easyAnalysis/Resources/Icons/"
+    readonly property string originalIconsUrl: qmlImportsDirUrl + "/easyAnalysis/Resources/Icons/"
+    readonly property string thirdPartyIconsPath: qmlImportsDirUrl + "/easyAnalysis/Resources/Fonts/Awesome/svgs/"
+    readonly property string qmlElementsPath: qmlImportsDirUrl + "/easyAnalysis/App/Elements/"
 
     // Content area
     property int toolbarCurrentIndex: 0 // App starts on home tab
@@ -66,5 +67,5 @@ QtObject {
 
     // Chart view
     property bool showLegend: true
-    property bool showRefinemetResults: true
+    property bool showRefinemetResults: false
 }

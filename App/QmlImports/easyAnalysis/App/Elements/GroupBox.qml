@@ -28,7 +28,10 @@ Column {
         visible: title ? true : false
         leftPadding: Generic.Style.sidebarGroupIndicatorIconSize
         text: title
-        font.weight: Font.DemiBold
+        font.family: Generic.Style.fontFamily
+        font.pixelSize: Generic.Style.fontPixelSize
+        font.bold: true
+        //font.weight: Font.DemiBold
         icon.width: Generic.Style.sidebarGroupIndicatorIconSize
         icon.height: Generic.Style.sidebarGroupIndicatorIconSize
         icon.source: iconSource()
@@ -118,7 +121,7 @@ Column {
     function iconSource() {
         if (!collapsible)
             return Generic.Variables.thirdPartyIconsPath + "circle.svg"
-        return collapsed ? Generic.Variables.originalIconsPath + "triangle-right.svg" : Generic.Variables.originalIconsPath + "triangle-down.svg"
+        return collapsed ? Generic.Variables.originalIconsUrl + "triangle-right.svg" : Generic.Variables.originalIconsUrl + "triangle-down.svg"
     }
 
     //////////////////////

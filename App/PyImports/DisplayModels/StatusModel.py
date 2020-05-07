@@ -14,12 +14,12 @@ class StatusModel(BaseModel):
         self._calculator = None
 
         # Create the status items
-        chiItem = StatusItem('chiSq', title='Current \u03c7\u00b2', additionalData=1)
-        chiItem.setReturn(True)
-        chiItem.title = 'Previous \u03c7\u00b2'
-        chiItem.setReturn(False)
+        chi_item = StatusItem('chiSq', title='Current \u03c7\u00b2', additionalData=1)
+        chi_item.setReturn(True)
+        chi_item.title = 'Previous \u03c7\u00b2'
+        chi_item.setReturn(False)
         self._interestedList = StatusList([
-            chiItem,
+            chi_item,
             StatusItem('numPars', title='Fit parameters', additionalData=1),
             StatusItem('numData', title='Experiments', additionalData=0),
             StatusItem('numPhases', title='Phases', additionalData=0)
@@ -39,7 +39,7 @@ class StatusModel(BaseModel):
         self._statusBarModel.setItemRoleNames(self._roles_dict['status'])
         self._chartDisplayModel.setItemRoleNames(self._roles_dict['plot'])
 
-        self._log = logger.getLogger(__class__.__module__)
+        self._log = logger.getLogger(self.__class__.__module__)
 
     def _setRolesListAndDict(self):
         """..."""
@@ -55,34 +55,33 @@ class StatusModel(BaseModel):
         _ = self._statusBarModel.removeColumns(0, self._statusBarModel.columnCount())
         _ = self._chartDisplayModel.removeColumns(0, self._chartDisplayModel.columnCount())
 
-        columnStatusBar = []
-        columnChartDisplay = []
+        column_status_bar = []
+        column_chart_display = []
 
         self._updateStatusList()
 
         for interest in self._interestedList:
             # Add the status bar item
-            columnStatusBar.append(self._makeItem(interest, self._roles_dict['status'].items()))
+            column_status_bar.append(self._makeItem(interest, self._roles_dict['status'].items()))
             # Does this need to added to the plot?
             if interest.additionalData == 1:
-                columnChartDisplay.append(self._makeItem(interest, self._roles_dict['plot'].items()))
+                column_chart_display.append(self._makeItem(interest, self._roles_dict['plot'].items()))
 
             # Does this item also have previous values which need to be shown?
             if interest.hasPrevious:
                 interest.setReturn(True)
                 if interest.value is not None:
-                    columnStatusBar.append(self._makeItem(interest, self._roles_dict['status'].items()))
+                    column_status_bar.append(self._makeItem(interest, self._roles_dict['status'].items()))
                 interest.setReturn(False)
 
         # Set the models
-        self._statusBarModel.appendColumn(columnStatusBar)
-        self._chartDisplayModel.appendColumn(columnChartDisplay)
+        self._statusBarModel.appendColumn(column_status_bar)
+        self._chartDisplayModel.appendColumn(column_chart_display)
 
         self._statusBarModel.dataChanged.emit(self._statusBarModel.index(0, 0),
-                                              self._statusBarModel.index(self._statusBarModel.rowCount()-1,
-                                              self._statusBarModel.columnCount()-1),
+                                              self._statusBarModel.index(self._statusBarModel.rowCount() - 1,
+                                                                         self._statusBarModel.columnCount() - 1),
                                               self._roles_list)
-
 
     def _updateStatusList(self):
         """Update the values of the Item List"""
@@ -94,12 +93,11 @@ class StatusModel(BaseModel):
         except KeyError:
             self._interestedList.setItemValue('chiSq', 0)
 
-
         # Get number of parameters
-        numPars = get_num_refine_pars(project_dict.asDict())
+        num_pars = get_num_refine_pars(project_dict.asDict())
 
         # Set the other parameters.
-        self._interestedList.setItemValue('numPars', numPars)
+        self._interestedList.setItemValue('numPars', num_pars)
         self._interestedList.setItemValue('numPhases', len(project_dict['phases']))
         self._interestedList.setItemValue('numData', len(project_dict['experiments']))
 
@@ -117,15 +115,15 @@ class StatusModel(BaseModel):
         return self._chartDisplayModel
 
     @staticmethod
-    def _makeItem(thisInterest, theseItems):
+    def _makeItem(this_interest, these_items):
         """Make an item. This can be a plot or status bar"""
         item = QStandardItem()
-        for role, role_name_bytes in theseItems:
+        for role, role_name_bytes in these_items:
             role_name = role_name_bytes.decode()
             if role_name == 'label':
-                value = thisInterest.title
+                value = this_interest.title
             elif role_name == 'value':
-                value = thisInterest.value
+                value = this_interest.value
             else:
                 continue
             item.setData(value, role)
