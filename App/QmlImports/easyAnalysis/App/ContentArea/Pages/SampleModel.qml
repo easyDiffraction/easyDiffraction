@@ -17,7 +17,7 @@ GenericAppElements.ContentAreaStack {
         id: tabBar
         GenericMainArea.TabButton { text: qsTr("Structure View"); tabbarWidth: mainArea.width } // fix width
         GenericMainArea.TabButton {
-            text: qsTr("Text View")
+            text: qsTr("Phases.cif Edit")
             tabbarWidth: mainArea.width
 
             GenericAppElements.GuideWindow {
@@ -35,9 +35,6 @@ GenericAppElements.ContentAreaStack {
         currentIndex: tabBar.currentIndex
         GenericMainAreaSampleModel.StructureView { }
         GenericMainAreaSampleModel.TextView { id: textView }
-        onCurrentIndexChanged: {
-            textView.showContent = (currentIndex === 1)
-        }
     }
 
     sideBarContent: StackLayout {

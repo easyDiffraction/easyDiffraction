@@ -25,9 +25,9 @@ QtObject {
     property int introAnimationDuration: 1000
 
     // Reliability factors
-    property string refinementMessage: " "
-    property string chiSquared: " "
-    property string numRefinedPars: " "
+    property string refinementMessage: ""
+    property string chiSquared: ""
+    property string numRefinedPars: ""
 
     // Paths
     readonly property string originalIconsPath: qmlImportsDirPath + "/easyAnalysis/Resources/Icons/"

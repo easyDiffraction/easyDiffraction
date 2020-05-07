@@ -111,6 +111,48 @@ class ProxyPyQml(QObject):
         self.projectSaveStateChanged.emit()
         #self.onProjectUnsaved()
 
+    @Slot(str)
+    def updatePhaseFromGui(self, cif_string):
+        phase_name = self._calculator_interface.phasesIds()[0]
+        cif_string = cif_string[cif_string.find('data_'):]
+        new_phase = self._calculator_interface.getPhaseFromCif(cif_string)
+        old_phase = self._calculator_interface.getPhase(phase_name)
+        keys, values = old_phase.dictComparison(new_phase)
+        modded_keys = [['phases', phase_name, *key] for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
+        modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
+
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of the phase')
+        self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
+        self._calculator_interface.setCalculatorFromProject()
+        self._calculator_interface.updateCalculations()
+        self._calculator_interface.project_dict.endBulkUpdate()
+
+        #self.projectChanged.emit()
+        self._calculator_interface.projectDictChanged.emit()
+        self._need_to_save = True
+        self.projectSaveStateChanged.emit()
+
+    @Slot(str)
+    def updateExperimentFromGui(self, cif_string):
+        exp_name = self._calculator_interface.experimentsIds()[0]
+        cif_string = cif_string[cif_string.find('data_'):]
+        new_experiment = self._calculator_interface.getExperimentFromCif(cif_string)
+        old_exp = self._calculator_interface.getExperiment(exp_name)
+        keys, values = old_exp.dictComparison(new_experiment)
+        modded_keys = [['experiments', exp_name, *key] for key in keys if key[-1] != 'mapping' and key[-1] != 'hide']
+        modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
+
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of the experiment')
+        self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
+        self._calculator_interface.setCalculatorFromProject()
+        self._calculator_interface.updateCalculations()
+        self._calculator_interface.project_dict.endBulkUpdate()
+
+        #self.projectChanged.emit()
+        self._calculator_interface.projectDictChanged.emit()
+        self._need_to_save = True
+        self.projectSaveStateChanged.emit()
+
     # Load CIF method, accessible from QML
     @Slot()
     def initialize(self):

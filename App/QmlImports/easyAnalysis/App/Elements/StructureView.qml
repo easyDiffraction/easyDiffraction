@@ -61,7 +61,7 @@ Rectangle {
                     if (series === null) {
                         console.log("Error creating object")
                     } else {
-                        series.atomSize = Math.abs(parseFloat(phase.sites.scat_length_neutron[i])) * 0.4
+                        series.atomSize = Math.pow(Math.abs(parseFloat(phase.sites.scat_length_neutron[i])) * 0.075, 1/3)
                         series.atomColor = bscatColorDict[phase.sites.scat_length_neutron[i]]
                         series.atomModel.append({
                             x: phase.sites.fract_x[i] * a,

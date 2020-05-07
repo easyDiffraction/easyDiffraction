@@ -39,13 +39,13 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
     @Slot()
     def undo(self):
         CalculatorInterface.undo(self)
-        # self.setCalculatorFromProject()
+        self.setCalculatorFromProject()
         self.projectDictChanged.emit()
 
     @Slot()
     def redo(self):
         CalculatorInterface.redo(self)
-        # self.setCalculatorFromProject()
+        self.setCalculatorFromProject()
         self.projectDictChanged.emit()
 
     def __repr__(self) -> str:
@@ -102,6 +102,24 @@ class QtCalculatorInterface(CalculatorInterface, QObject):
 
     def removeExperiment(self, experiment_name):
         CalculatorInterface.removeExperiment(self, experiment_name)
+        self.projectDictChanged.emit()
+
+    def updatePhase(self, phase_name, exp_cif_string):
+        #self.project_dict.startBulkUpdate('Manual update of the phase')
+        CalculatorInterface.removePhase(self, phase_name)
+        CalculatorInterface.addPhaseDefinitionFromString(self, exp_cif_string)
+        self.updateExperiments()
+        self.updateCalculations()
+        #self.project_dict.endBulkUpdate()
+        self.projectDictChanged.emit()
+
+    def updateExperiment(self, experiment_name, exp_cif_string):
+        #self.project_dict.startBulkUpdate('Manual update of the experiment')
+        CalculatorInterface.removeExperiment(self, experiment_name)
+        CalculatorInterface.addExperimentDefinitionFromString(self, exp_cif_string)
+        self.updatePhases()
+        self.updateCalculations()
+        #self.project_dict.endBulkUpdate()
         self.projectDictChanged.emit()
 
     def setDictByPath(self, keys: list, value):
