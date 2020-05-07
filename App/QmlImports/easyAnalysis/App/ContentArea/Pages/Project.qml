@@ -16,7 +16,7 @@ GenericAppElements.ContentAreaStack {
         id: tabBar
         GenericMainArea.TabButton { text: qsTr("Description"); tabbarWidth: mainArea.width } // fix width
         GenericMainArea.TabButton {
-            text: qsTr("Main.cif Edit")
+            text: qsTr("Main.cif")
             enabled: Specific.Variables.projectOpened
             tabbarWidth: mainArea.width
         }

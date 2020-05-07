@@ -17,7 +17,7 @@ GenericAppElements.ContentAreaStack {
         id: tabBar
         GenericMainArea.TabButton { text: qsTr("Structure View"); tabbarWidth: mainArea.width } // fix width
         GenericMainArea.TabButton {
-            text: qsTr("Phases.cif Edit")
+            text: qsTr("Phases.cif")
             tabbarWidth: mainArea.width
 
             GenericAppElements.GuideWindow {
