@@ -14,7 +14,7 @@ QtObject {
     property var calculatorInterface: proxyPyQmlObj ? proxyPyQmlObj._calculatorInterface : null
     //property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
     property var projectDict: projectOpened && calculatorInterface ? calculatorInterface.asDict() : null
-    property var projectCifDict: projectOpened && calculatorInterface ? calculatorInterface.asCifDict() : {"phases": {}, "experiments": {}, "calculations": {}}
+    property var projectCifDict: projectOpened && calculatorInterface ? calculatorInterface.asCifDict() : {"main": {}, "phases": {}, "experiments": {}, "calculations": {}}
     ///property var projectDict: projectOpened ? projectDict : null
     ////property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     ////property var projectCifDict: projectOpened ? proxyPyQmlObj.projectCifDict : {"phases": {}, "experiments": {}, "calculations": {}}
