@@ -2,3 +2,4 @@ _name Ho2Ti2O7
 _keywords 'polarised neutron powder diffraction, flipping difference, T = 5K, B = 5T, VIP at LLB'
 _phases phases.cif
 _experiments experiments.cif
+_calculations calculations.cif
