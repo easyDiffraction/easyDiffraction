@@ -120,11 +120,11 @@ Rectangle {
         s += '<br></p>'
         s += '<h2>Fitting</h2>'
         s += '<p>'
-        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("saved_refinement.png"))}">`
+        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("refinement.png"))}">`
         s += '</p>'
         s += '<h2>Structure</h2>'
         s += '<p>'
-        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("saved_structure.png"))}">`
+        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("structure.png"))}">`
         s += '</p>'
         s += '</body>'
         return s

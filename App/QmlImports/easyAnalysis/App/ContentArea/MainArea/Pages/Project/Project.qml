@@ -136,7 +136,7 @@ Rectangle {
             spacing: margin
 
             Repeater {
-                model: ["saved_structure.png", "saved_refinement.png"]
+                model: ["structure.png", "refinement.png"]
 
                 Rectangle {
                     visible: image.progress

@@ -208,7 +208,7 @@ Rectangle {
         onTriggered: {
             //print("save structure")
             chartContainer.grabToImage(function(result) {
-                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/saved_structure.png")
+                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/structure.png")
             })
         }
     }
