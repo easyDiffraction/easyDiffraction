@@ -28,7 +28,7 @@ GenericAppElements.ContentAreaStack {
             }
         }
         GenericMainArea.TabButton {
-            text: qsTr("Experiments.cif")
+            text: qsTr("experiments.cif")
             tabbarWidth: mainArea.width
             GenericAppElements.GuideWindow {
                 message: "This tab button allows to see the\nmeasured data as plain text."

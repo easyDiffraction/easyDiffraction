@@ -17,7 +17,7 @@ Rectangle {
 
         TextArea {
             padding: 10
-            wrapMode: Text.Wrap
+            wrapMode: Text.NoWrap
 
             color: "#333"
             selectedTextColor: "black"
