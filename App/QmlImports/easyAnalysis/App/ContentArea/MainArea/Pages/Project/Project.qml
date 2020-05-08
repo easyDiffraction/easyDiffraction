@@ -90,7 +90,7 @@ Rectangle {
                 font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 color: Specific.Variables.phaseIds().length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
-                text: Specific.Variables.phaseIds().length ? Specific.Variables.phaseIds().join(", ") : "None loaded"
+                text: Specific.Variables.phaseIds().length ? `phases.cif (labels: ${Specific.Variables.phaseIds().join(", ")})` : "None loaded"
             }
 
             Text {
@@ -102,7 +102,19 @@ Rectangle {
                 font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 color: Specific.Variables.experimentIds().length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
-                text: Specific.Variables.experimentIds().length ? Specific.Variables.experimentIds().join(", ") : "None loaded"
+                text: Specific.Variables.experimentIds().length ? `experiments.cif (labels: ${Specific.Variables.experimentIds().join(", ")})` : "None loaded"
+            }
+
+            Text {
+                font.pixelSize: Generic.Style.fontPixelSize
+                font.family: Generic.Style.fontFamily
+                text: "Calculations:"
+            }
+            Text {
+                font.pixelSize: Generic.Style.fontPixelSize
+                font.family: Generic.Style.fontFamily
+                color: Generic.Style.buttonBkgHighlightedColor
+                text: "calculations.cif"
             }
 
             /*
