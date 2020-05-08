@@ -8,9 +8,12 @@ import easyDiffraction 1.0 as Specific
 
 Rectangle {
     property bool showInfo: true
+    property real xAxisLength: 1.0
+    property real yAxisLength: 1.0
+    property real zAxisLength: 1.0
     property real xRotationInitial: -50.0
     property real yRotationInitial:  3.0
-    property real zoomLevelInitial: 200.0
+    property real zoomLevelInitial: 175.0
     property real xTargetInitial: 0.0
     property real yTargetInitial: 0.0
     property real zTargetInitial: 0.0
@@ -47,6 +50,11 @@ Rectangle {
             const a = phase.cell.length_a
             const b = phase.cell.length_b
             const c = phase.cell.length_c
+
+            // Update axes lengths
+            xAxisLength = a // in horizontal plane
+            yAxisLength = b // vertical
+            zAxisLength = c // in horizontal plane
 
             // Remove old atom scatters, but unit cell box (number 1)
             for (let i = 1, len = chart.seriesList.length; i < len; i++) {
@@ -87,11 +95,10 @@ Rectangle {
 
         Scatter3D {
             id: chart
+            visible: Specific.Variables.phaseIds().length ? true: false
             width: Math.min(parent.width, parent.height)
             height: Math.min(parent.width, parent.height)
             anchors.centerIn: parent
-            clip: true
-            visible: Specific.Variables.phaseIds().length ? true: false
 
             // Camera view settings
             orthoProjection: false
@@ -104,8 +111,8 @@ Rectangle {
             scene.activeCamera.target.z: zTargetInitial
 
             // Geometrical settings
-            //horizontalAspectRatio: 0.0
-            aspectRatio: 1.0
+            aspectRatio: Math.max(xAxisLength, zAxisLength) / yAxisLength
+            horizontalAspectRatio: xAxisLength / zAxisLength
 
             // Interactivity
             selectionMode: AbstractGraph3D.SelectionNone // Left mouse button will be used for "reset view" coded below
