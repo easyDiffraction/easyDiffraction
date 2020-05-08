@@ -110,7 +110,7 @@ Rectangle {
         s += `<b>Keywords:</b> ${Specific.Variables.projectKeywords}<br>`
         s += `<b>Phases:</b> ${Specific.Variables.phaseIds().join(', ')}<br>`
         s += `<b>Experiments:</b> ${Specific.Variables.experimentIds().join(', ')}<br>`
-        s += `<b>Instrument:</b> Unknown<br>`
+        //s += `<b>Instrument:</b> Unknown<br>`
         s += `<b>Modified:</b> ${Specific.Variables.projectDict.info.modified_datetime}<br>`
         s += `<b>Chi2:</b> ${Generic.Variables.chiSquared} <br>`
         s += '</p>'

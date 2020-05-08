@@ -105,6 +105,7 @@ Rectangle {
                 text: Specific.Variables.experimentIds().length ? Specific.Variables.experimentIds().join(", ") : "None loaded"
             }
 
+            /*
             Text {
                 font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
@@ -116,6 +117,7 @@ Rectangle {
                 color: Generic.Style.buttonBkgHighlightedColor
                 text: "Unknown"
             }
+            */
 
             Text {
                 font.pixelSize: Generic.Style.fontPixelSize
