@@ -135,6 +135,7 @@ class ProjectControl(QObject):
             f.write('_keywords %s\n' % '\'%s\'' % ', '.join(keywords))
             f.write('_phases\n')
             f.write('_experiments\n')
+            f.write('_calculations\n')
         self.main_rcif_path = os.path.join(self.tempDir.name, main_cif_filename)
         self.manager.projectName = name
         self.manager.projectKeywords = keywords
@@ -388,10 +389,11 @@ def create_project_zip(data_dir, save_name) -> Tuple[bool, str]:
 
     must_contain = [main_cif_filename,
                     'phases.cif',
-                    'experiments.cif']
+                    'experiments.cif',
+                    'calculations.cif']
 
-    can_contain = ['saved_structure.png',
-                   'saved_refinement.png']
+    can_contain = ['structure.png',
+                   'refinement.png']
 
     save_name = write_zip(data_dir, save_name, must_contain, can_contain)
 

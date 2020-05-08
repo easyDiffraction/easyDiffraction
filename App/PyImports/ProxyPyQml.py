@@ -200,12 +200,14 @@ class ProxyPyQml(QObject):
 
     @Slot()
     def createProjectZip(self):
+        self.__log.debug("")
         self._calculator_interface.writeMainCif(self._project_control.tempDir.name)
         writeEmptyProject(self._project_control, self._project_control.project_file)
         self.onProjectSaved()
 
     @Slot(str)
     def createProject(self, file_path):
+        self.__log.debug("")
         self._project_control.createProject(file_path)
         # Note that the main rcif of self._project_control.main_rcif_path has not ben cleared
         self._project_control.main_rcif_path = ''
@@ -215,25 +217,31 @@ class ProxyPyQml(QObject):
 
     @Slot(str)
     def saveProjectAs(self, file_path):
+        self.__log.debug("")
         self._project_control.project_file = file_path
         self.saveProject()
 
     @Slot()
     def saveProject(self):
+        self.__log.debug("")
         self._calculator_interface.saveCifs(self._project_control.tempDir.name)
         writeProject(self._project_control, self._project_control.project_file)
         self.onProjectSaved()
 
     def onProjectSaved(self):
+        self.__log.debug("")
         self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
         self._need_to_save = False
         self.projectSaveStateChanged.emit()
+        self.projectChanged.emit() # update main.cif in gui (when filenames changed)
 
     def onProjectUnsaved(self):
+        self.__log.debug("")
         self._need_to_save = True
         self.projectSaveStateChanged.emit()
 
     def onProjectChanged(self):
+        self.__log.debug("")
         keys, _ = self._calculator_interface.project_dict.dictComparison(self._project_dict_copy)
         self.__log.debug(f"keys: {keys}")
         self._need_to_save = True
