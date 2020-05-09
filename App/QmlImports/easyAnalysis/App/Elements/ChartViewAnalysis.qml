@@ -318,8 +318,8 @@ ColumnLayout {
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.text = text
-                        infoToolTip.backgroundColor = calcBkgSeries.color
-                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.1)
+                        infoToolTip.backgroundColor = Qt.darker(calcBkgSeries.color, 1.1)
+                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.2)
                     }
                 }
 
@@ -516,8 +516,8 @@ ColumnLayout {
                         infoToolTip.y = position.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.text = text
-                        infoToolTip.backgroundColor = "grey"
-                        infoToolTip.borderColor = Qt.lighter("grey", 1.75)
+                        infoToolTip.backgroundColor = Qt.darker(calcBkgSeries.color, 1.1)
+                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.2)
                     }
                 }
             }
