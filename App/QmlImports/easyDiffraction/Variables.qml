@@ -184,6 +184,12 @@ QtObject {
                     "y_min" : -1,
                     "y_max": 10000
                 }
+            },
+            "bragg_peaks": {
+                "h": [],
+                "k": [],
+                "l": [],
+                "ttheta": []
             }
         }
     }
@@ -302,6 +308,7 @@ QtObject {
             this_calculation.limits.main.x_max = that_calculation.limits.main.x_max
             this_calculation.limits.difference.y_min = that_calculation.limits.difference.y_min
             this_calculation.limits.difference.y_max = that_calculation.limits.difference.y_max
+            this_calculation.bragg_peaks = that_calculation.bragg_peaks[phaseIds()[0]]
 
             these_calculations[name] = this_calculation
         }
