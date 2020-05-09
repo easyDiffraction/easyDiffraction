@@ -160,6 +160,9 @@ ColumnLayout {
 
                         Text { text: "\ue809"; color: calcBkgSeries.color; font: commonIconsFont }
                         Text { text: calcBkgSeries.name; font: commonFont}
+
+                        Text { text: "|"; color: "black"; font: commonFont; width: Generic.Style.fontPixelSize; horizontalAlignment: Text.AlignHCenter }
+                        Text { text: braggSeries.name; font: commonFont}
                     }
                 }
 
@@ -480,6 +483,7 @@ ColumnLayout {
 
                 ScatterSeries {
                     id: braggSeries
+                    name: "Bragg peaks"
                     visible: showBragg
                     axisX: axisXbragg
                     axisY: axisYbragg
