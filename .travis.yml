@@ -26,7 +26,7 @@ matrix:
         - python3.7 -m venv $VENV_DIR                                           # create virtual environment
         - source $VENV_DIR/bin/activate                                         # activate virtual environment
         - which python                                                          # show current python path
-        - sudo apt-get -y libxkbcommon-x11-0                                     # required for QtIFW-3.2.2
+        - sudo apt-get -y install libxkbcommon-x11-0                            # required for QtIFW-3.2.2
       cache:
         directories:
           - $VENV_DIR
