@@ -5,7 +5,7 @@ function Component()
   {
     installer.setDefaultPageVisible(QInstaller.ComponentSelection, false) // works for Installer, but not for Updater !?
   }
-  installer.setDefaultPageVisible(QInstaller.LicenseCheck, false)
+  //installer.setDefaultPageVisible(QInstaller.LicenseCheck, false)
 }
 
 // here we are creating the operation chain which will be processed at the real installation part later

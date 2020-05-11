@@ -7,8 +7,6 @@ Controller.prototype.IntroductionPageCallback = function()
   var page = gui.currentPageWidget();
   if (page != null)
   {
-    //page.title = "Introduction";
-
     if (installer.isInstaller())
     {
       var msg = ""
@@ -25,5 +23,14 @@ Controller.prototype.IntroductionPageCallback = function()
     {
       gui.clickButton(buttons.NextButton)
     }
+  }
+}
+
+Controller.prototype.LicenseAgreementPageCallback = function()
+{
+  var page = gui.currentPageWidget()
+  if (page != null)
+  {
+    page.AcceptLicenseRadioButton.setChecked(true)
   }
 }
