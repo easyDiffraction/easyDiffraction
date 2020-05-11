@@ -82,7 +82,7 @@ def installerConfigXml():
         os_name = config['os']['name']
         app_name = config['app']['name']
         if os_name == 'osx':
-            target_dir = '@ApplicationsDir@/{0}'.format(app_name)
+            target_dir = '/Applications/{0}'.format(app_name) # macOS returns $HOME/Applications instead of /Applications for @ApplicationsDir@: https://bugreports.qt.io/browse/QTIFW-1011
         elif os_name == 'windows':
             target_dir = '@ApplicationsDir@\\{0}'.format(app_name)
         elif os_name == 'linux':
