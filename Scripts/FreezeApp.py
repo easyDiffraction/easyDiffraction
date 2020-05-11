@@ -57,7 +57,7 @@ def osDependentAddons():
             sys.exit()
         else:
             BasicFunctions.printSuccessMessage(message)
-    elif os_name == '---linux':
+    elif os_name == 'linux':
         message = "copy missing EGL and GLX plugins ({0})".format(os_name)
         try:
             missing_plugins = config['pyinstaller']['missing_plugins'][os_name]
