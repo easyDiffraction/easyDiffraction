@@ -121,7 +121,7 @@ class ProxyPyQml(QObject):
         cif_string = cif_string[cif_string.find('data_'):]
         new_phase = self._calculator_interface.getPhaseFromCif(cif_string)
         old_phase = self._calculator_interface.getPhase(phase_name)
-        keys, values = old_phase.dictComparison(new_phase)
+        keys, values, modifier = old_phase.dictComparison(new_phase)
         modded_keys = [['phases', phase_name, *key] for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
         modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
 
@@ -142,7 +142,7 @@ class ProxyPyQml(QObject):
         cif_string = cif_string[cif_string.find('data_'):]
         new_experiment = self._calculator_interface.getExperimentFromCif(cif_string)
         old_exp = self._calculator_interface.getExperiment(exp_name)
-        keys, values = old_exp.dictComparison(new_experiment)
+        keys, values, modifier = old_exp.dictComparison(new_experiment)
         modded_keys = [['experiments', exp_name, *key] for key in keys if key[-1] != 'mapping' and key[-1] != 'hide']
         modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
 
@@ -242,7 +242,7 @@ class ProxyPyQml(QObject):
 
     def onProjectChanged(self):
         self.__log.debug("")
-        keys, _ = self._calculator_interface.project_dict.dictComparison(self._project_dict_copy)
+        keys, _, _ = self._calculator_interface.project_dict.dictComparison(self._project_dict_copy)
         self.__log.debug(f"keys: {keys}")
         self._need_to_save = True
         if not keys:
