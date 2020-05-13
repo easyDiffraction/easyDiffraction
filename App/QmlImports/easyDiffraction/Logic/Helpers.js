@@ -12,7 +12,7 @@ function removeHtmlTags(html)
 {
     // regex tester: https://regexr.com/
     return html
-        .replace(/(\r\n|\r|\n)/ig, "")      // remove newline and carriage return escape sequences
+        //.replace(/(\r\n|\r|\n)/ig, "")    // remove newline and carriage return escape sequences
         .replace(/<br \/>/ig, "\n")         // convert newline from html format to escape sequences
         .replace(/<style.+style>/ig, "")    // remove html style group
         .replace(/<\/?[^>]+>/ig, "")        // remove html tags
