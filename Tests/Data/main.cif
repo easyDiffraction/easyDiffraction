@@ -2,3 +2,4 @@ _name Fe3O4
 _keywords 'neutron diffraction, powder, 1d'
 _phases phases.cif
 _experiments experiments.cif
+_calculations calculations.cif

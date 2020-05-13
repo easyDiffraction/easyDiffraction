@@ -50,7 +50,7 @@ def test_ProjectModel_loadProject_zip():
     FILE = Path(TEST_ZIP).as_uri()
     model.loadProject(FILE)
 
-    assert model.manager.projectName == 'Fe3O4 \n'
+    assert model.manager.projectName == 'Fe3O4\n'
     assert model.manager.projectKeywords == 'neutron diffraction, powder, 1d'
     assert model._project_file == TEST_ZIP
     assert model._isValidCif
@@ -153,6 +153,7 @@ def test_create_project_zip():
     temp1 = make_temp_dir()
     saveName1 = os.path.join(temp1.name, 'aa.zip')
     FILE = Path(saveName1).as_uri()
+    create_project_zip(data_dir, FILE)
     isSaved, saveName2 = create_project_zip(data_dir, FILE)
     assert isSaved == True
     assert saveName1 == str(saveName2)
