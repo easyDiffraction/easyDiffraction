@@ -135,6 +135,8 @@ class ProxyPyQml(QObject):
         self._calculator_interface.setProjectName(name)
         self._project_control.manager.projectKeywords = keywords
         self._calculator_interface.setProjectKeywords(keywords)
+        self._need_to_save = True
+        self.projectSaveStateChanged.emit()
 
     @Slot(str)
     def updatePhaseFromGui(self, cif_string):
@@ -199,16 +201,19 @@ class ProxyPyQml(QObject):
         #  Temp fix - Andrew
         self.onProjectSaved()
 
-        self._measured_data_model.setCalculatorInterface(self._calculator_interface)
-        self._calculated_data_model.setCalculatorInterface(self._calculator_interface)
-        self._bragg_peaks_model.setCalculatorInterface(self._calculator_interface)
-        self._cell_parameters_model.setCalculatorInterface(self._calculator_interface)
-        self._cell_box_model.setCalculatorInterface(self._calculator_interface)
-        self._atom_sites_model.setCalculatorInterface(self._calculator_interface)
-        self._atom_adps_model.setCalculatorInterface(self._calculator_interface)
-        self._atom_msps_model.setCalculatorInterface(self._calculator_interface)
-        self._fitables_model.setCalculatorInterface(self._calculator_interface)
-        self._status_model.setCalculatorInterface(self._calculator_interface)
+        models = [self._measured_data_model,
+                  self._calculated_data_model,
+                  self._bragg_peaks_model,
+                  self._cell_parameters_model,
+                  self._cell_box_model,
+                  self._atom_sites_model,
+                  self._atom_adps_model,
+                  self._atom_msps_model,
+                  self._fitables_model,
+                  self._status_model
+                  ]
+        for model in models:
+            model.setCalculatorInterface(self._calculator_interface)
 
         self._refine_thread = Refiner(self._calculator_interface, 'refine')
         self._refine_thread.failed.connect(self._thread_failed)
