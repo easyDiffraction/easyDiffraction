@@ -132,7 +132,9 @@ class ProxyPyQml(QObject):
         keywords = [keyword[1:] if keyword[0] == ' ' else keyword for keyword in keywords]
         keywords = [keyword[:-1] if keyword[-1] == ' ' else keyword for keyword in keywords]
         self._project_control.manager.projectName = name
+        self._calculator_interface.setProjectName(name)
         self._project_control.manager.projectKeywords = keywords
+        self._calculator_interface.setProjectKeywords(keywords)
 
     @Slot(str)
     def updatePhaseFromGui(self, cif_string):
