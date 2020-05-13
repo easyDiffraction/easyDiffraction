@@ -35,7 +35,7 @@ QtObject {
     property var needToSave: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._needToSave : false
     property var projectFilePathSelected: projectOpened && proxyPyQmlObj ? proxyPyQmlObj._projectFilePathSelected : ""
 
-    property var projectName: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectName : null
+    property var projectName: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectName.replace("\n", "") : null
     property var projectKeywords: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectKeywords : null
     property var projectModifiedDate: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectModified : null
 

@@ -5,7 +5,7 @@ import easyAnalysis.App.Elements 1.0 as GenericAppElements
 import easyDiffraction 1.0 as Specific
 
 Rectangle {
-    property int margin: 20
+    property int globalSpacing: 20
 
     id: mainRectangle
 
@@ -49,12 +49,13 @@ Rectangle {
         visible: Specific.Variables.projectOpened
 
         anchors.left: parent.left
-        anchors.leftMargin: margin
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: 20
+        anchors.leftMargin: globalSpacing
+        anchors.top: parent.top
+        anchors.topMargin: globalSpacing * 0.5
+        spacing: globalSpacing
 
         Text {
-            lineHeight: 0.5
+            //lineHeight: 0.5
             font.pixelSize: 42
             font.family: Generic.Style.secondFontFamily
             font.weight: Font.Light
@@ -64,7 +65,7 @@ Rectangle {
         Grid {
             columns: 2
             rowSpacing: 0
-            columnSpacing: 15
+            columnSpacing: globalSpacing
 
             Text {
                 font.pixelSize: Generic.Style.fontPixelSize
@@ -117,20 +118,6 @@ Rectangle {
                 text: "calculations.cif"
             }
 
-            /*
-            Text {
-                font.pixelSize: Generic.Style.fontPixelSize
-                font.family: Generic.Style.fontFamily
-                text: "Instrument:"
-            }
-            Text {
-                font.pixelSize: Generic.Style.fontPixelSize
-                font.family: Generic.Style.fontFamily
-                color: Generic.Style.buttonBkgHighlightedColor
-                text: "Unknown"
-            }
-            */
-
             Text {
                 font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
@@ -147,21 +134,21 @@ Rectangle {
 
         // Temporary hide images
         Row {
-            spacing: margin
+            spacing: globalSpacing
 
             Repeater {
                 model: ["structure.png", "refinement.png"]
 
                 Rectangle {
                     visible: image.progress
-                    height: (mainRectangle.width - 3*margin) / 2
+                    height: (mainRectangle.width - 3*globalSpacing) / 2
                     width: height
                     color: "white"
                     border.color: Generic.Style.appBorderColor
                     Image {
                         id: image
                         anchors.fill: parent
-                        anchors.margins: 10
+                        anchors.margins: globalSpacing * 0.5
                         fillMode: Image.PreserveAspectFit
                         clip: true
                         antialiasing: true
