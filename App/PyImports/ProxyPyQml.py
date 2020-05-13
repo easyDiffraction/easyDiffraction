@@ -113,7 +113,24 @@ class ProxyPyQml(QObject):
 
     @Slot(str)
     def updateMainCifFromGui(self, cif_string):
-        pass
+        name_list = [str_line for str_line in cif_string.split('\n') if str_line.startswith('_name ')]
+        if len(name_list) != 1:
+            raise ValueError
+        name = name_list[0].split('_name ')[1]
+        if name[-1] == ' ':
+            name = name[:-1]
+        keywords_list = [str_line for str_line in cif_string.split('\n') if str_line.startswith('_keywords ')]
+        if len(keywords_list) != 1:
+            raise ValueError
+        keywords = keywords_list[0].split('_keywords ')[1]
+        if keywords[-1] == ' ':
+            keywords = keywords[:-1]
+        keywords = keywords.strip('\'')
+        keywords = keywords.split(',')
+        keywords = [keyword[1:] if keyword[0] == ' ' else keyword for keyword in keywords]
+        keywords = [keyword[:-1] if keyword[-1] == ' ' else keyword for keyword in keywords]
+        self._project_control.manager.projectName = name
+        self._project_control.manager.projectKeywords = keywords
 
     @Slot(str)
     def updatePhaseFromGui(self, cif_string):
