@@ -98,7 +98,7 @@ pyinstaller:
     linux: ':'
 # make installer
 qtifw:
-  version: 3.1.1
+  version: 3.2.2
   setup:
     base:
       osx: QtInstallerFramework-mac-x64

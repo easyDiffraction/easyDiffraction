@@ -89,7 +89,7 @@ if __name__ == '__main__':
         'numpy>=1.18.1',
         #'easyInterface>=0.0.8',
         'PySide2>=5.14.1',
-        'pyinstaller>=3.6',  # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+        'pyinstaller>=3.6',
         'requests>=2.23.0',
         'uritemplate>=3.0.1',
         'pyyaml>=5.3',

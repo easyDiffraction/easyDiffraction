@@ -267,7 +267,6 @@ class ProxyPyQml(QObject):
         self.projectSaveStateChanged.emit()
 
     def onProjectChanged(self):
-        self.__log.debug("")
         keys, _, _ = self._calculator_interface.project_dict.dictComparison(self._project_dict_copy)
         self.__log.debug(f"keys: {keys}")
         self._need_to_save = True
