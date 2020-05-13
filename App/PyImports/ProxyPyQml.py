@@ -115,13 +115,15 @@ class ProxyPyQml(QObject):
     def updateMainCifFromGui(self, cif_string):
         name_list = [str_line for str_line in cif_string.split('\n') if str_line.startswith('_name ')]
         if len(name_list) != 1:
-            raise ValueError
+            self.__log.warning('Project name can not be set. Returning previous value')
+            return
         name = name_list[0].split('_name ')[1]
         if name[-1] == ' ':
             name = name[:-1]
         keywords_list = [str_line for str_line in cif_string.split('\n') if str_line.startswith('_keywords ')]
         if len(keywords_list) != 1:
-            raise ValueError
+            self.__log.warning('Project keywords can not be set. Returning previous values')
+            return
         keywords = keywords_list[0].split('_keywords ')[1]
         if keywords[-1] == ' ':
             keywords = keywords[:-1]
