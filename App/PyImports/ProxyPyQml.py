@@ -27,7 +27,7 @@ class ProxyPyQml(QObject):
         self.projectChanged.connect(self.onProjectChanged)
 
         self._project_rcif_path = None
-        self._phases_rcif_path = None
+        self._samples_rcif_path = None
         self._experiment_rcif_path = None
         self._calculator_interface = QtCalculatorInterface(CryspyCalculator())
         self._project_dict_copy = {}
@@ -57,8 +57,8 @@ class ProxyPyQml(QObject):
         """
         Replace internal structure models based on requested content from CIF
         """
-        self._phases_rcif_path = self._project_control.phases_rcif_path
-        self._calculator_interface.addPhaseDefinition(self._phases_rcif_path)
+        self._samples_rcif_path = self._project_control.phases_rcif_path
+        self._calculator_interface.addPhaseDefinition(self._samples_rcif_path)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
@@ -148,7 +148,7 @@ class ProxyPyQml(QObject):
         modded_keys = [['phases', phase_name, *key] for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
         modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
 
-        self._calculator_interface.project_dict.startBulkUpdate('Manual update of phases.cif')
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of samples.cif')
         self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
         self._calculator_interface.setCalculatorFromProject()
         self._calculator_interface.updateCalculations()

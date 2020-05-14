@@ -85,13 +85,13 @@ Rectangle {
             Text {
                 font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
-                text: "Phases:"
+                text: "Samples:"
             }
             Text {
                 font.pixelSize: Generic.Style.fontPixelSize
                 font.family: Generic.Style.fontFamily
                 color: Specific.Variables.phaseIds().length ? Generic.Style.buttonBkgHighlightedColor : Generic.Style.buttonBkgAttentionColor
-                text: Specific.Variables.phaseIds().length ? `phases.cif (labels: ${Specific.Variables.phaseIds().join(", ")})` : "None loaded"
+                text: Specific.Variables.phaseIds().length ? `samples.cif (labels: ${Specific.Variables.phaseIds().join(", ")})` : "None loaded"
             }
 
             Text {

@@ -1,5 +1,5 @@
-_name Co2SiO4 
-_keywords 'unpolarised neutron powder diffraction, T = 100K, D20 at ILL' 
-_phases phases.cif 
-_experiments experiments.cif 
-_calculations calculations.cif 
+_name Co2SiO4
+_keywords 'unpolarised neutron powder diffraction, T = 100K, D20 at ILL'
+_samples samples.cif 
+_experiments experiments.cif
+_calculations calculations.cif

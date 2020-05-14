@@ -207,19 +207,19 @@ QtObject {
     }
 
     function _loadedPhases() {
-        const those_phases = projectDict.phases
+        const those_samples = projectDict.phases
 
-        if (!Object.keys(those_phases).length) {
+        if (!Object.keys(those_samples).length) {
             return _defaultPhases()
         }
 
-        let these_phases = {}
+        let these_samples = {}
 
-        for (const name in those_phases) {
+        for (const name in those_samples) {
             debug(`_loadedPhases: ${name}`)
 
             const this_phase = _emptyPhase()
-            const that_phase = those_phases[name]
+            const that_phase = those_samples[name]
 
             this_phase.atoms = that_phase.atoms
 
@@ -237,10 +237,10 @@ QtObject {
             this_phase.spacegroup.space_group_with_number = that_phase.spacegroup.space_group_IT_number.store.value + '.  ' + that_phase.spacegroup.space_group_name_HM_ref.store.value
             this_phase.spacegroup.origin_choice = that_phase.spacegroup.crystal_system.store.value
 
-            these_phases[name] = this_phase
+            these_samples[name] = this_phase
         }
 
-        return these_phases
+        return these_samples
     }
 
     function _loadedExperiments() {

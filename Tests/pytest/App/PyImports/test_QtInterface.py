@@ -13,7 +13,7 @@ from easyInterface.Diffraction.Calculators import CryspyCalculator
 
 test_data = os.path.join('Tests', 'Data')
 file_path = os.path.join(test_data, 'project.cif')
-phase_path = os.path.join(test_data, 'phases.cif')
+phase_path = os.path.join(test_data, 'samples.cif')
 exp_path = os.path.join(test_data, 'experiments.cif')
 
 

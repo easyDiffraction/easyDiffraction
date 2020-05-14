@@ -27,7 +27,7 @@ def no_project_proxy():
     no_project_proxy._calculator_interface = CalculatorInterface(cal)
     
     no_project_proxy.initialize()
-    no_project_proxy._calculator_interface.setPhaseDefinition('Tests/Data/phases.cif')
+    no_project_proxy._calculator_interface.setPhaseDefinition('Tests/Data/samples.cif')
     
     return no_project_proxy
 

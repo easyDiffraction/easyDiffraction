@@ -8,7 +8,7 @@ from PyImports.ProjectSentinel import *
 TEST_ZIP = os.path.join(os.getcwd(), 'Tests', 'Data', 'Fe3O4_project.zip')
 TEST_ZIP_ERROR = os.path.join(os.getcwd(), 'Tests', 'Data', 'Fe3O4_project_error.zip')
 TEST_CIF = os.path.join(os.getcwd(), 'Tests', 'Data', DEFAULT_FILENAMES['project'])
-TEST_CIF_ERROR = os.path.join(os.getcwd(), 'Tests', 'Data', 'phases.cif')
+TEST_CIF_ERROR = os.path.join(os.getcwd(), 'Tests', 'Data', 'samples.cif')
 TEST_DIR = os.path.join(os.getcwd(), 'Tests', 'Data')
 
 
@@ -69,7 +69,7 @@ def test_ProjectModel_writeMain():
             line = f.readline()
             assert line == '_keywords \'%s\'\n' % keywords
             line = f.readline()
-            assert line == '_phases\n'
+            assert line == '_samples\n'
             line = f.readline()
             assert line == '_experiments\n'
         os.remove(model.project_rcif_path)

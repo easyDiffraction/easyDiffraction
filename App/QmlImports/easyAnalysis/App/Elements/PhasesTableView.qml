@@ -187,7 +187,7 @@ Column {
                     anchors.fill: parent
                     leftPadding: font.pixelSize
                     verticalAlignment: Text.AlignVCenter
-                    text: "No Phases Loaded"
+                    text: "No Samples Loaded"
                 }
             }
         }

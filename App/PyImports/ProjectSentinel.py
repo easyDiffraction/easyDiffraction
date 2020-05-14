@@ -132,7 +132,7 @@ class ProjectControl(QObject):
         with open(os.path.join(self.tempDir.name, DEFAULT_FILENAMES['project']), 'w') as f:
             f.write('_name %s\n' % name)
             f.write('_keywords %s\n' % '\'%s\'' % ', '.join(keywords))
-            f.write('_phases\n')
+            f.write('_samples\n')
             f.write('_experiments\n')
             f.write('_calculations\n')
         self.project_rcif_path = os.path.join(self.tempDir.name, DEFAULT_FILENAMES['project'])

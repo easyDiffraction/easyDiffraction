@@ -40,7 +40,7 @@ ColumnLayout {
             GenericAppElements.GridLayout {
                 columns: 2
                 GenericAppContentAreaButtons.Import {
-                    text: "Import new phase from CIF"
+                    text: "Import new sample from CIF"
                     enabled: !Specific.Variables.refinementRunning
                     onClicked: fileDialogLoadPhase.open()
                     GenericControls.EditingToolTip {
@@ -51,18 +51,18 @@ ColumnLayout {
                 }
                 GenericAppContentAreaButtons.Export {
                     //enabled: false;
-                    text: "Export selected phase to CIF"
+                    text: "Export selected sample to CIF"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
                 GenericAppContentAreaButtons.Add {
                     //enabled: false;
-                    text: "Add new phase manually"
+                    text: "Add new sample manually"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
                 GenericAppContentAreaButtons.RemoveAll {
                     id: removeButton;
                     //enabled: false;
-                    text: "Remove all phases"
+                    text: "Remove all samples"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NotYet }
                 }
             }
