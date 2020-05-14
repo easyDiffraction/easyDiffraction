@@ -8,7 +8,7 @@ from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalcula
 from PyImports.QtInterface import QtCalculatorInterface
 import PyImports.DisplayModels.FitablesModel as Model
 
-TEST_FILE = "file:Tests/Data/main.cif"
+TEST_FILE = "file:Tests/Data/project.cif"
 
 
 def test_FitablesModelModel():

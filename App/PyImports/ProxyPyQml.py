@@ -26,8 +26,8 @@ class ProxyPyQml(QObject):
 
         self.projectChanged.connect(self.onProjectChanged)
 
-        self._main_rcif_path = None
-        self._phases_rcif_path = None
+        self._project_rcif_path = None
+        self._samples_rcif_path = None
         self._experiment_rcif_path = None
         self._calculator_interface = QtCalculatorInterface(CryspyCalculator())
         self._project_dict_copy = {}
@@ -57,8 +57,8 @@ class ProxyPyQml(QObject):
         """
         Replace internal structure models based on requested content from CIF
         """
-        self._phases_rcif_path = self._project_control.phases_rcif_path
-        self._calculator_interface.addPhaseDefinition(self._phases_rcif_path)
+        self._samples_rcif_path = self._project_control.phases_rcif_path
+        self._calculator_interface.addPhaseDefinition(self._samples_rcif_path)
         # explicit emit required for the view to reload the model content
         self._calculator_interface.clearUndoStack()
         self.projectChanged.emit()
@@ -148,7 +148,7 @@ class ProxyPyQml(QObject):
         modded_keys = [['phases', phase_name, *key] for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
         modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
 
-        self._calculator_interface.project_dict.startBulkUpdate('Manual update of phases.cif')
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of samples.cif')
         self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
         self._calculator_interface.setCalculatorFromProject()
         self._calculator_interface.updateCalculations()
@@ -184,11 +184,11 @@ class ProxyPyQml(QObject):
     @Slot()
     def initialize(self):
         self.__log.info("")
-        self._main_rcif_path = self._project_control.main_rcif_path
+        self._project_rcif_path = self._project_control.project_rcif_path
         #logging.info(self._calculator.asCifDict())
         # TODO This is where you would choose the calculator and import the module
         self._calculator_interface = QtCalculatorInterface(
-            CryspyCalculator(self._main_rcif_path)
+            CryspyCalculator(self._project_rcif_path)
         )
         self._calculator_interface.project_dict['app']['name'] = self.info['name']
         self._calculator_interface.project_dict['app']['version'] = self.info['version']
@@ -235,8 +235,8 @@ class ProxyPyQml(QObject):
     def createProject(self, file_path):
         self.__log.debug("")
         self._project_control.createProject(file_path)
-        # Note that the main rcif of self._project_control.main_rcif_path has not ben cleared
-        self._project_control.main_rcif_path = ''
+        # Note that the main rcif of self._project_control.project_rcif_path has not ben cleared
+        self._project_control.project_rcif_path = ''
         self.onProjectSaved()
         self.initialize()
         self.projectChanged.emit()
@@ -259,7 +259,7 @@ class ProxyPyQml(QObject):
         self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
         self._need_to_save = False
         self.projectSaveStateChanged.emit()
-        self.projectChanged.emit() # update main.cif in gui (when filenames changed)
+        self.projectChanged.emit() # update project.cif in gui (when filenames changed)
 
     def onProjectUnsaved(self):
         self.__log.debug("")
@@ -339,25 +339,25 @@ class ProxyPyQml(QObject):
         if not self._calculator_interface.experimentsIds():
             return False
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        return self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum
+        return self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].sum
 
     def refineDiff(self):
         if not self._calculator_interface.experimentsIds():
             return False
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        return self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff
+        return self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].diff
 
     def setRefineSum(self, state):
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        if self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum == state:
+        if self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].sum == state:
             return
-        self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum = state
+        self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].sum = state
 
     def setRefineDiff(self, state):
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        if self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff == state:
+        if self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].diff == state:
             return
-        self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff = state
+        self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].diff = state
 
     _refineSum = Property(bool, refineSum, setRefineSum, notify=projectChanged)
     _refineDiff = Property(bool, refineDiff, setRefineDiff, notify=projectChanged)

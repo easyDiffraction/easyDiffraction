@@ -99,7 +99,7 @@ ColumnLayout {
             // Open project dialog
             Dialogs1.FileDialog{
                 id: fileDialogLoadProject
-                nameFilters: ["Project files (main.cif *.zip)"]
+                nameFilters: ["Project files (project.cif *.zip)"]
                 folder: settings.value("lastOpenedProjectFolder", examplesDirUrl) //QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.HomeLocation)
                 onAccepted: {
                     settings.setValue("lastOpenedProjectFolder", folder)

@@ -69,11 +69,11 @@ QtObject {
 
     // Examples
     readonly property var examplesList: [
-        examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder_5T_6T2(LLB)/main.cif",
-        examplesRcDirPath + "/Ho2Ti2O7_pol-neutron-powder_5K-1T_VIP(LLB)/main.cif",
-        examplesRcDirPath + "/Dy3Al5O12_neutron-powder_4K_G41(LLB)/main.cif",
-        examplesRcDirPath + "/Co2SiO4_neutron-powder_100K_D20(ILL)/main.cif",
-        examplesRcDirPath + "/PbSO4_neutron-powder_D1A(ILL)/main.cif"
+        examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder_5T_6T2(LLB)/project.cif",
+        examplesRcDirPath + "/Ho2Ti2O7_pol-neutron-powder_5K-1T_VIP(LLB)/project.cif",
+        examplesRcDirPath + "/Dy3Al5O12_neutron-powder_4K_G41(LLB)/project.cif",
+        examplesRcDirPath + "/Co2SiO4_neutron-powder_100K_D20(ILL)/project.cif",
+        examplesRcDirPath + "/PbSO4_neutron-powder_D1A(ILL)/project.cif"
     ]
 
     // Undo-Redo
@@ -153,7 +153,7 @@ QtObject {
             },
             "offset": 0,
             "wavelength": 0,
-            "field": 0,
+            "magnetic_field": 0,
             "chi2" : {
                 "sum": false,
                 "diff": false
@@ -207,19 +207,19 @@ QtObject {
     }
 
     function _loadedPhases() {
-        const those_phases = projectDict.phases
+        const those_samples = projectDict.phases
 
-        if (!Object.keys(those_phases).length) {
+        if (!Object.keys(those_samples).length) {
             return _defaultPhases()
         }
 
-        let these_phases = {}
+        let these_samples = {}
 
-        for (const name in those_phases) {
+        for (const name in those_samples) {
             debug(`_loadedPhases: ${name}`)
 
             const this_phase = _emptyPhase()
-            const that_phase = those_phases[name]
+            const that_phase = those_samples[name]
 
             this_phase.atoms = that_phase.atoms
 
@@ -237,10 +237,10 @@ QtObject {
             this_phase.spacegroup.space_group_with_number = that_phase.spacegroup.space_group_IT_number.store.value + '.  ' + that_phase.spacegroup.space_group_name_HM_ref.store.value
             this_phase.spacegroup.origin_choice = that_phase.spacegroup.crystal_system.store.value
 
-            these_phases[name] = this_phase
+            these_samples[name] = this_phase
         }
 
-        return these_phases
+        return these_samples
     }
 
     function _loadedExperiments() {
@@ -265,11 +265,11 @@ QtObject {
             this_experiment.resolution.y = that_experiment.resolution.y.store.value
 
             this_experiment.offset = that_experiment.offset.store.value
-            this_experiment.field = that_experiment.field.store.value
+            this_experiment.magnetic_field = that_experiment.magnetic_field.store.value
             this_experiment.wavelength = that_experiment.wavelength.store.value
 
-            this_experiment.chi2.sum = that_experiment.chi2._sum
-            this_experiment.chi2.diff = that_experiment.chi2._diff
+            this_experiment.chi2.sum = that_experiment.refinement_type._sum
+            this_experiment.chi2.diff = that_experiment.refinement_type._diff
             this_experiment.polarization.polarization = that_experiment.polarization.polarization.store.value
             this_experiment.polarization.efficiency = that_experiment.polarization.efficiency.store.value
 

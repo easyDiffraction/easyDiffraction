@@ -10,8 +10,7 @@ from pathlib import Path
 from urllib.parse import *
 
 from PySide2.QtCore import QObject, Slot, Signal, Property
-
-main_cif_filename = 'main.cif'
+from easyInterface.Diffraction import DEFAULT_FILENAMES
 
 
 class ProjectControl(QObject):
@@ -24,7 +23,7 @@ class ProjectControl(QObject):
         self._saveSuccess = False
         self._project_file = None
         self._isValidCif = None
-        self.main_rcif_path = None
+        self.project_rcif_path = None
         self.phases_rcif_path = None
         self.experiment_rcif_path = None
         self.experiment_file_format = "cif"
@@ -81,29 +80,29 @@ class ProjectControl(QObject):
             raise IOError(f"Given file format .{file_ext} is not supported")
 
     @Slot(str)
-    def loadProject(self, main_rcif_path):
+    def loadProject(self, project_rcif_path):
         """
-        Load a project from a file. The main_rcif_path variable can be a URI to main.cif or a project zip file
-        :param main_rcif_path: URI to main.rcif or project.zip
+        Load a project from a file. The project_rcif_path variable can be a URI to project.cif or a project zip file
+        :param project_rcif_path: URI to main.rcif or project.zip
         :return:
         """
         #
-        self.setMain_rcif_path(main_rcif_path)
+        self.set_project_rcif_path(project_rcif_path)
         #
-        if check_if_zip(self.main_rcif_path):
+        if check_if_zip(self.project_rcif_path):
             # This is if we've loaded a `zip`
-            if check_project_file(self.main_rcif_path):
-                _ = temp_project_dir(self.main_rcif_path, self.tempDir)
-                self._project_file = self.main_rcif_path
+            if check_project_file(self.project_rcif_path):
+                _ = temp_project_dir(self.project_rcif_path, self.tempDir)
+                self._project_file = self.project_rcif_path
                 self.manager.validSaveState = True
-                self.main_rcif_path = os.path.join(self.tempDir.name, main_cif_filename)
+                self.project_rcif_path = os.path.join(self.tempDir.name, DEFAULT_FILENAMES['project'])
         else:
             # This is if we have loaded a `cif`
             self.manager.validSaveState = False
 
         self._isValidCif = True
 
-        with open(self.main_rcif_path, 'r') as f:
+        with open(self.project_rcif_path, 'r') as f:
             lines = f.readlines()
         for line in lines:
             if '_name ' in line:
@@ -120,7 +119,7 @@ class ProjectControl(QObject):
     @Slot(str, str)
     def writeMain(self, name='Undefined', keywords='neutron powder diffraction, 1d'):
         """
-        Writes a main.cif file in the temp file location.
+        Writes a project.cif file in the temp file location.
         :param string name: What is the project name
         :param string keywords: Keywords associated withe the project for easy finding
         :return:
@@ -130,13 +129,13 @@ class ProjectControl(QObject):
                 keywords = keywords[1:-1]
             keywords = keywords.split(', ')
 
-        with open(os.path.join(self.tempDir.name, main_cif_filename), 'w') as f:
+        with open(os.path.join(self.tempDir.name, DEFAULT_FILENAMES['project']), 'w') as f:
             f.write('_name %s\n' % name)
             f.write('_keywords %s\n' % '\'%s\'' % ', '.join(keywords))
-            f.write('_phases\n')
+            f.write('_samples\n')
             f.write('_experiments\n')
             f.write('_calculations\n')
-        self.main_rcif_path = os.path.join(self.tempDir.name, main_cif_filename)
+        self.project_rcif_path = os.path.join(self.tempDir.name, DEFAULT_FILENAMES['project'])
         self.manager.projectName = name
         self.manager.projectKeywords = keywords
         self.manager.projectModified = datetime.now()
@@ -185,8 +184,8 @@ class ProjectControl(QObject):
         Get the project path as a folder reference
         :return: string path directory to a folder containing the main rcif
         """
-        if self.main_rcif_path:
-            return os.path.dirname(os.path.abspath(self.main_rcif_path))
+        if self.project_rcif_path:
+            return os.path.dirname(os.path.abspath(self.project_rcif_path))
         return ""
 
     def get_project_url_absolute_path(self) -> str:
@@ -194,21 +193,21 @@ class ProjectControl(QObject):
         Get the project path as a folder reference
         :return: URI path directory to a folder containing the main rcif
         """
-        if self.main_rcif_path:
+        if self.project_rcif_path:
             FILE = Path(self.get_project_dir_absolute_path()).as_uri()
             if sys.platform.startswith("win") and FILE[0] == '/':
                 FILE = FILE[1:].replace('/', os.path.sep)
             return FILE
         return ""
 
-    def setMain_rcif_path(self, rcif_path: str):
+    def set_project_rcif_path(self, rcif_path: str):
         """
         Set the main rcif file path. This is where the project is read from
-        :param URI rcif_path: URI to the main.cif file
+        :param URI rcif_path: URI to the project.cif file
         :return:
         """
         self._resetOnInitialize()
-        self.main_rcif_path = self.generalizePath(rcif_path)
+        self.project_rcif_path = self.generalizePath(rcif_path)
 
     def generalizePath(self, rcif_path: str) -> str:
         """
@@ -236,7 +235,7 @@ class ProjectControl(QObject):
         self._saveSuccess = False
         self._project_file = None
         self._isValidCif = None
-        self.main_rcif_path = None
+        self.project_rcif_path = None
         self.structure_rcif_path = None
         self.experiment_rcif_path = None
 
@@ -343,7 +342,7 @@ def check_if_zip(filename: str) -> bool:
 
 def check_project_file(filename: str) -> bool:
     is_valid = True
-    must_contain = [main_cif_filename, 'phases.cif', 'experiments.cif']
+    must_contain = [DEFAULT_FILENAMES['project'], DEFAULT_FILENAMES['phases'], DEFAULT_FILENAMES['experiments']]
 
     if check_if_zip(filename):
         with zipfile.ZipFile(filename, 'r') as zip:
@@ -375,7 +374,7 @@ def create_empty_project(data_dir: str, save_name: str) -> str:
     if extension != '.zip':
         save_name = save_name + '.zip'
 
-    must_contain = [main_cif_filename]
+    must_contain = [DEFAULT_FILENAMES['project']]
     can_contain = []
 
     write_zip(data_dir, save_name, must_contain, can_contain)
@@ -387,10 +386,10 @@ def create_project_zip(data_dir, save_name) -> Tuple[bool, str]:
     if extension != '.zip':
         save_name = save_name + '.zip'
 
-    must_contain = [main_cif_filename,
-                    'phases.cif',
-                    'experiments.cif',
-                    'calculations.cif']
+    must_contain = [DEFAULT_FILENAMES['project'],
+                    DEFAULT_FILENAMES['phases'],
+                    DEFAULT_FILENAMES['experiments'],
+                    DEFAULT_FILENAMES['calculations']]
 
     can_contain = ['structure.png',
                    'refinement.png']

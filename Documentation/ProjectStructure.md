@@ -31,7 +31,7 @@
         * table to shows which phases are related to which experimental datasets 
         * a separate file, which would help to have a more clear structure. But it is also related with a position of this binding table in GUI (if it's a separate tab in GUI then a separate file is also more logical.)
     * Main.cif
-        * Project name and keywords, which are specified by user when a new project is created from GUI. Both project name and keywords can be modified on the project handling tab.  Cif keys _phases and _experiments should be hardcoded, but not the directories with phase and experiments CIF files.
+        * Project name and keywords, which are specified by user when a new project is created from GUI. Both project name and keywords can be modified on the project handling tab.  Cif keys _samples and _experiments should be hardcoded, but not the directories with phase and experiments CIF files.
         * Links to other project cif files mentioned above. Currently, easyDiffraction supports only a single phase and single measured dataset. So, binding is done automatically. When we implement a support of multiple phases/files, an additional binding table should be created.  
 * Internal application settings in a hidden folder:
     * Project description (converted from cif into python dictionary and saved as JSON?, as it is the closest format to the python dictionary).

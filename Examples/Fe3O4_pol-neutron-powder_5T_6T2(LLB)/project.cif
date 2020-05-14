@@ -1,5 +1,5 @@
 _name Fe3O4
 _keywords 'polarised neutron powder diffraction, flipping difference, B = 5T, 6T2 at LLB'
-_phases phases.cif
+_samples samples.cif
 _experiments experiments.cif
 _calculations calculations.cif
