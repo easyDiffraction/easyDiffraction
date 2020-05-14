@@ -12,8 +12,6 @@ from urllib.parse import *
 from PySide2.QtCore import QObject, Slot, Signal, Property
 from easyInterface.Diffraction import DEFAULT_FILENAMES
 
-main_cif_filename = DEFAULT_FILENAMES['project']
-
 
 class ProjectControl(QObject):
 
@@ -97,7 +95,7 @@ class ProjectControl(QObject):
                 _ = temp_project_dir(self.project_rcif_path, self.tempDir)
                 self._project_file = self.project_rcif_path
                 self.manager.validSaveState = True
-                self.project_rcif_path = os.path.join(self.tempDir.name, project_cif_filename)
+                self.project_rcif_path = os.path.join(self.tempDir.name, DEFAULT_FILENAMES['project'])
         else:
             # This is if we have loaded a `cif`
             self.manager.validSaveState = False
@@ -131,13 +129,13 @@ class ProjectControl(QObject):
                 keywords = keywords[1:-1]
             keywords = keywords.split(', ')
 
-        with open(os.path.join(self.tempDir.name, project_cif_filename), 'w') as f:
+        with open(os.path.join(self.tempDir.name, DEFAULT_FILENAMES['project']), 'w') as f:
             f.write('_name %s\n' % name)
             f.write('_keywords %s\n' % '\'%s\'' % ', '.join(keywords))
             f.write('_phases\n')
             f.write('_experiments\n')
             f.write('_calculations\n')
-        self.project_rcif_path = os.path.join(self.tempDir.name, project_cif_filename)
+        self.project_rcif_path = os.path.join(self.tempDir.name, DEFAULT_FILENAMES['project'])
         self.manager.projectName = name
         self.manager.projectKeywords = keywords
         self.manager.projectModified = datetime.now()
@@ -344,7 +342,7 @@ def check_if_zip(filename: str) -> bool:
 
 def check_project_file(filename: str) -> bool:
     is_valid = True
-    must_contain = [main_cif_filename, DEFAULT_FILENAMES['phases'], DEFAULT_FILENAMES['experiments']]
+    must_contain = [DEFAULT_FILENAMES['project'], DEFAULT_FILENAMES['phases'], DEFAULT_FILENAMES['experiments']]
 
     if check_if_zip(filename):
         with zipfile.ZipFile(filename, 'r') as zip:
@@ -376,7 +374,7 @@ def create_empty_project(data_dir: str, save_name: str) -> str:
     if extension != '.zip':
         save_name = save_name + '.zip'
 
-    must_contain = [project_cif_filename]
+    must_contain = [DEFAULT_FILENAMES['project']]
     can_contain = []
 
     write_zip(data_dir, save_name, must_contain, can_contain)
@@ -388,7 +386,7 @@ def create_project_zip(data_dir, save_name) -> Tuple[bool, str]:
     if extension != '.zip':
         save_name = save_name + '.zip'
 
-    must_contain = [main_cif_filename,
+    must_contain = [DEFAULT_FILENAMES['project'],
                     DEFAULT_FILENAMES['phases'],
                     DEFAULT_FILENAMES['experiments'],
                     DEFAULT_FILENAMES['calculations']]
