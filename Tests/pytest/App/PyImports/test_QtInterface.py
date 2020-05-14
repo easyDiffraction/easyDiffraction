@@ -12,7 +12,7 @@ from PyImports.QtInterface import QtCalculatorInterface
 from easyInterface.Diffraction.Calculators import CryspyCalculator
 
 test_data = os.path.join('Tests', 'Data')
-file_path = os.path.join(test_data, 'main.cif')
+file_path = os.path.join(test_data, 'project.cif')
 phase_path = os.path.join(test_data, 'phases.cif')
 exp_path = os.path.join(test_data, 'experiments.cif')
 
@@ -57,7 +57,7 @@ def test_init(cal):
     assert len(cal.project_dict['phases']) == 1
     assert len(cal.project_dict['experiments']) == 1
 
-    assert cal.calculator._main_rcif_path == file_path
+    assert cal.calculator._project_rcif_path == file_path
 
     assert len(cal.project_dict) == 7
 

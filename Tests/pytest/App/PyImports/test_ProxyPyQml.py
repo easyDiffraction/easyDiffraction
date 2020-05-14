@@ -8,7 +8,7 @@ from PyImports.QtInterface import QtCalculatorInterface
 from easyInterface.Diffraction.Interface import CalculatorInterface
 from easyInterface.Diffraction.Calculators.CryspyCalculator import CryspyCalculator
 
-TEST_FILE = "file:Tests/Data/main.cif"
+TEST_FILE = "file:Tests/Data/project.cif"
 release_config_file_path = os.path.join('App', "Release.yml")
 
 
@@ -34,13 +34,13 @@ def no_project_proxy():
 
 def test_Proxy_properties():
     proxy = ProxyPyQml(release_config_file_path)
-    assert proxy._main_rcif_path is None
+    assert proxy._project_rcif_path is None
     assert proxy._refinement_running is False
     assert proxy._refinement_done is False
 
 
 def test_Proxy_loadCif(proxy):
-    assert proxy._main_rcif_path == "Tests/Data/main.cif"
+    assert proxy._project_rcif_path == "Tests/Data/project.cif"
     assert isinstance(proxy._calculator_interface, QtCalculatorInterface)
     assert isinstance(proxy._measured_data_model, MeasuredDataModel)
     assert isinstance(proxy._calculated_data_model, CalculatedDataModel)

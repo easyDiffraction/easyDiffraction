@@ -26,7 +26,7 @@ class ProxyPyQml(QObject):
 
         self.projectChanged.connect(self.onProjectChanged)
 
-        self._main_rcif_path = None
+        self._project_rcif_path = None
         self._phases_rcif_path = None
         self._experiment_rcif_path = None
         self._calculator_interface = QtCalculatorInterface(CryspyCalculator())
@@ -184,11 +184,11 @@ class ProxyPyQml(QObject):
     @Slot()
     def initialize(self):
         self.__log.info("")
-        self._main_rcif_path = self._project_control.main_rcif_path
+        self._project_rcif_path = self._project_control.project_rcif_path
         #logging.info(self._calculator.asCifDict())
         # TODO This is where you would choose the calculator and import the module
         self._calculator_interface = QtCalculatorInterface(
-            CryspyCalculator(self._main_rcif_path)
+            CryspyCalculator(self._project_rcif_path)
         )
         self._calculator_interface.project_dict['app']['name'] = self.info['name']
         self._calculator_interface.project_dict['app']['version'] = self.info['version']
@@ -235,8 +235,8 @@ class ProxyPyQml(QObject):
     def createProject(self, file_path):
         self.__log.debug("")
         self._project_control.createProject(file_path)
-        # Note that the main rcif of self._project_control.main_rcif_path has not ben cleared
-        self._project_control.main_rcif_path = ''
+        # Note that the main rcif of self._project_control.project_rcif_path has not ben cleared
+        self._project_control.project_rcif_path = ''
         self.onProjectSaved()
         self.initialize()
         self.projectChanged.emit()
@@ -259,7 +259,7 @@ class ProxyPyQml(QObject):
         self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
         self._need_to_save = False
         self.projectSaveStateChanged.emit()
-        self.projectChanged.emit() # update main.cif in gui (when filenames changed)
+        self.projectChanged.emit() # update project.cif in gui (when filenames changed)
 
     def onProjectUnsaved(self):
         self.__log.debug("")

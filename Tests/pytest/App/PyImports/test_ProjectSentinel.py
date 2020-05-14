@@ -19,7 +19,7 @@ def test_ProjectModel_creation():
     assert model.manager.projectKeywords == ''
     assert model._project_file is None
     assert model._isValidCif is None
-    assert model.main_rcif_path is None
+    assert model.project_rcif_path is None
 
 
 def test_ProjectModel_loadProject_cif():
@@ -31,7 +31,7 @@ def test_ProjectModel_loadProject_cif():
     assert model.manager.projectKeywords == 'neutron diffraction, powder, 1d'
     assert model._project_file is None
     assert model._isValidCif
-    assert model.main_rcif_path == TEST_CIF
+    assert model.project_rcif_path == TEST_CIF
 
 
 def test_ProjectModel_loadProject_cif_error():
@@ -43,7 +43,7 @@ def test_ProjectModel_loadProject_cif_error():
     assert model.manager.projectKeywords == ''
     assert model._project_file is None
     assert model._isValidCif is False
-    assert model.main_rcif_path == TEST_CIF_ERROR
+    assert model.project_rcif_path == TEST_CIF_ERROR
 
 
 def test_ProjectModel_loadProject_zip():
@@ -63,7 +63,7 @@ def test_ProjectModel_writeMain():
     model = ProjectControl()
 
     def checker(name, keywords):
-        with open(model.main_rcif_path, 'r') as f:
+        with open(model.project_rcif_path, 'r') as f:
             line = f.readline()
             assert line == '_name %s\n' % name
             line = f.readline()
@@ -72,7 +72,7 @@ def test_ProjectModel_writeMain():
             assert line == '_phases\n'
             line = f.readline()
             assert line == '_experiments\n'
-        os.remove(model.main_rcif_path)
+        os.remove(model.project_rcif_path)
 
     model.writeMain()
     checker('Undefined', 'neutron powder diffraction, 1d')
@@ -90,7 +90,7 @@ def test_ProjectModel_createProject():
     assert model.manager.projectKeywords == ''
     assert model._project_file == os.path.join(TEST_DIR, 'boo.zip')
     assert model._isValidCif is None
-    assert model.main_rcif_path is None
+    assert model.project_rcif_path is None
 
     model.createProject(os.path.join(TEST_DIR, 'boo'))
     assert os.path.exists(model.tempDir.name)
@@ -98,7 +98,7 @@ def test_ProjectModel_createProject():
     assert model.manager.projectKeywords == ''
     assert model._project_file == os.path.join(TEST_DIR, 'boo.zip')
     assert model._isValidCif is None
-    assert model.main_rcif_path is None
+    assert model.project_rcif_path is None
 
 
 def test_check_project_dict():

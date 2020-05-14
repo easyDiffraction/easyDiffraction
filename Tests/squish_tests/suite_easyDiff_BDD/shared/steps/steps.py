@@ -64,7 +64,7 @@ def step(context):
     mouseClick(waitForObject(names.easyDiffraction_Open_another_project_Button), 129, 26, Qt.LeftButton)
     # Workaround for Windows not having the right winhook.dll
     snooze(2) 
-    nativeType("main.cif")
+    nativeType("project.cif")
     snooze(1)
     nativeType("<Return>")
     snooze(1)
