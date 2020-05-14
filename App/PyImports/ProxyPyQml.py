@@ -339,25 +339,25 @@ class ProxyPyQml(QObject):
         if not self._calculator_interface.experimentsIds():
             return False
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        return self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum
+        return self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].sum
 
     def refineDiff(self):
         if not self._calculator_interface.experimentsIds():
             return False
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        return self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff
+        return self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].diff
 
     def setRefineSum(self, state):
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        if self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum == state:
+        if self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].sum == state:
             return
-        self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].sum = state
+        self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].sum = state
 
     def setRefineDiff(self, state):
         experiment_name = self._calculator_interface.experimentsIds()[0]
-        if self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff == state:
+        if self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].diff == state:
             return
-        self._calculator_interface.project_dict['experiments'][experiment_name]['chi2'].diff = state
+        self._calculator_interface.project_dict['experiments'][experiment_name]['refinement_type'].diff = state
 
     _refineSum = Property(bool, refineSum, setRefineSum, notify=projectChanged)
     _refineDiff = Property(bool, refineDiff, setRefineDiff, notify=projectChanged)

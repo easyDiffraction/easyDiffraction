@@ -10,8 +10,9 @@ from pathlib import Path
 from urllib.parse import *
 
 from PySide2.QtCore import QObject, Slot, Signal, Property
+from easyInterface.Diffraction import DEFAULT_FILENAMES
 
-main_cif_filename = 'main.cif'
+main_cif_filename = DEFAULT_FILENAMES['project']
 
 
 class ProjectControl(QObject):
@@ -343,7 +344,7 @@ def check_if_zip(filename: str) -> bool:
 
 def check_project_file(filename: str) -> bool:
     is_valid = True
-    must_contain = [main_cif_filename, 'phases.cif', 'experiments.cif']
+    must_contain = [main_cif_filename, DEFAULT_FILENAMES['phases'], DEFAULT_FILENAMES['experiments']]
 
     if check_if_zip(filename):
         with zipfile.ZipFile(filename, 'r') as zip:
@@ -388,9 +389,9 @@ def create_project_zip(data_dir, save_name) -> Tuple[bool, str]:
         save_name = save_name + '.zip'
 
     must_contain = [main_cif_filename,
-                    'phases.cif',
-                    'experiments.cif',
-                    'calculations.cif']
+                    DEFAULT_FILENAMES['phases'],
+                    DEFAULT_FILENAMES['experiments'],
+                    DEFAULT_FILENAMES['calculations']]
 
     can_contain = ['structure.png',
                    'refinement.png']

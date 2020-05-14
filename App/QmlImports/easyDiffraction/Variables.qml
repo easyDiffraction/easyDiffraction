@@ -268,8 +268,8 @@ QtObject {
             this_experiment.field = that_experiment.field.store.value
             this_experiment.wavelength = that_experiment.wavelength.store.value
 
-            this_experiment.chi2.sum = that_experiment.chi2._sum
-            this_experiment.chi2.diff = that_experiment.chi2._diff
+            this_experiment.chi2.sum = that_experiment.refinement_type._sum
+            this_experiment.chi2.diff = that_experiment.refinement_type._diff
             this_experiment.polarization.polarization = that_experiment.polarization.polarization.store.value
             this_experiment.polarization.efficiency = that_experiment.polarization.efficiency.store.value
 

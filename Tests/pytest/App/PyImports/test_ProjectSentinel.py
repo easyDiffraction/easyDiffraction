@@ -2,11 +2,12 @@ import os
 from pathlib import Path
 import pytest
 
+from easyInterface.Diffraction import DEFAULT_FILENAMES
 from PyImports.ProjectSentinel import *
 
 TEST_ZIP = os.path.join(os.getcwd(), 'Tests', 'Data', 'Fe3O4_project.zip')
 TEST_ZIP_ERROR = os.path.join(os.getcwd(), 'Tests', 'Data', 'Fe3O4_project_error.zip')
-TEST_CIF = os.path.join(os.getcwd(), 'Tests', 'Data', 'main.cif')
+TEST_CIF = os.path.join(os.getcwd(), 'Tests', 'Data', DEFAULT_FILENAMES['project'])
 TEST_CIF_ERROR = os.path.join(os.getcwd(), 'Tests', 'Data', 'phases.cif')
 TEST_DIR = os.path.join(os.getcwd(), 'Tests', 'Data')
 
@@ -54,7 +55,7 @@ def test_ProjectModel_loadProject_zip():
     assert model.manager.projectKeywords == 'neutron diffraction, powder, 1d'
     assert model._project_file == TEST_ZIP
     assert model._isValidCif
-    TEMP_PATH = os.path.join(model.tempDir.name, 'main.cif')
+    TEMP_PATH = os.path.join(model.tempDir.name, DEFAULT_FILENAMES['project'])
     assert model.main_rcif_path == TEMP_PATH
 
 
@@ -141,7 +142,7 @@ def test_make_temp_dir():
 
 def test_temp_project_dir():
     folder = temp_project_dir(TEST_ZIP)
-    files = ['main.cif', 'phases.cif', 'experiments.cif']
+    files = [DEFAULT_FILENAMES['project'], DEFAULT_FILENAMES['phases'], DEFAULT_FILENAMES['experiments']]
     for file in files:
         assert os.path.isfile(os.path.join(folder.name, file)) == True
     folder.cleanup()
@@ -177,7 +178,7 @@ def test_create_project_zip():
     temp1.cleanup()
 
 def test_LoadExperiment_cif():
-    cif_path = os.path.join(os.getcwd(), 'Tests', 'Data', 'experiments.cif')
+    cif_path = os.path.join(os.getcwd(), 'Tests', 'Data', DEFAULT_FILENAMES['experiments'])
     model = ProjectControl()
     model.loadExperiment(cif_path)
     assert model.experiment_file_format == "cif"
