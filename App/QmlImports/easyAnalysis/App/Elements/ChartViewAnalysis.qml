@@ -40,7 +40,10 @@ ColumnLayout {
         id: projectChangedTimer
         interval: 100
         repeat: false
-        onTriggered: adjustLeftAxesAnchor()
+        onTriggered: {
+            updateTthHklDict()
+            adjustLeftAxesAnchor()
+        }
     }
 
     Text {
@@ -157,6 +160,9 @@ ColumnLayout {
 
                         Text { text: "\ue809"; color: calcBkgSeries.color; font: commonIconsFont }
                         Text { text: calcBkgSeries.name; font: commonFont}
+
+                        Text { text: "|"; color: "black"; font: commonFont; width: Generic.Style.fontPixelSize; horizontalAlignment: Text.AlignHCenter }
+                        Text { text: braggSeries.name; font: commonFont}
                     }
                 }
 
@@ -280,7 +286,7 @@ ColumnLayout {
 
                     onHovered: {
                         const p = topChart.mapToPosition(point)
-                        const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
+                        const text = qsTr("x: %1\ny: %2").arg(point.x.toFixed(2)).arg(point.y)
                         infoToolTip.parent = topChart
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
@@ -309,14 +315,14 @@ ColumnLayout {
 
                     onHovered: {
                         const p = topChart.mapToPosition(point)
-                        const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
+                        const text = qsTr("x: %1\ny: %2").arg(point.x.toFixed(2)).arg(point.y)
                         infoToolTip.parent = topChart
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.text = text
-                        infoToolTip.backgroundColor = calcBkgSeries.color
-                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.1)
+                        infoToolTip.backgroundColor = Qt.darker(calcBkgSeries.color, 1.1)
+                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.2)
                     }
                 }
 
@@ -337,7 +343,7 @@ ColumnLayout {
 
                     onHovered: {
                         const p = topChart.mapToPosition(point)
-                        const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
+                        const text = qsTr("x: %1\ny: %2").arg(point.x.toFixed(2)).arg(point.y)
                         infoToolTip.parent = topChart
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
@@ -475,23 +481,9 @@ ColumnLayout {
                     ///labelsFont: commonFont
                 }
 
-                /*
-                SpecificExample.BraggScatterSeries {
-                    //https://forum.qt.io/topic/81484/scatterseries-marker-shapes-brushfilename-seems-to-be-ignored/3
-                    axisX: axisXbragg
-                    axisY: axisYbragg
-                    markerShape: ScatterSeries.MarkerShapeRectangle
-                    markerSize: 20
-                    borderColor: "transparent"
-                    color: "transparent"
-                    brushFilename: Generic.Variables.originalIconsUrl.replace("file:", "") + "bragg.svg"
-                    onClicked: console.log("!!!!!!!!!!!!!!! ")
-                    //onClicked: console.log("onClicked: " + point.x + ", " + point.y);
-                }
-                */
-
                 ScatterSeries {
                     id: braggSeries
+                    name: "Bragg peaks"
                     visible: showBragg
                     axisX: axisXbragg
                     axisY: axisYbragg
@@ -506,49 +498,31 @@ ColumnLayout {
 
                     brushFilename: Generic.Variables.originalIconsPath + "bragg.svg"
 
-                    /*
-                    markerSize: 1
-                    borderWidth: 0.0001
-                    borderColor: "transparent"
-                    color: "#333"
-                    */
-                    /*
-                    markerSize: 1
-                    borderWidth: 0.00000001
-                    borderColor: color
-                    color: "#333"
-                    */
-
                     // New approach (fast): pass a reference to LineSeries to python for updating
                     Component.onCompleted: Specific.Variables.braggPeaks.setSeries(braggSeries)
 
-                    /*
                     onHovered: {
-                        const phase1 = Specific.Variables.projectDict.phasesIds()[0]
-                        const braggPeaks = Specific.Variables.projectDict[phase1].bragg_peaks
-
-
                         const position = middleChart.mapToPosition(point)
-                        const tth = point.x - parseFloat(Generic.Constants.proxy.tmp_setup_zero_shift())
+                        const tth = point.x + parseFloat(Specific.Variables.experimentByIndex(0).offset)
                         const hklList = tthHklDict[tth]
-                        let text = "x: %1\nhkl:".arg(point.x)
+
+                        let text = "x: %1\nhkl:".arg(point.x.toFixed(2))
                         for (let i = 0; i < hklList.length; i++) {
                             const h = hklList[i]["h"]
                             const k = hklList[i]["k"]
                             const l = hklList[i]["l"]
                             text += " (%2 %3 %4),".arg(h).arg(k).arg(l)
                         }
-                        text = text.substring(0, text.length - 1)
+                        text = text.substring(0, text.length - 1) // remove comma at the end
 
                         infoToolTip.parent = middleChart
                         infoToolTip.x = position.x
                         infoToolTip.y = position.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = "grey"
-                        infoToolTip.background.border.color = Qt.lighter("grey", 1.75)
+                        infoToolTip.text = text
+                        infoToolTip.backgroundColor = Qt.darker(calcBkgSeries.color, 1.1)
+                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.2)
                     }
-                    */
                 }
             }
         }
@@ -722,7 +696,7 @@ ColumnLayout {
                 const reduced_height =  chartContainer.height / chartContainer.width * reduced_width
                 chartContainer.grabToImage(
                             function(result) {
-                                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/saved_refinement.png")
+                                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/refinement.png")
                             },
                             Qt.size(reduced_width, reduced_height)
                             )
@@ -813,6 +787,16 @@ ColumnLayout {
 
         //plotInfoRec.anchors.right = topChart.right
         //plotInfoRec.anchors.top = topChart.top
+    }
+
+    function updateTthHklDict() {
+        const braggPeaks = Specific.Variables.calculationByIndex(0).bragg_peaks
+        for (let i = 0; i < braggPeaks.ttheta.length; i++) {
+            const newHkl = [{ "h":braggPeaks.h[i], "k":braggPeaks.k[i], "l":braggPeaks.l[i] }]
+            const oldHklList = tthHklDict[braggPeaks.ttheta[i]] === undefined ? [] : tthHklDict[braggPeaks.ttheta[i]]
+            const updatedHklList = oldHklList.concat(newHkl)
+            tthHklDict[braggPeaks.ttheta[i]] = updatedHklList
+        }
     }
 
 }

@@ -111,6 +111,75 @@ class ProxyPyQml(QObject):
         self.projectSaveStateChanged.emit()
         #self.onProjectUnsaved()
 
+    @Slot(str)
+    def updateMainCifFromGui(self, cif_string):
+        name_list = [str_line for str_line in cif_string.split('\n') if str_line.startswith('_name ')]
+        if len(name_list) != 1:
+            self.__log.warning('Project name can not be set. Returning previous value')
+            return
+        name = name_list[0].split('_name ')[1]
+        if name[-1] == ' ':
+            name = name[:-1]
+        keywords_list = [str_line for str_line in cif_string.split('\n') if str_line.startswith('_keywords ')]
+        if len(keywords_list) != 1:
+            self.__log.warning('Project keywords can not be set. Returning previous values')
+            return
+        keywords = keywords_list[0].split('_keywords ')[1]
+        if keywords[-1] == ' ':
+            keywords = keywords[:-1]
+        keywords = keywords.strip('\'')
+        keywords = keywords.split(',')
+        keywords = [keyword[1:] if keyword[0] == ' ' else keyword for keyword in keywords]
+        keywords = [keyword[:-1] if keyword[-1] == ' ' else keyword for keyword in keywords]
+        self._project_control.manager.projectName = name
+        self._calculator_interface.setProjectName(name)
+        self._project_control.manager.projectKeywords = keywords
+        self._calculator_interface.setProjectKeywords(keywords)
+        self._need_to_save = True
+        self.projectSaveStateChanged.emit()
+
+    @Slot(str)
+    def updatePhaseFromGui(self, cif_string):
+        phase_name = self._calculator_interface.phasesIds()[0]
+        cif_string = cif_string[cif_string.find('data_'):]
+        new_phase = self._calculator_interface.getPhaseFromCif(cif_string)
+        old_phase = self._calculator_interface.getPhase(phase_name)
+        keys, values, modifier = old_phase.dictComparison(new_phase)
+        modded_keys = [['phases', phase_name, *key] for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
+        modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
+
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of phases.cif')
+        self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
+        self._calculator_interface.setCalculatorFromProject()
+        self._calculator_interface.updateCalculations()
+        self._calculator_interface.project_dict.endBulkUpdate()
+
+        #self.projectChanged.emit()
+        self._calculator_interface.projectDictChanged.emit()
+        self._need_to_save = True
+        self.projectSaveStateChanged.emit()
+
+    @Slot(str)
+    def updateExperimentFromGui(self, cif_string):
+        exp_name = self._calculator_interface.experimentsIds()[0]
+        cif_string = cif_string[cif_string.find('data_'):]
+        new_experiment = self._calculator_interface.getExperimentFromCif(cif_string)
+        old_exp = self._calculator_interface.getExperiment(exp_name)
+        keys, values, modifier = old_exp.dictComparison(new_experiment)
+        modded_keys = [['experiments', exp_name, *key] for key in keys if key[-1] != 'mapping' and key[-1] != 'hide']
+        modded_values = [value for key, value in zip(keys, values) if key[-1] != 'mapping' and key[-1] != 'hide']
+
+        self._calculator_interface.project_dict.startBulkUpdate('Manual update of experiments.cif')
+        self._calculator_interface.project_dict.bulkUpdate(modded_keys, modded_values)
+        self._calculator_interface.setCalculatorFromProject()
+        self._calculator_interface.updateCalculations()
+        self._calculator_interface.project_dict.endBulkUpdate()
+
+        #self.projectChanged.emit()
+        self._calculator_interface.projectDictChanged.emit()
+        self._need_to_save = True
+        self.projectSaveStateChanged.emit()
+
     # Load CIF method, accessible from QML
     @Slot()
     def initialize(self):
@@ -132,16 +201,19 @@ class ProxyPyQml(QObject):
         #  Temp fix - Andrew
         self.onProjectSaved()
 
-        self._measured_data_model.setCalculatorInterface(self._calculator_interface)
-        self._calculated_data_model.setCalculatorInterface(self._calculator_interface)
-        self._bragg_peaks_model.setCalculatorInterface(self._calculator_interface)
-        self._cell_parameters_model.setCalculatorInterface(self._calculator_interface)
-        self._cell_box_model.setCalculatorInterface(self._calculator_interface)
-        self._atom_sites_model.setCalculatorInterface(self._calculator_interface)
-        self._atom_adps_model.setCalculatorInterface(self._calculator_interface)
-        self._atom_msps_model.setCalculatorInterface(self._calculator_interface)
-        self._fitables_model.setCalculatorInterface(self._calculator_interface)
-        self._status_model.setCalculatorInterface(self._calculator_interface)
+        models = [self._measured_data_model,
+                  self._calculated_data_model,
+                  self._bragg_peaks_model,
+                  self._cell_parameters_model,
+                  self._cell_box_model,
+                  self._atom_sites_model,
+                  self._atom_adps_model,
+                  self._atom_msps_model,
+                  self._fitables_model,
+                  self._status_model
+                  ]
+        for model in models:
+            model.setCalculatorInterface(self._calculator_interface)
 
         self._refine_thread = Refiner(self._calculator_interface, 'refine')
         self._refine_thread.failed.connect(self._thread_failed)
@@ -154,12 +226,14 @@ class ProxyPyQml(QObject):
 
     @Slot()
     def createProjectZip(self):
+        self.__log.debug("")
         self._calculator_interface.writeMainCif(self._project_control.tempDir.name)
         writeEmptyProject(self._project_control, self._project_control.project_file)
         self.onProjectSaved()
 
     @Slot(str)
     def createProject(self, file_path):
+        self.__log.debug("")
         self._project_control.createProject(file_path)
         # Note that the main rcif of self._project_control.main_rcif_path has not ben cleared
         self._project_control.main_rcif_path = ''
@@ -169,21 +243,26 @@ class ProxyPyQml(QObject):
 
     @Slot(str)
     def saveProjectAs(self, file_path):
+        self.__log.debug("")
         self._project_control.project_file = file_path
         self.saveProject()
 
     @Slot()
     def saveProject(self):
+        self.__log.debug("")
         self._calculator_interface.saveCifs(self._project_control.tempDir.name)
         writeProject(self._project_control, self._project_control.project_file)
         self.onProjectSaved()
 
     def onProjectSaved(self):
+        self.__log.debug("")
         self._project_dict_copy = deepcopy(self._calculator_interface.project_dict)
         self._need_to_save = False
         self.projectSaveStateChanged.emit()
+        self.projectChanged.emit() # update main.cif in gui (when filenames changed)
 
     def onProjectUnsaved(self):
+        self.__log.debug("")
         self._need_to_save = True
         self.projectSaveStateChanged.emit()
 

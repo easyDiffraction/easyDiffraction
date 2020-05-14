@@ -80,7 +80,6 @@ if __name__ == '__main__':
 
     upgradePip()
 
-    #installFromGit(owner='pyinstaller', repo='pyinstaller', branch='develop')
     #installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2')
     installFromGit(owner='easyDiffraction', repo='easyInterface', branch='polarisation_start') # Until master branch is uploaded to PIP
 

@@ -60,13 +60,16 @@ class FitablesModel(BaseModel):
         # reset model
         self._model.setColumnCount(0)  # faster than clear(); clear() crashes app! why?
         self._model.setRowCount(0)
-        project_dict = self._project_dict
+
+        # sort background
+        for experiment in self._project_dict['experiments'].keys():
+            self._project_dict['experiments'][experiment]['background'].sort()
 
         # set column
         column = []
-        for path in find_in_obj(project_dict.asDict(), 'refine'):
+        for path in find_in_obj(self._project_dict.asDict(), 'refine'):
             keys_list = path[:-1]
-            hide = project_dict.getItemByPath(keys_list + ['hide'])
+            hide = self._project_dict.getItemByPath(keys_list + ['hide'])
             if hide:
                 continue
 
@@ -94,16 +97,16 @@ class FitablesModel(BaseModel):
                 elif role_name == 'label':
                     value = ' '.join(keys_list[:-1])
                 elif role_name == 'value':
-                    value = project_dict.getItemByPath(keys_list[:-1]).value
+                    value = self._project_dict.getItemByPath(keys_list[:-1]).value
                 elif role_name == 'min':
-                    value = project_dict.getItemByPath(keys_list).min
+                    value = self._project_dict.getItemByPath(keys_list).min
                 elif role_name == 'max':
-                    value = project_dict.getItemByPath(keys_list).max
+                    value = self._project_dict.getItemByPath(keys_list).max
                 elif role_name == 'unit':
                     # conversion to str is needed if role = unit !
-                    value = str(nested_get(project_dict, keys_list + [role_name]))
+                    value = str(nested_get(self._project_dict, keys_list + [role_name]))
                 else:
-                    value = nested_get(project_dict, keys_list + [role_name])
+                    value = nested_get(self._project_dict, keys_list + [role_name])
                 item.setData(value, role)
 
             column.append(item)

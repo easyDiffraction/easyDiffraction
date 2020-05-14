@@ -14,7 +14,7 @@ QtObject {
     property var calculatorInterface: proxyPyQmlObj ? proxyPyQmlObj._calculatorInterface : null
     //property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
     property var projectDict: projectOpened && calculatorInterface ? calculatorInterface.asDict() : null
-    property var projectCifDict: projectOpened && calculatorInterface ? calculatorInterface.asCifDict() : {"phases": {}, "experiments": {}, "calculations": {}}
+    property var projectCifDict: projectOpened && calculatorInterface ? calculatorInterface.asCifDict() : {"main": {}, "phases": {}, "experiments": {}, "calculations": {}}
     ///property var projectDict: projectOpened ? projectDict : null
     ////property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     ////property var projectCifDict: projectOpened ? proxyPyQmlObj.projectCifDict : {"phases": {}, "experiments": {}, "calculations": {}}
@@ -35,7 +35,7 @@ QtObject {
     property var needToSave: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._needToSave : false
     property var projectFilePathSelected: projectOpened && proxyPyQmlObj ? proxyPyQmlObj._projectFilePathSelected : ""
 
-    property var projectName: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectName : null
+    property var projectName: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectName.replace("\n", "") : null
     property var projectKeywords: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectKeywords : null
     property var projectModifiedDate: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectModified : null
 
@@ -72,6 +72,7 @@ QtObject {
         examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder_5T_6T2(LLB)/main.cif",
         examplesRcDirPath + "/Ho2Ti2O7_pol-neutron-powder_5K-1T_VIP(LLB)/main.cif",
         examplesRcDirPath + "/Dy3Al5O12_neutron-powder_4K_G41(LLB)/main.cif",
+        examplesRcDirPath + "/Co2SiO4_neutron-powder_100K_D20(ILL)/main.cif",
         examplesRcDirPath + "/PbSO4_neutron-powder_D1A(ILL)/main.cif"
     ]
 
@@ -183,6 +184,12 @@ QtObject {
                     "y_min" : -1,
                     "y_max": 10000
                 }
+            },
+            "bragg_peaks": {
+                "h": [],
+                "k": [],
+                "l": [],
+                "ttheta": []
             }
         }
     }
@@ -301,6 +308,7 @@ QtObject {
             this_calculation.limits.main.x_max = that_calculation.limits.main.x_max
             this_calculation.limits.difference.y_min = that_calculation.limits.difference.y_min
             this_calculation.limits.difference.y_max = that_calculation.limits.difference.y_max
+            this_calculation.bragg_peaks = that_calculation.bragg_peaks[phaseIds()[0]]
 
             these_calculations[name] = this_calculation
         }

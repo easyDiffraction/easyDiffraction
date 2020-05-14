@@ -28,7 +28,7 @@ GenericAppElements.ContentAreaStack {
             }
         }
         GenericMainArea.TabButton {
-            text: qsTr("Text View")
+            text: qsTr("experiments.cif")
             tabbarWidth: mainArea.width
             GenericAppElements.GuideWindow {
                 message: "This tab button allows to see the\nmeasured data as plain text."
@@ -46,9 +46,6 @@ GenericAppElements.ContentAreaStack {
         GenericMainAreaSampleModel.PlotView { }
         GenericMainAreaSampleModel.TableView { }
         GenericMainAreaSampleModel.TextView { id: textView }
-        onCurrentIndexChanged: {
-            textView.showContent = (currentIndex === 2)
-        }
     }
 
     sideBarContent: StackLayout {

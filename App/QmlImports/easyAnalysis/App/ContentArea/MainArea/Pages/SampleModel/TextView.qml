@@ -1,11 +1,13 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+
 import easyAnalysis 1.0 as Generic
 import easyDiffraction 1.0 as Specific
+import easyDiffraction.Logic 1.0 as Logic
 
-//https://forum.qt.io/topic/90101/textarea-does-not-automatically-scroll/5
 Rectangle {
-    property bool showContent: false
+    width: parent.width
+    height: parent.height
 
     color: "white"
 
@@ -14,16 +16,20 @@ Rectangle {
         clip: true
 
         TextArea {
-            //anchors.fill: parent
             padding: 10
-            readOnly: true
+            wrapMode: Text.NoWrap
+
             color: "#333"
+            selectedTextColor: "black"
+            selectionColor: Generic.Style.tableHighlightRowColor
+            selectByMouse: true
+
             font.family: Generic.Style.monoFontFamily
             font.pixelSize: Generic.Style.fontPixelSize
-            //antialiasing: true
-            wrapMode: Text.Wrap //Text.NoWrap
-            //text: showContent ? Specific.Variables.phaseCif : ""
-            text: Specific.Variables.projectCifDict["phases"].toString()
+            textFormat: TextEdit.RichText
+
+            text: Logic.Helpers.highlightCifSyntax(Specific.Variables.projectCifDict["phases"].toString())
+            onEditingFinished: Generic.Constants.proxy.updatePhaseFromGui(Logic.Helpers.removeHtmlTags(text))
         }
     }
 
