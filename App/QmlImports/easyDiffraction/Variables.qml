@@ -153,7 +153,7 @@ QtObject {
             },
             "offset": 0,
             "wavelength": 0,
-            "field": 0,
+            "magnetic_field": 0,
             "chi2" : {
                 "sum": false,
                 "diff": false
@@ -265,7 +265,7 @@ QtObject {
             this_experiment.resolution.y = that_experiment.resolution.y.store.value
 
             this_experiment.offset = that_experiment.offset.store.value
-            this_experiment.field = that_experiment.field.store.value
+            this_experiment.magnetic_field = that_experiment.magnetic_field.store.value
             this_experiment.wavelength = that_experiment.wavelength.store.value
 
             this_experiment.chi2.sum = that_experiment.refinement_type._sum

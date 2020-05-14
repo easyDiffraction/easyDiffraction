@@ -238,7 +238,7 @@ ColumnLayout {
                     text: qsTr("Magnetic field:")
                 }
                 GenericAppElements.TextField {
-                    text: Specific.Variables.experimentByIndex(0).field.toFixed(4)
+                    text: Specific.Variables.experimentByIndex(0).magnetic_field.toFixed(4)
                     units: "T"
                     GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
                 }
