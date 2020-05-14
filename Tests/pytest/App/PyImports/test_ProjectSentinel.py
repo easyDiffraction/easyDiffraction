@@ -56,7 +56,7 @@ def test_ProjectModel_loadProject_zip():
     assert model._project_file == TEST_ZIP
     assert model._isValidCif
     TEMP_PATH = os.path.join(model.tempDir.name, DEFAULT_FILENAMES['project'])
-    assert model.main_rcif_path == TEMP_PATH
+    assert model.project_rcif_path == TEMP_PATH
 
 
 def test_ProjectModel_writeMain():
