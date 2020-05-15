@@ -57,8 +57,8 @@ parts:
       - xfonts-scalable
     python-packages:
       - pyside2
-      - git+git://github.com/ikibalin/cryspy.git@transition-to-version-0.2#egg=cryspy
-      - git+git://github.com/easyDiffraction/easyInterface.git@polarisation_start#egg=easyInterface
+      - cryspy
+      - easyInterface
       - dictdiffer
       - pyyaml
 
