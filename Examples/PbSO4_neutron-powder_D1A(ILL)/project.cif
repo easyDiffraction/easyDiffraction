@@ -1,0 +1,5 @@
+_name PbSO4
+_keywords 'unpolarised neutron powder diffraction, D1A at ILL'
+_samples samples.cif
+_experiments experiments.cif
+_calculations calculations.cif

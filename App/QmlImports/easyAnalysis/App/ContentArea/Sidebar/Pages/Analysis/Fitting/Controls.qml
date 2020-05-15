@@ -116,9 +116,9 @@ ColumnLayout {
             padding: 20
             spacing: 10
 
-            Text { text: `${Generic.Variables.refinementMessage}`; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize }
-            Text { text: `Goodness-of-fit (\u03c7\u00b2): ${Generic.Variables.chiSquared}`; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize }
-            Text { text: `Num. refined parameters: ${Generic.Variables.numRefinedPars}`; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize }
+            Text { text: `${Generic.Variables.refinementMessage}`; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize }
+            Text { visible: Generic.Variables.chiSquared; text: `Goodness-of-fit (\u03c7\u00b2): ${Generic.Variables.chiSquared}`; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize }
+            Text { visible: Generic.Variables.numRefinedPars; text: `Num. refined parameters: ${Generic.Variables.numRefinedPars}`; font.family: Generic.Style.fontFamily; font.pixelSize: Generic.Style.fontPixelSize }
         }
     }
 }

@@ -1,17 +1,17 @@
-data_pd
+data_PolNPD5T
 
 _setup_wavelength 2.4
 _setup_field 5.0
 _setup_offset_2theta -0.360
-
-_diffrn_radiation_polarization 0.6243
-_diffrn_radiation_efficiency 1.0
 
 _pd_instr_resolution_u 11.34
 _pd_instr_resolution_v -2.983
 _pd_instr_resolution_w 1.141
 _pd_instr_resolution_x 0.000
 _pd_instr_resolution_y 0.404
+
+_diffrn_radiation_polarization 0.6243
+_diffrn_radiation_efficiency 1.0
 
 _chi2_sum True
 _chi2_diff True

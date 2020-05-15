@@ -188,7 +188,7 @@ Dialog {
                     Text {
                         color: "white"
                         opacity: index === Generic.Variables.guideCurrentIndex ? 0.7 : 0.3
-                        font.pointSize: 8
+                        font.pixelSize: 8
                         text: "\u25CF"
                     }
                 }
@@ -202,7 +202,7 @@ Dialog {
                 color: "white"
                 horizontalAlignment: Text.AlignHCenter
                 font.family: Generic.Style.fontFamily
-                font.pointSize: Generic.Style.fontPointSize
+                font.pixelSize: Generic.Style.fontPixelSize
             }
 
             // Additional spacing
@@ -225,8 +225,8 @@ Dialog {
                     }
                     contentItem: Text {
                         text: parent.text
-                        font.family: Generic.Style.introCondencedRegularFontFamily
-                        font.pointSize: Generic.Style.systemFontPointSize
+                        font.family: Generic.Style.secondFontFamily
+                        font.pixelSize: Generic.Style.fontPixelSize - 1
                         opacity: !enabled || parent.down ? 0.4 : 0.8
                         color: "white"
                         horizontalAlignment: Text.AlignHCenter
@@ -242,8 +242,8 @@ Dialog {
                     }
                     contentItem: Text {
                         text: parent.text
-                        font.family: Generic.Style.introCondencedRegularFontFamily
-                        font.pointSize: Generic.Style.systemFontPointSize
+                        font.family: Generic.Style.secondFontFamily
+                        font.pixelSize: Generic.Style.fontPixelSize - 1
                         opacity: !enabled || parent.down ? 0.4 : 0.8
                         color: "white"
                         horizontalAlignment: Text.AlignHCenter
@@ -260,8 +260,8 @@ Dialog {
                     }
                     contentItem: Text {
                         text: parent.text
-                        font.family: Generic.Style.introCondencedRegularFontFamily
-                        font.pointSize: Generic.Style.systemFontPointSize
+                        font.family: Generic.Style.secondFontFamily
+                        font.pixelSize: Generic.Style.fontPixelSize - 1
                         opacity: !enabled || parent.down ? 0.4 : 0.8
                         color: "white"
                         horizontalAlignment: Text.AlignHCenter

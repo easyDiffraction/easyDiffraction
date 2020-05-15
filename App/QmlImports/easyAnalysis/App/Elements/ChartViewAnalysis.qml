@@ -22,7 +22,8 @@ ColumnLayout {
     property int xScaleZoom: 0
     property int yScaleZoom: 0
 
-    property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pointSize: Generic.Style.fontPointSize })
+    property font commonFont: Qt.font({ family: Generic.Style.fontFamily, pixelSize: Generic.Style.fontPixelSize })
+    property font commonIconsFont: Qt.font({ family: Generic.Style.iconsFontFamily, pixelSize: Generic.Style.fontPixelSize })
 
     property int globalAnimationDuration: 1000
     property var globalAnimationOptions: ChartView.SeriesAnimations //ChartView.AllAnimations //ChartView.NoAnimation
@@ -39,7 +40,10 @@ ColumnLayout {
         id: projectChangedTimer
         interval: 100
         repeat: false
-        onTriggered: adjustLeftAxesAnchor()
+        onTriggered: {
+            updateTthHklDict()
+            adjustLeftAxesAnchor()
+        }
     }
 
     Text {
@@ -146,12 +150,19 @@ ColumnLayout {
                         columnSpacing: 10
                         rowSpacing: 5
                         columns: 2
-                        Text { text: "■"; color: obsArea.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
-                        Text { text: obsArea.name; font: commonFont}
-                        Text { text: "–"; color: calcSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
+                        verticalItemAlignment: Grid.AlignVCenter
+
+                        Text { text: "\ue807"; color: Qt.lighter(obsArea.color, 1.05); font: commonIconsFont }
+                        Text { text: obsArea.name; font: commonFont }
+
+                        Text { text: "\ue808"; color: calcSeries.color; font: commonIconsFont }
                         Text { text: calcSeries.name; font: commonFont}
-                        Text { text: "--"; color: calcBkgSeries.color; font.family: Generic.Style.fontFamily; font.pointSize: Generic.Style.fontPointSize * 2; font.bold: true; lineHeightMode: Text.FixedHeight; lineHeight: Generic.Style.fontPointSize; verticalAlignment: Text.AlignVCenter; height: Generic.Style.fontPointSize }
+
+                        Text { text: "\ue809"; color: calcBkgSeries.color; font: commonIconsFont }
                         Text { text: calcBkgSeries.name; font: commonFont}
+
+                        Text { text: "|"; color: "black"; font: commonFont; width: Generic.Style.fontPixelSize; horizontalAlignment: Text.AlignHCenter }
+                        Text { text: braggSeries.name; font: commonFont}
                     }
                 }
 
@@ -227,14 +238,24 @@ ColumnLayout {
                     labelsFont: commonFont
                     titleFont: commonFont
                     min: {
+                        if (!Specific.Variables.calculatedData || !Specific.Variables.measuredData) {
+                            return 1
+                        }
                         const max = Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
                         const min = Math.min(Specific.Variables.measuredData.yMin, Specific.Variables.calculatedData.yMin)
                         return min - 0.075*max
                     }
                     max: {
+                        if (!Specific.Variables.calculatedData || !Specific.Variables.measuredData) {
+                            return 1
+                        }
                         const max = Math.max(Specific.Variables.measuredData.yMax, Specific.Variables.calculatedData.yMax)
                         return max + 0.075*max
                     }
+
+                    // Update Y-range for the DifferenceChartView
+                    onMinChanged: updateAxisYDiffRange()
+                    onMaxChanged: updateAxisYDiffRange()
                 }
 
                 // Measured curve
@@ -265,7 +286,7 @@ ColumnLayout {
 
                     onHovered: {
                         const p = topChart.mapToPosition(point)
-                        const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
+                        const text = qsTr("x: %1\ny: %2").arg(point.x.toFixed(2)).arg(point.y)
                         infoToolTip.parent = topChart
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
@@ -294,14 +315,14 @@ ColumnLayout {
 
                     onHovered: {
                         const p = topChart.mapToPosition(point)
-                        const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
+                        const text = qsTr("x: %1\ny: %2").arg(point.x.toFixed(2)).arg(point.y)
                         infoToolTip.parent = topChart
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
                         infoToolTip.visible = state
                         infoToolTip.text = text
-                        infoToolTip.backgroundColor = calcBkgSeries.color
-                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.1)
+                        infoToolTip.backgroundColor = Qt.darker(calcBkgSeries.color, 1.1)
+                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.2)
                     }
                 }
 
@@ -322,7 +343,7 @@ ColumnLayout {
 
                     onHovered: {
                         const p = topChart.mapToPosition(point)
-                        const text = qsTr("x: %1\ny: %2").arg(point.x).arg(point.y)
+                        const text = qsTr("x: %1\ny: %2").arg(point.x.toFixed(2)).arg(point.y)
                         infoToolTip.parent = topChart
                         infoToolTip.x = p.x
                         infoToolTip.y = p.y - infoToolTip.height
@@ -332,6 +353,9 @@ ColumnLayout {
                         infoToolTip.borderColor = Qt.darker(calcSeries.color, 1.1)
                     }
                 }
+
+                // Update Y-range for the DifferenceChartView
+                onHeightChanged: updateAxisYDiffRange()
             }
 
             //////////////////////////
@@ -413,7 +437,7 @@ ColumnLayout {
             id: middleChartContainer
             visible: showBragg
             Layout.fillWidth: true
-            height: 2*extraPadding
+            height: 1.5*extraPadding
             color: "transparent"
             clip: true
 
@@ -422,7 +446,7 @@ ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: -extraPadding
                 anchors.topMargin: -3*extraPadding
-                anchors.bottomMargin: -3*extraPadding
+                anchors.bottomMargin: -3.5*extraPadding
                 //antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false
                 backgroundRoundness: 0
@@ -457,23 +481,9 @@ ColumnLayout {
                     ///labelsFont: commonFont
                 }
 
-                /*
-                SpecificExample.BraggScatterSeries {
-                    //https://forum.qt.io/topic/81484/scatterseries-marker-shapes-brushfilename-seems-to-be-ignored/3
-                    axisX: axisXbragg
-                    axisY: axisYbragg
-                    markerShape: ScatterSeries.MarkerShapeRectangle
-                    markerSize: 20
-                    borderColor: "transparent"
-                    color: "transparent"
-                    brushFilename: Generic.Variables.originalIconsPath.replace("file:", "") + "bragg.svg"
-                    onClicked: console.log("!!!!!!!!!!!!!!! ")
-                    //onClicked: console.log("onClicked: " + point.x + ", " + point.y);
-                }
-                */
-
                 ScatterSeries {
                     id: braggSeries
+                    name: "Bragg peaks"
                     visible: showBragg
                     axisX: axisXbragg
                     axisY: axisYbragg
@@ -486,51 +496,33 @@ ColumnLayout {
                     borderWidth: 0.0001
                     borderColor: "transparent"
 
-                    brushFilename: Generic.Variables.originalIconsPath.replace("file:", "") + "bragg.svg"
-
-                    /*
-                    markerSize: 1
-                    borderWidth: 0.0001
-                    borderColor: "transparent"
-                    color: "#333"
-                    */
-                    /*
-                    markerSize: 1
-                    borderWidth: 0.00000001
-                    borderColor: color
-                    color: "#333"
-                    */
+                    brushFilename: Generic.Variables.originalIconsPath + "bragg.svg"
 
                     // New approach (fast): pass a reference to LineSeries to python for updating
                     Component.onCompleted: Specific.Variables.braggPeaks.setSeries(braggSeries)
 
-                    /*
                     onHovered: {
-                        const phase1 = Specific.Variables.projectDict.phasesIds()[0]
-                        const braggPeaks = Specific.Variables.projectDict[phase1].bragg_peaks
-
-
                         const position = middleChart.mapToPosition(point)
-                        const tth = point.x - parseFloat(Generic.Constants.proxy.tmp_setup_zero_shift())
+                        const tth = point.x + parseFloat(Specific.Variables.experimentByIndex(0).offset)
                         const hklList = tthHklDict[tth]
-                        let text = "x: %1\nhkl:".arg(point.x)
+
+                        let text = "x: %1\nhkl:".arg(point.x.toFixed(2))
                         for (let i = 0; i < hklList.length; i++) {
                             const h = hklList[i]["h"]
                             const k = hklList[i]["k"]
                             const l = hklList[i]["l"]
                             text += " (%2 %3 %4),".arg(h).arg(k).arg(l)
                         }
-                        text = text.substring(0, text.length - 1)
+                        text = text.substring(0, text.length - 1) // remove comma at the end
 
                         infoToolTip.parent = middleChart
                         infoToolTip.x = position.x
                         infoToolTip.y = position.y - infoToolTip.height
                         infoToolTip.visible = state
-                        infoToolTip.contentItem.text = text
-                        infoToolTip.contentItem.color = "grey"
-                        infoToolTip.background.border.color = Qt.lighter("grey", 1.75)
+                        infoToolTip.text = text
+                        infoToolTip.backgroundColor = Qt.darker(calcBkgSeries.color, 1.1)
+                        infoToolTip.borderColor = Qt.darker(calcBkgSeries.color, 1.2)
                     }
-                    */
                 }
             }
         }
@@ -551,7 +543,7 @@ ColumnLayout {
                 id: bottomChart
                 anchors.fill: parent
                 anchors.margins: -extraPadding
-                anchors.topMargin: -3*extraPadding
+                anchors.topMargin: -2.5*extraPadding
                 //anchors.topMargin: -extraPadding// - 20
                 antialiasing: true // conflicts with useOpenGL: true in ScatterSeries
                 legend.visible: false
@@ -567,12 +559,14 @@ ColumnLayout {
                     tickType: ValueAxis.TicksFixed
                     tickCount: 5
                     minorTickCount: 1
-                    min: axisX.min
-                    max: axisX.max
                     labelFormat: "%.0f"
+                    titleVisible: true
                     titleText: "2\u03B8 (deg)"
+                    labelsVisible: true
                     labelsFont: commonFont
                     titleFont: commonFont
+                    min: axisX.min
+                    max: axisX.max
                 }
 
                 ValueAxis {
@@ -584,18 +578,26 @@ ColumnLayout {
                     titleText: "Iobs - Icalc"
                     labelsFont: commonFont
                     titleFont: commonFont
+                    /*
                     min: {
+                        if (!Specific.Variables.calculatedData) {
+                            return 1
+                        }
                         const min = Specific.Variables.calculatedData.yDiffMin
                         const max = Specific.Variables.calculatedData.yDiffMax
                         const MAX = Math.max(Math.abs(min), Math.abs(max))
                         return Math.sign(min) * MAX - 0.35*MAX
                     }
                     max: {
+                        if (!Specific.Variables.calculatedData) {
+                            return 1
+                        }
                         const min = Specific.Variables.calculatedData.yDiffMin
                         const max = Specific.Variables.calculatedData.yDiffMax
                         const MAX = Math.max(Math.abs(min), Math.abs(max))
                         return Math.sign(max) * MAX + 0.35*MAX
                     }
+                    */
                 }
 
                 AreaSeries {
@@ -646,18 +648,21 @@ ColumnLayout {
         height: Generic.Style.buttonHeight + 3
         color: "transparent"
 
+        clip: true
+
         Label {
             id: infoArea
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             height: Generic.Style.buttonHeight
-            leftPadding: font.pointSize
-            rightPadding: font.pointSize
+            leftPadding: font.pixelSize
+            rightPadding: font.pixelSize
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             text: qsTr("Show coordinates: Hover mouse pointer") + "  •  " + qsTr("Zoom in: Left mouse button") + "  •  " + qsTr("Reset: Right mouse button")
-            font.family: Generic.Style.introThinFontFamily
-            font.pointSize: Generic.Style.systemFontPointSize + 1
+            font.family: Generic.Style.secondFontFamily
+            font.weight: Font.Light
+            font.pixelSize: Generic.Style.fontPixelSize
             color: "grey"
             background: Rectangle { color: "white"; opacity: 0.9; border.width: 0; radius: Generic.Style.toolbarButtonRadius }
         }
@@ -691,7 +696,7 @@ ColumnLayout {
                 const reduced_height =  chartContainer.height / chartContainer.width * reduced_width
                 chartContainer.grabToImage(
                             function(result) {
-                                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/saved_refinement.png")
+                                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/refinement.png")
                             },
                             Qt.size(reduced_width, reduced_height)
                             )
@@ -734,6 +739,14 @@ ColumnLayout {
     // Logic
     ////////
 
+    function updateAxisYDiffRange() {
+        if (topChart.plotArea.height === 0 || bottomChart.plotArea.height === 0) {
+            return
+        }
+        axisYdiff.max = 0.5 * (axisY.max - axisY.min) / topChart.plotArea.height * bottomChart.plotArea.height
+        axisYdiff.min = -axisYdiff.max
+    }
+
     function setAxesNiceNumbers() {
         axisX.applyNiceNumbers()
         axisY.applyNiceNumbers()
@@ -774,6 +787,16 @@ ColumnLayout {
 
         //plotInfoRec.anchors.right = topChart.right
         //plotInfoRec.anchors.top = topChart.top
+    }
+
+    function updateTthHklDict() {
+        const braggPeaks = Specific.Variables.calculationByIndex(0).bragg_peaks
+        for (let i = 0; i < braggPeaks.ttheta.length; i++) {
+            const newHkl = [{ "h":braggPeaks.h[i], "k":braggPeaks.k[i], "l":braggPeaks.l[i] }]
+            const oldHklList = tthHklDict[braggPeaks.ttheta[i]] === undefined ? [] : tthHklDict[braggPeaks.ttheta[i]]
+            const updatedHklList = oldHklList.concat(newHkl)
+            tthHklDict[braggPeaks.ttheta[i]] = updatedHklList
+        }
     }
 
 }

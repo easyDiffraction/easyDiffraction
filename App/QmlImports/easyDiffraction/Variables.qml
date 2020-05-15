@@ -11,42 +11,42 @@ QtObject {
     // Main
     property var projectControl: proxyPyQmlObj && proxyPyQmlObj._projectControl ? proxyPyQmlObj._projectControl : null
 
-    property var calculatorInterface: proxyPyQmlObj._calculatorInterface
+    property var calculatorInterface: proxyPyQmlObj ? proxyPyQmlObj._calculatorInterface : null
     //property var calculatorInterface: projectOpened ? proxyPyQmlObj.calculatorInterface : null
-    property var projectDict: projectOpened ? calculatorInterface.asDict() : null
-    property var projectCifDict: projectOpened ? calculatorInterface.asCifDict() : {"phases": {}, "experiments": {}, "calculations": {}}
+    property var projectDict: projectOpened && calculatorInterface ? calculatorInterface.asDict() : null
+    property var projectCifDict: projectOpened && calculatorInterface ? calculatorInterface.asCifDict() : {"main": {}, "phases": {}, "experiments": {}, "calculations": {}}
     ///property var projectDict: projectOpened ? projectDict : null
     ////property var projectDict: projectOpened ? proxyPyQmlObj.projectDict : null
     ////property var projectCifDict: projectOpened ? proxyPyQmlObj.projectCifDict : {"phases": {}, "experiments": {}, "calculations": {}}
 
-    property var cif: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._fileStructure : null
+    //property var cif: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._fileStructure : null
 
     //property var phaseCif: projectOpened ? proxyPyQmlObj.phaseCif : null
     //property var phaseIds: projectOpened ? projectDict.info.phases_ids: []
-    function phaseIds(){ return projectOpened ? projectDict.info.phase_ids: []}
+    function phaseIds(){ return projectOpened && projectDict ? projectDict.info.phase_ids: []}
 
     //property var experimentCif: projectOpened ? proxyPyQmlObj.experimentCif : null
     //property var experimentIds: projectOpened ? projectDict.info.experiment_ids: []
-    function experimentIds(){return projectOpened ? projectDict.info.experiment_ids: []}
+    function experimentIds(){return projectOpened && projectDict ? projectDict.info.experiment_ids: []}
 
     //property var calculationCif: projectOpened ? proxyPyQmlObj.calculationCif : null
     function calculationIds(){ return projectOpened ? Object.keys(projectDict.calculations): []}
 
     property var needToSave: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._needToSave : false
-    property var projectFilePathSelected: projectOpened ? proxyPyQmlObj._projectFilePathSelected : ""
+    property var projectFilePathSelected: projectOpened && proxyPyQmlObj ? proxyPyQmlObj._projectFilePathSelected : ""
 
-    property var projectName: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectName : null
+    property var projectName: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectName.replace("\n", "") : null
     property var projectKeywords: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectKeywords : null
     property var projectModifiedDate: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._projectManager.projectModified : null
 
     // Measured and calculated data
-    property var measuredData: proxyPyQmlObj._measuredData
+    property var measuredData: proxyPyQmlObj ? proxyPyQmlObj._measuredData : null
     property var measuredDataHeaderModel: proxyPyQmlObj && projectOpened ?
                                               proxyPyQmlObj._measuredData.asHeadersModel() : null
     property var measuredDataModel: proxyPyQmlObj && projectOpened ?
                                         proxyPyQmlObj._measuredData.asModel() : null
-    property var calculatedData: proxyPyQmlObj._calculatedData
-    property var braggPeaks: proxyPyQmlObj._braggPeaks
+    property var calculatedData: proxyPyQmlObj ? proxyPyQmlObj._calculatedData : null
+    property var braggPeaks: proxyPyQmlObj ? proxyPyQmlObj._braggPeaks : null
     property string dataType: "Sum"
     onDataTypeChanged: {
         measuredData.setDataType(dataType)
@@ -55,8 +55,8 @@ QtObject {
     property bool isPolarized: projectCifDict["experiments"].toString().includes("_pd_meas_intensity_up")
     property bool refineSum: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._refineSum : false
     property bool refineDiff: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._refineDiff : false
-    onRefineSumChanged: proxyPyQmlObj._refineSum = refineSum
-    onRefineDiffChanged: proxyPyQmlObj._refineDiff = refineDiff
+    onRefineSumChanged: if (refineSum) proxyPyQmlObj._refineSum
+    onRefineDiffChanged: if (refineDiff) proxyPyQmlObj._refineDiff
 
     // Models
     property var fitables: proxyPyQmlObj && projectOpened ? proxyPyQmlObj._fitables : null
@@ -69,10 +69,11 @@ QtObject {
 
     // Examples
     readonly property var examplesList: [
-        examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder_5T_6T2(LLB)/main.cif",
-        examplesRcDirPath + "/Ho2Ti2O7_pol-neutron-powder_5K-1T_VIP(LLB)/main.cif",
-        examplesRcDirPath + "/DyAlO3_neutron-powder_4K_G4(LLB)/main.cif",
-        examplesRcDirPath + "/PbSO4_neutron-powder_D1A(ILL)/main.cif"
+        examplesRcDirUrl.replace("file:", "") + "/Fe3O4_pol-neutron-powder_5T_6T2(LLB)/project.cif",
+        examplesRcDirPath + "/Ho2Ti2O7_pol-neutron-powder_5K-1T_VIP(LLB)/project.cif",
+        examplesRcDirPath + "/Dy3Al5O12_neutron-powder_4K_G41(LLB)/project.cif",
+        examplesRcDirPath + "/Co2SiO4_neutron-powder_100K_D20(ILL)/project.cif",
+        examplesRcDirPath + "/PbSO4_neutron-powder_D1A(ILL)/project.cif"
     ]
 
     // Undo-Redo
@@ -82,9 +83,9 @@ QtObject {
     property var canRedo: calculatorInterface ? proxyPyQmlObj._canRedo : false
 
     // Refinement
-    property var refinementRunning: proxyPyQmlObj._refinementStatus[0]
-    property var refinementDone: proxyPyQmlObj._refinementStatus[1]
-    property var refinementResult: proxyPyQmlObj._refinementStatus[2]
+    property var refinementRunning: proxyPyQmlObj ? proxyPyQmlObj._refinementStatus[0] : ""
+    property var refinementDone: proxyPyQmlObj ? proxyPyQmlObj._refinementStatus[1] : ""
+    property var refinementResult: proxyPyQmlObj ? proxyPyQmlObj._refinementStatus[2] : ""
 
     onRefinementResultChanged: {
         if (Object.entries(refinementResult)) {
@@ -152,7 +153,7 @@ QtObject {
             },
             "offset": 0,
             "wavelength": 0,
-            "field": 0,
+            "magnetic_field": 0,
             "chi2" : {
                 "sum": false,
                 "diff": false
@@ -183,6 +184,12 @@ QtObject {
                     "y_min" : -1,
                     "y_max": 10000
                 }
+            },
+            "bragg_peaks": {
+                "h": [],
+                "k": [],
+                "l": [],
+                "ttheta": []
             }
         }
     }
@@ -200,19 +207,19 @@ QtObject {
     }
 
     function _loadedPhases() {
-        const those_phases = projectDict.phases
+        const those_samples = projectDict.phases
 
-        if (!Object.keys(those_phases).length) {
+        if (!Object.keys(those_samples).length) {
             return _defaultPhases()
         }
 
-        let these_phases = {}
+        let these_samples = {}
 
-        for (const name in those_phases) {
+        for (const name in those_samples) {
             debug(`_loadedPhases: ${name}`)
 
             const this_phase = _emptyPhase()
-            const that_phase = those_phases[name]
+            const that_phase = those_samples[name]
 
             this_phase.atoms = that_phase.atoms
 
@@ -227,13 +234,13 @@ QtObject {
             this_phase.cell.length_c = that_phase.cell.length_c.store.value
 
             this_phase.spacegroup.crystal_system = that_phase.spacegroup.crystal_system.store.value
-            this_phase.spacegroup.space_group_with_number = that_phase.spacegroup.space_group_IT_number.store.value + '.  ' + that_phase.spacegroup.space_group_name_HM_alt.store.value
+            this_phase.spacegroup.space_group_with_number = that_phase.spacegroup.space_group_IT_number.store.value + '.  ' + that_phase.spacegroup.space_group_name_HM_ref.store.value
             this_phase.spacegroup.origin_choice = that_phase.spacegroup.crystal_system.store.value
 
-            these_phases[name] = this_phase
+            these_samples[name] = this_phase
         }
 
-        return these_phases
+        return these_samples
     }
 
     function _loadedExperiments() {
@@ -258,11 +265,11 @@ QtObject {
             this_experiment.resolution.y = that_experiment.resolution.y.store.value
 
             this_experiment.offset = that_experiment.offset.store.value
-            this_experiment.field = that_experiment.field.store.value
+            this_experiment.magnetic_field = that_experiment.magnetic_field.store.value
             this_experiment.wavelength = that_experiment.wavelength.store.value
 
-            this_experiment.chi2.sum = that_experiment.chi2._sum
-            this_experiment.chi2.diff = that_experiment.chi2._diff
+            this_experiment.chi2.sum = that_experiment.refinement_type._sum
+            this_experiment.chi2.diff = that_experiment.refinement_type._diff
             this_experiment.polarization.polarization = that_experiment.polarization.polarization.store.value
             this_experiment.polarization.efficiency = that_experiment.polarization.efficiency.store.value
 
@@ -301,6 +308,7 @@ QtObject {
             this_calculation.limits.main.x_max = that_calculation.limits.main.x_max
             this_calculation.limits.difference.y_min = that_calculation.limits.difference.y_min
             this_calculation.limits.difference.y_max = that_calculation.limits.difference.y_max
+            this_calculation.bragg_peaks = that_calculation.bragg_peaks[phaseIds()[0]]
 
             these_calculations[name] = this_calculation
         }

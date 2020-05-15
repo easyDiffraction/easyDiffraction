@@ -1,7 +1,10 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
+
 import easyAnalysis 1.0 as Generic
 import easyDiffraction 1.0 as Specific
+import easyDiffraction.Logic 1.0 as Logic
 
 // Old implementation
 /*
@@ -25,7 +28,7 @@ Rectangle {
             readOnly: true
             color: "#333"
             font.family: Generic.Style.monoFontFamily
-            font.pointSize: Generic.Style.fontPointSize
+            font.pixelSize: Generic.Style.fontPixelSize
             //antialiasing: true
             wrapMode: Text.NoWrap
             // this has to be wrapped with the showContent conditional
@@ -40,7 +43,8 @@ Rectangle {
 
 // Same implementation as for Experiment and Sample text viewers
 Rectangle {
-    property bool showContent: false
+    width: parent.width
+    height: parent.height
 
     color: "white"
 
@@ -49,16 +53,29 @@ Rectangle {
         clip: true
 
         TextArea {
-            //anchors.fill: parent
-            padding: 10
             readOnly: true
-            color: "#333"
-            font.family: Generic.Style.monoFontFamily
-            font.pointSize: Generic.Style.fontPointSize
-            //antialiasing: true
+
+            padding: 10
             wrapMode: Text.NoWrap
-            //text: showContent ? Specific.Variables.experimentCif : ""
-            text: showContent ? Specific.Variables.projectCifDict["calculations"].toString() : ""
+
+            color: "#333"
+            selectedTextColor: "black"
+            selectionColor: Generic.Style.tableHighlightRowColor
+            selectByMouse: true
+
+            font.family: Generic.Style.monoFontFamily
+            font.pixelSize: Generic.Style.fontPixelSize
+            textFormat: TextEdit.RichText
+
+            text: Logic.Helpers.highlightCifSyntax(Specific.Variables.projectCifDict["calculations"].toString())
         }
     }
 }
+
+
+
+
+
+
+
+

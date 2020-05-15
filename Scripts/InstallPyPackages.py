@@ -80,16 +80,16 @@ if __name__ == '__main__':
 
     upgradePip()
 
-    installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2')
-    installFromGit(owner='easyDiffraction', repo='easyInterface', branch='polarisation_start') # Until master branch is uploaded to PIP
+    #installFromGit(owner='ikibalin', repo='cryspy', branch='transition-to-version-0.2')
+    #installFromGit(owner='easyDiffraction', repo='easyInterface', branch='polarisation_start') # Until master branch is uploaded to PIP
 
     install(
-        #'cryspy==0.1.13',
+        'cryspy>=0.2.0',
         'scipy>=1.4.1',
         'numpy>=1.18.1',
-        #'easyInterface>=0.0.8',
+        'easyInterface>=0.0.9',
         'PySide2>=5.14.1',
-        'pyinstaller>=3.6',  # develop version - https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
+        'pyinstaller>=3.6',
         'requests>=2.23.0',
         'uritemplate>=3.0.1',
         'pyyaml>=5.3',

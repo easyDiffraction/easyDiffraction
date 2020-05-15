@@ -82,7 +82,7 @@ def installerConfigXml():
         os_name = config['os']['name']
         app_name = config['app']['name']
         if os_name == 'osx':
-            target_dir = '@ApplicationsDir@/{0}'.format(app_name)
+            target_dir = '/Applications/{0}'.format(app_name) # macOS returns $HOME/Applications instead of /Applications for @ApplicationsDir@: https://bugreports.qt.io/browse/QTIFW-1011
         elif os_name == 'windows':
             target_dir = '@ApplicationsDir@\\{0}'.format(app_name)
         elif os_name == 'linux':
@@ -132,19 +132,22 @@ def installerPackageXml():
                 'Default': 'true',
                 'Essential': 'true',
                 'ForcedInstallation': 'true',
-                'RequiresAdminRights': 'true',
-                #'Licenses': {
+                #'RequiresAdminRights': 'true',
+                'Licenses': '_LICENCE_STR',
+                #{
                 #    'License': {
-                #        'name': "GNU General Public License Version 3",
+                #        'name': "GNU Lesser General Public License v3.0",
                 #        'file': "LICENSE"
                 #    }
-            	#	<License name="GNU General Public License Version 3" file="LICENSE" /> # SHOULD BE IN THIS FORMAT
-                #}
+            	##	<License name="GNU Lesser General Public License v3.0" file="LICENSE" /> # SHOULD BE IN THIS FORMAT
+                #},
                 'Script': config['installer']['package_install_script']['name'],
             }
         }
         raw_xml = Functions.dict2xml(pydict)
         pretty_xml = raw_xml # xml.dom.minidom.parseString(raw_xml).toprettyxml()
+        #pretty_xml = xml.dom.minidom.parseString(raw_xml).toprettyxml()
+        pretty_xml = pretty_xml.replace('_LICENCE_STR', '<License name="GNU Lesser General Public License v3.0" file="LICENSE" />')
     except Exception as exception:
         BasicFunctions.printFailMessage(message, exception)
         sys.exit()

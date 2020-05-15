@@ -32,7 +32,7 @@ loop_
 _phase_label
 _phase_scale
 _phase_igsize
-Fe3O4 0.02381 0.0
+Fe3O4 0.04762 0.0
 
 _chi2_sum True
 _chi2_diff False

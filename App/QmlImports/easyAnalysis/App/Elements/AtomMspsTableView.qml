@@ -80,7 +80,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "No."
                         }
                         Text {
@@ -91,7 +91,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "Label"
                         }
                         Text {
@@ -102,7 +102,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "Type"
                         }
                         Text {
@@ -113,7 +113,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "\u03C7iso"
                         }
                         Text {
@@ -124,7 +124,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "\u03C711"
                         }
                         Text {
@@ -135,7 +135,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "\u03C722"
                         }
                         Text {
@@ -146,7 +146,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "\u03C733"
                         }
                         Text {
@@ -157,7 +157,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "\u03C712"
                         }
                         Text {
@@ -168,7 +168,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "\u03C713"
                         }
                         Text {
@@ -179,7 +179,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "\u03C723"
                         }
                     }
@@ -222,7 +222,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: index + 1
                             color: foregroundColor()
                         }
@@ -234,7 +234,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: label
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
@@ -247,7 +247,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: typeof type !== "undefined" ? type : ""
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
@@ -260,7 +260,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: toFixed(chiiso)
                             color: foregroundColor()
                             GenericControls.EditingToolTip { show: toFixed(chiiso); type: GenericControls.EditingToolTip.OnAnalysisPage; }
@@ -273,7 +273,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: toFixed(chi11)
                             color: foregroundColor()
                             GenericControls.EditingToolTip { show: toFixed(chi11); type: GenericControls.EditingToolTip.OnAnalysisPage; }
@@ -286,7 +286,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: toFixed(chi22)
                             color: foregroundColor()
                             GenericControls.EditingToolTip { show: toFixed(chi22); type: GenericControls.EditingToolTip.OnAnalysisPage; }
@@ -299,7 +299,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: toFixed(chi33)
                             color: foregroundColor()
                             GenericControls.EditingToolTip { show: toFixed(chi33); type: GenericControls.EditingToolTip.OnAnalysisPage; }
@@ -312,7 +312,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: toFixed(chi12)
                             color: foregroundColor()
                             GenericControls.EditingToolTip { show: toFixed(chi12); type: GenericControls.EditingToolTip.OnAnalysisPage; }
@@ -325,7 +325,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: toFixed(chi13)
                             color: foregroundColor()
                             GenericControls.EditingToolTip { show: toFixed(chi13); type: GenericControls.EditingToolTip.OnAnalysisPage; }
@@ -338,7 +338,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: toFixed(chi23)
                             color: foregroundColor()
                             GenericControls.EditingToolTip { show: toFixed(chi23); type: GenericControls.EditingToolTip.OnAnalysisPage; }

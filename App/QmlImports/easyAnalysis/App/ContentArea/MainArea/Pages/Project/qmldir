@@ -1,2 +1,3 @@
 module Project
+Editor 1.0 Editor.qml
 Project 1.0 Project.qml

@@ -47,7 +47,7 @@ RowLayout {
         }
 
         // Status bar
-        GenericAppElements.StatusBar { visible: !notLoadedInfo.visible }
+        GenericAppElements.StatusBar { visible: !notLoadedInfo.visible && Generic.Variables.toolbarCurrentIndex !== Generic.Variables.HomeIndex }
 
         // Not loaded info container
         Text {
@@ -58,8 +58,9 @@ RowLayout {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             text: notLoadedInfoText
-            font.pointSize: Generic.Style.fontPointSize * 3
-            font.family: Generic.Style.fontFamily
+            font.family: Generic.Style.secondFontFamily
+            font.pixelSize: 42
+            font.weight: Font.Light
             color: "lightgrey"
         }
     }

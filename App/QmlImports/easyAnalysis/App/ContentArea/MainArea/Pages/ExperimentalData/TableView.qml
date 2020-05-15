@@ -56,6 +56,8 @@ Rectangle {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignRight
                     enabled: false
+                    font.family: Generic.Style.fontFamily
+                    font.pixelSize: Generic.Style.fontPixelSize
                     text: display
                 }
             }
@@ -87,6 +89,8 @@ Rectangle {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignRight
                     enabled: editable
+                    font.family: Generic.Style.monoFontFamily
+                    font.pixelSize: Generic.Style.fontPixelSize
                     text: display.toFixed(4)
                     onEditingFinished: edit = text
                 }

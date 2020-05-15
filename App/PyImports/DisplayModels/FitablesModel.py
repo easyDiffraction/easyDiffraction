@@ -12,7 +12,7 @@ from PyImports.DisplayModels.BaseModel import BaseModel
 class FitablesModel(BaseModel):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._log = logger.getLogger(__class__.__module__)
+        self._log = logger.getLogger(self.__class__.__module__)
         # limits
         self._left_limit_for_zero_value = -1
         self._right_limit_for_zero_value = 1
@@ -24,7 +24,8 @@ class FitablesModel(BaseModel):
         # major properties
         self._model = QStandardItemModel()
         # set role names
-        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'unit']
+        self._role_names_list = ['path', 'label', 'value', 'error', 'min', 'max', 'refine', 'unit',
+                                 'labelList']  # 257 - 265
         self._roles_list = []
         self._roles_dict = {}
         self._setRolesListAndDict()
@@ -51,21 +52,24 @@ class FitablesModel(BaseModel):
         """
         Create the initial data list with structure for GUI fitables table.
         """
-        self._log.debug("update model")
+        self._log.info("Starting to set Model from Project Dict")
 
         # block model signals
         self._model.blockSignals(True)
 
         # reset model
-        self._model.setColumnCount(0) # faster than clear(); clear() crashes app! why?
+        self._model.setColumnCount(0)  # faster than clear(); clear() crashes app! why?
         self._model.setRowCount(0)
-        project_dict = self._project_dict
+
+        # sort background
+        for experiment in self._project_dict['experiments'].keys():
+            self._project_dict['experiments'][experiment]['background'].sort()
 
         # set column
         column = []
-        for path in find_in_obj(project_dict.asDict(), 'refine'):
+        for path in find_in_obj(self._project_dict.asDict(), 'refine'):
             keys_list = path[:-1]
-            hide = project_dict.getItemByPath(keys_list + ['hide'])
+            hide = self._project_dict.getItemByPath(keys_list + ['hide'])
             if hide:
                 continue
 
@@ -76,35 +80,53 @@ class FitablesModel(BaseModel):
                     continue
                 if role_name == 'path':
                     value = keys_list
+                elif role_name == 'labelList':
+                    value = keys_list[0:-1]
+                    # Insert elements according to CIF
+                    if len(value) > 0 and value[-1] == "offset": value.insert(-1, "setup")
+                    if len(value) > 0 and value[-1] == "wavelength": value.insert(-1, "setup")
+                    # Renaming according to CIF
+                    if len(value) > 0 and value[-1] == "offset": value[-1] = "offset_2theta"
+                    if len(value) > 2 and value[2] == "atoms": value[2] = "atom_site"
+                    if len(value) > 2 and value[2] == "resolution": value[2] = "pd_instr_resolution"
+                    if len(value) > 2 and value[2] == "polarization": value[2] = "diffrn_radiation"
+                    if len(value) > 2 and value[2] == "background": value.insert(3, "2theta")
+                    if len(value) > 5 and value[4] == "MSP":
+                        value[5] = "susceptibility_" + value[5]
+                        del value[4]
                 elif role_name == 'label':
                     value = ' '.join(keys_list[:-1])
                 elif role_name == 'value':
-                    value = project_dict.getItemByPath(keys_list[:-1]).value
+                    value = self._project_dict.getItemByPath(keys_list[:-1]).value
                 elif role_name == 'min':
-                    value = project_dict.getItemByPath(keys_list).min
+                    value = self._project_dict.getItemByPath(keys_list).min
                 elif role_name == 'max':
-                    value = project_dict.getItemByPath(keys_list).max
+                    value = self._project_dict.getItemByPath(keys_list).max
                 elif role_name == 'unit':
-                    value = str(nested_get(project_dict, keys_list + [role_name])) # conversion to str is needed if role = unit !
+                    # conversion to str is needed if role = unit !
+                    value = str(nested_get(self._project_dict, keys_list + [role_name]))
                 else:
-                    value = nested_get(project_dict, keys_list + [role_name])
+                    value = nested_get(self._project_dict, keys_list + [role_name])
                 item.setData(value, role)
 
             column.append(item)
 
         # set model
-        self._model.appendColumn(column) # dataChanged is not emited. why?
+        self._model.appendColumn(column)  # dataChanged is not emited. why?
 
         # unblock signals and emit model layout changed
         self._model.blockSignals(False)
         self._model.layoutChanged.emit()
-        # Emit signal which is catched by the QStandartItemModel-based
+        self._log.info("Finished setting Model from Project Dict")
+        # Emit signal which is caught by the QStandardItemModel-based
         # QML GUI elements in order to update their views
 
     def _updateProjectByIndexAndRole(self, index, edit_role):
         """
         Update project element, which is changed in the model, depends on its index and role.
         """
+        self._log.info("Starting updating Project Dict from Model")
+
         display_role = edit_role - self._edit_role_increment
         display_role_name = self._roles_dict[display_role].decode()
         path_role = self._role_names_list.index('path') + self._first_role
@@ -137,13 +159,13 @@ class FitablesModel(BaseModel):
                 except AttributeError:
                     # In this case the calculator/dict are out of phase :-/ So fallback to manual.
                     self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
-                #self._calculator_interface.updatePhases()
+                # self._calculator_interface.updatePhases()
             elif data_block_name == 'experiments':
                 try:
                     self._calculator_interface.setExperimentRefine(keys_list[1], keys_list[2:-2], edit_value)
                 except AttributeError:
                     self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
-                #self._calculator_interface.updateExperiments()
+                # self._calculator_interface.updateExperiments()
             else:
                 self._calculator_interface.setDictByPath(keys_list, edit_value)
             self._calculator_interface.projectDictChanged.emit()
@@ -159,14 +181,14 @@ class FitablesModel(BaseModel):
                 except AttributeError:
                     self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
                     self._calculator_interface.updatePhases()
-                self._calculator_interface.updateCalculations() # phases also updated ?
+                self._calculator_interface.updateCalculations()  # phases also updated ?
             elif data_block_name == 'experiments':
                 try:
                     self._calculator_interface.setExperimentValue(keys_list[1], keys_list[2:-2], edit_value)
                 except AttributeError:
                     self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
                     self._calculator_interface.updateExperiments()
-                self._calculator_interface.updateCalculations() # experiments also updated ?
+                self._calculator_interface.updateCalculations()  # experiments also updated ?
             else:
                 self._calculator_interface.setDictByPath(keys_list, edit_value)
             # Update min and max if value is outside [min, max] range
@@ -201,7 +223,7 @@ class FitablesModel(BaseModel):
             self._calculator_interface.project_dict.startBulkUpdate(undo_redo_text)
             self._calculator_interface.canUndoOrRedoChanged.emit()
             # TODO: try to use setDictByPath below
-            #self._calculator_interface.setDictByPath(keys_list, edit_value)
+            # self._calculator_interface.setDictByPath(keys_list, edit_value)
             # Temporary (?) solution until above is fixed
             self._calculator_interface.project_dict.setItemByPath(keys_list, edit_value)
             self._calculator_interface.projectDictChanged.emit()
@@ -212,6 +234,8 @@ class FitablesModel(BaseModel):
 
         self._calculator_interface.project_dict.endBulkUpdate()
         self._calculator_interface.canUndoOrRedoChanged.emit()
+        self._log.info("Finished updating Project Dict from Model")
+
 
     def onModelChanged(self, top_left_index, bottom_right_index, roles):
         """

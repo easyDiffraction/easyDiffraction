@@ -94,7 +94,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "No."
                         }
                         Text {
@@ -105,7 +105,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "2theta"
                         }
                         Text {
@@ -116,7 +116,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "Intensity"
                         }
                     }
@@ -161,7 +161,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: index + 1
                             color: foregroundColor()
                         }
@@ -173,7 +173,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: toFixed(model.ttheta, 2)
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
@@ -186,7 +186,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: toFixed(model.intensity, 2)
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }

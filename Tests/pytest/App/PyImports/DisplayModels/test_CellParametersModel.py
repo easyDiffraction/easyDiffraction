@@ -9,7 +9,7 @@ from PyImports.QtInterface import QtCalculatorInterface, ProjectDict
 from PyImports.QtInterface import QtCalculatorInterface
 import PyImports.DisplayModels.CellParametersModel as Model
 
-TEST_FILE = "file:Tests/Data/main.cif"
+TEST_FILE = "file:Tests/Data/project.cif"
 
 def test_CellParametersModel():
 

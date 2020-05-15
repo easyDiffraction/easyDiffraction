@@ -39,6 +39,8 @@ Rectangle {
             antialiasing: true
             smooth: true
             textFormat: Text.RichText
+            font.family: Generic.Style.fontFamily
+            font.pixelSize: Generic.Style.fontPixelSize
             onVisibleChanged: if (visible) update()
         }
     }
@@ -106,11 +108,11 @@ Rectangle {
         s += `<b>Software:</b> <a href="${Specific.Variables.projectDict.app.url}">${Specific.Variables.projectDict.app.name} v${Specific.Variables.projectDict.app.version}</a><br>`
         s += `<b>Calculator:</b> <a href="${Specific.Variables.projectDict.calculator.url}">${Specific.Variables.projectDict.calculator.name} v${Specific.Variables.projectDict.calculator.version}</a><br>`
         s += `<b>Keywords:</b> ${Specific.Variables.projectKeywords}<br>`
-        s += `<b>Phases:</b> ${Specific.Variables.phaseIds().join(', ')}<br>`
-        s += `<b>Experiments:</b> ${Specific.Variables.experimentIds().join(', ')}<br>`
-        s += `<b>Instrument:</b> Unknown<br>`
-        s += `<b>Modified:</b> ${Specific.Variables.projectDict.info.modified_datetime}<br>`
-        s += `<b>Chi2:</b> ${Generic.Variables.chiSquared} <br>`
+        s += `<b>Phase labels:</b> ${Specific.Variables.phaseIds().join(', ')}<br>`
+        s += `<b>Experiment labels:</b> ${Specific.Variables.experimentIds().join(', ')}<br>`
+        //s += `<b>Instrument:</b> Unknown<br>`
+        s += `<b>Modified:</b> ${Specific.Variables.projectModifiedDate}<br>`
+        s += `<b>Goodness-of-fit (chi2):</b> ${Generic.Variables.chiSquared} <br>`
         s += '</p>'
         s += '<h2>Parameters</h2>'
         s += '<p>'
@@ -118,11 +120,11 @@ Rectangle {
         s += '<br></p>'
         s += '<h2>Fitting</h2>'
         s += '<p>'
-        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("saved_refinement.png"))}">`
+        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("refinement.png"))}">`
         s += '</p>'
         s += '<h2>Structure</h2>'
         s += '<p>'
-        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("saved_structure.png"))}">`
+        s += `<img src="${Qt.resolvedUrl(Specific.Variables.projectControl.fullFilePath("structure.png"))}">`
         s += '</p>'
         s += '</body>'
         return s

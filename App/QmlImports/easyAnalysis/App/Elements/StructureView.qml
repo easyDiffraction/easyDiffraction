@@ -8,9 +8,12 @@ import easyDiffraction 1.0 as Specific
 
 Rectangle {
     property bool showInfo: true
+    property real xAxisLength: 1.0
+    property real yAxisLength: 1.0
+    property real zAxisLength: 1.0
     property real xRotationInitial: -50.0
     property real yRotationInitial:  3.0
-    property real zoomLevelInitial: 200.0
+    property real zoomLevelInitial: 175.0
     property real xTargetInitial: 0.0
     property real yTargetInitial: 0.0
     property real zTargetInitial: 0.0
@@ -19,6 +22,8 @@ Rectangle {
     width: parent.width
     height: parent.height
     color: "transparent"
+
+    clip: true
 
     ////////////////////////
     // Check if data changed
@@ -46,6 +51,11 @@ Rectangle {
             const b = phase.cell.length_b
             const c = phase.cell.length_c
 
+            // Update axes lengths
+            xAxisLength = a // in horizontal plane
+            yAxisLength = b // vertical
+            zAxisLength = c // in horizontal plane
+
             // Remove old atom scatters, but unit cell box (number 1)
             for (let i = 1, len = chart.seriesList.length; i < len; i++) {
                 chart.removeSeries(chart.seriesList[1])
@@ -59,11 +69,8 @@ Rectangle {
                     if (series === null) {
                         console.log("Error creating object")
                     } else {
-                        //print(i, phase.sites.fract_x[i], phase.sites.scat_length_neutron[i])
-
-                        series.atomSize = Math.abs(phase.sites.scat_length_neutron[i]) * 0.4
+                        series.atomSize = Math.pow(Math.abs(parseFloat(phase.sites.scat_length_neutron[i])) * 0.075, 1/3)
                         series.atomColor = bscatColorDict[phase.sites.scat_length_neutron[i]]
-                        //print(a, atom_site_list.fract_x[i] * a)
                         series.atomModel.append({
                             x: phase.sites.fract_x[i] * a,
                             y: phase.sites.fract_y[i] * b,
@@ -88,11 +95,10 @@ Rectangle {
 
         Scatter3D {
             id: chart
+            visible: Specific.Variables.phaseIds().length ? true: false
             width: Math.min(parent.width, parent.height)
             height: Math.min(parent.width, parent.height)
             anchors.centerIn: parent
-            clip: true
-            visible: Specific.Variables.phaseIds().length ? true: false
 
             // Camera view settings
             orthoProjection: false
@@ -105,8 +111,8 @@ Rectangle {
             scene.activeCamera.target.z: zTargetInitial
 
             // Geometrical settings
-            //horizontalAspectRatio: 0.0
-            aspectRatio: 1.0
+            aspectRatio: Math.max(xAxisLength, zAxisLength) / yAxisLength
+            horizontalAspectRatio: xAxisLength / zAxisLength
 
             // Interactivity
             selectionMode: AbstractGraph3D.SelectionNone // Left mouse button will be used for "reset view" coded below
@@ -122,8 +128,8 @@ Rectangle {
                 labelBorderEnabled: false
                 labelTextColor: "grey"
                 gridEnabled: false
-                font.pointSize: 60
-                font.family: Generic.Style.fontFamily
+                //font.pointSize: 60
+                //font.family: Generic.Style.fontFamily
             }
             shadowQuality: AbstractGraph3D.ShadowQualityNone // AbstractGraph3D.ShadowQualitySoftHigh
 
@@ -163,15 +169,16 @@ Rectangle {
         visible: showInfo
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: font.pointSize * 0.5
-        leftPadding: font.pointSize * lineHeight * 0.5
-        rightPadding: font.pointSize * lineHeight * 0.5
+        anchors.bottomMargin: font.pixelSize * 0.5
+        leftPadding: font.pixelSize * lineHeight * 0.5
+        rightPadding: font.pixelSize * lineHeight * 0.5
         lineHeight: 1.5
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         text: qsTr("Rotate: Drag with right mouse button pressed") + "  •  " + qsTr("Zoom in/out: Mouse wheel") + "  •  " + qsTr("Reset: Left mouse button")
-        font.family: Generic.Style.introThinFontFamily
-        font.pointSize: Generic.Style.systemFontPointSize + 1
+        font.family: Generic.Style.secondFontFamily
+        font.weight: Font.Light
+        font.pixelSize: Generic.Style.fontPixelSize
         color: "grey"
         background: Rectangle { color: "white"; opacity: 0.9; border.width: 0; radius: Generic.Style.toolbarButtonRadius }
     }
@@ -208,7 +215,7 @@ Rectangle {
         onTriggered: {
             //print("save structure")
             chartContainer.grabToImage(function(result) {
-                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/saved_structure.png")
+                result.saveToFile(Specific.Variables.projectControl.project_dir_absolute_path + "/structure.png")
             })
         }
     }

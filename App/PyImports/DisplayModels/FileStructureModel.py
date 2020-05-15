@@ -17,7 +17,7 @@ class FileStructureModel(BaseModel):
             self._experiment_role: b'experimentsRole',
             self._calculation_role: b'calculationsRole',
             })
-        self._log = logger.getLogger(__class__.__module__)
+        self._log = logger.getLogger(self.__class__.__module__)
 
     def asPhaseString(self):
         """

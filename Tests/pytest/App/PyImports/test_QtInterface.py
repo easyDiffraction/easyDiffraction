@@ -12,8 +12,8 @@ from PyImports.QtInterface import QtCalculatorInterface
 from easyInterface.Diffraction.Calculators import CryspyCalculator
 
 test_data = os.path.join('Tests', 'Data')
-file_path = os.path.join(test_data, 'main.cif')
-phase_path = os.path.join(test_data, 'phases.cif')
+file_path = os.path.join(test_data, 'project.cif')
+phase_path = os.path.join(test_data, 'samples.cif')
 exp_path = os.path.join(test_data, 'experiments.cif')
 
 
@@ -57,7 +57,7 @@ def test_init(cal):
     assert len(cal.project_dict['phases']) == 1
     assert len(cal.project_dict['experiments']) == 1
 
-    assert cal.calculator._main_rcif_path == file_path
+    assert cal.calculator._project_rcif_path == file_path
 
     assert len(cal.project_dict) == 7
 
@@ -69,8 +69,8 @@ def test_setPhaseDefinition(cal):
     phase_ref = cal.getPhase('Fe3O4')
     assert phase_added['phasename'] == phase_ref['phasename']
     assert phase_added['spacegroup']['crystal_system'].value == phase_ref['spacegroup']['crystal_system'].value
-    assert phase_added['spacegroup']['space_group_name_HM_alt'].value == phase_ref['spacegroup'][
-        'space_group_name_HM_alt'].value
+    assert phase_added['spacegroup']['space_group_name_HM_ref'].value == phase_ref['spacegroup'][
+        'space_group_name_HM_ref'].value
     assert phase_added['spacegroup']['space_group_IT_number'].value == phase_ref['spacegroup'][
         'space_group_IT_number'].value
     assert phase_added['spacegroup']['origin_choice'].value == phase_ref['spacegroup']['origin_choice'].value
@@ -93,8 +93,8 @@ def test_addPhaseDefinition(cal):
     phase_ref = cal.getPhase('Fe3O4')
     assert phase_added['phasename'] == phase_ref['phasename']
     assert phase_added['spacegroup']['crystal_system'].value == phase_ref['spacegroup']['crystal_system'].value
-    assert phase_added['spacegroup']['space_group_name_HM_alt'].value == phase_ref['spacegroup'][
-        'space_group_name_HM_alt'].value
+    assert phase_added['spacegroup']['space_group_name_HM_ref'].value == phase_ref['spacegroup'][
+        'space_group_name_HM_ref'].value
     assert phase_added['spacegroup']['space_group_IT_number'].value == phase_ref['spacegroup'][
         'space_group_IT_number'].value
     assert phase_added['spacegroup']['origin_choice'].value == phase_ref['spacegroup']['origin_choice'].value

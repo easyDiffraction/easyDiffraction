@@ -82,7 +82,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "No."
                         }
                         Text {
@@ -93,7 +93,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "Label"
                         }
                         Text {
@@ -104,7 +104,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding * 2
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "Scale"
                         }
                         Text {
@@ -115,7 +115,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: " "
                         }
                     }
@@ -160,7 +160,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: index + 1
                             color: foregroundColor()
                         }
@@ -172,7 +172,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: Specific.Variables.projectOpened ? Specific.Variables.phaseIds()[index] : ""
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }
@@ -187,7 +187,7 @@ Column {
                             rightPadding: leftPadding * 2
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.OnAnalysisPage }
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             font.family: Generic.Style.fontFamily
                             text: Specific.Variables.experimentByIndex(0).phase[0].scale.toFixed(4)
                         }

@@ -81,7 +81,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "No."
                         }
                         Text {
@@ -92,7 +92,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: "Label"
                         }
                         Item {
@@ -156,7 +156,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: index + 1
                             color: foregroundColor()
                         }
@@ -168,7 +168,7 @@ Column {
                             leftPadding: font.pixelSize
                             rightPadding: leftPadding
                             font.family: Generic.Style.fontFamily
-                            font.pointSize: Generic.Style.fontPointSize
+                            font.pixelSize: Generic.Style.fontPixelSize
                             text: Specific.Variables.projectOpened ? Specific.Variables.experimentIds()[index] : ""
                             color: foregroundColor()
                             GenericControls.EditingToolTip { type: GenericControls.EditingToolTip.NoEditingYet }

@@ -17,11 +17,11 @@ GenericAppElements.ContentAreaStack {
         id: tabBar
         GenericMainArea.TabButton { text: qsTr("Structure View"); tabbarWidth: mainArea.width } // fix width
         GenericMainArea.TabButton {
-            text: qsTr("Text View")
+            text: qsTr("samples.cif")
             tabbarWidth: mainArea.width
 
             GenericAppElements.GuideWindow {
-                message: "This tab button allows to see the phase\ndetails as plain text (CIF)."
+                message: "This tab button allows to see the sample\ndetails as plain text (CIF)."
                 position: "bottom"
                 guideCurrentIndex: 2
                 toolbarCurrentIndex: Generic.Variables.SampleIndex
@@ -35,9 +35,6 @@ GenericAppElements.ContentAreaStack {
         currentIndex: tabBar.currentIndex
         GenericMainAreaSampleModel.StructureView { }
         GenericMainAreaSampleModel.TextView { id: textView }
-        onCurrentIndexChanged: {
-            textView.showContent = (currentIndex === 1)
-        }
     }
 
     sideBarContent: StackLayout {
@@ -46,6 +43,6 @@ GenericAppElements.ContentAreaStack {
         GenericSidebarSampleModel.TextView { }
     }
 
-    notLoadedInfoText: !Specific.Variables.phaseIds().length ? "No Phases Loaded" : ""
+    notLoadedInfoText: !Specific.Variables.phaseIds().length ? "No Samples Loaded" : ""
 
 }
