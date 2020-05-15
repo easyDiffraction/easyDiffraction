@@ -28,7 +28,7 @@ Please, visit <https://easyDiffraction.org> for more details.
 
 <!---GitHub Latest Release--->
 
-[30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.9
+[30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.7.0
 
 [35]: https://img.shields.io/badge/Release-v0.7.1_(15_May_2020)-informational.svg
 
