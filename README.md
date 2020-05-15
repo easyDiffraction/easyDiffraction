@@ -30,19 +30,19 @@ Please, visit <https://easyDiffraction.org> for more details.
 
 [30]: https://github.com/easyDiffraction/easyDiffraction/releases/tag/v0.3.9
 
-[35]: https://img.shields.io/badge/Release-v0.3.9_(17_Dec_2019)-informational.svg
+[35]: https://img.shields.io/badge/Release-v0.7.1_(15_May_2020)-informational.svg
 
 <!---User Manual--->
 
 [40]: https://easydiffraction.github.io/documentation.html
 
-[45]: https://img.shields.io/badge/User_Manual-13_Nov_2019-informational.svg
+[45]: https://img.shields.io/badge/User_Manual-15_May_2020-informational.svg
 
 <!---License--->
 
 [50]: https://github.com/easyDiffraction/easyDiffraction/blob/develop/LICENSE
 
-[55]: https://img.shields.io/badge/License-GNU_GPL_v3.0-informational.svg
+[55]: https://img.shields.io/github/license/easyDiffraction/easyDiffraction?color=blue&label=License
 
 <!---Code coverage--->
 
