@@ -22,7 +22,7 @@ Please, visit <https://easyDiffraction.org> for more details.
 
 [26]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?env=BADGE=osx&label=macOS%2010.13%20(High%20Sierra)&branch=develop
 
-[27]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?env=BADGE=linux&label=Ubuntu%20Linux%2016.04%20(Xenial)&branch=develop
+[27]: http://badges.herokuapp.com/travis/easydiffraction/easydiffraction?env=BADGE=linux&label=Ubuntu%20Linux%2018.04%20(Bionic%20Beaver)&branch=develop
 
 [28]: https://codecov.io/gh/easyDiffraction/easyDiffraction/branch/develop/graph/badge.svg
 
